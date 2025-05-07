@@ -8,20 +8,116 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+        /* Base styles */
     body {
       transition: background-color 0.3s, color 0.3s;
     }
+    
+    /* Profile image */
+    .profile-img {
+      max-width: 200px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Dark mode styles */
     .dark-mode {
       background-color: #121212;
       color: #f0f0f0;
     }
+    
     .dark-mode .card {
       background-color: #1e1e1e;
       border-color: #333;
     }
-    .profile-img {
-      max-width: 200px;
-      border-radius: 50%;
+    
+    .dark-mode .navbar {
+      background-color: #1e1e1e !important;
+      border-bottom: 1px solid #333;
+    }
+    
+    .dark-mode .table {
+      color: #f0f0f0;
+    }
+    
+    .dark-mode .table-bordered {
+      border-color: #333;
+    }
+    
+    .dark-mode .table-bordered td,
+    .dark-mode .table-bordered th {
+      border-color: #333;
+    }
+    
+    .dark-mode .table-light {
+      background-color: #2d2d2d;
+      color: #f0f0f0;
+    }
+    
+    /* Button styles */
+    .dark-mode .btn-outline-danger {
+      color: #dc3545;
+      border-color: #dc3545;
+    }
+    
+    .dark-mode .btn-outline-danger:hover {
+      color: #fff;
+      background-color: #dc3545;
+    }
+    
+    .dark-mode .btn-outline-primary {
+      color: #0d6efd;
+      border-color: #0d6efd;
+    }
+    
+    .dark-mode .btn-outline-primary:hover {
+      color: #fff;
+      background-color: #0d6efd;
+    }
+    
+    /* Link styles */
+    .dark-mode a {
+      color: #0d6efd;
+    }
+    
+    .dark-mode a:hover {
+      color: #0a58ca;
+    }
+    
+    .dark-mode .table a {
+      color: inherit;
+      transition: color 0.3s;
+    }
+    
+    .dark-mode .table a:hover {
+      color: #0d6efd;
+      text-decoration: none;
+    }
+    
+    /* Table responsive styles */
+    .table-responsive {
+      margin-bottom: 1rem;
+    }
+    
+    .table td, .table th {
+      vertical-align: middle;
+    }
+    
+    /* Utility classes */
+    .text-muted {
+      color: #6c757d !important;
+    }
+    
+    .dark-mode .text-muted {
+      color: #a0a0a0 !important;
+    }
+    
+    /* Footer styles */
+    .dark-mode footer {
+      background-color: #1e1e1e !important;
+      border-top: 1px solid #333;
+      color: #f0f0f0;
     }
   </style>
 </head>
@@ -56,55 +152,430 @@
 
     <section>
       <h2>Professional Experience</h2>
-      <ul>
-        <li><strong>Senior Software Programmer</strong>, Army War Game Centre, Sept 2020 – Present</li>
-        <li><strong>Research Programmer</strong>, Cyber Security Center, DIU, Jun 2019 – Sept 2020</li>
-        <li><strong>Web Developer</strong>, RightBrainTechBD, Feb 2017 – Jun 2019</li>
-      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Designation</th>
+              <th>Duration</th>
+              <th>Job Type</th>
+              <th>Responsibility</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Senior Software Programmer</td>
+              <td>Sept 2020 – Present</td>
+              <td>Full-time</td>
+              <td>
+                <ul class="mb-0">
+                  <li>Design and development of 2D/3D GIS-based military simulation systems</li>
+                  <li>Leading technical teams for complex project implementations</li>
+                  <li>Developing advanced visualization solutions</li>
+                  <li>Managing system architecture and performance optimization</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Research Programmer</td>
+              <td>Jun 2019 – Sept 2020</td>
+              <td>Full-time</td>
+              <td>
+                <ul class="mb-0">
+                  <li>Conducting cybersecurity research and implementing security solutions</li>
+                  <li>Providing training in data security and system protection</li>
+                  <li>Developing security protocols and best practices</li>
+                  <li>Leading student workshops on cybersecurity</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Web Developer</td>
+              <td>Feb 2017 – Jun 2019</td>
+              <td>Full-time</td>
+              <td>
+                <ul class="mb-0">
+                  <li>Frontend and backend web development</li>
+                  <li>Implementing responsive designs</li>
+                  <li>Managing client projects and deadlines</li>
+                  <li>Database design and optimization</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section>
       <h2>Education</h2>
-      <ul>
-        <li>PhD in Computer Engineering – Ongoing, University Malaysia Perlis</li>
-        <li>MSc in Software Engineering (Cyber Security), DIU, GPA: 3.98</li>
-        <li>BSc in Software Engineering, DIU, GPA: 3.99</li>
-      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Degree</th>
+              <th>Department and Major</th>
+              <th>Grade</th>
+              <th>Organization</th>
+              <th>Pass Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PhD</td>
+              <td>Computer Engineering</td>
+              <td>-</td>
+              <td>University Malaysia Perlis, Malaysia</td>
+              <td>Ongoing</td>
+            </tr>
+            <tr>
+              <td>MSc</td>
+              <td>Software Engineering (Cyber Security)</td>
+              <td>3.98/4.00</td>
+              <td>Daffodil International University, Bangladesh</td>
+              <td>2022</td>
+            </tr>
+            <tr>
+              <td>BSc</td>
+              <td>Software Engineering</td>
+              <td>3.99/4.00</td>
+              <td>Daffodil International University, Bangladesh</td>
+              <td>2019</td>
+            </tr>
+            <tr>
+              <td>HSC</td>
+              <td>Science</td>
+              <td>5.00/5.00 (Golden A+)</td>
+              <td>Birshresta Noor Mohammad Public College</td>
+              <td>2014</td>
+            </tr>
+            <tr>
+              <td>SSC</td>
+              <td>Science</td>
+              <td>5.00/5.00 (Golden A+)</td>
+              <td>Natore Sugar Mills High School</td>
+              <td>2012</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section>
       <h2>Skills</h2>
-      <p><strong>Tech:</strong> GIS, Security, Simulation | <strong>Langs:</strong> C#, Python, PHP | <strong>Frameworks:</strong> .NET, Laravel, Angular</p>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <th style="width: 30%" class="table-light">Technology</th>
+              <td>Data Security, Geospatial Analysis, Gaming Simulation</td>
+            </tr>
+            <tr>
+              <th class="table-light">Programming Language</th>
+              <td>C#, Python, PHP, JavaScript, Matlab, Latex</td>
+            </tr>
+            <tr>
+              <th class="table-light">Frameworks</th>
+              <td>.NET, ASP.NET, Laravel, Angular, Bootstrap</td>
+            </tr>
+            <tr>
+              <th class="table-light">Database</th>
+              <td>MySQL, MSSQL</td>
+            </tr>
+            <tr>
+              <th class="table-light">Development Tools</th>
+              <td>VisualStudio22, PhpStorm, Jupyter Notebook, Matlab2022a</td>
+            </tr>
+            <tr>
+              <th class="table-light">Project Management Tool</th>
+              <td>Trello, GitHub</td>
+            </tr>
+            <tr>
+              <th class="table-light">Diagram Tools</th>
+              <td>Draw.io</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section>
       <h2>Publications</h2>
-      <ul>
-        <li>2025 - "An Edge Detection with LSB and AES Encryption...", ICICT, Hawaii</li>
-        <li>2024 - "Modified LSB Image Steganography...", ASTES Journal</li>
-      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Year</th>
+              <th>Author Type</th>
+              <th>Paper Type</th>
+              <th>Paper Info</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2025</td>
+              <td>First Author</td>
+              <td>Conference<br>(Scopus Indexed)</td>
+              <td>
+                "An Edge Detection with LSB and AES Encryption Based Image Steganography"<br>
+                <small class="text-muted">
+                  International Conference on Information and Computer Technologies (ICICT),
+                  March 2025, Hawaii-Hilo, USA
+                </small>
+              </td>
+            </tr>
+            <tr>
+              <td>2025</td>
+              <td>First Author</td>
+              <td>Conference<br>(Scopus Indexed)</td>
+              <td>
+                "A New Image Steganographic Algorithm 1-Bit LSB based XOR operation Used in YCbCr Color Model with Crypto-algorithm and Canny Edge Detection"<br>
+                <small class="text-muted">
+                  International Conference on Information and Computer Technologies (ICICT),
+                  March 2025, Hawaii-Hilo, USA
+                </small>
+              </td>
+            </tr>
+            <tr>
+              <td>2024</td>
+              <td>First Author</td>
+              <td>Q2 Journal<br>(Scopus Indexed)</td>
+              <td>
+                "A Modified LSB Image Steganography Method Using MSB Based Pixel Filtering Algorithm"<br>
+                <small class="text-muted">
+                  Published in Advances in Science, Technology and Engineering Systems Journal<br>
+                  DOI: 10.37934/araset.62.1.3248
+                </small>
+              </td>
+            </tr>
+            <tr>
+              <td>2020</td>
+              <td>First Author</td>
+              <td>Conference<br>(Scopus Indexed)</td>
+              <td>
+                "A New 8-Directional Pixel Selection Technique of LSB Based Image Steganography"<br>
+                <small class="text-muted">
+                  Published in Springer Lecture Notes on Data Engineering and Communications Technologies<br>
+                  DOI: 10.1007/978-3-030-52856-0_8
+                </small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section>
       <h2>Projects</h2>
-      <ul>
-        <li><strong>Heightmap Generation</strong> – .NET, Python</li>
-        <li><strong>Video Steganography</strong> – C#, FFmpeg</li>
-      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>SL</th>
+              <th>Project Name</th>
+              <th>Link</th>
+              <th>Technology</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Real World Heightmap Generation</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>.NET Core, Python, Shell</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Parallel Complex Line Creating</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>.NET Framework, DotSpatial</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Video Steganography (Data Hiding Algorithm)</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>C#, FFmpeg, Shell, MATLAB</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>AI Based Food Order System<br><small class="text-success">Awarded - at Project Fair</small></td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>Laravel, JavaScript, MySQL</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Live Search for E-Commerce</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>Laravel, AJAX, MySQL</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>FTP Server for local network</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>.NET Framework, MSSQL</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Teacher Appointment Project</td>
+              <td><a href="#" class="btn btn-sm btn-outline-primary">Click to See</a></td>
+              <td>Laravel, JavaScript, MySQL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section>
       <h2>Teaching & Certifications</h2>
-      <p><strong>LDP</strong>: Logic Development Program | <strong>Certs</strong>: CEH, Mobile Forensic, Digital Security</p>
+      
+      <!-- Logic Development Program (LDP) and Tutorials -->
+      <h4 class="mt-4 mb-3">Teaching Materials</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <tbody>
+            <tr>
+              <td style="width: 30%"><strong>LDP (Logic Development Program)</strong></td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-danger">
+                  <i class="fab fa-youtube me-1"></i> Watch Tutorial
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>YouTube Tutorial on Encryption</strong></td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-danger">
+                  <i class="fab fa-youtube me-1"></i> Watch Tutorial
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>YouTube Tutorial on PHP CRUD Operation</strong></td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-danger">
+                  <i class="fab fa-youtube me-1"></i> Watch Tutorial
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section>
+      <!-- Certifications -->
+      <h4 class="mt-4 mb-3">Professional Certifications</h4>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Certification</th>
+              <th>Issuing Organization</th>
+              <th>Year</th>
+              <th>Credential</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Certified Ethical Hacker (CEH)</td>
+              <td>EC-Council</td>
+              <td>2023</td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                  <i class="fas fa-certificate me-1"></i> Verify
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Mobile Forensic</td>
+              <td>LICT Project</td>
+              <td>2022</td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                  <i class="fas fa-certificate me-1"></i> Verify
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Digital Security</td>
+              <td>ICT Division</td>
+              <td>2021</td>
+              <td>
+                <a href="#" class="btn btn-sm btn-outline-primary">
+                  <i class="fas fa-certificate me-1"></i> Verify
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
-    <section>
+   <section>
       <h2>References</h2>
-      <ul>
-        <li>Dr. R.Badlishah Ahmad – badli@unimap.edu.my</li>
-        <li>Dr. MD. Asraf Ali – asrafali@aiub.edu</li>
-        <li>Dr. Md Maruf Hassan – ancssf@gmail.com</li>
-      </ul>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Name</th>
+              <th>Designation</th>
+              <th>Institution</th>
+              <th>Email</th>
+              <th>Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Dr. R.Badlishah Ahmad</td>
+              <td>Professor</td>
+              <td>University Malaysia Perlis</td>
+              <td>
+                <a href="mailto:badli@unimap.edu.my" class="text-decoration-none">
+                  <i class="fas fa-envelope me-1"></i>badli@unimap.edu.my
+                </a>
+              </td>
+              <td>
+                <a href="tel:+60194969677" class="text-decoration-none">
+                  <i class="fas fa-phone me-1"></i>+60 19-496 9677
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Dr. MD. Asraf Ali</td>
+              <td>Professor</td>
+              <td>American International University-Bangladesh (AIUB)</td>
+              <td>
+                <a href="mailto:asrafali@aiub.edu" class="text-decoration-none">
+                  <i class="fas fa-envelope me-1"></i>asrafali@aiub.edu
+                </a>
+              </td>
+              <td>
+                <a href="tel:+8801717272969" class="text-decoration-none">
+                  <i class="fas fa-phone me-1"></i>+880 171-727 2969
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>Dr. Md Maruf Hassan</td>
+              <td>Associate Professor</td>
+              <td>Southeast University</td>
+              <td>
+                <a href="mailto:ancssf@gmail.com" class="text-decoration-none">
+                  <i class="fas fa-envelope me-1"></i>ancssf@gmail.com
+                </a>
+              </td>
+              <td>
+                <a href="tel:+8801718520275" class="text-decoration-none">
+                  <i class="fas fa-phone me-1"></i>+880 171-852 0275
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
   </main>
 
