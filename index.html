@@ -133,11 +133,31 @@
       color: #a0a0a0 !important;
     }
     
-    /* Footer styles */
+        /* Footer styles */
     .dark-mode footer {
       background-color: #1e1e1e !important;
       border-top: 1px solid #333;
       color: #f0f0f0;
+    }
+
+    /* Fix for dark-mode tables */
+    .dark-mode .table,
+    .dark-mode .table-bordered,
+    .dark-mode .table th,
+    .dark-mode .table td,
+    .dark-mode .table thead,
+    .dark-mode .table tbody {
+      background-color: #212529 !important;
+      color: #f0f0f0 !important;
+      border-color: #333 !important;
+    }
+
+    .dark-mode .table-light,
+    .dark-mode .table-light>th,
+    .dark-mode .table-light>td {
+      background-color: #343a40 !important;
+      color: #fff !important;
+      border-color: #333 !important;
     }
   </style>
 </head>
