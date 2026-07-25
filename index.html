@@ -162,127 +162,238 @@
     }
 
 
+    /*====================================================
+                LINKEDIN STYLE HEADER
+    ====================================================*/
+    
     .hero-header{
+        width:100%;
         margin-bottom:120px;
     }
     
+    /* Cover */
+    
     .cover-banner{
         position:relative;
-        height:330px;
+        width:100%;
+        aspect-ratio:1935 / 813;
         overflow:hidden;
-        border-radius:0 0 25px 25px;
+        border-radius:18px;
     }
     
     .cover-banner img{
         width:100%;
         height:100%;
+        display:block;
         object-fit:cover;
+        object-position:center center;
     }
     
     .cover-overlay{
         position:absolute;
         inset:0;
-        background:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.55));
+        background:linear-gradient(
+            rgba(0,0,0,.10),
+            rgba(0,0,0,.45)
+        );
     }
+    
+    /* Card */
     
     .profile-card{
-        max-width:1050px;
-        margin:-90px auto 0;
-        background:#fff;
-        border-radius:20px;
-        box-shadow:0 15px 45px rgba(0,0,0,.15);
-        padding:35px;
+    
+        width:92%;
+        max-width:1180px;
+    
+        margin:-85px auto 0;
+    
+        background:#ffffff;
+    
+        border-radius:18px;
+    
         display:flex;
+    
         align-items:center;
-        gap:35px;
+    
+        padding:35px 40px;
+    
+        box-shadow:
+        0 12px 35px rgba(0,0,0,.12);
+    
         position:relative;
-        z-index:10;
+    
+        z-index:100;
     }
     
-    .profile-image-wrapper{
+    /* Profile */
+    
+    .profile-photo{
+    
+        margin-right:35px;
+    
         flex-shrink:0;
     }
     
-    .profile-img{
+    .profile-photo img{
+    
         width:190px;
+    
         height:190px;
+    
         object-fit:cover;
+    
         border-radius:50%;
+    
         border:6px solid #fff;
-        box-shadow:0 10px 30px rgba(0,0,0,.25);
+    
+        box-shadow:0 10px 25px rgba(0,0,0,.25);
     }
     
-    .profile-content{
+    /* Text */
+    
+    .profile-info{
+    
         flex:1;
     }
     
-    .profile-content h1{
-        font-size:2.3rem;
+    .profile-info h1{
+    
+        font-size:42px;
+    
         font-weight:700;
-        margin-bottom:10px;
+    
+        margin-bottom:12px;
+    
+        color:#222;
     }
     
-    .profile-content .lead{
-        font-size:1.05rem;
+    .designation{
+    
+        font-size:18px;
+    
         color:#555;
+    
+        margin-bottom:20px;
     }
     
-    .social-links .btn{
-        width:42px;
-        height:42px;
+    /* Social */
+    
+    .social-buttons{
+    
+        margin-bottom:18px;
+    }
+    
+    .social-buttons .btn{
+    
+        width:44px;
+    
+        height:44px;
+    
         border-radius:50%;
+    
         display:inline-flex;
-        align-items:center;
+    
         justify-content:center;
+    
+        align-items:center;
+    
         margin-right:8px;
     }
     
-    .contact-info{
+    /* Contact */
+    
+    .contact-row{
+    
         display:flex;
+    
         flex-wrap:wrap;
-        gap:20px;
-        margin-top:15px;
-        font-size:.95rem;
-        color:#555;
+    
+        gap:25px;
+    
+        color:#666;
+    
+        font-size:15px;
     }
     
-    .contact-info span{
+    .contact-row span{
+    
         display:flex;
+    
         align-items:center;
+    
         gap:8px;
     }
     
-    .contact-info i{
+    .contact-row i{
+    
         color:#0d6efd;
     }
     
-    @media (max-width:768px){
+    /* Responsive */
     
-        .cover-banner{
-            height:220px;
-        }
+    @media(max-width:992px){
     
         .profile-card{
+        
             flex-direction:column;
+        
             text-align:center;
-            margin:-70px 15px 0;
-            padding:25px;
+        
+            padding:30px 20px;
         }
-    
-        .profile-img{
-            width:150px;
-            height:150px;
+        
+        .profile-photo{
+        
+            margin-right:0;
+        
+            margin-bottom:25px;
         }
-    
-        .contact-info{
+        
+        .contact-row{
+        
             justify-content:center;
         }
-    
-        .profile-content h1{
-            font-size:1.8rem;
+        
+        .profile-info h1{
+        
+            font-size:34px;
         }
     
     }
+    
+    @media(max-width:768px){
+      .hero-header{
+          margin-bottom:70px;
+      }
+      
+      .cover-banner{
+          border-radius:12px;
+      }
+      
+      .profile-card{
+          width:95%;
+          margin-top:-60px;
+      }
+      
+      .profile-photo img{
+          width:150px;
+          height:150px;
+      }
+      
+      .profile-info h1{
+          font-size:28px;
+      }
+      
+      .designation{
+          font-size:16px;
+      }
+      
+      .contact-row{
+          flex-direction:column;
+          gap:12px;
+      }
+    }
+    
   </style>
 </head>
 
@@ -294,58 +405,46 @@
     </div>
   </nav>
 
-<header class="hero-header">
-    <!-- Cover -->
-    <div class="cover-banner">
-        <img src="assets/img/cover.png" alt="Cover Image">
-        <div class="cover-overlay"></div>
-    </div>
-    <!-- Profile Card -->
-    <div class="profile-card">
-        <div class="profile-image-wrapper">
-            <img src="assets/img/pp_casual.jpg" alt="Thanbir" class="profile-img">
-        </div>
-        <div class="profile-content">
-            <h1>SHEIKH THANBIR ALAM</h1>
-            <p class="lead mb-2">
-                Independent Contractor <strong>@ Apple Inc.</strong> |
-                Senior Software Engineer <strong>@ Softzino Technologies</strong> |
-                PhD Student <strong>@ University Malaysia Perlis</strong>
-            </p>
-            <div class="social-links mb-3">
-                <a href="https://linkedin.com/in/thanbirtamim" target="_blank" class="btn btn-primary btn-sm">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/ThanbirTamim" target="_blank" class="btn btn-dark btn-sm">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://orcid.org/0009-0004-0523-4188" target="_blank" class="btn btn-success btn-sm">
-                    <i class="fab fa-orcid"></i>
-                </a>
-                <a href="https://leetcode.com/u/thanbirtamim/" target="_blank" class="btn btn-warning btn-sm">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png"
-                         style="height:18px;">
-                </a>
-            </div>
-            <div class="contact-info">
-                <span>
-                    <i class="fab fa-whatsapp"></i>
-                    +8801752217800
-                </span>
-                <span>
-                    <i class="fas fa-envelope"></i>
-                    sk.tamim56@gmail.com
-                </span>
-                <span>
-                    <i class="fas fa-location-dot"></i>
-                    Perlis, Malaysia
-                    <span class="fi fi-my"></span>
-                </span>
-            </div>
-        </div>
-    </div>
-</header>
+  <header class="hero-header">
+      <div class="cover-banner">
+          <img src="assets/img/cover.png" alt="Cover">
+          <div class="cover-overlay"></div>
+      </div>
+      <div class="profile-card">
+          <div class="profile-photo">
+              <img src="assets/img/pp_casual.jpg" alt="Thanbir">
+          </div>
+          <div class="profile-info">
+              <h1>SHEIKH THANBIR ALAM</h1>
+              <p class="designation">
+                  Independent Contractor <strong>@ Apple Inc.</strong> |
+                  Senior Software Engineer <strong>@ Softzino Technologies</strong> |
+                  PhD Student <strong>@ University Malaysia Perlis</strong>
+              </p>
+              <div class="social-buttons">
+                  <a href="https://linkedin.com/in/thanbirtamim" target="_blank" class="btn btn-primary btn-sm">
+                      <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a href="https://github.com/ThanbirTamim" target="_blank" class="btn btn-dark btn-sm">
+                      <i class="fab fa-github"></i>
+                  </a>
+                  <a href="https://orcid.org/0009-0004-0523-4188" target="_blank" class="btn btn-success btn-sm">
+                      <i class="fab fa-orcid"></i>
+                  </a>
+                  <a href="https://leetcode.com/u/thanbirtamim/" target="_blank" class="btn btn-warning btn-sm">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/LeetCode_logo_black.png" style="height:18px;">
+                  </a>
+              </div>
   
+              <div class="contact-row">
+                  <span><i class="fab fa-whatsapp"></i> +8801752217800</span>
+                  <span><i class="fas fa-envelope"></i> sk.tamim56@gmail.com</span>
+                  <span><i class="fas fa-location-dot"></i> Perlis, Malaysia 🇲🇾</span>
+              </div>
+          </div>
+      </div>
+  </header>
+    
   <!-- <header class="container text-center my-4">
     <img src="assets/img/pp_casual.jpg" alt="Thanbir" class="profile-img mb-3">
     <h1>SHEIKH THANBIR ALAM</h1>
@@ -362,7 +461,7 @@
       </a>
     </p>
     <!--<p>📞 +880 1752217800 | ✉️ sk.tamim56@gmail.com | 📍 Perlis, Malaysia</p>-->
-    <p>
+    <!-- <p>
       <i class="fab fa-whatsapp me-1" style="color:#25D366;"></i> +8801752217800 | 
       <i class="fas fa-envelope me-1" style="color:#EA4335;"></i> sk.tamim56@gmail.com | 
       <i class="fas fa-location-arrow" style="color:#0d6efd;"></i> Perlis, Malaysia <span class="fi fi-my me-1"></span>
