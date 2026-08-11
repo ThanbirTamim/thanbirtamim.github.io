@@ -1,0 +1,3219 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডকার এবং কুবারনেটস - সম্পূর্ণ গাইড (বাংলা)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .diagram pre {
+            margin: 0;
+            padding: 20px;
+            min-width: 800px;
+            font-family: "Noto Sans Bengali", "Noto Sans", monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        .highlight {
+            background: #fff9e6;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #d63031;
+        }
+
+        .exercise {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border: 4px solid #0984e3;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+
+        .exercise h4 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 18px;
+            font-size: 1.3em;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .technical-detail {
+            background: #f0f7ff;
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .architecture {
+            background: linear-gradient(135deg, #dfe6e9 0%, #b2bec3 100%);
+            border: 3px solid #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+            color: #2d3436;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .step {
+            background: #f8f9ff;
+            padding: 18px;
+            margin: 15px 0;
+            border-left: 5px solid #667eea;
+            border-radius: 6px;
+            font-size: 1.05em;
+        }
+
+        .component {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            border: 2px solid #667eea;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 15px 10px;
+            }
+
+            .container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1><span class="emoji">🐳</span> ডকার এবং কুবারনেটস</h1>
+    <p class="subtitle">সম্পূর্ণ বাংলা গাইড - প্রযুক্তিগত বিস্তারিত সহ</p>
+
+    <!-- TOC -->
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তু</h2>
+        <ul>
+            <li>অংশ ১: সমস্যা এবং সমাধান</li>
+            <li>অংশ ২: ইতিহাস - কীভাবে আমরা এখানে এলাম</li>
+            <li>অংশ ৩: ডকার - সম্পূর্ণ বোঝাপড়া</li>
+            <li>অংশ ৪: কুবারনেটস - আর্কিটেকচার</li>
+            <li>অংশ ৫: কম্পোনেন্ট ডিটেইলস</li>
+            <li>অংশ ৬: কর্মপ্রবাহ এবং উদাহরণ</li>
+            <li>অংশ ৭: ব্যবহারিক কমান্ড</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">🤔</span> অংশ ১: সমস্যা এবং সমাধান</h2>
+
+        <h3>বাস্তব গল্প: তামিম ও জয়</h3>
+
+        <div class="story-box">
+            <strong>দৃশ্য ১:</strong> একটি স্টার্টআপ অফিস<br><br>
+
+            <strong>তামিম:</strong> "আমি একটি দারুণ ওয়েব অ্যাপ্লিকেশন তৈরি করেছি। এটি আমার ল্যাপটপে একদম নিখুঁতভাবে কাজ
+            করছে।" ✅<br><br>
+
+            <strong>জয়:</strong> "তামিম ভাই, আমাকে কোডটা দিন। আমি আমার মেশিনে পরীক্ষা করে দেখি।"<br><br>
+
+            (এক ঘণ্টা পরে)<br><br>
+
+            <strong>জয়:</strong> "তামিম ভাই, এটা তো কাজ করছে না! সার্ভার ক্র্যাশ করছে।" 💥<br><br>
+
+            <strong>তামিম:</strong> "কী বলছেন! আমার মেশিনে তো একদম ঠিকঠাক কাজ করছে... তাহলে সমস্যা কোথায়?" 😕
+
+        </div>
+
+        <h3>আসল সমস্যা কোথায়?</h3>
+
+        <div class="technical-box">
+            <strong>মূল সমস্যা হলো—দুইটি মেশিনের পরিবেশ এক নয়।</strong><br><br>
+
+            <strong>তামিমের মেশিনে:</strong><br>
+            • Python ৩.৯<br>
+            • PostgreSQL ১২<br>
+            • Redis ৬.০<br>
+            • প্রয়োজনীয় সব লাইব্রেরি ইনস্টল করা আছে<br>
+            • সঠিক সিস্টেম কনফিগারেশন রয়েছে<br><br>
+
+            <strong>জয়ের মেশিনে:</strong><br>
+            • Python ৩.৮ — সংস্করণ ভিন্ন!<br>
+            • PostgreSQL ১৩ — সংস্করণ ভিন্ন!<br>
+            • Redis ৫.০ — সংস্করণ ভিন্ন!<br>
+            • কিছু প্রয়োজনীয় লাইব্রেরি অনুপস্থিত<br>
+            • সিস্টেম কনফিগারেশনও ভিন্ন<br><br>
+
+            <strong>প্রোডাকশন সার্ভারে:</strong><br>
+            • Ubuntu ১৮.০৪ — পুরোনো সংস্করণ<br>
+            • Python ২.৭ — অত্যন্ত পুরোনো সংস্করণ!<br>
+            • সম্পূর্ণ ভিন্ন সিস্টেম সেটআপ
+
+        </div>
+
+        <div class="diagram">
+            <img
+                    src="images/environemnt_issue.png"
+                    alt="তামিমের মেশিন, জয়ের মেশিন এবং প্রোডাকশন সার্ভারের পরিবেশের পার্থক্য"
+                    class="diagram-image"
+            >
+        </div>
+
+        <h3>তাহলে যদি এমন একটি সমাধান থাকত...</h3>
+
+        <div class="success-box">
+            <strong>প্রশ্ন:</strong> আমরা যদি অ্যাপ্লিকেশনের জন্য প্রয়োজনীয় পুরো রানটাইম পরিবেশটাকেই একটি প্যাকেজের
+            মধ্যে নিয়ে যেতে পারি, তাহলে কেমন হয়?<br><br>
+
+            <strong>সেই প্যাকেজের মধ্যে থাকতে পারে:</strong><br>
+            ✓ আপনার সম্পূর্ণ অ্যাপ্লিকেশন কোড<br>
+            ✓ Python ৩.৯ — নির্দিষ্ট সংস্করণ<br>
+            ✓ প্রয়োজনীয় লাইব্রেরি ও ডিপেন্ডেন্সি<br>
+            ✓ প্রয়োজনীয় সিস্টেম টুল ও কনফিগারেশন<br>
+            ✓ অ্যাপ্লিকেশন চালানোর জন্য প্রয়োজনীয় অন্যান্য উপাদান<br><br>
+
+            <strong>তাহলে ফলাফল কী হবে?</strong><br>
+            • তামিমের মেশিনে → ✅ একই পরিবেশে চলবে<br>
+            • জয়ের মেশিনে → ✅ একই পরিবেশে চলবে<br>
+            • প্রোডাকশন সার্ভারে → ✅ একই পরিবেশে চলবে<br>
+            • অন্য যেকোনো মেশিনে → ✅ একইভাবে চালানো যাবে
+
+        </div>
+
+        <p>এই সমস্যার সমাধানের ধারণা থেকেই <span class="highlight">ডকার</span>-এর মূল উদ্দেশ্যটি বোঝা যায়।</p>
+
+    </div>
+
+    <!-- PART 2 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">⚡</span> অংশ ২: ইতিহাস — কীভাবে আমরা এখানে এসে পৌঁছালাম</h2>
+
+        <h3>Server Technology-এর বিবর্তন</h3>
+
+        <div class="diagram">
+            <pre>
+                📚 CONTAINER TECHNOLOGY — HISTORY & EVOLUTION
+                │
+                │
+                ├── 🖥️ ১. Physical Server Era
+                │   │   ১৯৭০s – ১৯৯০s
+                │   │
+                │   ├── কী ছিল?
+                │   │   └── একটি application চালাতে একটি physical server ব্যবহার করা হতো।
+                │   │
+                │   ├── কীভাবে কাজ করত?
+                │   │   └── Server → Operating System → Application
+                │   │
+                │   ├── সমস্যা কী ছিল?
+                │   │   ├── Hardware অনেক expensive ছিল
+                │   │   ├── Server setup করতে অনেক সময় লাগত
+                │   │   ├── CPU ও RAM-এর বড় অংশ খালি পড়ে থাকত
+                │   │   └── প্রতিটি workload-এর জন্য আলাদা server লাগতে পারত
+                │   │
+                │   └── সহজ উদাহরণ:
+                │       └── ১০০% capacity-এর server কিনলাম,
+                │           কিন্তু application ব্যবহার করছে মাত্র ১০%।
+                │           বাকি ৯০% resource unused!
+                │
+                │
+                ├── 🖥️ ২. Virtual Machine Era
+                │   │   ২০০১ সালের দিকে
+                │   │
+                │   ├── কেন এলো?
+                │   │   └── একটি physical server-এর resource আরও ভালোভাবে
+                │   │       ব্যবহার করার প্রয়োজন ছিল।
+                │   │
+                │   ├── কী এলো?
+                │   │   └── Virtual Machine (VM)
+                │   │
+                │   ├── কীভাবে কাজ করে?
+                │   │   │
+                │   │   └── Physical Server
+                │   │          ↓
+                │   │       Hypervisor
+                │   │          ↓
+                │   │       ┌────────┬────────┬────────┐
+                │   │       │  VM 1  │  VM 2  │  VM 3  │
+                │   │       │ Guest OS│Guest OS│Guest OS│
+                │   │       │   App  │   App  │   App  │
+                │   │       └────────┴────────┴────────┘
+                │   │
+                │   ├── সুবিধা
+                │   │   ├── একটি server-এ একাধিক workload
+                │   │   ├── Hardware utilization ভালো হলো
+                │   │   └── Workload-এর মধ্যে isolation পাওয়া গেল
+                │   │
+                │   └── নতুন সমস্যা
+                │       ├── প্রতিটি VM-এর আলাদা Guest OS প্রয়োজন
+                │       ├── বেশি RAM লাগে
+                │       ├── বেশি disk space লাগে
+                │       └── Container-এর তুলনায় startup ধীর
+                │
+                │
+                ├── 🔬 ৩. Linux Process Isolation
+                │   │   ২০০৬ সালের দিকে
+                │   │
+                │   ├── নতুন চিন্তা:
+                │   │   └── Application আলাদা করার জন্য কি
+                │   │       প্রতিবার সম্পূর্ণ Operating System চালাতে হবে?
+                │   │
+                │   ├── উত্তর:
+                │   │   └── না।
+                │   │       Linux Kernel-এর isolation feature ব্যবহার করা যায়।
+                │   │
+                │   ├── Google-এর Process Containers
+                │   │   └── Resource accounting ও process isolation-এর
+                │   │       development-এ গুরুত্বপূর্ণ ভূমিকা রাখে।
+                │   │
+                │   └── এখান থেকেই container technology-এর
+                │       ভিত্তি আরও শক্তিশালী হতে থাকে।
+                │
+                │
+                ├── 🐧 ৪. Linux Namespaces
+                │   │   ২০০৬ সালের পর
+                │   │
+                │   ├── মূল প্রশ্ন:
+                │   │   └── "একটি process অন্য process বা system-এর
+                │   │       কোন অংশ দেখতে পারবে?"
+                │   │
+                │   ├── Namespaces-এর কাজ:
+                │   │   └── Process-এর জন্য আলাদা system view তৈরি করা।
+                │   │
+                │   ├── উদাহরণ
+                │   │   ├── PID Namespace
+                │   │   │   └── আলাদা process view
+                │   │   │
+                │   │   ├── Network Namespace
+                │   │   │   └── আলাদা network environment
+                │   │   │
+                │   │   ├── Mount Namespace
+                │   │   │   └── আলাদা filesystem mount view
+                │   │   │
+                │   │   ├── UTS Namespace
+                │   │   │   └── আলাদা hostname
+                │   │   │
+                │   │   ├── IPC Namespace
+                │   │   │   └── আলাদা IPC resources
+                │   │   │
+                │   │   └── User Namespace
+                │   │       └── আলাদা user/UID mapping
+                │   │
+                │   └── সহজভাবে:
+                │       └── Namespaces = "তুমি কী দেখতে পারবে?"
+                │
+                │
+                ├── ⚙️ ৫. Linux cgroups
+                │   │   ২০০৭–২০০৮ সালের দিকে
+                │   │
+                │   ├── নতুন সমস্যা:
+                │   │   └── একটি application যেন পুরো server-এর
+                │   │       CPU বা RAM ব্যবহার করতে না পারে।
+                │   │
+                │   ├── সমাধান:
+                │   │   └── cgroups (Control Groups)
+                │   │
+                │   ├── cgroups কী করে?
+                │   │   ├── CPU usage control
+                │   │   ├── Memory limit
+                │   │   ├── Block I/O control
+                │   │   └── Resource usage accounting
+                │   │
+                │   └── সহজভাবে:
+                │       └── cgroups = "তুমি কতটুকু resource ব্যবহার করতে পারবে?"
+                │
+                │
+                ├── 🧩 ৬. Namespaces + cgroups
+                │   │
+                │   ├── Namespaces
+                │   │   └── Isolation
+                │   │
+                │   ├── cgroups
+                │   │   └── Resource Control
+                │   │
+                │   └── একসাথে:
+                │       │
+                │       ├── Namespaces → Process-কে আলাদা environment দেয়
+                │       │
+                │       └── cgroups → Process-এর resource সীমাবদ্ধ করে
+                │
+                │       ↓
+                │
+                │       এই Linux kernel capabilities
+                │       container technology-এর foundation তৈরি করে।
+                │
+                │
+                ├── 📦 ৭. LXC — Linux Containers
+                │   │   ২০০৮ সালের দিকে
+                │   │
+                │   ├── কেন এলো?
+                │   │   └── Linux-এর isolation ও resource-control
+                │   │       capabilities ব্যবহার করে container
+                │   │       তৈরি ও manage করার practical tooling দরকার ছিল।
+                │   │
+                │   ├── LXC কী?
+                │   │   └── Linux Containers
+                │   │
+                │   ├── LXC কী ব্যবহার করে?
+                │   │   ├── Linux Namespaces
+                │   │   ├── Linux cgroups
+                │   │   └── অন্যান্য Linux kernel features
+                │   │
+                │   ├── সুবিধা
+                │   │   ├── Full Guest OS ছাড়াই isolated environment
+                │   │   ├── Lightweight
+                │   │   └── Linux kernel share করে
+                │   │
+                │   └── সহজভাবে:
+                │       └── Linux Kernel আমাদের building blocks দিল,
+                │           LXC সেগুলো ব্যবহার করে container manage করার
+                │           practical system দিল।
+                │
+                │
+                ├── 🐳 ৮. Docker
+                │   │   ২০১৩
+                │   │
+                │   ├── Docker কী?
+                │   │   └── Container technology-কে developer-friendly
+                │   │       করার একটি platform/tooling ecosystem।
+                │   │
+                │   ├── Docker আসার আগে
+                │   │   └── Container technology ছিল,
+                │   │       কিন্তু developer experience তুলনামূলকভাবে জটিল ছিল।
+                │   │
+                │   ├── Docker কী সহজ করল?
+                │   │   ├── Dockerfile
+                │   │   ├── Docker Image
+                │   │   ├── Docker CLI
+                │   │   ├── Image Registry
+                │   │   └── Application Packaging
+                │   │
+                │   ├── Docker-এর early architecture
+                │   │   │
+                │   │   └── Docker
+                │   │       ↓
+                │   │       LXC
+                │   │       ↓
+                │   │       Linux Kernel
+                │   │       ↓
+                │   │       Namespaces + cgroups
+                │   │
+                │   ├── সবচেয়ে বড় পরিবর্তন:
+                │   │   └── Developer সহজে application + dependencies
+                │   │       একটি image-এর মধ্যে package করতে পারল।
+                │   │
+                │   └── সহজভাবে:
+                │       └── "আমার machine-এ কাজ করে,
+                │           তোমার machine-এও একইভাবে চলবে।"
+                │
+                │
+                ├── 🐳 ৯. Docker 1.0
+                │   │   ২০১৪
+                │   │
+                │   ├── Docker আরও stable ও production-ready হয়।
+                │   │
+                │   ├── Docker ecosystem দ্রুত grow করতে থাকে।
+                │   │
+                │   └── Container technology developers-এর মধ্যে
+                │       mainstream হতে শুরু করে।
+                │
+                │
+                ├── ⚙️ ১০. libcontainer
+                │   │   ২০১৪–২০১৫
+                │   │
+                │   ├── Early Docker
+                │   │   └── LXC-এর ওপর নির্ভর করত।
+                │   │
+                │   ├── পরে Docker
+                │   │   └── নিজস্ব container execution library তৈরি করে।
+                │   │
+                │   ├── নাম:
+                │   │   └── libcontainer
+                │   │
+                │   └── ধারণাটি:
+                │       └── Docker যেন LXC-এর ওপর সরাসরি নির্ভর না করে
+                │           Linux container primitives ব্যবহার করতে পারে।
+                │
+                │
+                ├── 📜 ১১. Open Container Initiative (OCI)
+                │   │   ২০১৫
+                │   │
+                │   ├── সমস্যা:
+                │   │   └── Container ecosystem-এ standard দরকার।
+                │   │
+                │   ├── সমাধান:
+                │   │   └── OCI
+                │   │
+                │   ├── OCI-এর লক্ষ্য:
+                │   │   └── Open container standards তৈরি করা।
+                │   │
+                │   ├── গুরুত্বপূর্ণ specification
+                │   │   ├── Image Specification
+                │   │   └── Runtime Specification
+                │   │
+                │   └── ফলাফল:
+                │       └── Container ecosystem একটি নির্দিষ্ট
+                │           vendor-এর technology-তে আটকে থাকল না।
+                │
+                │
+                ├── ⚙️ ১২. runc
+                │   │
+                │   ├── কী?
+                │   │   └── একটি low-level OCI container runtime।
+                │   │
+                │   ├── কাজ:
+                │   │   └── Container তৈরি ও চালানোর জন্য
+                │   │       Linux kernel-এর প্রয়োজনীয় functionality ব্যবহার করা।
+                │   │
+                │   └── সহজভাবে:
+                │       └── Docker/Kubernetes-এর অনেক উপরের abstraction-এর
+                │           নিচে runc-এর মতো runtime container চালানোর
+                │           low-level কাজ করে।
+                │
+                │
+                ├── 🔧 ১৩. containerd
+                │   │
+                │   ├── কী?
+                │   │   └── Container lifecycle management-এর জন্য
+                │   │       একটি container runtime component।
+                │   │
+                │   ├── কাজ
+                │   │   ├── Image management
+                │   │   ├── Container lifecycle
+                │   │   ├── Runtime-এর সঙ্গে integration
+                │   │   └── Container execution management
+                │   │
+                │   └── সহজভাবে:
+                │       └── containerd = Container চালানো ও manage করার
+                │           মাঝের গুরুত্বপূর্ণ management layer।
+                │
+                │
+                └── ☸️ ১৪. Kubernetes — Container Orchestration Era
+                    │
+                    ├── নতুন সমস্যা:
+                    │   └── একটি container manage করা সহজ,
+                    │       কিন্তু ১০০/১০০০ container?
+                    │
+                    ├── তখন কী দরকার?
+                    │   ├── Container কোথায় চলবে?
+                    │   ├── Container crash করলে কে restart করবে?
+                    │   ├── Traffic কীভাবে distribute হবে?
+                    │   ├── Application কীভাবে scale করবে?
+                    │   ├── Server নষ্ট হলে workload কোথায় যাবে?
+                    │   └── নতুন version কীভাবে deploy হবে?
+                    │
+                    ├── সমাধান:
+                    │   └── Container Orchestration
+                    │
+                    ├── Kubernetes কী করে?
+                    │   ├── Scheduling
+                    │   ├── Scaling
+                    │   ├── Service Discovery
+                    │   ├── Load Balancing
+                    │   ├── Self-Healing
+                    │   ├── Rolling Updates
+                    │   └── Container Management
+                    │
+                    └── 🎯 পুরো Evolution
+                        │
+                        ├── Physical Server
+                        │       ↓
+                        │   Resource অপচয়
+                        │
+                        ├── Virtual Machine
+                        │       ↓
+                        │   Better utilization
+                        │   কিন্তু Full Guest OS দরকার
+                        │
+                        ├── Linux Namespaces
+                        │       ↓
+                        │   Isolation
+                        │
+                        ├── Linux cgroups
+                        │       ↓
+                        │   Resource Control
+                        │
+                        ├── LXC
+                        │       ↓
+                        │   Linux Container Management
+                        │
+                        ├── Docker
+                        │       ↓
+                        │   Developer-friendly Containers
+                        │
+                        ├── OCI + runc
+                        │       ↓
+                        │   Standardized Container Runtime
+                        │
+                        ├── containerd
+                        │       ↓
+                        │   Container Lifecycle Management
+                        │
+                        └── Kubernetes
+                                ↓
+                            Container Orchestration
+            </pre>
+        </div>
+
+        <h3>প্রতিটি পর্যায়ের বিস্তারিত</h3>
+
+        <h4>১. Physical Server-এর যুগ</h4>
+
+        <div class="technical-detail">
+            <strong>কীভাবে কাজ করত:</strong><br>
+            একটি কোম্পানিকে প্রতিটি Application বা Service-এর জন্য আলাদা Physical Server কিনতে হতো।<br><br>
+
+            <strong>খরচের একটি ধারণা:</strong><br>
+            • Server Hardware: $৫,০০০–$১৫,০০০<br>
+            • Data Center Space: প্রতি মাসে প্রায় $৫০০<br>
+            • Power Consumption: প্রতি মাসে প্রায় $২০০<br>
+            • Administration ও Maintenance: প্রতি মাসে প্রায় $৩০০<br><br>
+
+            <strong>প্রধান সমস্যা:</strong><br>
+            একটি Physical Server-এর CPU, RAM এবং অন্যান্য Resource-এর বড় একটি অংশ অব্যবহৃত পড়ে থাকত। অনেক ক্ষেত্রে
+            Server-এর মোট Capacity-এর মাত্র ১০–১৫% ব্যবহার হতো। অর্থাৎ প্রায় ৮৫–৯০% Resource অব্যবহৃত থাকার সম্ভাবনা
+            ছিল।<br><br>
+
+            <strong>Scaling-এর সমস্যা:</strong><br>
+            নতুন কোনো Application বা Service চালু করতে হলে নতুন Server কিনতে হতো। এরপর Data Center-এ Server সেটআপ,
+            Operating System ইনস্টল, Network Configuration এবং অন্যান্য Setup সম্পন্ন করতে হতো। ফলে নতুন Service চালু
+            করতে অনেক সময় এবং বিপুল অর্থের প্রয়োজন হতো।
+        </div>
+
+        <h4>২. Virtual Machine-এর যুগ — ২০০৬-এর পর</h4>
+
+        <div class="technical-detail">
+            <strong>নতুন ধারণা:</strong><br>
+            Hypervisor Technology-এর মাধ্যমে একটি শক্তিশালী Physical Server-এর মধ্যে একাধিক Virtual Machine (VM) চালানো
+            সম্ভব হলো।<br><br>
+
+            <strong>Hypervisor-এর উদাহরণ:</strong><br>
+            VMware, VirtualBox, KVM<br><br>
+
+            <strong>কীভাবে কাজ করত:</strong><br>
+            একটি Physical Server-এর CPU, RAM এবং Storage-এর Resource ভাগ করে তার মধ্যে একাধিক স্বাধীন Virtual Machine
+            চালানো হতো।<br><br>
+
+            <strong>সুবিধা:</strong><br>
+            ✓ একই Physical Server-এ একাধিক Server চালানো যায়<br>
+            ✓ Hardware Resource তুলনামূলকভাবে ভালোভাবে ব্যবহার করা যায়<br>
+            ✓ নতুন VM তুলনামূলকভাবে দ্রুত তৈরি করা যায়<br>
+            ✓ প্রতিটি VM-এর জন্য আলাদা Environment তৈরি করা যায়<br>
+            ✓ Application-গুলো একে অপরের থেকে Isolation-এর মধ্যে থাকে<br><br>
+
+            <strong>তবে সমস্যা থেকেই গেল:</strong><br>
+            ✗ প্রতিটি VM-এর নিজস্ব পূর্ণাঙ্গ OS থাকে<br>
+            ✗ প্রতিটি VM চালু হতে তুলনামূলকভাবে বেশি সময় লাগে<br>
+            ✗ প্রতিটি VM-এর জন্য আলাদা Disk Space প্রয়োজন<br>
+            ✗ প্রতিটি VM-এর জন্য আলাদা Memory বরাদ্দ করতে হয়<br>
+            ✗ Guest OS-এর কারণে অতিরিক্ত Resource Overhead তৈরি হয়
+        </div>
+
+        <h4>৩. Linux Namespaces এবং cgroups — Container-এর ভিত্তি</h4>
+
+        <div class="technical-detail">
+            <strong>Linux Kernel-এর গুরুত্বপূর্ণ সুবিধা:</strong><br><br>
+
+            Linux Kernel-এ এমন কিছু গুরুত্বপূর্ণ Feature তৈরি ও উন্নত হয়, যেগুলো পরবর্তীতে আধুনিক Container
+            Technology-এর ভিত্তি হয়ে ওঠে। এর মধ্যে সবচেয়ে গুরুত্বপূর্ণ দুটি হলো <strong>Namespaces</strong> এবং
+            <strong>cgroups</strong>।<br><br>
+
+            <strong>Namespaces — Isolation তৈরি করে:</strong><br>
+            Namespaces একটি Process বা Container-কে System-এর অন্যান্য Process ও Resource থেকে আলাদা একটি Environment
+            হিসেবে দেখতে সাহায্য করে।<br><br>
+            
+            ├─ <code>PID Namespace</code> — Process-গুলোকে আলাদা Process Tree-এর মধ্যে রাখে<br>
+            ├─ <code>Network Namespace</code> — Network Interface ও Network Stack আলাদা করে<br>
+            ├─ <code>IPC Namespace</code> — Inter-Process Communication Resource আলাদা করে<br>
+            ├─ <code>Mount Namespace</code> — File System Mount আলাদা করে<br>
+            ├─ <code>UTS Namespace</code> — Hostname ও Domain Name আলাদা করে<br>
+            └─ <code>User Namespace</code> — User ID ও Group ID আলাদাভাবে Map করতে দেয়<br><br>
+
+            <strong>cgroups — Resource Control করে:</strong><br>
+            cgroups নির্ধারণ করে একটি Process বা Process Group কতটুকু CPU, Memory, I/O এবং অন্যান্য Resource ব্যবহার
+            করতে পারবে।<br><br>
+
+            ├─ CPU Limit — CPU ব্যবহারের সীমা নির্ধারণ করা যায়<br>
+            ├─ Memory Limit — সর্বোচ্চ Memory ব্যবহারের সীমা নির্ধারণ করা যায়<br>
+            ├─ I/O Control — Disk Read/Write-এর ব্যবহার নিয়ন্ত্রণ করা যায়<br>
+            ├─ PID Limit — সর্বোচ্চ কতগুলো Process চলতে পারবে তা নির্ধারণ করা যায়<br>
+            └─ Device Control — নির্দিষ্ট Hardware Device-এ Access নিয়ন্ত্রণ করা যায়
+        </div>
+
+        <h4>৪. LXC — Linux Containers — ২০০৮-এর দিকে</h4>
+
+        <div class="technical-detail">
+            <strong>Container Technology-এর একটি গুরুত্বপূর্ণ ধাপ:</strong><br><br>
+
+            LXC (Linux Containers) হলো Linux-এর একটি Container Technology, যা Namespaces এবং cgroups-এর মতো Linux Kernel
+            Feature ব্যবহার করে Lightweight এবং Isolated Environment তৈরি করে।<br><br>
+
+            <strong>কীভাবে কাজ করত:</strong><br>
+            LXC Linux Kernel-এর Isolation এবং Resource Control সুবিধাগুলো ব্যবহার করে একটি আলাদা Environment তৈরি করত,
+            যেখানে Application-গুলো তুলনামূলকভাবে কম Overhead-এর মধ্যে চালানো যেত।<br><br>
+
+            <strong>সুবিধা:</strong><br>
+            ✓ Virtual Machine-এর তুলনায় অনেক Lightweight<br>
+            ✓ প্রতিটি Container-এর জন্য সম্পূর্ণ আলাদা OS চালানোর প্রয়োজন নেই<br>
+            ✓ VM-এর তুলনায় দ্রুত Start করা যায়<br>
+            ✓ Resource Overhead তুলনামূলকভাবে কম<br><br>
+
+            <strong>তবে কিছু সীমাবদ্ধতা ছিল:</strong><br>
+            ✗ Setup ও Management তুলনামূলকভাবে জটিল<br>
+            ✗ Developer-এর জন্য ব্যবহার করা সহজ ছিল না<br>
+            ✗ Application Packaging-এর জন্য সহজ Standard Workflow ছিল না<br>
+            ✗ Container Image তৈরি ও Share করার জন্য Docker-এর মতো সহজ Ecosystem ছিল না
+        </div>
+
+        <h4>৫. Docker — ২০১৩</h4>
+
+        <div class="success-box">
+            <strong>Docker-এর আসল অবদান কী?</strong><br><br>
+
+            একটি বিষয় শুরুতেই পরিষ্কার করা গুরুত্বপূর্ণ—<strong>Docker Container আবিষ্কার করেনি।</strong><br><br>
+
+            Docker আসার আগেই Linux-এ Namespaces, cgroups এবং LXC-এর মতো Container Technology ছিল। Docker মূলত এই
+            বিদ্যমান Technology-গুলোর ওপর ভিত্তি করে Container-কে আরও সহজ, Standardized এবং Developer-Friendly করে
+            তুলেছিল।<br><br>
+
+            <strong>Docker যেসব গুরুত্বপূর্ণ ধারণা ও Tool জনপ্রিয় করে তোলে:</strong><br><br>
+
+            ১. <strong>Docker Image</strong> — Application এবং তার Dependencies-কে একটি Portable Package হিসেবে তৈরি
+            করার পদ্ধতি<br><br>
+
+            ২. <strong>Dockerfile</strong> — Image কীভাবে তৈরি হবে, তা নির্ধারণ করার জন্য সহজ ও Reproducible Instruction
+            File<br><br>
+
+            ৩. <strong>Docker Hub</strong> — Container Image Share ও Distribute করার জন্য একটি কেন্দ্রীয়
+            Registry<br><br>
+
+            ৪. <strong>Docker CLI</strong> — Container তৈরি, চালানো, বন্ধ করা এবং পরিচালনার জন্য সহজ Command-Line
+            Interface<br><br>
+
+            ৫. <strong>Layered Filesystem</strong> — Image-কে একাধিক Layer-এ ভাগ করে Layer Reuse-এর মাধ্যমে Storage ও
+            Build Process আরও Efficient করা<br><br>
+
+            <strong>ফলাফল:</strong><br>
+            Container Technology আর শুধু Infrastructure Expert-দের মধ্যে সীমাবদ্ধ থাকল না। একজন সাধারণ Developer-ও সহজে
+            Application Package করে Container হিসেবে চালাতে, Share করতে এবং অন্য Environment-এ একইভাবে Deploy করতে পারল।<br><br>
+
+            <strong>এভাবেই Docker Container-কে আধুনিক Software Development ও Deployment-এর একটি গুরুত্বপূর্ণ অংশে পরিণত
+                করতে বড় ভূমিকা রাখে।</strong>
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="page-break"></div>
+    <div class="section">
+
+        <h2><span class="emoji">🐳</span> অংশ ৩: Docker — সম্পূর্ণ ধারণা</h2>
+
+        <h3>Docker কী?</h3>
+
+        <div class="story-box">
+            <strong>একটি সহজ উদাহরণ দিয়ে শুরু করি:</strong><br><br>
+
+            ধরুন, আপনাকে একটি Package এক শহর থেকে অন্য শহরে পাঠাতে হবে।
+            Package-এর ভেতরে কী আছে, সেটি গুরুত্বপূর্ণ। কিন্তু তার পাশাপাশি এটাও গুরুত্বপূর্ণ—
+            যেখানেই Package পাঠানো হোক, সেটি যেন একই অবস্থায় পৌঁছায়।<br><br>
+
+            <strong>একটি Shipping Service-এর সাধারণ ধারণা:</strong><br><br>
+
+            ১. প্রয়োজনীয় জিনিস সংগ্রহ করুন<br>
+            ২. Standard Box-এর মধ্যে রাখুন<br>
+            ৩. Box Seal করুন<br>
+            ৪. Shipping Label লাগান<br>
+            ৫. যেকোনো জায়গায় পাঠান<br>
+            ৬. গন্তব্যে পৌঁছানোর পরও ভেতরের জিনিস একই থাকে<br><br>
+
+            <strong>Docker-এর ধারণাটাও অনেকটা একই:</strong><br><br>
+
+            ১. Application নিন<br>
+            ২. Application, Runtime এবং Dependencies-কে Image-এ Package করুন<br>
+            ৩. Image Registry-তে Push করুন<br>
+            ৪. অন্য Machine থেকে Image Pull করুন<br>
+            ৫. Image থেকে Container চালান<br>
+            ৬. একই Image ব্যবহার করে Application চালান<br><br>
+
+            <strong>সহজভাবে বললে:</strong><br>
+            Docker Application-কে তার প্রয়োজনীয় Environment এবং Dependencies-সহ
+            Package করার একটি Standard পদ্ধতি দেয়, যাতে Application-টি বিভিন্ন Environment-এ
+            একইভাবে চালানো সহজ হয়।
+        </div>
+
+
+        <h3>Docker-এর তিনটি মূল ধারণা</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/docker_3_principals.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <h4>① Image — Application-এর Blueprint</h4>
+
+        <div class="technical-box">
+            <strong>Image কী?</strong><br><br>
+
+            Docker Image হলো একটি <strong>Read-Only Template</strong>।
+            এর মধ্যে Application চালানোর জন্য প্রয়োজনীয় File, Runtime, Library,
+            Dependency এবং Configuration-এর সংজ্ঞা থাকে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Image = Blueprint</strong><br><br>
+
+            যেমন একটি Blueprint দেখে একটি বাড়ি তৈরি করা যায়,
+            তেমনি একটি Image থেকে Container তৈরি করা যায়।<br><br>
+
+            <strong>একটি Image-এ থাকতে পারে:</strong><br><br>
+
+            ├─ Base Image<br>
+            ├─ Runtime — Python, Node.js, Java ইত্যাদি<br>
+            ├─ Application Dependencies<br>
+            ├─ Application Code<br>
+            ├─ System Libraries<br>
+            ├─ Configuration Files<br>
+            └─ প্রয়োজনীয় Metadata<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            একটি Python Application-এর Image-এর মধ্যে থাকতে পারে—
+            Python Runtime, pip Package, Application Code এবং প্রয়োজনীয় Dependencies।<br><br>
+
+            <strong>গুরুত্বপূর্ণ:</strong><br>
+            Image নিজে Application চালায় না।
+            Image হলো Container তৈরি করার Template।
+        </div>
+
+
+        <h4>② Container — Image-এর Running Instance</h4>
+
+        <div class="technical-box">
+            <strong>Container কী?</strong><br><br>
+
+            Container হলো একটি Docker Image-এর <strong>Running Instance</strong>।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Image = Blueprint</strong><br>
+            <strong>Container = সেই Blueprint থেকে তৈরি Running Instance</strong><br><br>
+
+            একটি Image থেকে একাধিক Container তৈরি করা যায়।<br><br>
+
+            <strong>Container-এর বৈশিষ্ট্য:</strong><br><br>
+
+            ├─ আলাদা Process Environment<br>
+            ├─ আলাদা File System View<br>
+            ├─ আলাদা Network Namespace<br>
+            ├─ আলাদা Mount Namespace<br>
+            ├─ Resource Limit প্রয়োগ করা যায়<br>
+            └─ Host-এর অন্যান্য Process থেকে Isolation পাওয়া যায়<br><br>
+
+            <strong>সবচেয়ে গুরুত্বপূর্ণ বিষয়:</strong><br>
+            Container কোনো Virtual Machine নয়।
+            Container Host-এর Linux Kernel ব্যবহার করে।
+            তাই VM-এর তুলনায় Container সাধারণত অনেক Lightweight এবং দ্রুত Start হয়।
+        </div>
+
+
+        <h4>③ Registry — Image-এর Warehouse</h4>
+
+        <div class="technical-box">
+            <strong>Registry কী?</strong><br><br>
+
+            Docker Registry হলো এমন একটি Service যেখানে Docker Image
+            সংরক্ষণ, Upload এবং Download করা যায়।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Registry = Docker Image-এর Warehouse</strong><br><br>
+
+            আপনি Local Machine-এ Image তৈরি করার পর সেটি Registry-তে
+            <strong>Push</strong> করতে পারেন। অন্য Machine সেই Image
+            <strong>Pull</strong> করে Container চালাতে পারে।<br><br>
+
+            <strong>জনপ্রিয় Registry:</strong><br><br>
+
+            ১. <strong>Docker Hub</strong> — বহুল ব্যবহৃত Public Registry<br>
+            ২. <strong>GitHub Container Registry (GHCR)</strong> — GitHub-এর সঙ্গে Integration<br>
+            ৩. <strong>AWS ECR</strong> — AWS-এর Managed Container Registry<br>
+            ৪. <strong>Google Artifact Registry</strong> — Google Cloud-এর Registry Service<br>
+            ৫. <strong>Private Registry</strong> — প্রতিষ্ঠানের নিজস্ব Registry
+        </div>
+
+
+        <h3>Image, Registry এবং Container-এর সম্পর্ক</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/relations_among_image_reg_container.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>Docker Image-এর Layer</h3>
+
+        <div class="technical-box">
+            <strong>Layer কী?</strong><br><br>
+
+            Docker Image সাধারণত একটি বিশাল File নয়।
+            এটি একাধিক <strong>Layer</strong> নিয়ে গঠিত।<br><br>
+
+            Dockerfile-এর বিভিন্ন Instruction-এর মাধ্যমে Image Build করার সময়
+            এই Layer-গুলো তৈরি হয়। প্রতিটি Layer আগের Layer-এর ওপর একটি পরিবর্তন যোগ করে।<br><br>
+
+            <strong>উদাহরণ:</strong>
+        </div>
+
+        <div class="diagram">
+            <img
+                    src="images/docker_image_layers.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <div class="technical-detail">
+            <strong>Layer-এর সুবিধা:</strong><br><br>
+
+            ├─ Layer Cache করা যায়<br>
+            ├─ একই Layer একাধিক Image-এ Reuse করা যায়<br>
+            ├─ Build Process দ্রুত করা যায়<br>
+            └─ Disk Space সাশ্রয় করা যায়<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            দুটি Image যদি একই Base Image ব্যবহার করে,
+            তাহলে Docker একই Base Layer পুনরায় ব্যবহার করতে পারে।
+            ফলে একই Data বারবার সংরক্ষণ করার প্রয়োজন হয় না।
+        </div>
+
+
+        <h3>Dockerfile — Image তৈরির Recipe</h3>
+
+        <div class="technical-box">
+            <strong>Dockerfile কী?</strong><br><br>
+
+            Dockerfile হলো একটি সাধারণ Text File যেখানে Docker Image
+            কীভাবে তৈরি হবে, তার ধারাবাহিক Instruction লেখা থাকে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Dockerfile = Image তৈরির Recipe</strong><br><br>
+
+            Dockerfile → Docker Build → Docker Image
+        </div>
+
+
+        <h4>একটি বাস্তব Dockerfile</h4>
+
+        <pre class="code-box"><code># Base Image নির্বাচন
+
+FROM python:3.9-slim
+
+# Image Metadata
+
+LABEL maintainer="[tamim@example.com](mailto:tamim@example.com)"
+LABEL version="1.0"
+LABEL description="A Bangla Web Application"
+
+# Environment Variables
+
+ENV APP_HOME=/app
+ENV PYTHONUNBUFFERED=1
+
+# Working Directory
+
+WORKDIR $APP_HOME
+
+# System Dependencies
+
+RUN apt-get update &&
+apt-get install -y --no-install-recommends
+gcc
+postgresql-client
+curl &&
+apt-get clean &&
+rm -rf /var/lib/apt/lists/*
+
+# Python Dependencies
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Application Code
+
+COPY . .
+
+# Application Port
+
+EXPOSE 5000
+
+# Health Check
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3
+CMD curl -f http://localhost:5000/health || exit 1
+
+# Container Start Command
+
+CMD ["python", "app.py"]</code></pre>
+
+        <h3>Dockerfile-এর গুরুত্বপূর্ণ Instruction</h3>
+
+        <div class="technical-detail">
+
+            <div class="instruction">
+                <strong><code>FROM</code></strong><br>
+                Image তৈরির জন্য Base Image নির্ধারণ করে।<br>
+                <code>FROM python:3.9-slim</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>RUN</code></strong><br>
+                Image Build হওয়ার সময় কোনো Command চালায়।<br>
+                <code>RUN pip install -r requirements.txt</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>COPY</code></strong><br>
+                Host Machine থেকে File বা Directory Image-এর মধ্যে কপি করে।<br>
+                <code>COPY . .</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>WORKDIR</code></strong><br>
+                পরবর্তী Instruction-এর জন্য Working Directory নির্ধারণ করে।<br>
+                <code>WORKDIR /app</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>ENV</code></strong><br>
+                Environment Variable নির্ধারণ করে।<br>
+                <code>ENV PORT=5000</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>EXPOSE</code></strong><br>
+                Container-এর কোন Port-এ Application Listen করবে তা ঘোষণা করে।<br>
+                এটি নিজে থেকে Port Publish করে না।<br>
+                <code>EXPOSE 5000</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>CMD</code></strong><br>
+                Container চালু হলে Default হিসেবে যে Command চলবে তা নির্ধারণ করে।<br>
+                <code>CMD ["python", "app.py"]</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>ENTRYPOINT</code></strong><br>
+                Container-এর মূল Executable বা Application নির্ধারণ করতে ব্যবহৃত হয়।<br>
+                <code>ENTRYPOINT ["python"]</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>HEALTHCHECK</code></strong><br>
+                Container-এর Application সঠিকভাবে কাজ করছে কি না তা পরীক্ষা করে।<br>
+                <code>HEALTHCHECK CMD curl -f http://localhost:5000/health</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>USER</code></strong><br>
+                Container-এর Process কোন User হিসেবে চলবে তা নির্ধারণ করে। Security-এর জন্য Non-Root User ব্যবহার করা
+                ভালো।<br>
+                <code>USER appuser</code>
+            </div>
+
+            <br>
+
+            <div class="instruction">
+                <strong><code>VOLUME</code></strong><br>
+                Persistent Data সংরক্ষণের জন্য Mount Point ঘোষণা করতে ব্যবহৃত হয়।<br>
+                <code>VOLUME ["/data"]</code>
+            </div>
+
+        </div>
+
+
+        <h3>Docker-এর সম্পূর্ণ Flow এক নজরে</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/docker_full_workflow.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <div class="success-box">
+            <strong>মনে রাখার সবচেয়ে সহজ উপায়:</strong><br><br>
+
+            <strong>Dockerfile</strong> → কীভাবে Image তৈরি হবে তার Recipe<br><br>
+
+            <strong>Image</strong> → Application-এর Blueprint<br><br>
+
+            <strong>Registry</strong> → Image রাখার ও Share করার জায়গা<br><br>
+
+            <strong>Container</strong> → Image-এর Running Instance<br><br>
+
+            <strong>সম্পূর্ণ Flow:</strong><br><br>
+
+            Dockerfile → Image → Registry → Container
+        </div>
+
+    </div>
+
+    <!-- PART 4 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🎯</span> অংশ ৪: Kubernetes — Architecture ও মূল ধারণা</h2>
+
+
+        <h3>Docker-এর পর নতুন সমস্যা: Container অনেক হয়ে গেলে কী হবে?</h3>
+
+        <div class="story-box">
+            <strong>তামিম এবং জয়ের Startup এখন দ্রুত বড় হচ্ছে।</strong><br><br>
+
+            শুরুতে তারা মাত্র একটি Container চালাচ্ছিল। তখন সবকিছু হাতে হাতে পরিচালনা করা সহজ ছিল।<br><br>
+
+            <strong>দিন ১:</strong><br>
+            ১টি Container → সহজেই ম্যানেজ করা যায় ✅<br><br>
+
+            <strong>সপ্তাহ ২:</strong><br>
+            ৫টি Container → এখনও ম্যানুয়ালি পরিচালনা করা সম্ভব ✅<br><br>
+
+            <strong>মাস ১:</strong><br>
+            ১০০টি Container → ম্যানুয়াল Management কঠিন হয়ে গেল 😅<br><br>
+
+            <strong>মাস ৩:</strong><br>
+            ১,০০০টি Container → ৫০টি Machine-এ ছড়িয়ে আছে।<br><br>
+
+            <strong>তামিম:</strong><br>
+            "কোন Container কোন Machine-এ চালাব?<br>
+            কোনো Container বন্ধ হয়ে গেলে কে আবার চালাবে?<br>
+            কোনো Machine নষ্ট হলে সেখানে থাকা Container-গুলোর কী হবে?<br>
+            Traffic বেড়ে গেলে কীভাবে নতুন Container চালাব?" 😭
+        </div>
+
+
+        <h3>Docker এখানে কোথায় থেমে যায়?</h3>
+
+        <div class="technical-box">
+            Docker একটি Container তৈরি ও চালানোর জন্য অসাধারণ একটি Technology।<br><br>
+
+            কিন্তু যখন আপনার কাছে শত শত বা হাজার হাজার Container এবং অনেকগুলো Machine থাকে,
+            তখন শুধু Container চালাতে পারলেই সমস্যা সমাধান হয় না।<br><br>
+
+            তখন আমাদের দরকার এমন একটি System, যা স্বয়ংক্রিয়ভাবে সিদ্ধান্ত নেবে—
+            <br><br>
+
+            <strong>
+                কোন Machine-এ কোন Container চলবে,
+                কোন Container ব্যর্থ হলে কী করতে হবে,
+                কতগুলো Container চালু রাখতে হবে,
+                কীভাবে Traffic বিতরণ হবে,
+                কীভাবে নতুন Version Deploy হবে,
+                এবং কোনো Machine ব্যর্থ হলে কীভাবে Application সচল রাখা যাবে।
+            </strong>
+        </div>
+
+
+        <h3>হাজার হাজার Container পরিচালনার প্রধান সমস্যা</h3>
+
+        <div class="key-point">
+
+            <strong>❓ Scheduling</strong><br>
+            ১,০০০টি Container ৫০টি Machine-এর মধ্যে কীভাবে সঠিকভাবে বিতরণ করা হবে?<br><br>
+
+            <strong>❓ Self-Healing</strong><br>
+            কোনো Container Crash করলে কীভাবে স্বয়ংক্রিয়ভাবে নতুন Container চালু হবে?<br><br>
+
+            <strong>❓ Scaling</strong><br>
+            Application-এর Traffic বেড়ে গেলে কীভাবে নতুন Container যোগ হবে?<br><br>
+
+            <strong>❓ Load Balancing</strong><br>
+            ব্যবহারকারীদের Request কীভাবে একাধিক Application Instance-এর মধ্যে বিতরণ হবে?<br><br>
+
+            <strong>❓ Rolling Update</strong><br>
+            পুরোনো Version বন্ধ না করেই কীভাবে নতুন Version Deploy করা হবে?<br><br>
+
+            <strong>❓ Rollback</strong><br>
+            নতুন Version-এ সমস্যা হলে কীভাবে দ্রুত আগের Version-এ ফিরে যাওয়া হবে?<br><br>
+
+            <strong>❓ Networking</strong><br>
+            হাজার হাজার Container এবং Service কীভাবে একে অপরের সঙ্গে যোগাযোগ করবে?<br><br>
+
+            <strong>❓ Storage</strong><br>
+            Container মুছে গেলেও গুরুত্বপূর্ণ Data কীভাবে সংরক্ষিত থাকবে?<br><br>
+
+            <strong>❓ Monitoring</strong><br>
+            কোন Application বা Machine সুস্থ আছে এবং কোনটি সমস্যায় আছে—তা কীভাবে জানা যাবে?<br><br>
+
+            <strong>❓ Machine Failure</strong><br>
+            কোনো Worker Machine সম্পূর্ণভাবে নষ্ট হয়ে গেলে সেখানে চলমান Application কীভাবে সচল থাকবে?
+        </div>
+
+
+        <h3>সমাধান: Kubernetes</h3>
+
+        <div class="success-box">
+            <strong>Kubernetes কী?</strong><br><br>
+
+            Kubernetes হলো একটি <strong>Container Orchestration Platform</strong>।
+            এটি অনেকগুলো Machine জুড়ে Containerized Application Deploy, Manage, Scale এবং Maintain করতে সাহায্য
+            করে।<br><br>
+
+            সহজভাবে বললে—<br><br>
+
+            <strong>Docker আপনাকে Container চালাতে সাহায্য করে।</strong><br>
+            <strong>Kubernetes অনেকগুলো Container এবং Machine-কে একসঙ্গে পরিচালনা করতে সাহায্য করে।</strong><br><br>
+
+            আপনি Kubernetes-কে বলতে পারেন:<br><br>
+
+            <strong>
+                "আমি চাই আমার Application-এর ১০টি Instance সবসময় চালু থাকুক।"
+            </strong><br><br>
+
+            এরপর Kubernetes চেষ্টা করবে সেই Desired State বজায় রাখতে।<br><br>
+
+            কোনো Container বন্ধ হয়ে গেলে → নতুন Container চালানোর ব্যবস্থা করবে।<br>
+            কোনো Machine ব্যর্থ হলে → সম্ভব হলে Workload অন্য Machine-এ চালাবে।<br>
+            Traffic বাড়লে → অতিরিক্ত Instance চালানোর ব্যবস্থা করা যাবে।<br>
+            নতুন Version Deploy করতে → Rolling Update ব্যবহার করা যাবে।<br>
+            নতুন Version-এ সমস্যা হলে → Rollback করা যাবে।
+        </div>
+
+
+        <h3>Kubernetes-এর সবচেয়ে গুরুত্বপূর্ণ ধারণা: Desired State</h3>
+
+        <div class="technical-box">
+            Kubernetes বোঝার জন্য <strong>Desired State</strong> ধারণাটি খুবই গুরুত্বপূর্ণ।<br><br>
+
+            ধরুন আপনি Kubernetes-কে বললেন:<br><br>
+
+            <strong>"আমার Application-এর ৫টি Pod সবসময় Running অবস্থায় থাকতে হবে।"</strong><br><br>
+
+            এটিই হলো আপনার <strong>Desired State</strong>।<br><br>
+
+            এখন যদি কোনো কারণে ১টি Pod Crash করে এবং মাত্র ৪টি Pod Running থাকে,
+            তাহলে Kubernetes বুঝবে—<br><br>
+
+            <strong>Desired State = ৫টি Pod</strong><br>
+            <strong>Current State = ৪টি Pod</strong><br><br>
+
+            তাই Kubernetes-এর Controller প্রয়োজনীয় ব্যবস্থা নিয়ে আবার ৫টি Pod করার চেষ্টা করবে।<br><br>
+
+            অর্থাৎ Kubernetes বারবার চেষ্টা করে—
+            <strong>Current State যেন Desired State-এর সঙ্গে মিলে যায়।</strong>
+        </div>
+
+
+        <h3>Kubernetes Cluster কী?</h3>
+
+        <div class="technical-box">
+            Kubernetes-এ একাধিক Machine একসঙ্গে মিলে একটি <strong>Cluster</strong> তৈরি করে।<br><br>
+
+            একটি Kubernetes Cluster-এর প্রধান দুটি অংশ হলো:<br><br>
+
+            <strong>১. Control Plane</strong><br>
+            Cluster-এর Management এবং Decision-Making অংশ।<br><br>
+
+            <strong>২. Worker Node</strong><br>
+            যেখানে বাস্তবে Application-এর Pod এবং Container চলে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Control Plane = সিদ্ধান্ত নেয়</strong><br>
+            <strong>Worker Node = কাজ সম্পন্ন করে</strong>
+        </div>
+
+
+        <h3>Kubernetes Architecture — পুরো ছবিটি একসঙ্গে</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/kubernetes_cluster.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>Control Plane — Kubernetes-এর মস্তিষ্ক</h3>
+
+        <div class="technical-box">
+            Control Plane হলো Kubernetes Cluster-এর Management Layer।<br><br>
+
+            এটি নিজে সাধারণত আপনার Application-এর মূল Workload চালানোর জায়গা নয়।
+            বরং এটি পুরো Cluster-এর অবস্থা পর্যবেক্ষণ করে, সিদ্ধান্ত নেয় এবং Worker Node-গুলোকে পরিচালনা করে।<br><br>
+
+            Control Plane-এর প্রধান Component হলো:<br><br>
+
+            ├─ <strong>kube-apiserver</strong> — Cluster-এর API Gateway<br>
+            ├─ <strong>etcd</strong> — Cluster State-এর Data Store<br>
+            ├─ <strong>kube-scheduler</strong> — Pod-এর জন্য Node নির্বাচন করে<br>
+            └─ <strong>Controller Manager</strong> — Desired State বজায় রাখে
+        </div>
+
+
+        <h3>Control Plane-এর প্রতিটি Component</h3>
+
+
+        <h4>① API Server — Kubernetes-এর Front Door</h4>
+
+        <div class="component">
+            <strong>মূল ধারণা:</strong><br><br>
+
+            Kubernetes Cluster-এর সঙ্গে যোগাযোগের প্রধান দরজা হলো
+            <strong>kube-apiserver</strong>।<br><br>
+
+            আপনি যখন <code>kubectl</code> ব্যবহার করেন, তখন আপনার Command সরাসরি
+            Scheduler বা Controller-এর কাছে যায় না। সাধারণত Request প্রথমে API Server-এর কাছে যায়।<br><br>
+
+            <strong>API Server-এর কাজ:</strong><br><br>
+
+            ├─ Client-এর Request গ্রহণ করা<br>
+            ├─ Authentication করা<br>
+            ├─ Authorization পরীক্ষা করা<br>
+            ├─ Request-এর Validation করা<br>
+            ├─ Cluster State পড়া বা পরিবর্তনের Request পরিচালনা করা<br>
+            └─ Client-কে Response পাঠানো<br><br>
+
+            <strong>উদাহরণ:</strong><br><br>
+
+            আপনি যদি বলেন—
+            <code>kubectl get pods</code><br><br>
+
+            তাহলে kubectl API Server-এর কাছে Pod-এর তথ্য চায়।
+            API Server প্রয়োজনীয় তথ্য সংগ্রহ করে Response পাঠায়।<br><br>
+
+            <strong>Default Secure API Port:</strong><br>
+            <code>6443</code>
+        </div>
+
+
+        <h4>② etcd — Cluster-এর Persistent State Store</h4>
+
+        <div class="component">
+            <strong>মূল ধারণা:</strong><br><br>
+
+            <code>etcd</code> হলো একটি Distributed Key-Value Store।
+            Kubernetes Cluster-এর গুরুত্বপূর্ণ State এবং Configuration এখানে সংরক্ষিত থাকে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>etcd = Kubernetes-এর Persistent Memory</strong><br><br>
+
+            Kubernetes-এর কাছে গুরুত্বপূর্ণ হলো—
+            "Cluster এখন কেমন আছে?" এবং "Cluster কেমন থাকা উচিত?"<br><br>
+
+            এই State-এর একটি গুরুত্বপূর্ণ অংশ etcd-তে সংরক্ষিত থাকে।<br><br>
+
+            <strong>etcd-তে সংরক্ষিত হতে পারে:</strong><br><br>
+
+            ├─ Kubernetes Object-এর State ও Metadata<br>
+            ├─ Pod সম্পর্কিত তথ্য<br>
+            ├─ Service সম্পর্কিত তথ্য<br>
+            ├─ Deployment ও ReplicaSet-এর State<br>
+            ├─ ConfigMap ও Secret-এর Data<br>
+            ├─ Cluster Configuration<br>
+            └─ অন্যান্য Kubernetes Resource-এর State<br><br>
+
+            <strong>গুরুত্বপূর্ণ:</strong><br>
+            etcd সাধারণ কোনো Application Database নয়।
+            এটি Kubernetes-এর নিজস্ব Cluster State সংরক্ষণের জন্য ব্যবহৃত একটি Distributed Data Store।<br><br>
+
+            Production Cluster-এ etcd-এর High Availability এবং Backup অত্যন্ত গুরুত্বপূর্ণ।
+        </div>
+
+
+        <h4>③ Scheduler — Pod-এর জন্য সঠিক Node নির্বাচন করে</h4>
+
+        <div class="component">
+            <strong>মূল ধারণা:</strong><br><br>
+
+            Kubernetes-এ নতুন Pod তৈরি করার সময় সেটি কোন Worker Node-এ চলবে,
+            সেই সিদ্ধান্ত নেওয়ার দায়িত্ব হলো <strong>kube-scheduler</strong>-এর।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Scheduler = Pod-এর জন্য সঠিক জায়গা নির্বাচনকারী</strong><br><br>
+
+            <strong>Scheduler-এর সাধারণ কাজ:</strong><br><br>
+
+            ১. নতুন একটি Unscheduled Pod শনাক্ত করে<br>
+            ২. কোন Node-গুলো Pod চালাতে পারবে তা পরীক্ষা করে<br>
+            ৩. Resource Requirement বিবেচনা করে<br>
+            ৪. Constraint এবং Scheduling Rule বিবেচনা করে<br>
+            ৫. উপযুক্ত Node-গুলোর মধ্যে নির্বাচন করে<br>
+            ৬. নির্বাচিত Node-এ Pod Assign করার সিদ্ধান্ত জানায়<br><br>
+
+            <strong>Scheduler যে বিষয়গুলো বিবেচনা করতে পারে:</strong><br><br>
+
+            ├─ CPU ও Memory-এর Availability<br>
+            ├─ Resource Requests ও Limits<br>
+            ├─ Node Selector<br>
+            ├─ Node Affinity / Anti-Affinity<br>
+            ├─ Taints ও Tolerations<br>
+            ├─ Pod Affinity / Anti-Affinity<br>
+            ├─ Storage Requirements<br>
+            └─ Zone বা Topology সম্পর্কিত Constraint
+        </div>
+
+
+        <h4>④ Controllers — Desired State বজায় রাখে</h4>
+
+        <div class="component">
+            <strong>মূল ধারণা:</strong><br><br>
+
+            Kubernetes-এর সবচেয়ে গুরুত্বপূর্ণ ধারণাগুলোর একটি হলো
+            <strong>Control Loop</strong>।<br><br>
+
+            Controller বারবার দেখে—
+            <br><br>
+
+            <strong>Desired State কী?</strong><br>
+            <strong>Current State কী?</strong><br><br>
+
+            যদি দুটির মধ্যে পার্থক্য থাকে, Controller প্রয়োজনীয় Action নেওয়ার চেষ্টা করে।<br><br>
+
+            <strong>উদাহরণ:</strong><br><br>
+
+            Desired State → ৫টি Pod<br>
+            Current State → ৪টি Pod<br><br>
+
+            Controller বুঝবে একটি Pod কম আছে এবং প্রয়োজনীয় ব্যবস্থা নিয়ে
+            আবার ৫টি Pod চালু রাখার চেষ্টা করবে।<br><br>
+
+            <strong>প্রধান Controller-এর উদাহরণ:</strong><br><br>
+
+            <strong>Deployment Controller</strong><br>
+            └─ Deployment-এর Desired State বজায় রাখতে সাহায্য করে।<br><br>
+
+            <strong>ReplicaSet Controller</strong><br>
+            └─ নির্দিষ্ট সংখ্যক Pod-এর Replica বজায় রাখে।<br><br>
+
+            <strong>Node Controller</strong><br>
+            └─ Node-এর স্বাস্থ্য ও Availability পর্যবেক্ষণ করে এবং Node Failure শনাক্ত করতে সাহায্য করে।<br><br>
+
+            <strong>StatefulSet Controller</strong><br>
+            └─ Stateful Application-এর Pod-এর Identity, Ordering এবং Lifecycle পরিচালনা করে।<br><br>
+
+            <strong>Job Controller</strong><br>
+            └─ নির্দিষ্ট কাজ সফলভাবে সম্পন্ন হওয়া পর্যন্ত Pod পরিচালনা করে।<br><br>
+
+            <strong>Controller Manager</strong><br>
+            └─ Kubernetes-এর বিভিন্ন Controller-কে পরিচালনা করে।
+        </div>
+
+
+        <h3>Worker Node — যেখানে Application চলে</h3>
+
+        <div class="technical-box">
+            Worker Node হলো সেই Machine যেখানে Kubernetes-এর Application Workload বাস্তবে চলে।<br><br>
+
+            একটি Worker Node-এ সাধারণত থাকে:<br><br>
+
+            ├─ <strong>kubelet</strong><br>
+            ├─ <strong>Container Runtime</strong> যেমন containerd<br>
+            ├─ <strong>kube-proxy</strong> বা সংশ্লিষ্ট Networking Component<br>
+            └─ Application-এর Pod ও Container<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>Control Plane সিদ্ধান্ত নেয়।</strong><br>
+            <strong>Worker Node সেই সিদ্ধান্ত অনুযায়ী Application চালায়।</strong>
+        </div>
+
+
+        <h4>① kubelet — Node-এর Agent</h4>
+
+        <div class="component">
+            <strong>kubelet কী?</strong><br><br>
+
+            kubelet হলো প্রতিটি Worker Node-এ চলমান একটি Agent।
+            এটি Control Plane-এর সঙ্গে যোগাযোগ করে এবং Node-এ নির্ধারিত Pod চালু ও সচল রাখতে কাজ করে।<br><br>
+
+            <strong>মূল কাজ:</strong><br><br>
+
+            ├─ Pod-এর Specification গ্রহণ করা<br>
+            ├─ Container Runtime-এর মাধ্যমে Container চালানোর ব্যবস্থা করা<br>
+            ├─ Container ও Pod-এর Health পর্যবেক্ষণ করা<br>
+            ├─ Pod-এর বর্তমান অবস্থা API Server-কে জানানো<br>
+            └─ নির্ধারিত Workload চালু রাখার জন্য প্রয়োজনীয় ব্যবস্থা নেওয়া
+        </div>
+
+
+        <h4>② Container Runtime — Container চালানোর Engine</h4>
+
+        <div class="component">
+            <strong>Container Runtime কী?</strong><br><br>
+
+            Container Runtime হলো সেই Software Layer যা বাস্তবে Container চালানোর কাজ করে।<br><br>
+
+            Kubernetes সরাসরি Container-এর Process তৈরি করার কাজ করে না।
+            kubelet Container Runtime-এর সঙ্গে যোগাযোগ করে।<br><br>
+
+            Kubernetes Ecosystem-এ বহুল ব্যবহৃত Runtime-এর একটি হলো
+            <strong>containerd</strong>।<br><br>
+
+            containerd Container-এর Lifecycle পরিচালনা করে এবং নিচের স্তরে
+            OCI-compatible Runtime-এর মাধ্যমে Container Process চালানো হয়।
+        </div>
+
+
+        <h4>③ runc — Container চালানোর নিম্নস্তরের Runtime</h4>
+
+        <div class="component">
+            <strong>runc কী?</strong><br><br>
+
+            <strong>runc</strong> হলো একটি Lightweight OCI Runtime।
+            এটি Linux-এর Namespace, cgroups এবং অন্যান্য Kernel Feature ব্যবহার করে
+            Container Process তৈরি ও চালাতে সাহায্য করে।<br><br>
+
+            সহজভাবে Layer-টি এমনভাবে ভাবতে পারেন:
+        </div>
+
+        <div class="diagram">
+            <img
+                    src="images/how_kubernetes_runs_containers.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>একটি Pod কী?</h3>
+
+        <div class="technical-box">
+            Kubernetes-এ Container-কে সাধারণত সরাসরি পরিচালনা করা হয় না।
+            Container-গুলোকে <strong>Pod</strong>-এর মধ্যে চালানো হয়।<br><br>
+
+            <strong>Pod হলো Kubernetes-এর সবচেয়ে ছোট Deployable Unit।</strong><br><br>
+
+            একটি Pod-এর মধ্যে একটি বা একাধিক Container থাকতে পারে।<br><br>
+
+            একই Pod-এর Container-গুলো সাধারণত কিছু Resource Share করে, যেমন—
+            <br><br>
+
+            ├─ Network Namespace<br>
+            ├─ Pod IP Address<br>
+            └─ Shared Volumes<br><br>
+
+            সাধারণ Application-এর ক্ষেত্রে একটি Pod-এ একটি প্রধান Application Container থাকা খুবই স্বাভাবিক।
+        </div>
+
+
+        <h3>একটি Request-এর সম্পূর্ণ যাত্রা</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/kubernetes_request_flow.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <div class="technical-detail">
+            <strong>কিন্তু Pod তৈরি বা পরিবর্তনের সিদ্ধান্ত কীভাবে হয়?</strong><br><br>
+
+            ধরুন আপনি Kubernetes-কে বললেন—
+            <strong>"আমার Application-এর ৩টি Replica চাই।"</strong><br><br>
+
+            তখন সাধারণ Flow হবে:<br><br>
+
+            <strong>ধাপ ১:</strong><br>
+            আপনি Kubernetes API Server-এর কাছে Desired State পাঠাবেন।<br><br>
+
+            <strong>ধাপ ২:</strong><br>
+            API Server Request Validate করে Cluster State-এর প্রয়োজনীয় তথ্য পরিচালনা করবে।<br><br>
+
+            <strong>ধাপ ৩:</strong><br>
+            Scheduler নতুন Pod-এর জন্য উপযুক্ত Worker Node নির্বাচন করবে।<br><br>
+
+            <strong>ধাপ ৪:</strong><br>
+            সংশ্লিষ্ট Worker Node-এর kubelet সেই Pod-এর জন্য প্রয়োজনীয় Container চালানোর ব্যবস্থা করবে।<br><br>
+
+            <strong>ধাপ ৫:</strong><br>
+            Container Runtime Container চালু করবে।<br><br>
+
+            <strong>ধাপ ৬:</strong><br>
+            Controller এবং kubelet ক্রমাগত অবস্থা পর্যবেক্ষণ করবে।<br><br>
+
+            <strong>ধাপ ৭:</strong><br>
+            কোনো Pod ব্যর্থ হলে Kubernetes আবার Desired State পূরণ করার চেষ্টা করবে।
+        </div>
+
+
+        <h3>Kubernetes Architecture — এক লাইনে প্রতিটি Component</h3>
+
+        <div class="key-point">
+
+            <strong>API Server</strong> → Cluster-এর সঙ্গে যোগাযোগের প্রধান দরজা<br><br>
+
+            <strong>etcd</strong> → Cluster State-এর Persistent Data Store<br><br>
+
+            <strong>Scheduler</strong> → Pod কোন Node-এ চলবে তা নির্বাচন করে<br><br>
+
+            <strong>Controller</strong> → Desired State বজায় রাখে<br><br>
+
+            <strong>kubelet</strong> → Worker Node-এ Pod চালু ও পর্যবেক্ষণ করে<br><br>
+
+            <strong>containerd</strong> → Container Lifecycle পরিচালনা করে<br><br>
+
+            <strong>runc</strong> → Linux-এর সাহায্যে Container Process চালায়<br><br>
+
+            <strong>Pod</strong> → Kubernetes-এর সবচেয়ে ছোট Deployable Unit<br><br>
+
+            <strong>Worker Node</strong> → যেখানে Application Workload চলে<br><br>
+
+            <strong>Control Plane</strong> → পুরো Cluster পরিচালনা ও নিয়ন্ত্রণ করে
+        </div>
+
+
+        <div class="success-box">
+            <strong>সবচেয়ে গুরুত্বপূর্ণ ধারণাটি মনে রাখুন:</strong><br><br>
+
+            Docker মূলত আপনাকে Container তৈরি ও চালানোর পদ্ধতি দেয়।<br><br>
+
+            Kubernetes সেই Container-গুলোকে অনেকগুলো Machine-এর মধ্যে
+            <strong>Deploy, Schedule, Scale, Monitor এবং Recover</strong> করার জন্য
+            একটি সম্পূর্ণ Orchestration System দেয়।<br><br>
+
+            <strong>Control Plane → সিদ্ধান্ত নেয়</strong><br>
+            <strong>Scheduler → Pod-এর জন্য Node নির্বাচন করে</strong><br>
+            <strong>Controller → Desired State বজায় রাখে</strong><br>
+            <strong>Worker Node → Application চালায়</strong><br>
+            <strong>kubelet → Node-এর Pod পরিচালনা করে</strong><br>
+            <strong>containerd → Container পরিচালনা করে</strong><br>
+            <strong>runc → Container Process চালায়</strong><br><br>
+
+            <strong>
+                Kubernetes-এর মূল দর্শন:
+                "আপনি কী চান তা বলুন; Kubernetes সেই অবস্থা বজায় রাখার চেষ্টা করবে।"
+            </strong>
+        </div>
+
+    </div>
+
+    <!-- PART 5 -->
+    <div class="page-break"></div>
+    <div class="section">
+
+        <h2><span class="emoji">⚙️</span> অংশ 5: Kubernetes Components — বিস্তারিত পরিচয়</h2>
+
+        <div class="story-box">
+            <strong>আগের অংশে আমরা কী শিখেছি?</strong><br><br>
+
+            Kubernetes Cluster-এ মূলত 2 ধরনের জায়গা আছে—<br><br>
+
+            <strong>Control Plane</strong> → সিদ্ধান্ত নেয়, Cluster পরিচালনা করে<br>
+            <strong>Worker Node</strong> → সেই সিদ্ধান্ত অনুযায়ী Application চালায়<br><br>
+
+            এবার প্রশ্ন হলো—<br><br>
+
+            <strong>
+                "Control Plane বলল যে একটি Pod চালাতে হবে।
+                কিন্তু Worker Node-এ আসলে কে সেই কাজটা করবে?"
+            </strong><br><br>
+
+            এখানেই আমাদের পরিচয় হবে—
+            <strong>kubelet, containerd, runc এবং Pod</strong>-এর সঙ্গে।
+        </div>
+
+
+        <h3>Worker Node-এর ভেতরে কী আছে?</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/inside_worker_node.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>1. kubelet — Worker Node-এর দায়িত্বশীল কর্মচারী</h3>
+
+        <div class="story-box">
+            <strong>ভাবুন kubelet হলো অফিসের সেই কর্মচারী,</strong><br>
+            যাকে Manager বলেছে—<br><br>
+
+            "ভাই, এই Application-এর 3টা Instance চালু রাখতে হবে।
+            ঠিকমতো চলছে কি না দেখবেন। সমস্যা হলে আমাকে জানাবেন।"<br><br>
+
+            kubelet তখন বলে—<br><br>
+
+            <strong>"ঠিক আছে Boss, Node আমার। চিন্তা নাই!" 😎</strong>
+        </div>
+
+        <div class="component">
+
+            <strong>kubelet কী?</strong><br><br>
+
+            kubelet হলো প্রতিটি Worker Node-এ চলমান একটি Agent।
+            এটি Control Plane-এর নির্দেশ অনুযায়ী Node-এ নির্ধারিত Pod চালু ও সচল রাখতে কাজ করে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>kubelet = Worker Node-এর Local Manager</strong><br><br>
+
+            kubelet নিজে Container Runtime নয়।
+            বরং এটি Container Runtime-এর সঙ্গে যোগাযোগ করে Container চালানোর ব্যবস্থা করে।<br><br>
+
+
+            <strong>kubelet-এর প্রধান কাজ:</strong><br><br>
+
+            1. API Server-এর মাধ্যমে Pod-এর Desired State সম্পর্কে তথ্য পাওয়া<br>
+            2. Pod-এর Specification অনুযায়ী Container চালানোর ব্যবস্থা করা<br>
+            3. Container Runtime-এর সঙ্গে যোগাযোগ করা<br>
+            4. Pod ও Container-এর বর্তমান অবস্থা পর্যবেক্ষণ করা<br>
+            5. Container ব্যর্থ হলে Pod-এর Desired State অনুযায়ী Runtime-কে ব্যবস্থা নিতে বলা<br>
+            6. Pod-এর Status API Server-এর মাধ্যমে Control Plane-কে জানানো<br>
+            7. Node-এর Health ও Resource সম্পর্কিত তথ্য পর্যবেক্ষণ করা<br><br>
+
+
+            <strong>kubelet কার সঙ্গে কথা বলে?</strong><br><br>
+            <div class="diagram">
+                <img
+                        src="images/inside_worker_node.png"
+                        alt=""
+                        class="diagram-image"
+                >
+            </div>
+
+            <strong>মনে রাখুন:</strong><br>
+            kubelet সাধারণত API Server-এর সঙ্গে HTTPS-এর মাধ্যমে যোগাযোগ করে।
+            Container Runtime-এর সঙ্গে যোগাযোগের ক্ষেত্রে Kubernetes-এর
+            <strong>Container Runtime Interface (CRI)</strong> ব্যবহৃত হয়,
+            যা gRPC ভিত্তিক।
+        </div>
+
+
+        <h4>kubelet-এর একটি বাস্তব উদাহরণ</h4>
+
+        <div class="technical-detail">
+
+            ধরুন আপনি Kubernetes-কে বললেন:<br><br>
+
+            <code>replicas: 3</code><br><br>
+
+            অর্থাৎ আপনি চান Application-এর 3টি Pod চলুক।<br><br>
+
+            Scheduler Pod-গুলোর জন্য Node নির্বাচন করবে।
+            এরপর সংশ্লিষ্ট Worker Node-এর kubelet কাজ শুরু করবে।<br><br>
+
+            kubelet বলবে:<br><br>
+
+            <strong>
+                "আমার Node-এ এই Pod চালানোর কথা।
+                ঠিক আছে, Runtime ভাই, Container তৈরি করে দাও!"
+            </strong><br><br>
+
+            এরপর kubelet Container Runtime-এর মাধ্যমে Container চালানোর ব্যবস্থা করবে।<br><br>
+
+            যদি Container ঠিকমতো চলে → kubelet Status রিপোর্ট করবে।<br><br>
+
+            যদি Container Crash করে → kubelet এবং Runtime Pod-এর নির্ধারিত আচরণ অনুযায়ী
+            Container পুনরায় চালানোর ব্যবস্থা করবে।<br><br>
+
+            অর্থাৎ kubelet-এর কাজ হলো—
+            <strong>"Pod যা হওয়ার কথা, Node-এ সেটি বাস্তবে আছে কি না নিশ্চিত করতে সাহায্য করা।"</strong>
+        </div>
+
+
+        <h3>2. containerd — Container-এর Manager</h3>
+
+        <div class="story-box">
+            <strong>এবার kubelet containerd-এর কাছে গেল।</strong><br><br>
+
+            kubelet:<br>
+            "ভাই containerd, এই Pod-এর Container চালাতে হবে।"<br><br>
+
+            containerd:<br>
+            "Image কোথায়?"<br><br>
+
+            kubelet:<br>
+            "Registry-তে আছে।"<br><br>
+
+            containerd:<br>
+            "ঠিক আছে। Image নিয়ে আসছি,
+            Filesystem তৈরি করছি, তারপর Container চালানোর ব্যবস্থা করছি।"<br><br>
+
+            runc পাশ থেকে:<br>
+            "শেষে Process চালানোর কাজটা আমার!" 😎
+        </div>
+
+
+        <div class="component">
+
+            <strong>containerd কী?</strong><br><br>
+
+            containerd হলো একটি Container Runtime।
+            এটি Container-এর Lifecycle পরিচালনার জন্য ব্যবহৃত হয়।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>containerd = Container-এর Manager</strong><br><br>
+
+            এটি Image সংগ্রহ করা থেকে শুরু করে Container-এর Lifecycle পরিচালনা পর্যন্ত
+            বিভিন্ন কাজ করে এবং নিচের স্তরের Runtime-এর সঙ্গে সমন্বয় করে।<br><br>
+
+
+            <strong>containerd-এর প্রধান কাজ:</strong><br><br>
+
+            1. Registry থেকে Image Pull করা<br>
+            2. Image-এর Content সংরক্ষণ ও পরিচালনা করা<br>
+            3. Image-এর Filesystem Snapshot প্রস্তুত করা<br>
+            4. Container-এর Root Filesystem প্রস্তুত করা<br>
+            5. Container Configuration প্রস্তুত করা<br>
+            6. OCI Runtime যেমন runc-এর মাধ্যমে Container Process চালানোর ব্যবস্থা করা<br>
+            7. Container Lifecycle পরিচালনা করা<br>
+            8. Container-এর State ও Resource সম্পর্কিত Runtime তথ্য পরিচালনা করা
+        </div>
+
+
+        <h4>containerd-এর কাজ এক নজরে</h4>
+
+        <div class="diagram">
+            <img
+                    src="images/containerd_workflow.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h4>Container Lifecycle</h4>
+
+        <div class="technical-detail">
+
+            একটি Container সাধারণত বিভিন্ন অবস্থার মধ্য দিয়ে যায়।<br>
+
+            <strong>Creating</strong><br>
+            Container-এর জন্য প্রয়োজনীয় Configuration এবং Filesystem প্রস্তুত হচ্ছে।<br>
+
+            ↓<br>
+
+            <strong>Running</strong><br>
+            Container-এর মূল Process চলছে। Application কাজ করছে।<br>
+
+            ↓<br>
+
+            <strong>Stopped</strong><br>
+            Container-এর Process আর চলছে না।<br>
+
+            ↓<br>
+
+            <strong>Removed</strong><br>
+            Container-এর Runtime Resources পরিষ্কার করা হয়েছে।
+        </div>
+
+
+        <h3>3. runc — Container চালানোর নিম্নস্তরের Runtime</h3>
+
+        <div class="story-box">
+            <strong>এখন আসল মাঠের খেলোয়াড়!</strong><br><br>
+
+            containerd অনেক কাজের Manager।
+            কিন্তু শেষ পর্যন্ত Linux-এ Container-এর Process তৈরি করবে কে?<br><br>
+
+            <strong>runc:</strong><br>
+            "এই কাজটা আমার!" 💪<br><br>
+
+            containerd বলবে:<br>
+            "ঠিক আছে ভাই, এই Container-এর Specification নাও। চালু করে দাও।"<br><br>
+
+            runc Linux Kernel-এর বিভিন্ন Feature ব্যবহার করে
+            Container-এর Process তৈরি করে।
+        </div>
+
+
+        <div class="component">
+
+            <strong>runc কী?</strong><br><br>
+
+            runc হলো একটি <strong>OCI-compatible low-level Container Runtime</strong>।
+            এটি Container-এর জন্য নির্ধারিত Configuration অনুসরণ করে Linux-এ
+            Container Process তৈরি ও চালাতে সাহায্য করে।<br><br>
+
+            সহজভাবে মনে রাখুন:<br><br>
+
+            <strong>
+                containerd = Container-এর Manager<br>
+                runc = Container Process চালানোর Low-Level Runtime
+            </strong><br><br>
+
+
+            <strong>runc-এর প্রধান কাজ:</strong><br><br>
+
+            1. Container-এর OCI Specification গ্রহণ করা<br>
+            2. Linux Namespace তৈরি ও Configure করা<br>
+            3. cgroups-এর মাধ্যমে Resource Control প্রয়োগ করা<br>
+            4. Root Filesystem প্রস্তুত করা<br>
+            5. প্রয়োজনীয় Mount Configure করা<br>
+            6. Security-related Configuration প্রয়োগ করা<br>
+            7. Container-এর মূল Process শুরু করা
+        </div>
+
+
+        <h4>runc এবং Linux Namespace</h4>
+
+        <div class="technical-detail">
+
+            Container-কে Host System থেকে আলাদা অনুভব করানোর জন্য
+            Linux Namespace গুরুত্বপূর্ণ ভূমিকা পালন করে।<br><br>
+
+            <strong>PID Namespace</strong><br>
+            Container-এর Process-এর জন্য আলাদা Process View তৈরি করে।<br><br>
+
+            <strong>Network Namespace</strong><br>
+            Container-এর জন্য আলাদা Network Environment তৈরি করে।<br><br>
+
+            <strong>Mount Namespace</strong><br>
+            Container-এর Filesystem Mount-এর আলাদা View তৈরি করে।<br><br>
+
+            <strong>User Namespace</strong><br>
+            User এবং Group ID Mapping-এর মাধ্যমে User Isolation করতে সাহায্য করে।<br><br>
+
+            <strong>IPC Namespace</strong><br>
+            Inter-Process Communication Resource আলাদা করতে সাহায্য করে।
+        </div>
+
+
+        <h4>runc এবং cgroups</h4>
+
+        <div class="technical-detail">
+
+            Namespace মূলত বলে—
+            <strong>"তুমি কী কী দেখতে পারবে?"</strong><br><br>
+
+            আর cgroups বলে—
+            <strong>"তুমি কতটুকু Resource ব্যবহার করতে পারবে?"</strong><br><br>
+
+            উদাহরণ হিসেবে একটি Container-এর জন্য নির্ধারণ করা যেতে পারে:<br><br>
+
+            ├─ CPU Limit<br>
+            ├─ Memory Limit<br>
+            ├─ Process/PID Limit<br>
+            └─ I/O সম্পর্কিত Resource Control<br><br>
+
+            উদাহরণ:<br><br>
+
+            <code>cpu: 500m</code><br>
+            অর্থাৎ Kubernetes CPU Resource-এর হিসেবে 0.5 CPU-এর সমপরিমাণ Limit/Request বোঝাতে পারে,
+            Configuration-এর প্রেক্ষাপট অনুযায়ী।<br><br>
+
+            <code>memory: 2Gi</code><br>
+            অর্থাৎ 2 GiB Memory।<br><br>
+
+            <strong>মনে রাখুন:</strong><br>
+            Kubernetes Resource Configuration → kubelet → Container Runtime →
+            Linux cgroups—এই বিভিন্ন স্তরের মাধ্যমে Resource Control বাস্তবায়িত হয়।
+        </div>
+
+
+        <h3>4. Pod — Kubernetes-এর সবচেয়ে ছোট Deployable Unit</h3>
+
+        <div class="story-box">
+            <strong>এবার আসি Pod-এ।</strong><br><br>
+
+            Kubernetes-এ আপনি সাধারণত বলেন না—
+            "এই Container-টা চালাও।"<br><br>
+
+            আপনি বলেন—
+            <strong>"এই Pod চালাও।"</strong><br><br>
+
+            Pod-এর মধ্যে 1টি বা একাধিক Container থাকতে পারে।<br><br>
+
+            Pod-কে ভাবতে পারেন একটি <strong>ছোট্ট Apartment</strong> হিসেবে। 🏠<br><br>
+
+            Apartment-এর মধ্যে একাধিক মানুষ থাকতে পারে।
+            তারা কিছু Resource Share করতে পারে,
+            কিন্তু প্রত্যেকের নিজের কাজ আলাদা।<br><br>
+
+            একইভাবে একটি Pod-এর মধ্যে একাধিক Container থাকতে পারে
+            এবং তারা কিছু Resource Share করে।
+        </div>
+
+
+        <div class="component">
+
+            <strong>Pod কী?</strong><br><br>
+
+            Pod হলো Kubernetes-এর <strong>সবচেয়ে ছোট Deployable Unit</strong>।
+            একটি Pod-এর মধ্যে 1টি বা একাধিক Container থাকতে পারে।<br><br>
+
+            একই Pod-এর Container-গুলো কিছু গুরুত্বপূর্ণ Resource Share করে।<br><br>
+
+
+            <strong>Pod-এর Shared Resources:</strong><br><br>
+
+            <strong>1. Network Namespace</strong><br>
+            একই Pod-এর Container-গুলো সাধারণত একই Network Namespace ব্যবহার করে।<br><br>
+
+            এর ফলে তারা একই Pod IP ব্যবহার করে এবং একে অপরের সঙ্গে
+            <code>localhost</code> ব্যবহার করে যোগাযোগ করতে পারে।<br><br>
+
+
+            <strong>2. Storage Volume</strong><br>
+            একই Volume একটি Pod-এর একাধিক Container-এর মধ্যে Mount করা যেতে পারে।<br><br>
+
+            এর মাধ্যমে Container-গুলো প্রয়োজন অনুযায়ী File বা Data Share করতে পারে।<br><br>
+
+
+            <strong>3. কিছু Security Context</strong><br>
+            Pod-level Security Context-এর মাধ্যমে কিছু Security-related Configuration
+            একসঙ্গে নির্ধারণ করা যায়।<br><br>
+
+
+            <strong>4. একই Lifecycle</strong><br>
+            Pod-এর মধ্যে থাকা Container-গুলো একই Pod-এর Lifecycle-এর অংশ।
+            Kubernetes Pod-কে একটি Unit হিসেবে Schedule করে।
+        </div>
+
+
+        <h4>একটি Pod-এর ভেতরের চিত্র</h4>
+
+
+        <div class="diagram">
+            <img
+                    src="images/inside_pod.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <h3>Pod-এ একাধিক Container কেন?</h3>
+
+        <div class="technical-detail">
+
+            সাধারণ Application-এর ক্ষেত্রে একটি Pod-এ 1টি প্রধান Application Container থাকাই
+            সবচেয়ে সাধারণ Pattern।<br><br>
+
+            তবে কিছু ক্ষেত্রে Application-এর পাশে Helper বা
+            <strong>Sidecar Container</strong> চালানো হয়।<br><br>
+
+            <strong>উদাহরণ:</strong><br><br>
+
+            <strong>1. Main Application + Logging Sidecar</strong><br>
+            Main Application কাজ করবে, আর Sidecar Log সংগ্রহ বা Forward করতে সাহায্য করবে।<br><br>
+
+            <strong>2. Main Application + Proxy</strong><br>
+            Proxy Container Network বা Security-related কাজ করতে পারে।<br><br>
+
+            <strong>3. Main Application + Monitoring Agent</strong><br>
+            অতিরিক্ত Container Metrics বা Monitoring-এর কাজে সহায়তা করতে পারে।<br><br>
+
+            <strong>গুরুত্বপূর্ণ:</strong><br>
+            শুধু "দুটি Container দরকার" বলেই তাদের একই Pod-এ রাখতে হবে এমন নয়।
+            তাদের যদি একই Lifecycle, Network এবং Storage Context Share করার প্রয়োজন থাকে,
+            তখন একই Pod ব্যবহার করা অর্থপূর্ণ।
+        </div>
+
+
+        <h3>একটি Container চালু হওয়ার সম্পূর্ণ গল্প</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/container_running_full_story.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>সবাইকে এক লাইনে চিনে রাখুন</h3>
+
+        <div class="key-point">
+
+            <strong>kubelet</strong><br>
+            → "এই Node-এ যে Pod চালানোর কথা, সেটি ঠিকমতো চলছে কি না আমি দেখছি।"<br><br>
+
+            <strong>containerd</strong><br>
+            → "Container-এর Lifecycle এবং Image Management আমি সামলাই।"<br><br>
+
+            <strong>runc</strong><br>
+            → "Linux-এ আসল Container Process চালানোর Low-Level কাজটা আমি করি।"<br><br>
+
+            <strong>Pod</strong><br>
+            → "আমি Kubernetes-এর সবচেয়ে ছোট Deployable Unit। আমার মধ্যে 1টি বা একাধিক Container থাকতে পারে।"
+        </div>
+
+
+        <h3>একটি মজার উদাহরণ — Kubernetes Restaurant</h3>
+
+        <div class="story-box">
+
+            ধরুন Kubernetes একটি বিশাল Restaurant। 🍽️<br><br>
+
+            <strong>Control Plane = Restaurant Manager</strong><br>
+            কে কোথায় কাজ করবে, কতজন কর্মী দরকার—সব সিদ্ধান্ত নেয়।<br><br>
+
+            <strong>Scheduler = Staff Coordinator</strong><br>
+            কোন Worker Node-এ নতুন Pod যাবে, সে সিদ্ধান্ত নেয়।<br><br>
+
+            <strong>Worker Node = Kitchen</strong><br>
+            আসল রান্না এখানে হয়।<br><br>
+
+            <strong>kubelet = Kitchen Supervisor</strong><br>
+            Manager যা বলেছে, Kitchen-এ ঠিকমতো হচ্ছে কি না দেখে।<br><br>
+
+            <strong>containerd = Kitchen Operations Manager</strong><br>
+            কোন রান্নার Process কীভাবে চলবে, তার Runtime Management করে।<br><br>
+
+            <strong>runc = Chef</strong><br>
+            "Recipe দাও, আমি রান্না করে দিচ্ছি!" 😎<br><br>
+
+            <strong>Pod = একটি Kitchen Station</strong><br>
+            একই Station-এ থাকা Container-গুলো কিছু Resource Share করতে পারে।<br><br>
+
+            <strong>Container = আসল রান্নার কাজ</strong><br>
+            শেষ পর্যন্ত Application-এর Process এখানেই চলছে।
+        </div>
+
+
+        <div class="success-box">
+            <strong>শেষবারের মতো পুরো বিষয়টি মনে রাখুন:</strong><br><br>
+
+            <strong>Control Plane</strong><br>
+            ↓<br>
+            সিদ্ধান্ত নেয় — "এই Pod কোথায় চলবে?"<br><br>
+
+            <strong>Scheduler</strong><br>
+            ↓<br>
+            Worker Node নির্বাচন করে<br><br>
+
+            <strong>kubelet</strong><br>
+            ↓<br>
+            Node-এ Pod চালানোর ব্যবস্থা করে<br><br>
+
+            <strong>containerd</strong><br>
+            ↓<br>
+            Container Lifecycle পরিচালনা করে<br><br>
+
+            <strong>runc</strong><br>
+            ↓<br>
+            Linux-এর সাহায্যে Container Process চালায়<br><br>
+
+            <strong>Pod</strong><br>
+            ↓<br>
+            Container-কে Kubernetes-এর Deployable Unit হিসেবে ধারণ করে<br><br>
+
+            <strong>Container</strong><br>
+            ↓<br>
+            আপনার Application-এর Process চালায়<br><br>
+
+            <strong>
+                Kubernetes-এর ভেতরের এই Layered Flow বুঝে ফেলতে পারলে
+                Kubernetes আর "জাদুর বাক্স" মনে হবে না।
+            </strong>
+        </div>
+    </div>
+
+
+    <!-- PART 6 -->
+    <div class="page-break"></div>
+    <div class="section">
+
+        <h2><span class="emoji">🔄</span> অংশ 6: কর্মপ্রবাহ এবং বাস্তব উদাহরণ</h2>
+
+        <h3>সম্পূর্ণ Workflow: Tamim-এর Web API Kubernetes-এ</h3>
+
+        <div class="story-box">
+            <strong>Scenario:</strong><br><br>
+
+            Tamim একটি Web API তৈরি করেছে।
+            তার Application Docker Container-এর মধ্যে ভালোভাবেই চলছে।
+            এখন সে চায় Kubernetes ব্যবহার করে Application-টিকে Production Environment-এ চালাতে।<br><br>
+
+            কিন্তু Tamim শুধু একটি Container চালাতে চায় না।
+            সে চায়—<br><br>
+
+            ✓ Application-এর একাধিক Replica থাকবে<br>
+            ✓ কোনো Container বন্ধ হয়ে গেলে সেটি আবার চালু হবে<br>
+            ✓ কোনো Node নষ্ট হলেও Application সচল থাকবে<br>
+            ✓ প্রয়োজন হলে Replica সংখ্যা বাড়ানো যাবে<br>
+            ✓ নতুন Version ধীরে ধীরে Deploy করা যাবে<br><br>
+
+            <strong>
+                এখন দেখা যাক, Tamim শুধু একটি কমান্ড চালানোর পর Kubernetes-এর ভেতরে
+                আসলে কতগুলো মানুষ... মানে Component কাজ শুরু করে! 😄
+            </strong>
+        </div>
+
+
+        <h3>ধাপ 1: Dockerfile তৈরি</h3>
+
+        <div class="step">
+
+            <strong>Tamim প্রথমে Application-এর জন্য Dockerfile তৈরি করে।</strong><br><br>
+
+            Dockerfile-এর মাধ্যমে সে বলে দেয় Application চালানোর জন্য কী কী প্রয়োজন।<br><br>
+
+            যেমন—<br><br>
+
+            • Python-এর নির্দিষ্ট Base Image ব্যবহার করা<br>
+            • প্রয়োজনীয় Dependency ইনস্টল করা<br>
+            • Application Code Container-এর মধ্যে কপি করা<br>
+            • Working Directory নির্ধারণ করা<br>
+            • Application কীভাবে চালু হবে তা নির্ধারণ করা<br>
+            • প্রয়োজনীয় Port Document করা<br><br>
+
+            উদাহরণ:<br><br>
+
+            <code>FROM python:3.9-slim</code><br>
+            <code>COPY requirements.txt .</code><br>
+            <code>RUN pip install -r requirements.txt</code><br>
+            <code>COPY . .</code><br>
+            <code>CMD ["python", "app.py"]</code>
+
+        </div>
+
+
+        <h3>ধাপ 2: Docker Image তৈরি</h3>
+
+        <div class="step">
+
+            Tamim এখন Dockerfile ব্যবহার করে একটি Image তৈরি করে।<br><br>
+
+            <code>docker build -t tamim/api:v1.0 .</code><br><br>
+
+            এখানে—<br><br>
+
+            <strong>docker build</strong> → Docker Image তৈরি করার নির্দেশ<br>
+            <strong>-t</strong> → Image-এর নাম ও Tag নির্ধারণ<br>
+            <strong>tamim/api</strong> → Image-এর নাম<br>
+            <strong>v1.0</strong> → Version Tag<br>
+            <strong>.</strong> → বর্তমান Directory-কে Build Context হিসেবে ব্যবহার করা<br><br>
+
+            Build শেষ হলে Tamim-এর কাছে একটি Docker Image তৈরি হলো।
+        </div>
+
+
+        <h3>ধাপ 3: Image Registry-তে Push করা</h3>
+
+        <div class="step">
+
+            Kubernetes-এর Worker Node-গুলো যেন Image-টি সংগ্রহ করতে পারে,
+            তাই Tamim Image-টি একটি Container Registry-তে Push করে।<br><br>
+
+            <code>docker push tamim/api:v1.0</code><br><br>
+
+            এখন Image-টি Registry-তে রয়েছে।<br><br>
+
+            Worker Node যখন এই Image-এর প্রয়োজন অনুভব করবে,
+            Container Runtime Registry থেকে Image Pull করতে পারবে।<br><br>
+
+            অর্থাৎ—<br><br>
+
+            <strong>
+                Local Machine → Build<br>
+                Registry → Store & Share<br>
+                Worker Node → Pull & Run
+            </strong>
+        </div>
+
+
+        <h3>ধাপ 4: Kubernetes Deployment তৈরি</h3>
+
+        <div class="step">
+
+            এখন Tamim Kubernetes-কে বলে দিতে চায়—
+            <strong>"আমি আমার Application-এর 3টি Replica চালু রাখতে চাই।"</strong><br><br>
+
+            এজন্য সে একটি Deployment তৈরি করে।
+        </div>
+
+
+        <div class="code-box">
+
+            <pre>
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: tamim-api
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: tamim-api
+
+  template:
+    metadata:
+      labels:
+        app: tamim-api
+
+    spec:
+      containers:
+        - name: api
+          image: tamim/api:v1.0
+
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+
+            limits:
+              cpu: 500m
+              memory: 1Gi
+
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: url
+</pre>
+
+        </div>
+
+
+        <h3>Deployment YAML-টি কী বলছে?</h3>
+
+        <div class="technical-detail">
+
+            <strong>apiVersion: apps/v1</strong><br>
+            Kubernetes-এর কোন API Version ব্যবহার করা হচ্ছে তা নির্দেশ করে।<br><br>
+
+            <strong>kind: Deployment</strong><br>
+            আমরা একটি Deployment Resource তৈরি করছি।<br><br>
+
+            <strong>metadata.name: tamim-api</strong><br>
+            Deployment-এর নাম <code>tamim-api</code>।<br><br>
+
+            <strong>replicas: 3</strong><br>
+            Kubernetes-এর কাছে Desired State হলো—
+            <strong>3টি Pod চালু থাকা উচিত।</strong><br><br>
+
+            <strong>selector</strong><br>
+            Deployment কোন Pod-গুলোকে পরিচালনা করবে তা Label-এর মাধ্যমে নির্ধারণ করে।<br><br>
+
+            <strong>template</strong><br>
+            নতুন Pod তৈরি করার Blueprint বা Template।<br><br>
+
+            <strong>image: tamim/api:v1.0</strong><br>
+            Pod-এর Container কোন Docker Image ব্যবহার করবে তা নির্ধারণ করে।<br><br>
+
+            <strong>containerPort: 5000</strong><br>
+            Application Container-এর ভিতরে 5000 Port ব্যবহার করছে—এটি Document করে।<br><br>
+
+            <strong>resources.requests</strong><br>
+            Container-এর জন্য Kubernetes-কে নির্দিষ্ট পরিমাণ Resource প্রয়োজন বলে জানায়।
+            Scheduler Node নির্বাচন করার সময় এই তথ্য ব্যবহার করতে পারে।<br><br>
+
+            <strong>resources.limits</strong><br>
+            Container-এর Resource ব্যবহারের সর্বোচ্চ সীমা নির্ধারণ করে।<br><br>
+
+            <strong>env + secretKeyRef</strong><br>
+            Sensitive Configuration সরাসরি YAML-এ না লিখে Kubernetes Secret থেকে Environment Variable হিসেবে নেওয়া
+            হচ্ছে।
+        </div>
+
+
+        <h3>ধাপ 5: Deployment Kubernetes-এ পাঠানো</h3>
+
+        <div class="step">
+
+            Tamim এখন চালাল—<br><br>
+
+            <code>kubectl apply -f deployment.yaml</code><br><br>
+
+            এই একটি ছোট্ট কমান্ড দেখে মনে হতে পারে—
+            <strong>"ব্যস! কাজ শেষ!"</strong> 😎<br><br>
+
+            কিন্তু আসলে Kubernetes-এর ভেতরে তখন বিশাল কর্মযজ্ঞ শুরু হয়!
+        </div>
+
+
+        <h3>Deployment Apply করার পর ভিতরে কী ঘটে?</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/what_happer_after_applying_deployment.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <h3>ধাপ 6: API Server অনুরোধ গ্রহণ করে</h3>
+
+        <div class="technical-detail">
+
+            <code>kubectl</code> সরাসরি etcd-এর সঙ্গে কথা বলে না।<br><br>
+
+            প্রথমে Request যায় Kubernetes-এর <strong>API Server</strong>-এর কাছে।<br><br>
+
+            API Server তখন বিভিন্ন বিষয় যাচাই করে—<br><br>
+
+            1. Request-এর Authentication<br>
+            2. Authorization বা Permission<br>
+            3. Resource-এর Configuration<br>
+            4. YAML থেকে তৈরি Resource-এর বৈধতা<br><br>
+
+            এরপর Kubernetes-এর Desired State সংরক্ষণের জন্য
+            সংশ্লিষ্ট তথ্য etcd-তে রাখা হয়।
+        </div>
+
+
+        <h3>ধাপ 7: Deployment Controller কাজ শুরু করে</h3>
+
+        <div class="step">
+
+            Deployment Controller দেখে—<br><br>
+
+            <strong>
+                "আচ্ছা! নতুন একটি Deployment এসেছে।
+                এখানে বলা হয়েছে 3টি Replica দরকার।"
+            </strong><br><br>
+
+            Controller তখন একটি ReplicaSet তৈরি বা আপডেট করার মাধ্যমে
+            Desired Replica সংখ্যা বজায় রাখার ব্যবস্থা করে।
+        </div>
+
+
+        <h3>ধাপ 8: ReplicaSet 3টি Pod তৈরি করে</h3>
+
+        <div class="step">
+
+            ReplicaSet দেখে—<br><br>
+
+            <strong>Desired = 3</strong><br>
+            <strong>Current = 0</strong><br><br>
+
+            তাই সে বলে—<br><br>
+
+            <strong>"আমার 3টা Pod দরকার। এখনই!"</strong> 😤<br><br>
+
+            Kubernetes তখন 3টি Pod তৈরি করার জন্য API Server-এ
+            Resource Object তৈরি করে।
+        </div>
+
+
+        <h3>ধাপ 9: Scheduler Pod-এর জন্য Node নির্বাচন করে</h3>
+
+        <div class="step">
+
+            Pod তৈরি হয়েছে, কিন্তু এখনো Pod-এর জন্য নির্দিষ্ট Worker Node নির্বাচন করা হয়নি।<br><br>
+
+            Scheduler তখন দেখে—<br><br>
+
+            • কোন Node-এ পর্যাপ্ত CPU আছে?<br>
+            • কোন Node-এ পর্যাপ্ত Memory আছে?<br>
+            • Node-এর Taints ও Pod-এর Tolerations কী বলছে?<br>
+            • Affinity বা Anti-Affinity Rule আছে কি?<br>
+            • অন্যান্য Scheduling Constraint কী আছে?<br><br>
+
+            তারপর Scheduler উপযুক্ত Node নির্বাচন করে।
+        </div>
+
+
+        <div class="diagram">
+            Scheduler-এর সিদ্ধান্ত:
+
+            Pod 1 → Worker Node 1
+            Pod 2 → Worker Node 2
+            Pod 3 → Worker Node 1
+
+            কারণ:
+            Node 1 → পর্যাপ্ত Resource আছে
+            Node 2 → পর্যাপ্ত Resource আছে
+
+            Kubernetes চেষ্টা করতে পারে
+            Pod-গুলোকে বিভিন্ন Node-এ ছড়িয়ে দিতে,
+            যাতে একটি Node ব্যর্থ হলে
+            সব Replica একসঙ্গে হারিয়ে না যায়।
+        </div>
+
+
+        <h3>ধাপ 10: kubelet কাজ শুরু করে</h3>
+
+        <div class="step">
+
+            Scheduler সিদ্ধান্ত নেওয়ার পর সংশ্লিষ্ট Worker Node-এর kubelet বুঝতে পারে
+            যে তার Node-এ নতুন Pod চালানোর দায়িত্ব এসেছে।<br><br>
+
+            kubelet তখন Container Runtime-এর সঙ্গে যোগাযোগ করে।<br><br>
+
+            kubelet:<br>
+            <strong>"containerd ভাই, tamim/api:v1.0 Image দিয়ে এই Pod-এর Container চালাতে হবে।"</strong><br><br>
+
+            containerd:<br>
+            <strong>"ঠিক আছে, Image আছে কি না দেখি!"</strong> 😎
+        </div>
+
+
+        <h3>ধাপ 11: containerd Image Pull করে</h3>
+
+        <div class="step">
+
+            Worker Node-এ Image আগে থেকেই থাকলে containerd সেটি পুনরায় Download না করে
+            বিদ্যমান Image ব্যবহার করতে পারে।<br><br>
+
+            Image না থাকলে Registry থেকে Image Pull করা হয়।<br><br>
+
+            তারপর containerd Image-এর Layer এবং Filesystem প্রস্তুত করে
+            Container চালানোর জন্য প্রয়োজনীয় Runtime Configuration তৈরি করে।
+        </div>
+
+
+        <h3>ধাপ 12: containerd → runc</h3>
+
+        <div class="step">
+
+            Container-এর জন্য Runtime Configuration প্রস্তুত হলে
+            containerd OCI-compatible Runtime যেমন <strong>runc</strong>-এর মাধ্যমে
+            Container Process চালানোর ব্যবস্থা করে।<br><br>
+
+            runc তখন Linux Kernel-এর বিভিন্ন Feature ব্যবহার করে—<br><br>
+
+            • Namespace<br>
+            • cgroups<br>
+            • Mounts<br>
+            • Root Filesystem<br>
+            • Security Configuration<br><br>
+
+            সব প্রস্তুত করে Container-এর মূল Process চালু করে।
+        </div>
+
+
+        <h3>শেষ ফলাফল</h3>
+
+        <div class="success-box">
+
+            এখন Kubernetes-এর কাছে—<br><br>
+
+            <strong>Desired State:</strong> 3টি Pod<br>
+            <strong>Actual State:</strong> 3টি Pod<br><br>
+
+            এবং Tamim-এর Application চলছে—<br><br>
+
+            <strong>Pod 1 → tamim/api:v1.0</strong><br>
+            <strong>Pod 2 → tamim/api:v1.0</strong><br>
+            <strong>Pod 3 → tamim/api:v1.0</strong><br><br>
+
+            Tamim তখন নিশ্চিন্তে চা খেতে যেতে পারে। ☕😎
+        </div>
+
+
+        <h3>যদি কোনো Container Crash করে?</h3>
+
+        <h4>পরিস্থিতি 1: Container Process Crash</h4>
+
+        <div class="story-box">
+
+            ধরুন Pod 2-এর Application-এ Bug ছিল।<br><br>
+
+            Application হঠাৎ Crash করল। 💥<br><br>
+
+            তখন kubelet লক্ষ্য করবে যে Container-এর Process প্রত্যাশিত অবস্থায় নেই।<br><br>
+
+            Pod-এর Restart Policy এবং Container-এর বর্তমান অবস্থার ভিত্তিতে
+            kubelet Container Runtime-এর মাধ্যমে Container পুনরায় চালানোর ব্যবস্থা করতে পারে।<br><br>
+
+            ফলে সাধারণ ক্ষেত্রে—<br><br>
+
+            <strong>
+                Pod 2 একই Pod হিসেবেই থাকতে পারে,
+                কিন্তু তার Container পুনরায় চালু হয়।
+            </strong>
+        </div>
+
+
+        <div class="diagram">
+            <img
+                    src="images/what_happen_if_container_crush.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h4>পরিস্থিতি 2: পুরো Pod হারিয়ে গেলে</h4>
+
+        <div class="story-box">
+
+            এবার ধরুন Pod 2 শুধু Crash করেনি—
+            পুরো Pod-টাই আর নেই।<br><br>
+
+            ReplicaSet Controller দেখে—<br><br>
+
+            <strong>
+                Desired = 3<br>
+                Actual = 2<br><br>
+
+                "এই যে! একটা Pod কম!"
+            </strong> 😱<br><br>
+
+            তখন ReplicaSet একটি নতুন Pod তৈরি করার ব্যবস্থা করবে।
+            Scheduler নতুন Pod-এর জন্য উপযুক্ত Node নির্বাচন করবে এবং
+            সেই Node-এর kubelet নতুন Container চালানোর ব্যবস্থা করবে।
+        </div>
+
+
+        <div class="diagram">
+            <img
+                    src="images/what_happen_if_we_lost_whole_pod.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h4>পরিস্থিতি 3: একটি Worker Node ব্যর্থ হয়</h4>
+
+        <div class="story-box">
+
+            এবার আরও বড় বিপদ। 😐<br><br>
+
+            ধরুন Pod 1 এবং Pod 3 Worker Node 1-এ চলছে।
+            হঠাৎ Worker Node 1 সম্পূর্ণ Offline হয়ে গেল।<br><br>
+
+            Server Hardware Failure!
+            Power Failure!
+            Network Failure!
+            যেকোনো কিছু হতে পারে।<br><br>
+
+            Kubernetes তখন Node-এর Health Status পর্যবেক্ষণ করে
+            এবং Node-টি Ready অবস্থায় নেই বলে চিহ্নিত করতে পারে।<br><br>
+
+            এরপর Kubernetes-এর বিভিন্ন Controller ও Scheduling Mechanism-এর মাধ্যমে
+            হারিয়ে যাওয়া Workload পুনরায় চালানোর ব্যবস্থা করা হয়,
+            যদি সংশ্লিষ্ট Workload-এর Desired State তা নির্দেশ করে।
+        </div>
+
+
+        <div class="diagram">
+            <img
+                    src="images/what_happens_if_a_worker_node_fails.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+
+        <h3>একটি গুরুত্বপূর্ণ বিষয়: Desired State বনাম Actual State</h3>
+
+        <div class="technical-detail">
+
+            Kubernetes বোঝার জন্য এই ধারণাটি অত্যন্ত গুরুত্বপূর্ণ।<br><br>
+
+            Tamim বলেছে:<br><br>
+
+            <strong>Desired State = 3 Replicas</strong><br><br>
+
+            Kubernetes ক্রমাগত চেষ্টা করে—<br><br>
+
+            <strong>
+                Actual State ≈ Desired State
+            </strong><br><br>
+
+            যদি কোনো সময়—<br><br>
+
+            Desired = 3<br>
+            Actual = 2<br><br>
+
+            তাহলে Kubernetes-এর Controller বলবে—<br><br>
+
+            <strong>
+                "একটা কম আছে। ঠিক করতে হবে।"
+            </strong><br><br>
+
+            আবার যদি—<br><br>
+
+            Desired = 3<br>
+            Actual = 4<br><br>
+
+            তাহলে Controller অতিরিক্ত Resource সরিয়ে
+            Desired State-এর দিকে নিয়ে যাওয়ার ব্যবস্থা করবে।<br><br>
+
+            এটাই Kubernetes-এর অন্যতম গুরুত্বপূর্ণ ধারণা:
+            <strong>Declarative Desired State এবং Reconciliation.</strong>
+        </div>
+
+    </div>
+
+    <!-- PART 7 -->
+    <div class="page-break"></div>
+    <div class="section">
+
+        <h2><span class="emoji">📝</span> অংশ 7: ব্যবহারিক কমান্ড — হাতে-কলমে Kubernetes ও Docker</h2>
+
+        <div class="story-box">
+            <strong>এতক্ষণ আমরা তত্ত্ব শিখলাম।</strong><br><br>
+
+            এখন সময় এসেছে Keyboard-এ হাত দেওয়ার। 😎<br><br>
+
+            কারণ Kubernetes সম্পর্কে 500 পৃষ্ঠা পড়ে
+            যদি শেষ পর্যন্ত <code>kubectl get pods</code> লিখতে না পারেন,
+            তাহলে Kubernetes আপনাকে দেখে বলবে—
+            <strong>"ভাই, আগে আমাকে চালিয়ে দেখেন!"</strong> 😄
+        </div>
+
+
+        <h3>Docker-এর প্রয়োজনীয় কমান্ড</h3>
+
+        <table>
+            <tr>
+                <th>কমান্ড</th>
+                <th>কাজ</th>
+                <th>উদাহরণ</th>
+            </tr>
+
+            <tr>
+                <td><code>docker build</code></td>
+                <td>Docker Image তৈরি</td>
+                <td><code>docker build -t tamim/api:v1.0 .</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker run</code></td>
+                <td>Container চালু</td>
+                <td><code>docker run -p 5000:5000 tamim/api:v1.0</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker ps</code></td>
+                <td>চলমান Container দেখা</td>
+                <td><code>docker ps</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker ps -a</code></td>
+                <td>সব Container দেখা</td>
+                <td><code>docker ps -a</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker images</code></td>
+                <td>স্থানীয় Image দেখা</td>
+                <td><code>docker images</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker logs</code></td>
+                <td>Container-এর Log দেখা</td>
+                <td><code>docker logs container-id</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker stop</code></td>
+                <td>Container বন্ধ করা</td>
+                <td><code>docker stop container-id</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker start</code></td>
+                <td>বন্ধ Container আবার চালু করা</td>
+                <td><code>docker start container-id</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker rm</code></td>
+                <td>Container মুছে ফেলা</td>
+                <td><code>docker rm container-id</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker pull</code></td>
+                <td>Registry থেকে Image নামানো</td>
+                <td><code>docker pull python:3.9</code></td>
+            </tr>
+
+            <tr>
+                <td><code>docker push</code></td>
+                <td>Registry-তে Image পাঠানো</td>
+                <td><code>docker push tamim/api:v1.0</code></td>
+            </tr>
+        </table>
+
+
+        <h3>Kubernetes-এর প্রয়োজনীয় কমান্ড</h3>
+
+        <table>
+            <tr>
+                <th>কমান্ড</th>
+                <th>কাজ</th>
+                <th>উদাহরণ</th>
+            </tr>
+
+            <tr>
+                <td><code>kubectl apply -f</code></td>
+                <td>Manifest তৈরি বা আপডেট</td>
+                <td><code>kubectl apply -f deployment.yaml</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl get pods</code></td>
+                <td>Pod-এর তালিকা দেখা</td>
+                <td><code>kubectl get pods</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl get pods -o wide</code></td>
+                <td>Pod কোন Node-এ চলছে দেখা</td>
+                <td><code>kubectl get pods -o wide</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl get nodes</code></td>
+                <td>Cluster-এর Node দেখা</td>
+                <td><code>kubectl get nodes</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl get deployments</code></td>
+                <td>Deployment দেখা</td>
+                <td><code>kubectl get deployments</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl get replicasets</code></td>
+                <td>ReplicaSet দেখা</td>
+                <td><code>kubectl get replicasets</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl describe pod</code></td>
+                <td>Pod-এর বিস্তারিত তথ্য</td>
+                <td><code>kubectl describe pod pod-name</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl logs</code></td>
+                <td>Pod-এর Container Log দেখা</td>
+                <td><code>kubectl logs pod-name</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl exec -it</code></td>
+                <td>Container-এর ভিতরে Command চালানো</td>
+                <td><code>kubectl exec -it pod-name -- bash</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl scale</code></td>
+                <td>Replica সংখ্যা পরিবর্তন</td>
+                <td><code>kubectl scale deployment tamim-api --replicas=5</code></td>
+            </tr>
+
+            <tr>
+                <td><code>kubectl delete</code></td>
+                <td>Resource মুছে ফেলা</td>
+                <td><code>kubectl delete -f deployment.yaml</code></td>
+            </tr>
+        </table>
+
+
+        <h3>সবচেয়ে গুরুত্বপূর্ণ Debugging কমান্ড</h3>
+
+        <div class="technical-detail">
+
+            <strong>Pod চলছে না?</strong><br><br>
+
+            প্রথমে দেখুন:<br>
+            <code>kubectl get pods</code><br><br>
+
+            তারপর বিস্তারিত দেখুন:<br>
+            <code>kubectl describe pod pod-name</code><br><br>
+
+            Log দেখুন:<br>
+            <code>kubectl logs pod-name</code><br><br>
+
+            একাধিক Container থাকলে নির্দিষ্ট Container-এর Log দেখুন:<br>
+            <code>kubectl logs pod-name -c container-name</code><br><br>
+
+            Container-এর ভিতরে ঢুকতে চাইলে:<br>
+            <code>kubectl exec -it pod-name -- bash</code><br><br>
+
+            <strong>
+                Kubernetes Debugging-এর সহজ সূত্র:
+            </strong><br><br>
+
+            <code>get → describe → logs → exec</code>
+        </div>
+
+
+        <h3>একটি ছোট্ট বাস্তব অনুশীলন</h3>
+
+        <div class="step">
+
+            <strong>1. Deployment তৈরি করুন:</strong><br>
+            <code>kubectl apply -f deployment.yaml</code><br><br>
+
+            <strong>2. Pod দেখুন:</strong><br>
+            <code>kubectl get pods</code><br><br>
+
+            <strong>3. Pod কোন Node-এ চলছে দেখুন:</strong><br>
+            <code>kubectl get pods -o wide</code><br><br>
+
+            <strong>4. Deployment দেখুন:</strong><br>
+            <code>kubectl get deployment</code><br><br>
+
+            <strong>5. Replica সংখ্যা বাড়ান:</strong><br>
+            <code>kubectl scale deployment tamim-api --replicas=5</code><br><br>
+
+            <strong>6. আবার Pod দেখুন:</strong><br>
+            <code>kubectl get pods</code><br><br>
+
+            এবার আপনি নিজেই দেখতে পাবেন Kubernetes কীভাবে
+            নতুন Pod তৈরি করছে।
+        </div>
+
+
+        <div class="success-box">
+
+            <strong>এই অংশের মূল শিক্ষা:</strong><br><br>
+
+            Docker আমাদের Application-কে Package করে।<br><br>
+
+            Registry সেই Image সংরক্ষণ ও বিতরণ করে।<br><br>
+
+            Kubernetes সেই Containerized Application-কে
+            বৃহৎ পরিসরে চালানো ও পরিচালনা করে।<br><br>
+
+            আর ভিতরে ভিতরে—<br><br>
+
+            <strong>
+                API Server → Controller → ReplicaSet → Scheduler
+                → kubelet → containerd → runc → Container
+            </strong><br><br>
+
+            এই পুরো Workflow বুঝে গেলে Kubernetes-এর
+            "জাদু" আসলে আর জাদু থাকে না।
+            এটি হয়ে যায় একটি সুসংগঠিত Reconciliation System।
+        </div>
+
+
+        <!-- FOOTER -->
+        <div class="footer">
+
+            <p><strong>📄 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: 1.0</p>
+            <p>আপডেট তারিখ: 11 আগস্ট 2026</p>
+        </div>
+    </div>
+</body>
+</html>

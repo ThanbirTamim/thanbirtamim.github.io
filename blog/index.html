@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - SHEIKH THANBIR ALAM</title>
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon2.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Base styles */
+    body {
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+      background-color: #121212;
+      color: #f0f0f0;
+    }
+
+    .dark-mode .card {
+      background-color: #1e1e1e;
+      border-color: #333;
+    }
+
+    .dark-mode .navbar {
+      background-color: #1e1e1e !important;
+      border-bottom: 1px solid #333;
+    }
+
+    .dark-mode .btn-outline-dark {
+      color: #f0f0f0;
+      border-color: #f0f0f0;
+    }
+
+    .dark-mode .btn-outline-dark:hover {
+      color: #121212;
+      background-color: #f0f0f0;
+    }
+
+    .dark-mode a {
+      color: #0d6efd;
+    }
+
+    .dark-mode a:hover {
+      color: #0a58ca;
+    }
+
+    .dark-mode footer {
+      background-color: #1e1e1e !important;
+      border-top: 1px solid #333;
+      color: #f0f0f0;
+    }
+
+    /* Blog header */
+    .blog-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 20px;
+      margin-bottom: 40px;
+      border-radius: 10px;
+    }
+
+    .blog-header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .blog-header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* Blog card styles */
+    .blog-card {
+      transition: transform 0.3s, box-shadow 0.3s;
+      margin-bottom: 30px;
+      height: 100%;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .blog-card .card-header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+
+    .blog-card .card-header h5 {
+      margin-bottom: 0;
+      font-weight: 600;
+    }
+
+    .blog-card .card-body {
+      padding: 20px;
+    }
+
+    .blog-category {
+      display: inline-block;
+      background-color: #667eea;
+      color: white;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .dark-mode .blog-category {
+      background-color: #764ba2;
+    }
+
+    .blog-description {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .dark-mode .blog-description {
+      color: #aaa;
+    }
+
+    .blog-meta {
+      font-size: 0.85rem;
+      color: #999;
+      margin-bottom: 15px;
+    }
+
+    .dark-mode .blog-meta {
+      color: #888;
+    }
+
+    .read-more-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      display: inline-block;
+      transition: opacity 0.3s;
+    }
+
+    .read-more-btn:hover {
+      opacity: 0.9;
+      text-decoration: none;
+      color: white;
+    }
+
+    .back-link {
+      margin-bottom: 30px;
+    }
+
+    .back-link a {
+      font-size: 0.95rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .blog-header {
+        padding: 40px 20px;
+        margin-bottom: 30px;
+      }
+
+      .blog-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .blog-header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <a class="navbar-brand" href="../index.html">Thanbir</a>
+    <div class="ms-auto">
+      <button class="btn btn-outline-dark" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="back-link">
+      <a href="../index.html">
+        <i class="fas fa-arrow-left"></i> Back to Home
+      </a>
+    </div>
+
+    <div class="blog-header">
+      <h1><i class="fas fa-blog me-2"></i>My Blog</h1>
+      <p>Exploring software engineering, cloud technologies, and DevOps</p>
+    </div>
+
+    <div class="row">
+      <!-- Docker & Kubernetes Blog Post -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card blog-card">
+          <div class="card-header">
+            <h5>Docker & Kubernetes Series</h5>
+          </div>
+          <div class="card-body">
+            <span class="blog-category">DevOps</span>
+            <h6 class="card-title mt-2">Docker & Kubernetes Bangla Guide</h6>
+            <p class="blog-description">
+              A comprehensive guide to Docker and Kubernetes concepts explained in Bengali. Learn containerization,
+              orchestration, and best practices for deploying scalable applications.
+            </p>
+            <p class="blog-meta">
+              <i class="fas fa-calendar me-1"></i> Series 1
+            </p>
+            <a href="docker_kubernetes/series-1/docker-kubernetes-bangla-guide.html" class="read-more-btn">
+              Read Article <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placeholder for more blog posts -->
+      <div class="col-md-6 col-lg-4">
+        <div class="card blog-card" style="opacity: 0.7;">
+          <div class="card-header">
+            <h5>Coming Soon</h5>
+          </div>
+          <div class="card-body">
+            <span class="blog-category">More Posts</span>
+            <h6 class="card-title mt-2">New Blog Posts</h6>
+            <p class="blog-description">
+              Stay tuned for more articles on software engineering, cloud technologies, cybersecurity,
+              and other interesting topics in the tech world.
+            </p>
+            <p class="blog-meta">
+              <i class="fas fa-clock me-1"></i> Coming Soon
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="text-center py-4 mt-5 bg-light">
+    &copy; 2025 SHEIKH THANBIR ALAM. All rights reserved.
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+
+</html>
