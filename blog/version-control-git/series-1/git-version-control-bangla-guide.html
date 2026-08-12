@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git এবং Version Control - সম্পূর্ণ বাংলা গাইড</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon2.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 15px 10px;
+            }
+            .container {
+                padding: 25px;
+            }
+            .diagram-image {
+                max-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1><span class="emoji">🌳</span> Git এবং Version Control</h1>
+    <p class="subtitle">সম্পূর্ণ বাংলা গাইড - Tamim-এর কাছে Shamim-এর শেখা</p>
+
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তু</h2>
+        <ul>
+            <li>অংশ ১: সমস্যা - Manual Versioning এর যন্ত্রণা</li>
+            <li>অংশ ২: Version Control - মূল ধারণা</li>
+            <li>অংশ ৩: Git এবং GitHub - পার্থক্য বুঝি</li>
+            <li>অংশ ৪: Git এর মানসিক মডেল - সবচেয়ে গুরুত্বপূর্ণ</li>
+            <li>অংশ ৫: Working Directory - কোথায় শুরু</li>
+            <li>অংশ ৬: Staging Area - প্রস্তুতির জায়গা</li>
+            <li>অংশ ৭: Local Repository - আপনার নোটবুক</li>
+            <li>অংশ ৮: Remote Repository - GitHub সংযোগ</li>
+            <li>অংশ ৯: Clone এবং Basic Commands</li>
+            <li>অংশ ১০: Branch - দলীয় কাজের শিল্প</li>
+            <li>অংশ ১১: Merge এবং Conflict Resolution</li>
+            <li>অংশ ১২: Real Workflow - দলে কাজ করা</li>
+            <li>অংশ ১৩: Commit Convention - পেশাদার মান</li>
+            <li>অংশ ১৪: Undo Operations - সাবধানে!</li>
+            <li>অংশ ১৫: সম্পূর্ণ Company Workflow</li>
+            <li>অংশ ১৬: Quick Reference এবং সারসংক্ষেপ</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">😅</span> অংশ ১: সমস্যা - Manual Versioning এর যন্ত্রণা</h2>
+
+        <h3>Shamim-এর ফোল্ডার দেখুন</h3>
+
+        <div class="story-box">
+            <strong>Shamim একজন Junior Developer।</strong><br><br>
+
+            গত ৬ মাসে তার laptop-এ একটি project folder এত বড় হয়েছে যে এটা একটি archaeological site-এর মতো দেখাচ্ছে।<br><br>
+
+            <strong>Shamim-এর project folder structure:</strong><br>
+            <code>project/</code><br>
+            <code>project-final/</code><br>
+            <code>project-final-v2/</code><br>
+            <code>project-final-v2-REAL/</code><br>
+            <code>project-final-v2-REAL-FINAL/</code><br>
+            <code>project-final-v2-REAL-FINAL-working/</code><br>
+            <code>project-backup-2024-01-15/</code><br>
+            <code>project-before-refactor/</code><br><br>
+
+            <strong>Shamim একদিন Tamim-এর কাছে গেছে:</strong><br><br>
+
+            "ভাই, কোনটা আসল latest version? কোনটা আমি production-এ দিয়েছিলাম? গত সপ্তাহে যা কাজ করেছিলাম সেটা কোথায়? সব তো গুলিয়ে গেছে!" 😭<br><br>
+
+            <strong>Tamim হেসে বলল:</strong><br>
+            "Shamim, এটা version control নাকি একটা digital garbage dump?" 😄
+        </div>
+
+        <h3>Manual Versioning এর সমস্যা</h3>
+
+        <div class="technical-box">
+            <strong>সমস্যা ১: Confusion</strong><br>
+            কোন folder-টি latest? কোনটি production-এ গেছে? কোনটি broken?<br><br>
+
+            <strong>সমস্যা ২: Collaboration Nightmare</strong><br>
+            Team member-দের কাছে code কীভাবে পাঠাবেন? Email দিয়ে 100MB zip file? তারপর তারা যখন পাঠায় তখন merge কীভাবে করবেন?<br><br>
+
+            <strong>সমস্যা ৩: History শুধু ফোল্ডার নাম-এ</strong><br>
+            কে কখন কী change করেছে? কেন করেছে? এটা জানার কোনো উপায় নেই।<br><br>
+
+            <strong>সমস্যা ৪: Accidental Deletion</strong><br>
+            একটা ভুলে কোনো folder delete করলে? সব ঠিক করার উপায় নেই। File corrupt হয়ে গেলে? Backup করা আছে কি?<br><br>
+
+            <strong>সমস্যা ৫: Multiple People Same File</strong><br>
+            Shamim এবং Tamim একই file edit করছে। কার version রাখবে? দুটোই merge করতে হবে manually?<br><br>
+
+            <strong>সমস্যা ৬: No Rollback Plan</strong><br>
+            Production-এ কিছু ভেঙে গেলে? আগের version এ ফিরে যেতে পারবেন তো?
+        </div>
+
+        <h3>Real-World Impact</h3>
+
+        <div class="key-point">
+            <strong>সবচেয়ে বড় বিপদ:</strong> একটি ছোট mistake পুরো project ধ্বংস করতে পারে। আর তখন কোনো recovery plan থাকে না।<br><br>
+
+            <strong>এবং সবচেয়ে খারাপ অংশ:</strong> কোনো team এ কাজ করা almost অসম্ভব হয়ে যায়।
+        </div>
+
+        <h3>তাহলে সমাধান?</h3>
+
+        <div class="success-box">
+            এখানে আসে <strong>Version Control System (VCS)</strong>।<br><br>
+
+            একটি টুল যা:<br>
+            ✓ প্রতিটি change track করে<br>
+            ✓ Who, What, When, Why জানায়<br>
+            ✓ যেকোনো সময় পুরোনো version-এ ফিরে যেতে পারে<br>
+            ✓ Team collaboration সহজ করে<br>
+            ✓ Branch দিয়ে parallel কাজ সম্ভব করে<br>
+            ✓ Merge করা সহজ হয়<br><br>
+
+            এবং সব-চেয়ে জনপ্রিয় VCS হলো <strong>Git</strong>।
+        </div>
+
+    </div>
+
+    <!-- PART 2 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📚</span> অংশ ২: Version Control - মূল ধারণা</h2>
+
+        <h3>Version Control কী?</h3>
+
+        <div class="story-box">
+            <strong>Tamim Shamim-কে বসিয়ে একটা সহজ উদাহরণ দিল:</strong><br><br>
+
+            "ভাই, একটা লাইব্রেরি ভাবো। যেখানে প্রতিটি বই-এর একটি ledger আছে। যখন কেউ বই নেয়, লেখা হয় - কে নিল, কখন নিল, কখন ফেরত দেবে। যখন বই ফেরত আসে, সেটাও লেখা হয়।"<br><br>
+
+            "Code-এর ক্ষেত্রেও এমনটাই। প্রতিটি change-এর একটি record থাকে - কে করেছে, কখন করেছে, কী করেছে, কেন করেছে।"<br><br>
+
+            <strong>Shamim:</strong> "তাহলে Version Control একটি History Tracker?"<br><br>
+
+            <strong>Tamim:</strong> "ঠিক! কিন্তু শুধু tracker নয়। এটা আপনাকে যেকোনো পুরোনো version-এ ফিরে যেতে সাহায্য করে, branch দিয়ে parallel কাজ করতে দেয়, এবং conflict resolve করতে সাহায্য করে।"
+        </div>
+
+        <h3>VCS এর প্রধান সুবিধা</h3>
+
+        <div class="technical-box">
+            <strong>১. Complete History</strong><br>
+            প্রতিটি file-এর complete history থাকে। কোন date-এ কী ছিল তা জানা যায়।<br><br>
+
+            <strong>২. Blame/Attribution</strong><br>
+            প্রতিটি line-এর জন্য জানা যায় কে লিখেছে, কখন লিখেছে।<br><br>
+
+            <strong>৩. Rollback</strong><br>
+            কিছু ভেঙে গেলে আগের version-এ ফিরে যেতে পারে।<br><br>
+
+            <strong>৪. Branching</strong><br>
+            একই সাথে একাধিক feature নিয়ে কাজ করা যায়।<br><br>
+
+            <strong>৫. Merging</strong><br>
+            দুটো branch-এর পরিবর্তন একসাথে করা যায়।<br><br>
+
+            <strong>৬. Collaboration</strong><br>
+            একই project নিয়ে একাধিক মানুষ কাজ করতে পারে conflict ছাড়াই।
+        </div>
+
+        <h3>VCS এর প্রকার</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>📍 Centralized VCS</strong><br><br>
+                একটি central server আছে। সব developer সেখানে commit করে।<br><br>
+                উদাহরণ: SVN, Perforce<br><br>
+                সমস্যা: Server down হলে কাজ করা যায় না।
+            </div>
+            <div class="comparison-item">
+                <strong>🌐 Distributed VCS</strong><br><br>
+                প্রতিটি developer-এর কাছে complete copy থাকে। Server থাকা optional।<br><br>
+                উদাহরণ: Git, Mercurial<br><br>
+                সুবিধা: Server down হলেও কাজ চলে। Backup automatic।
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>Git একটি Distributed VCS।</strong> এর মানে প্রতিটি developer-এর laptop-এ complete project history থাকে। এটি Git-কে খুবই powerful করে তোলে।
+        </div>
+
+    </div>
+
+    <!-- PART 3 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🐙</span> অংশ ৩: Git এবং GitHub - পার্থক্য বুঝি</h2>
+
+        <h3>Shamim-এর বড় সারপ্রাইজ</h3>
+
+        <div class="story-box">
+            <strong>Shamim জিজ্ঞাসা করল:</strong> "Tamim ভাই, Git এবং GitHub একই জিনিস না?"<br><br>
+
+            <strong>Tamim গুরুত্ব সহকারে উত্তর দিল:</strong><br>
+            "না ভাই। এটা খুবই গুরুত্বপূর্ণ বুঝা যাতে পরে confusion না হয়।"<br><br>
+
+            <strong>Tamim একটি অঙ্গভঙ্গি করল:</strong><br>
+            "ভাবো Git একটি ক্যামেরা। GitHub একটি photo storage service।<br>
+            ক্যামেরা ছাড়া photo তুলতে পারবে না। কিন্তু ক্যামেরা থাকলে GitHub ছাড়াও photo রাখতে পারবে।<br>
+            আবার GitHub ছাড়া ক্যামেরা দিয়েই ছবি রাখতে পারবে, কিন্তু অনেকের সাথে share করা হবে কঠিন।"
+        </div>
+
+        <h3>Git কী?</h3>
+
+        <div class="technical-box">
+            <strong>Git একটি Version Control Software।</strong><br><br>
+
+            এটি:<br>
+            • আপনার computer-এ install করা একটি tool<br>
+            • Code-এর change track করে<br>
+            • History সংরক্ষণ করে<br>
+            • আপনার local machine-এ সব কাজ করে<br>
+            • File system-এর সাথে কাজ করে<br>
+            • Network connection ছাড়াই কাজ করতে পারে<br><br>
+
+            <strong>Git এর মূল কাজ: Code এর history manage করা।</strong>
+        </div>
+
+        <h3>GitHub কী?</h3>
+
+        <div class="technical-box">
+            <strong>GitHub একটি hosting service + collaboration platform।</strong><br><br>
+
+            এটি:<br>
+            • Git repository-কে internet-এ রাখে<br>
+            • Team collaboration সহজ করে<br>
+            • Pull Request নামে একটি code review system আছে<br>
+            • Issue tracking আছে<br>
+            • Wiki এবং documentation hosting করে<br>
+            • GitHub Actions দিয়ে automation করা যায়<br><br>
+
+            <strong>GitHub এর মূল কাজ: Collaboration এবং repository hosting।</strong>
+        </div>
+
+        <h3>গুরুত্বপূর্ণ পার্থক্য</h3>
+
+        <div class="key-point">
+            <strong>১. Git ছাড়া GitHub হয় না</strong><br>
+            GitHub সবকিছু Git-এর উপর built।<br><br>
+
+            <strong>২. GitHub ছাড়া Git-এর কাজ করা যায়</strong><br>
+            আপনি শুধু Git দিয়ে local machine-এ কাজ করতে পারেন। GitHub লাগে না।<br><br>
+
+            <strong>३. Git = Tool, GitHub = Service</strong><br>
+            Git একটি software, GitHub একটি web-based service।<br><br>
+
+            <strong>४. এখানে local repository থাকে</strong><br>
+            Git আপনার laptop-এ repository তৈরি করে। GitHub server-এ repository রাখে।
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Git</strong><br><br>
+                ✓ Software<br>
+                ✓ Local<br>
+                ✓ Free<br>
+                ✓ Command-line based<br>
+                ✓ History tracking
+            </div>
+            <div class="comparison-item">
+                <strong>GitHub</strong><br><br>
+                ✓ Web platform<br>
+                ✓ Remote (cloud)<br>
+                ✓ Free + Paid plans<br>
+                ✓ Web interface<br>
+                ✓ Collaboration tools
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PART 4 - Most Important -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧠</span> অংশ ৪: Git এর মানসিক মডেল - সবচেয়ে গুরুত্বপূর্ণ</h2>
+
+        <div class="story-box">
+            <strong>Shamim খুবই confused ছিল।</strong><br><br>
+
+            "Tamim ভাই, আমি file edit করলাম। তারপর <code>git add</code> দিলাম। তারপর <code>git commit</code> দিলাম। তারপর <code>git push</code> দিলাম। এত ধাপ কেন? সব এক সাথে হয় না?"<br><br>
+
+            Tamim দীর্ঘশ্বাস ফেলে বলল:<br>
+            "এটাই Git-এর সবচেয়ে গুরুত্বপূর্ণ ধারণা। এটি বুঝে গেলে সব clear হয়ে যাবে।"
+        </div>
+
+        <h3>Git এর চার স্তর</h3>
+
+        <div class="diagram">
+Working Directory
+        ↓
+   (git add)
+        ↓
+Staging Area
+        ↓
+ (git commit)
+        ↓
+Local Repository
+        ↓
+  (git push)
+        ↓
+Remote Repository
+        ↓
+    GitHub
+        </div>
+
+        <h3>স্তর ১: Working Directory</h3>
+
+        <div class="technical-box">
+            <strong>Working Directory হলো আপনার project folder।</strong><br><br>
+
+            এখানেই আপনি সারাদিন কোড লিখছেন, file edit করছেন, delete করছেন।<br><br>
+
+            যখন আপনি একটা file edit করেন, Git বুঝে যায় "আরে, এই file-টা change হয়েছে!"<br><br>
+
+            কিন্তু এখনও GitHub-এ কিছু যায়নি। শুধু আপনার laptop-এ change হয়েছে।<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            আপনি <code>app.py</code> file-এ একটা function যোগ করলেন। এটা শুধু আপনার Working Directory-তে।
+        </div>
+
+        <h3>স্তর ২: Staging Area</h3>
+
+        <div class="technical-box">
+            <strong>Staging Area হলো একটি "draft" এলাকা।</strong><br><br>
+
+            যখন আপনি <code>git add</code> কমান্ড দেন, file-টা Working Directory থেকে Staging Area-তে যায়।<br><br>
+
+            এর মানে "এই changes আমি commit করার জন্য প্রস্তুত করছি"।<br><br>
+
+            কিন্তু এখনও commit হয়নি। এটা শুধু প্রস্তুতি।<br><br>
+
+            <strong>গুরুত্বপূর্ণ:</strong> আপনি যে সব files add করেছেন, শুধু সেগুলোই commit হবে।<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            আপনি <code>git add app.py</code> দিলেন। এখন <code>app.py</code> Staging Area-তে আছে, কিন্তু অন্য যেসব file edit করেছেন সেগুলো এখনো staging-এ নেই।
+        </div>
+
+        <h3>স্তর ৩: Local Repository</h3>
+
+        <div class="technical-box">
+            <strong>Local Repository হলো আপনার notebook।</strong><br><br>
+
+            যখন আপনি <code>git commit</code> কমান্ড দেন, Staging Area থেকে সব changes Local Repository-তে চলে যায়।<br><br>
+
+            এখানে একটি "snapshot" তৈরি হয়। এই snapshot-টা Git database-এ সংরক্ষিত থাকে।<br><br>
+
+            এটা permanent। এর মানে আপনি এই version-এ যেকোনো সময় ফিরতে পারবেন।<br><br>
+
+            <strong>কিন্তু গুরুত্বপূর্ণ:</strong> এটা এখনও আপনার laptop-এ। GitHub-এ গেছে না।<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            আপনি <code>git commit -m "Add login function"</code> দিলেন। এখন এই snapshot Local Repository-তে সংরক্ষিত আছে, কিন্তু GitHub জানে না।
+        </div>
+
+        <h3>স্তর ৪: Remote Repository (GitHub)</h3>
+
+        <div class="technical-box">
+            <strong>Remote Repository হলো GitHub এ আপনার repository।</strong><br><br>
+
+            যখন আপনি <code>git push</code> কমান্ড দেন, Local Repository থেকে সব commits GitHub-এ চলে যায়।<br><br>
+
+            এখন সবাই আপনার code দেখতে পারে (যদি public repository হয়)। Team member-রা এটা pull করতে পারে।<br><br>
+
+            <strong>এই জায়গায় এসে code truly "uploaded" হয়েছে।</strong><br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            আপনি <code>git push origin main</code> দিলেন। এখন GitHub-এ আপনার সব commits চলে গেছে। Team member-রা দেখতে পাবে।
+        </div>
+
+        <h3>Shamim এখন বুঝলো</h3>
+
+        <div class="success-box">
+            <strong>Shamim:</strong> "তাহলে:<br><br>
+
+            Working Directory = আমার desk<br>
+            Staging Area = আমার draft folder<br>
+            Local Repository = আমার personal notebook<br>
+            Remote Repository = Public library<br><br>
+
+            মানে, আমি desk-এ লিখছি, তারপর draft folder-এ নিছি, তারপর personal notebook-এ সংরক্ষণ করছি, তারপর library-তে শেয়ার করছি?"<br><br>
+
+            <strong>Tamim:</strong> "ঠিক! এখন আপনি Git এর মূল ধারণা বুঝে গেছেন।"
+        </div>
+
+        <h3>প্রতিটি স্তরে সম্ভাব্য অপারেশন</h3>
+
+        <table>
+            <tr>
+                <th>স্তর</th>
+                <th>কমান্ড</th>
+                <th>কাজ</th>
+            </tr>
+            <tr>
+                <td>Working → Staging</td>
+                <td><code>git add</code></td>
+                <td>File add করা</td>
+            </tr>
+            <tr>
+                <td>Staging → Local</td>
+                <td><code>git commit</code></td>
+                <td>Snapshot তৈরি করা</td>
+            </tr>
+            <tr>
+                <td>Local → Remote</td>
+                <td><code>git push</code></td>
+                <td>GitHub-এ পাঠানো</td>
+            </tr>
+            <tr>
+                <td>Remote → Local</td>
+                <td><code>git pull</code></td>
+                <td>GitHub থেকে আনা</td>
+            </tr>
+            <tr>
+                <td>Working দেখা</td>
+                <td><code>git status</code></td>
+                <td>কী change হয়েছে দেখা</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- PART 5 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">💻</span> অংশ ৫: Working Directory - কোথায় শুরু</h2>
+
+        <h3>Working Directory এর ভূমিকা</h3>
+
+        <div class="technical-box">
+            Working Directory হলো আপনার project folder।<br><br>
+
+            এখানেই আপনি সারাদিন:<br>
+            • নতুন file তৈরি করেন<br>
+            • existing file edit করেন<br>
+            • file delete করেন<br>
+            • নতুন folder তৈরি করেন<br><br>
+
+            <strong>Git এর দৃষ্টিকোণ থেকে:</strong> এটি "untouched" স্থান। এখানে কিছু change হলে Git সেটা track করে, কিন্তু এটা permanent করা হয় না।
+        </div>
+
+        <h3>Git Status - সব কিছু জানার উপায়</h3>
+
+        <div class="story-box">
+            Shamim কমান্ড লিখল:<br>
+            <code>git status</code><br><br>
+
+            Git output দিল:<br>
+            <code>On branch main</code><br>
+            <code>Changes not staged for commit:</code><br>
+            <code>modified: app.py</code><br>
+            <code>deleted: config.old</code><br><br>
+
+            Untracked files:<br>
+            <code>new_feature.py</code><br><br>
+
+            <strong>এর মানে:</strong><br>
+            • <code>app.py</code> - একটি tracked file change হয়েছে, কিন্তু stage করা হয়নি<br>
+            • <code>config.old</code> - একটি tracked file delete হয়েছে<br>
+            • <code>new_feature.py</code> - একটি নতুন file, Git এটা এখনো জানে না
+        </div>
+
+        <h3>Git Diff - পরিবর্তন দেখা</h3>
+
+        <div class="technical-box">
+            <strong><code>git diff</code> কমান্ড দিয়ে কী কী change হয়েছে দেখতে পারেন।</strong><br><br>
+
+            <code>git diff</code> → Working Directory-র changes দেখায় যা staged করা হয়নি<br>
+            <code>git diff --staged</code> → Staging Area-র changes দেখায় যা commit করার জন্য প্রস্তুত
+        </div>
+
+        <h3>File এর অবস্থা</h3>
+
+        <div class="diagram">
+Untracked File (নতুন, Git-এ নেই)
+        ↓
+Modified File (এটা change হয়েছে)
+        ↓
+Deleted File (remove করা হয়েছে)
+        ↓
+Staged File (add করা হয়েছে)
+        ↓
+Committed File (snapshot-এ রাখা হয়েছে)
+        </div>
+
+    </div>
+
+    <!-- PART 6 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📋</span> অংশ ৬: Staging Area - প্রস্তুতির জায়গা</h2>
+
+        <h3>Staging Area এর গুরুত্ব</h3>
+
+        <div class="story-box">
+            <strong>Shamim জিজ্ঞাসা করল:</strong> "Tamim ভাই, কেন শুধু <code>git commit</code> করতে পারি না? কেন <code>git add</code> আগে করতে হয়?"<br><br>
+
+            <strong>Tamim:</strong> "ভালো প্রশ্ন। কারণ আপনি যখন কাজ করছেন তখন অনেক file change করেন। কিন্তু সব change একসাথে commit করা ঠিক নয়। এক commit-এ এক feature থাকা উচিত।"<br><br>
+
+            "Staging Area আপনাকে এটা control দেয়। আপনি বলতে পারেন - এই file-গুলো এক commit-এ, ওই file-গুলো অন্য commit-এ।"
+        </div>
+
+        <h3>কেন Staging Area দরকার</h3>
+
+        <div class="technical-box">
+            <strong>পরিস্থিতি:</strong><br>
+            আপনি একটা feature কাজ করছেন, একই সাথে একটা bug fix করছেন, এবং documentation update করছেন। এখন আপনার কাছে ৫টি file change হয়েছে।<br><br>
+
+            <strong>Staging Area ছাড়া:</strong><br>
+            সব ৫টি file একসাথে commit হয়ে যাবে। একটা commit-এ feature + bug fix + docs সব মিশে থাকবে। এটা bad practice।<br><br>
+
+            <strong>Staging Area সহ:</strong><br>
+            আপনি feature-র files add করেন, commit করেন। তারপর bug fix এর files add করেন, commit করেন। তারপর docs update commit করেন।<br><br>
+
+            ফলে, history এত clean থাকে যে কেউ পড়লে বুঝে যায় "এই commit feature যোগ করেছে", "ওই commit bug fix করেছে"।
+        </div>
+
+        <h3>Selective Staging</h3>
+
+        <div class="code-box">
+# সব file add করা
+git add .
+
+# নির্দিষ্ট file add করা
+git add app.py utils.py
+
+# একটি নির্দিষ্ট file এর নির্দিষ্ট part add করা
+git add -p app.py
+        </div>
+
+        <h3>Unstaging - পরিবর্তন করা</h3>
+
+        <div class="technical-box">
+            যদি ভুল করে একটা file stage করেছেন, unstage করা যায়:<br><br>
+
+            <code>git restore --staged filename</code><br><br>
+
+            এবার সেই file আবার Working Directory-র status পাবে।
+        </div>
+
+    </div>
+
+    <!-- PART 7 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📦</span> অংশ ৭: Local Repository - আপনার নোটবুক</h2>
+
+        <h3>Commit - Snapshot তৈরি করা</h3>
+
+        <div class="story-box">
+            <strong>Shamim:</strong> "Commit মানে কী? একটা save point?"<br><br>
+
+            <strong>Tamim:</strong> "হ্যাঁ, কিন্তু শুধু save point নয়। এটা একটা complete snapshot সাথে metadata সহ।"<br><br>
+
+            <strong>Tamim এক্সপ্লেইন করল:</strong><br>
+            "প্রতিটি commit একটি package যার মধ্যে আছে:<br>
+            • সব file-এর নির্দিষ্ট সময়ের version<br>
+            • কে করেছে (author)<br>
+            • কখন করেছে (timestamp)<br>
+            • কেন করেছে (message)<br>
+            • একটি unique identifier (SHA hash)"
+        </div>
+
+        <h3>Commit করার উপায়</h3>
+
+        <div class="code-box">
+# সাধারণ commit <br>
+git commit -m "Add user authentication" <br><br>
+
+# বিস্তারিত message সহ<br>
+git commit -m "Add user authentication" -m "- Implement login function<br>
+- Add password hashing<br>
+- Create user model"
+            <br>
+        </div>
+
+        <h3>Commit Message লেখা</h3>
+
+        <div class="technical-box">
+            <strong>ভাল commit message:</strong><br>
+            "Add user authentication module"<br><br>
+
+            <strong>খারাপ commit message:</strong><br>
+            "fixed stuff"<br>
+            "asdf"<br>
+            "work in progress"<br><br>
+
+            <strong>কেন ভাল message গুরুত্বপূর্ণ:</strong><br>
+            কয়েক মাস পরে যখন এটা দেখবেন বা team member দেখবে, তারা সাথে সাথে বুঝে যাবে এই commit কী করেছে।
+        </div>
+
+        <h3>Commit History দেখা</h3>
+
+        <div class="code-box">
+# সব commits দেখা<br>
+git log<br><br>
+
+# সংক্ষিপ্ত version দেখা<br>
+git log --oneline<br><br>
+
+# একটি নির্দিষ্ট file-এর history<br>
+git log app.py<br>
+        </div>
+
+        <div class="key-point">
+            <strong>মনে রাখুন:</strong> প্রতিটি commit এর একটি unique hash থাকে। এই hash দিয়ে যেকোনো সময় সেই commit-এ ফিরতে পারবেন।
+        </div>
+
+    </div>
+
+    <!-- PART 8 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">☁️</span> অংশ ৮: Remote Repository - GitHub সংযোগ</h2>
+
+        <h3>Remote কী?</h3>
+
+        <div class="technical-box">
+            <strong>Remote হলো একটি দূরবর্তী repository।</strong><br><br>
+
+            সাধারণত এটি GitHub-এ থাকে। এটি internet-এ accessible।<br><br>
+
+            আপনার Local Repository-র সাথে Remote Repository-র সংযোগ থাকে।<br><br>
+
+            <strong>সবচেয়ে common remote:</strong><br>
+            <code>origin</code> - যেখান থেকে আপনি project clone করেছিলেন
+        </div>
+
+        <h3>Git Remote Commands</h3>
+
+        <div class="code-box">
+# সব remotes দেখা<br>
+git remote -v<br><br>
+
+# নতুন remote যোগ করা<br>
+git remote add origin https://github.com/username/repo.git<br><br>
+
+# remote information দেখা<br>
+git remote show origin<br>
+        </div>
+
+        <h3>Push - Local থেকে Remote-এ</h3>
+
+        <div class="story-box">
+            <strong>Shamim এখন ready করেছে তার commits।</strong><br>
+            এগুলো Local Repository-তে আছে, কিন্তু GitHub-এ এখনো নেই।<br><br>
+
+            এখন সে করবে:<br>
+            <code>git push origin main</code><br><br>
+
+            এটা মানে:<br>
+            "আমার <code>main</code> branch-এর সব commits send করো <code>origin</code> (GitHub) এ।"<br><br>
+
+            এর পর GitHub-এ যেয়ে তার commits দেখা যাবে।
+        </div>
+
+        <h3>Push করা</h3>
+
+        <div class="code-box">
+# branch push করা<br>
+git push origin main<br><br>
+
+# সব branches push করা<br>
+git push origin --all<br><br>
+
+# tags push করা<br>
+git push origin --tags<br><br>
+        </div>
+
+        <h3>Pull - Remote থেকে Local-এ</h3>
+
+        <div class="technical-box">
+            <strong><code>git pull</code> মানে GitHub থেকে নতুন commits নিয়ে আসা।</strong><br><br>
+
+            Team-এ যখন অন্যরা কাজ করছে, তারা তাদের commits push করে। আপনি <code>git pull</code> করে তাদের কাজ নিয়ে আসেন।<br><br>
+
+            <code>git pull origin main</code>
+        </div>
+
+        <h3>Fetch বনাম Pull</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>git fetch</strong><br><br>
+                Remote থেকে commits এনে রাখে local branch-এ, কিন্তু আপনার current branch merge করে না।<br><br>
+                আপনি পর্যালোচনা করতে পারেন পরে।
+            </div>
+            <div class="comparison-item">
+                <strong>git pull</strong><br><br>
+                Remote থেকে commits এনে সাথে সাথে current branch-এ merge করে।<br><br>
+                একটি shortcut: fetch + merge
+            </div>
+        </div>
+
+    </div>
+
+    <!-- PART 9 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔀</span> অংশ ৯: Clone এবং Basic Commands</h2>
+
+        <h3>Clone - সম্পূর্ণ Repository নিয়ে আসা</h3>
+
+        <div class="story-box">
+            <strong>Shamim একটি নতুন project-এ join করেছে।</strong><br><br>
+
+            তার টিম লিড তাকে বলল:<br>
+            "এই GitHub link-টা clone করো এবং শুরু করে দাও।"<br><br>
+
+            Shamim বুঝতে পারল, clone মানে GitHub থেকে পুরো project নিয়ে আসা - history সহ।<br><br>
+
+            সে command লিখল:<br>
+            <code>git clone https://github.com/team/project.git</code><br><br>
+
+            এখন তার laptop-এ একটি <code>project</code> folder তৈরি হয়েছে, যাতে সব code, history, branches সবকিছু আছে।
+        </div>
+
+        <h3>Clone করা</h3>
+
+        <div class="code-box">
+# repository clone করা<br>
+git clone https://github.com/username/repo.git<br><br>
+
+# একটি নির্দিষ্ট branch clone করা<br>
+git clone -b branch-name https://github.com/username/repo.git<br><br>
+
+# shallow clone (শুধু recent history)<br>
+git clone --depth 1 https://github.com/username/repo.git<br>
+        </div>
+
+        <h3>Git এর প্রয়োজনীয় সব কমান্ড</h3>
+
+        <table>
+            <tr>
+                <th>কমান্ড</th>
+                <th>কাজ</th>
+            </tr>
+            <tr>
+                <td><code>git init</code></td>
+                <td>নতুন repository তৈরি করা</td>
+            </tr>
+            <tr>
+                <td><code>git clone</code></td>
+                <td>Repository copy করা</td>
+            </tr>
+            <tr>
+                <td><code>git status</code></td>
+                <td>বর্তমান অবস্থা দেখা</td>
+            </tr>
+            <tr>
+                <td><code>git add</code></td>
+                <td>Files staging area-তে রাখা</td>
+            </tr>
+            <tr>
+                <td><code>git commit</code></td>
+                <td>Snapshot তৈরি করা</td>
+            </tr>
+            <tr>
+                <td><code>git push</code></td>
+                <td>Local commits GitHub-এ পাঠানো</td>
+            </tr>
+            <tr>
+                <td><code>git pull</code></td>
+                <td>GitHub থেকে commits নিয়ে আসা</td>
+            </tr>
+            <tr>
+                <td><code>git log</code></td>
+                <td>Commit history দেখা</td>
+            </tr>
+            <tr>
+                <td><code>git diff</code></td>
+                <td>পরিবর্তন দেখা</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <!-- PART 10 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🌿</span> অংশ ১০: Branch - দলীয় কাজের শিল্প</h2>
+
+        <h3>Branch কেন দরকার</h3>
+
+        <div class="story-box">
+            <strong>পরিস্থিতি:</strong><br>
+            Shamim একটা নতুন feature কাজ করছে। একই সময়ে Tamim একটা bug fix করছে। আর একজন documentation update করছে।<br><br>
+
+            যদি সবাই <code>main</code> branch-এ কাজ করে তাহলে সব কিছু গুলিয়ে যাবে।<br><br>
+
+            <strong>সমাধান: Branch</strong><br>
+            প্রতিটি feature এর জন্য একটি আলাদা branch। কাজ শেষ হলে merge করা হয়।
+        </div>
+
+        <h3>Branch কী?</h3>
+
+        <div class="technical-box">
+            <strong>Branch হলো commit history-র একটি pointer।</strong><br><br>
+
+            এটি commit-এর একটি sequence track করে।<br><br>
+
+            <code>main</code> branch হলো primary branch, যেখানে production-ready code থাকে।<br><br>
+
+            Feature branch-এ আপনি experiment করতে পারেন, কোনো ভয় ছাড়াই। যদি কাজ করে তাহলে main-এ merge করা হয়।
+        </div>
+
+        <h3>Branch তৈরি এবং Switch করা</h3>
+
+        <div class="code-box">
+# নতুন branch তৈরি করা<br>
+git branch feature/login<br><br>
+
+# branch-এ switch করা<br>
+git switch feature/login<br><br>
+
+# এক লাইনে: তৈরি করা এবং switch করা<br>
+git switch -c feature/login<br><br>
+
+# সব branches দেখা<br>
+git branch<br><br>
+
+# দূরবর্তী branches দেখা<br>
+git branch -r<br>
+        </div>
+
+        <h3>Branch এর নামকরণ Convention</h3>
+
+        <div class="technical-box">
+            <strong>ভাল naming:</strong><br>
+            <code>feature/user-authentication</code><br>
+            <code>bugfix/login-validation</code><br>
+            <code>docs/readme-update</code><br>
+            <code>refactor/auth-service</code><br><br>
+
+            <strong>খারাপ naming:</strong><br>
+            <code>branch1</code><br>
+            <code>wip</code><br>
+            <code>my-changes</code>
+        </div>
+
+        <h3>Branch এর Lifecycle</h3>
+
+        <div class="diagram">
+main branch (production)
+        ↓
+Create feature branch
+        ↓
+Work on feature
+        ↓
+Make commits
+        ↓
+Push branch
+        ↓
+Create Pull Request
+        ↓
+Code Review
+        ↓
+Merge to main
+        ↓
+Delete branch
+        </div>
+
+    </div>
+
+    <!-- PART 11 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔗</span> অংশ ১১: Merge এবং Conflict Resolution</h2>
+
+        <h3>Merge কী?</h3>
+
+        <div class="story-box">
+            <strong>Shamim এর feature তৈরি শেষ হয়েছে।</strong> এখন তার <code>feature/login</code> branch এর সব commits main branch-এ যোগ করতে চায়।br><br>
+
+            এটাকে বলে "merge করা"।<br><br>
+
+            সে switch করবে main-এ, তারপর:<br>
+            <code>git merge feature/login</code><br><br>
+
+            এখন <code>feature/login</code> branch-এর সব commits main branch-এ চলে আসবে।
+        </div>
+
+        <h3>Merge প্রক্রিয়া</h3>
+
+        <div class="code-box">
+# main branch-এ switch করা <br>
+git switch main<br><br>
+
+# feature branch merge করা<br>
+git merge feature/login<br><br>
+
+# Merge এর পরে old branch delete করা<br>
+git branch -d feature/login<br>
+        </div>
+
+        <h3>Merge এর ধরন</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Fast-Forward Merge</strong><br><br>
+                যখন feature branch এগিয়ে গেছে, কিন্তু main স্থির থেকেছে।<br><br>
+                এক্ষেত্রে git শুধু pointer সরিয়ে দেয়।
+            </div>
+            <div class="comparison-item">
+                <strong>Three-Way Merge</strong><br><br>
+                যখন main এবং feature দুটোই এগিয়ে গেছে।<br><br>
+                Git একটি merge commit তৈরি করে।
+            </div>
+        </div>
+
+        <h3>Merge Conflict</h3>
+
+        <div class="story-box">
+            <strong>সমস্যা দেখা দিল।</strong><br><br>
+
+            Shamim এবং Tamim দুজনেই একই file-এর একই line edit করেছে।<br>
+            এখন merge করতে গিয়ে Git সিদ্ধান্ত নিতে পারছে না - কোনটা রাখবে?<br><br>
+
+            Git output দিয়েছে:<br>
+            <code>CONFLICT (content conflict)</code><br><br>
+
+            <strong>এখন manual resolve করতে হবে।</strong>
+        </div>
+
+        <h3>Conflict Resolution</h3>
+
+        <div class="technical-box">
+            যখন conflict হয়, file-এ এমন markers আসে:<br><br>
+
+            <code><<<<<<< HEAD</code> (main branch-এর version)<br>
+            প্রকৃত content<br>
+            <code>=======</code><br>
+            feature branch-এর version<br>
+            <code>>>>>>> feature/login</code><br><br>
+
+            আপনি manually decide করেন কোনটা রাখবেন বা দুটো merge করবেন।<br><br>
+
+            তারপর:<br>
+            <code>git add resolved-file</code><br>
+            <code>git commit -m "Resolve merge conflict"</code>
+        </div>
+
+        <h3>Conflict এড়ানো</h3>
+
+        <div class="key-point">
+            ✓ একই file-এর same area একই সাথে edit করবেন না<br>
+            ✓ ঘন ঘন pull করুন যাতে out of sync না হন<br>
+            ✓ feature branches ছোট এবং focused রাখুন<br>
+            ✓ frequently merge করুন main-এ
+        </div>
+
+    </div>
+
+    <!-- PART 12 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">👥</span> অংশ ১২: Real Workflow - দলে কাজ করা</h2>
+
+        <h3>একটি সম্পূর্ণ Real-World Workflow</h3>
+
+        <div class="story-box">
+            <strong>নতুন feature: User Profile Page</strong><br><br>
+
+            <strong>Step 1: Ticket পাওয়া</strong><br>
+            Project Manager Shamim-কে বলল: "User Profile Page তৈরি করো।"<br><br>
+
+            <strong>Step 2: Branch তৈরি</strong><br>
+            Shamim করল:<br>
+            <code>git switch -c feature/user-profile</code><br><br>
+
+            <strong>Step 3: কাজ শুরু</strong><br>
+            Shamim profile page-এর HTML, CSS, JavaScript লিখলো।<br><br>
+
+            <strong>Step 4: Commits করা</strong><br>
+            <code>git add .</code><br>
+            <code>git commit -m "Add user profile component"</code><br>
+            <code>git commit -m "Add profile styling"</code><br><br>
+
+            <strong>Step 5: Push করা</strong><br>
+            <code>git push origin feature/user-profile</code><br><br>
+
+            <strong>Step 6: Pull Request</strong><br>
+            GitHub-এ গিয়ে একটি Pull Request খুলল। Team lead দেখতে বলল।<br><br>
+
+            <strong>Step 7: Code Review</strong><br>
+            Team lead: "আচ্ছা, এখানে একটা bug আছে। Error handling নেই।"<br>
+            Shamim fix করল এবং নতুন commit করল।<br><br>
+
+            <strong>Step 8: Approval</strong><br>
+            "এখন ঠিক আছে। Merge করতে পারো।"<br><br>
+
+            <strong>Step 9: Merge</strong><br>
+            <code>git switch main</code><br>
+            <code>git pull origin main</code><br>
+            <code>git merge feature/user-profile</code><br>
+            <code>git push origin main</code><br><br>
+
+            <strong>Step 10: Cleanup</strong><br>
+            <code>git branch -d feature/user-profile</code>
+        </div>
+
+        <h3>Pull Request - কোড রিভিউ এর মাধ্যম</h3>
+
+        <div class="technical-box">
+            <strong>Pull Request (PR) হলো একটি collaboration mechanism।</strong><br><br>
+
+            এটি GitHub-এ থাকে। এটি Git এর নিজস্ব feature নয়।<br><br>
+
+            PR দিয়ে:<br>
+            • Code review করা যায়<br>
+            • Discussion করা যায়<br>
+            • Merge করার আগে CI/CD run করা যায়<br>
+            • Approval নেওয়া যায়
+        </div>
+
+    </div>
+
+    <!-- PART 13 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">✍️</span> অংশ ১৩: Commit Convention - পেশাদার মান</h2>
+
+        <h3>Conventional Commits</h3>
+
+        <div class="technical-box">
+            <strong>ইন্ডাস্ট্রিতে একটি standard আছে: Conventional Commits</strong><br><br>
+
+            Format:<br>
+            <code>type(scope): subject</code><br><br>
+
+            <strong>Type:</strong><br>
+            • <code>feat:</code> নতুন feature<br>
+            • <code>fix:</code> bug fix<br>
+            • <code>docs:</code> documentation change<br>
+            • <code>style:</code> formatting, styling<br>
+            • <code>refactor:</code> code restructure<br>
+            • <code>test:</code> test addition<br>
+            • <code>chore:</code> maintenance tasks<br><br>
+
+            <strong>উদাহরণ:</strong><br>
+            <code>feat(auth): add user login functionality</code><br>
+            <code>fix(profile): resolve null pointer in display</code><br>
+            <code>docs(readme): update installation steps</code>
+        </div>
+
+        <h3>Atomic Commits</h3>
+
+        <div class="story-box">
+            <strong>Bad:</strong><br>
+            একটি বিশাল commit যাতে feature + bug fix + documentation আছে।<br><br>
+
+            <strong>Good:</strong><br>
+            Feature এর জন্য একটি commit<br>
+            Bug fix এর জন্য আরেকটি commit<br>
+            Documentation এর জন্য তৃতীয় commit<br><br>
+
+            এর ফলে history পরিষ্কার থাকে। যদি একটা commit revert করতে হয়, শুধু সেটাই revert হয়, অন্যগুলো নয়।
+        </div>
+
+    </div>
+
+    <!-- PART 14 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">↩️</span> অংশ ১৪: Undo Operations - সাবধানে!</h2>
+
+        <h3>পাঁচটি পর্যায়ে Undo</h3>
+
+        <div class="technical-box">
+            <strong>যদি ভুল file edit করেছেন (Working Directory-তে):</strong><br>
+            <code>git restore filename</code><br><br>
+
+            <strong>যদি ভুল stage করেছেন (Staging Area থেকে):</strong><br>
+            <code>git restore --staged filename</code><br><br>
+
+            <strong>যদি ভুল commit করেছেন এবং locally এটা ঠিক করতে চান:</strong><br>
+            <code>git reset --soft HEAD~1</code> (commit undo, changes staging-এ থাকে)<br>
+            <code>git reset --mixed HEAD~1</code> (commit undo, changes working-এ থাকে)<br><br>
+
+            <strong>যদি ভুল commit remote-এ push করে দিয়েছেন (DANGEROUS):</strong><br>
+            <code>git revert commit-hash</code> (নতুন commit যা undo করে)
+        </div>
+
+        <h3>⚠️ বিপদজনক কমান্ড</h3>
+
+        <div class="key-point">
+            <strong>NEVER:</strong> Shared branch-এ <code>git reset --hard</code> করবেন না<br>
+            <strong>NEVER:</strong> Shared branch-এ <code>git push --force</code> করবেন না<br>
+            <strong>NEVER:</strong> History rewrite করবেন না যেটা অন্যরা already pull করেছে<br><br>
+
+            <strong>INSTEAD:</strong> <code>git revert</code> ব্যবহার করুন। এটা একটা নতুন commit তৈরি করে যা পুরোনো commit undo করে।
+        </div>
+
+    </div>
+
+    <!-- PART 15 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🏢</span> অংশ ১৫: সম্পূর্ণ Company Workflow</h2>
+
+        <h3>একটি Production-Ready Workflow</h3>
+
+        <div class="diagram">
+Jira Ticket (Feature Request)
+        ↓
+Create Feature Branch (git switch -c)
+        ↓
+Local Development (edit, commit)
+        ↓
+Push Branch (git push origin)
+        ↓
+Create Pull Request (code review)
+        ↓
+Peer Review + Feedback
+        ↓
+Make Changes + New Commits
+        ↓
+Automated Tests (CI/CD)
+        ↓
+Approval from Team Lead
+        ↓
+Merge to main (git merge)
+        ↓
+Production Deployment
+        ↓
+Monitor and Debug if needed
+        </div>
+
+        <h3>Branch Strategy: Git Flow</h3>
+
+        <div class="technical-box">
+            <strong>সবচেয়ে popular branch strategy:</strong><br><br>
+
+            • <code>main</code> - Production code (stable)<br>
+            • <code>develop</code> - Development branch<br>
+            • <code>feature/*</code> - নতুন feature<br>
+            • <code>bugfix/*</code> - Bug fixes<br>
+            • <code>release/*</code> - Release preparation<br>
+            • <code>hotfix/*</code> - Production bugs<br><br>
+
+            এই strategy বড় projects-এ ব্যবহৃত হয়।
+        </div>
+
+        <h3>.gitignore - কী Upload করবেন না</h3>
+
+        <div class="code-box">
+# Dependencies<br>
+node_modules/<br>
+__pycache__/<br>
+*.pyc<br>
+env/<br><br>
+
+# Secrets<br>
+.env<br>
+.env.local<br>
+secrets.json<br><br>
+
+# IDE<br>
+.vscode/<br>
+.idea/<br>
+*.swp<br><br>
+
+# OS<br>
+.DS_Store<br>
+Thumbs.db<br><br>
+
+# Build output<br>
+dist/<br>
+build/<br>
+*.log<br>
+        </div>
+
+        <h3>সবচেয়ে গুরুত্বপূর্ণ: Commit করার আগে Check করুন</h3>
+
+        <div class="key-point">
+            ✓ <code>.env</code> file commit হয়নি?<br>
+            ✓ Debug code বা console.log() আছে?<br>
+            ✓ Merge conflict markers (<code><<<</code>, <code>>>></code>) আছে?<br>
+            ✓ Working file আছে যা commit করতে চান না?<br>
+            ✓ Commit message clear এবং descriptive?
+        </div>
+
+    </div>
+
+    <!-- PART 16 - Final -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📖</span> অংশ ১৬: Quick Reference এবং সারসংক্ষেপ</h2>
+
+        <h3>Git এর সম্পূর্ণ Mental Model</h3>
+
+        <div class="diagram">
+            <img
+                    src="images/git_workflow.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        <h3>সবচেয়ে ব্যবহৃত কমান্ড</h3>
+
+        <table>
+            <tr>
+                <th>কমান্ড</th>
+                <th>উদাহরণ</th>
+                <th>ব্যবহার</th>
+            </tr>
+            <tr>
+                <td><code>git status</code></td>
+                <td><code>git status</code></td>
+                <td>অবস্থা জানা</td>
+            </tr>
+            <tr>
+                <td><code>git add</code></td>
+                <td><code>git add . </code> or <code>git add app.py</code></td>
+                <td>Staging area-তে রাখা</td>
+            </tr>
+            <tr>
+                <td><code>git commit</code></td>
+                <td><code>git commit -m "Add feature"</code></td>
+                <td>Snapshot করা</td>
+            </tr>
+            <tr>
+                <td><code>git push</code></td>
+                <td><code>git push origin main</code></td>
+                <td>GitHub-এ পাঠানো</td>
+            </tr>
+            <tr>
+                <td><code>git pull</code></td>
+                <td><code>git pull origin main</code></td>
+                <td>GitHub থেকে আনা</td>
+            </tr>
+            <tr>
+                <td><code>git branch</code></td>
+                <td><code>git branch feature/new</code></td>
+                <td>Branch তৈরি</td>
+            </tr>
+            <tr>
+                <td><code>git switch</code></td>
+                <td><code>git switch feature/new</code></td>
+                <td>Branch change করা</td>
+            </tr>
+            <tr>
+                <td><code>git merge</code></td>
+                <td><code>git merge feature/new</code></td>
+                <td>Branches একসাথে করা</td>
+            </tr>
+            <tr>
+                <td><code>git log</code></td>
+                <td><code>git log --oneline</code></td>
+                <td>History দেখা</td>
+            </tr>
+            <tr>
+                <td><code>git clone</code></td>
+                <td><code>git clone https://github.com/repo</code></td>
+                <td>Project copy করা</td>
+            </tr>
+        </table>
+
+        <h3>Shamim এর Final Learning</h3>
+
+        <div class="success-box">
+            <strong>Shamim এখন পুরো picture বুঝে গেছে।</strong><br><br>
+
+            সে জানে:<br>
+            ✓ কেন Version Control দরকার<br>
+            ✓ Git এবং GitHub পার্থক্য<br>
+            ✓ কীভাবে Local Repository কাজ করে<br>
+            ✓ কীভাবে Remote সংযোগ<br>
+            ✓ Branch দিয়ে parallel কাজ<br>
+            ✓ Merge conflict resolve<br>
+            ✓ Production ready workflow<br><br>
+
+            সবচেয়ে গুরুত্বপূর্ণ, সে বুঝে গেছে <strong>কেন</strong> প্রতিটি ধাপ দরকার।
+        </div>
+
+        <h3>পরবর্তী পদক্ষেপ</h3>
+
+        <div class="info-box">
+            <strong>এখন আপনি শুরু করতে পারেন:</strong><br><br>
+
+            ১. একটি GitHub account তৈরি করুন<br>
+            ২. একটি repository create করুন<br>
+            ३. Local machine-এ clone করুন<br>
+            ४. নতুন feature branch তৈরি করুন<br>
+            ५. কিছু কোড লিখুন, commit করুন, push করুন<br>
+            ६. Pull request তৈরি করুন<br>
+            ७. পরে সব branches merge করুন<br><br>
+
+            <strong>অনুশীলনের মাধ্যমে শিখুন। তত্ত্ব জরুরি, কিন্তু ব্যবহার আরও জরুরি।</strong>
+        </div>
+
+        <h3>Common Mistakes এবং সমাধান</h3>
+
+        <table>
+            <tr>
+                <th>সমস্যা</th>
+                <th>সমাধান</th>
+            </tr>
+            <tr>
+                <td>"কোন file commit হয়নি"</td>
+                <td><code>git add .</code> দিয়ে সব file stage করুন</td>
+            </tr>
+            <tr>
+                <td>"Push করতে পারছি না"</td>
+                <td>আগে <code>git pull</code> করুন</td>
+            </tr>
+            <tr>
+                <td>".env file leak হয়েছে"</td>
+                <td><code>git rm --cached .env</code> করুন (পরে)</td>
+            </tr>
+            <tr>
+                <td>"ভুল branch-এ commit করেছি"</td>
+                <td><code>git reset --soft HEAD~1</code> দিয়ে undo করুন</td>
+            </tr>
+            <tr>
+                <td>"Merge conflict সমাধান করতে পারছি"</td>
+                <td>Manual edit করুন, add করুন, commit করুন</td>
+            </tr>
+        </table>
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: 1.0</p>
+            <p>ভাষা: বাংলা</p>
+            <p>টপিক: Git এবং Version Control</p>
+            <p>আপডেট: ১২ আগস্ট ২০২৬</p>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
