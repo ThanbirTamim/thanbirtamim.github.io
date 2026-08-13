@@ -1633,7 +1633,7 @@
 
   <header class="hero-header">
       <div class="cover-banner">
-          <img src="assets/img/cover_hacker_vibe.png" alt="Cover">
+          <img id="coverImage" src="assets/img/cover_hacker_vibe.png" alt="Cover">
           <div class="cover-overlay"></div>
       </div>
       <div class="profile-card">
@@ -2330,6 +2330,7 @@
   <script>
     function toggleDarkMode() {
       const btn = document.querySelector('.dark-mode-toggle i');
+      const coverImage = document.getElementById('coverImage');
       document.body.classList.toggle('dark-mode');
       const isDarkMode = document.body.classList.contains('dark-mode');
 
@@ -2337,26 +2338,31 @@
       if (isDarkMode) {
         btn.classList.remove('fa-moon');
         btn.classList.add('fa-sun');
+        coverImage.src = 'assets/img/cover_hacker_vibe.png';
         localStorage.setItem('theme', 'dark');
       } else {
         btn.classList.remove('fa-sun');
         btn.classList.add('fa-moon');
+        coverImage.src = 'assets/img/cover_hacker_vibe_lite.png';
         localStorage.setItem('theme', 'light');
       }
     }
 
     function initializeDarkMode() {
       const btn = document.querySelector('.dark-mode-toggle i');
+      const coverImage = document.getElementById('coverImage');
       const savedTheme = localStorage.getItem('theme') || 'light';
 
       if (savedTheme === 'dark') {
         document.body.classList.add('dark-mode');
         btn.classList.remove('fa-moon');
         btn.classList.add('fa-sun');
+        coverImage.src = 'assets/img/cover_hacker_vibe.png';
       } else {
         document.body.classList.remove('dark-mode');
         btn.classList.remove('fa-sun');
         btn.classList.add('fa-moon');
+        coverImage.src = 'assets/img/cover_hacker_vibe_lite.png';
       }
     }
 
