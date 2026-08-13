@@ -274,8 +274,55 @@
       vertical-align: middle;
     }
 
+    .table-responsive-wrapper {
+      overflow-x: auto;
+      margin: 20px 0;
+      border-radius: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .table-responsive-wrapper .table {
+      min-width: 100%;
+    }
+
     .dark-mode .table-responsive {
       box-shadow: 0 8px 25px rgba(13, 110, 253, 0.2);
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 20px 0;
+    }
+
+    .table-responsive::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 3px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+      background: rgba(102, 126, 234, 0.3);
+      border-radius: 3px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: rgba(102, 126, 234, 0.5);
+    }
+
+    .dark-mode .table-responsive::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .dark-mode .table-responsive::-webkit-scrollbar-thumb {
+      background: rgba(13, 110, 253, 0.3);
+    }
+
+    .dark-mode .table-responsive::-webkit-scrollbar-thumb:hover {
+      background: rgba(13, 110, 253, 0.6);
     }
 
     .table thead {
@@ -284,6 +331,59 @@
 
     .dark-mode .table thead {
       background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%);
+    }
+
+    /* Mobile table responsiveness */
+    @media (max-width: 768px) {
+      .table-responsive-wrapper {
+        margin: 20px -15px;
+        border-radius: 0;
+      }
+
+      .table {
+        overflow-x: auto;
+        display: block;
+        width: 100%;
+      }
+
+      .table table {
+        min-width: 600px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .table {
+        font-size: 0.75rem !important;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table tbody {
+        display: block;
+        width: 100%;
+      }
+
+      .table thead {
+        display: block;
+        width: 100%;
+      }
+
+      .table tr {
+        display: block;
+        width: 100%;
+      }
+
+      .table td,
+      .table th {
+        padding: 6px 4px !important;
+        word-break: break-word;
+        font-size: 0.7rem !important;
+      }
+
+      .table ul li {
+        font-size: 0.65rem;
+        margin: 2px 0;
+      }
     }
 
     /* Cute text styling */
@@ -882,6 +982,7 @@
 
       .navbar-brand {
         font-size: 1.5rem !important;
+        gap: 8px;
       }
 
       .logo-icon {
@@ -890,39 +991,276 @@
         font-size: 1.1rem;
       }
 
+      .dark-mode-toggle {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+      }
+
       h2 {
         font-size: 1.8rem;
       }
 
+      h3 {
+        font-size: 1.4rem;
+      }
+
       section {
-        padding: 40px 0;
+        padding: 30px 15px;
       }
 
       .profile-card {
         padding: 20px 15px;
+        margin-bottom: 20px;
+      }
+
+      main {
+        padding: 30px 15px;
+      }
+
+      .hero-header {
+        margin-bottom: 60px;
+      }
+
+      .cover-banner {
+        border-radius: 12px;
+      }
+
+      .dark-mode section {
+        padding: 30px 15px !important;
+      }
+
+      .dark-mode main {
+        padding: 30px 15px;
+      }
+
+      .table-responsive {
+        margin: 15px -15px;
+        border-radius: 0;
+        overflow-x: auto;
+      }
+
+      .table {
+        min-width: 600px;
+        font-size: 0.9rem;
+      }
+
+      th, td {
+        padding: 12px 8px !important;
       }
     }
 
     @media (max-width: 480px) {
+      body {
+        padding-top: 65px;
+        font-size: 15px;
+      }
+
+      .navbar {
+        padding: 0.4rem 0.8rem !important;
+      }
+
       .navbar-brand {
-        font-size: 1.3rem !important;
-        letter-spacing: 0px;
+        font-size: 1.2rem !important;
+        letter-spacing: 1px;
+        gap: 5px;
       }
 
       .logo-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
         margin-right: 5px;
-      }
-
-      h2 {
-        font-size: 1.5rem;
       }
 
       .dark-mode-toggle {
         width: 38px;
         height: 38px;
+        font-size: 0.95rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+        margin: 30px 0 15px 0;
+      }
+
+      h3 {
+        font-size: 1.2rem;
+        margin: 20px 0 12px 0;
+        padding-left: 12px;
+      }
+
+      h4 {
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      section {
+        padding: 25px 12px;
+        margin-bottom: 15px;
+      }
+
+      main {
+        padding: 20px 10px;
+      }
+
+      .profile-card {
+        padding: 15px 12px;
+        margin-bottom: 15px;
+      }
+
+      .hero-header {
+        margin-bottom: 40px;
+      }
+
+      .cover-banner {
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .profile-img {
+        max-width: 150px;
+      }
+
+      table {
+        font-size: 0.8rem;
+        margin: 15px 0;
+        display: block;
+      }
+
+      th, td {
+        padding: 8px 6px !important;
+        font-size: 0.8rem;
+      }
+
+      th {
+        font-size: 0.75rem;
+        padding: 8px 6px !important;
+      }
+
+      thead {
+        display: table;
+        width: 100%;
+      }
+
+      tbody {
+        display: block;
+        overflow-x: auto;
+      }
+
+      tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+
+      .table-responsive {
+        margin: 15px -12px;
+        border-radius: 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table-responsive .table {
+        min-width: 550px;
+        margin: 0;
+      }
+
+      .table ul {
+        margin: 8px 0 8px 20px;
+        font-size: 0.75rem;
+      }
+
+      .table li {
+        margin: 4px 0;
+        font-size: 0.75rem;
+      }
+
+      .card {
+        margin-bottom: 15px;
+      }
+
+      .btn-sm {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+      }
+
+      .dark-mode section {
+        padding: 25px 12px !important;
+      }
+
+      .dark-mode main {
+        padding: 20px 10px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .navbar-brand {
+        font-size: 1.1rem !important;
+        letter-spacing: 0px;
+      }
+
+      .logo-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      section {
+        padding: 20px 10px;
+      }
+
+      main {
+        padding: 15px 8px;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      table {
+        font-size: 0.7rem;
+      }
+
+      th {
+        padding: 6px 4px !important;
+        font-size: 0.65rem;
+      }
+
+      td {
+        padding: 6px 4px !important;
+        font-size: 0.7rem;
+      }
+
+      .table-responsive-wrapper .table {
+        min-width: 500px;
+      }
+
+      .table ul {
+        margin: 4px 0 4px 15px;
+        font-size: 0.65rem;
+      }
+
+      .table li {
+        margin: 2px 0;
+        font-size: 0.65rem;
+      }
       }
     }
     

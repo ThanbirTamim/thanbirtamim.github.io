@@ -344,13 +344,251 @@
                 grid-template-columns: 1fr;
             }
             body {
-                padding: 15px 10px;
+                padding: 20px 15px;
+                font-size: 15px;
             }
             .container {
-                padding: 25px;
+                padding: 30px 20px;
+                border-radius: 12px;
             }
             .diagram-image {
                 max-height: 300px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+            table {
+                font-size: 0.95rem;
+            }
+            th, td {
+                padding: 12px 10px;
+            }
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+            .key-point {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+            .toc li:before {
+                font-size: 1rem;
+            }
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+            strong {
+                font-weight: 600;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+            .container {
+                padding: 15px 12px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            h3 {
+                font-size: 1rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+            table {
+                font-size: 0.8rem;
+            }
+            th, td {
+                padding: 8px 6px;
             }
         }
     </style>
