@@ -1,7 +1,8 @@
 {
   "network": {
     "allowedDomains": [
-      "tanstack.com"
+      "tanstack.com",
+      "api.github.com"
     ]
   }
 }
