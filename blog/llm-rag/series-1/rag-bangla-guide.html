@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="RAG বা Retrieval-Augmented Generation কী, কেন LLM-এর সাথে RAG ব্যবহার করা হয় এবং Retrieval, Embedding, Vector Search, FAISS ও Generation কীভাবে একসাথে কাজ করে—একদম beginner-friendly বাংলায় বিস্তারিত আলোচনা।">
+    <title>RAG কী? LLM-এর সাথে RAG কেন দরকার? | বাংলা RAG সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home">
+        <i class="fas fa-home"></i>
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        LLM + RAG সিরিজ &raquo; Episode ০১
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> RAG কী?</h1>
+    <p class="subtitle">LLM-এর সাথে RAG কেন দরকার? — Retrieval, Embedding, Vector Search ও Generation-এর সম্পূর্ণ Mental Model (Series 1, Episode 01)</p>
+
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তু</h2>
+        <ul>
+            <li>১. Introduction: একটি বাস্তব সমস্যা দিয়ে শুরু</li>
+            <li>২. LLM কী?</li>
+            <li>৩. LLM-এর সীমাবদ্ধতা: Training Knowledge ≠ Private Database</li>
+            <li>৪. Hallucination কী?</li>
+            <li>৫. Traditional LLM Usage বনাম RAG</li>
+            <li>৬. RAG কী? (Retrieval + Augmented + Generation)</li>
+            <li>৭. RAG Architecture — সম্পূর্ণ ডায়াগ্রাম, বক্স বাই বক্স</li>
+            <li>৮. দুটি প্রধান Pipeline: Ingestion vs Query</li>
+            <li>৯. Embedding কী?</li>
+            <li>১০. Vector ও Vector Search কী?</li>
+            <li>১১. FAISS কী? (এবং FAISS বনাম Vector Database)</li>
+            <li>১২. Chunking কী?</li>
+            <li>১৩. Hybrid Search — সংক্ষিপ্ত পরিচিতি</li>
+            <li>১৪. Reranking — সংক্ষিপ্ত পরিচিতি</li>
+            <li>১৫. RAG বনাম Fine-tuning</li>
+            <li>১৬. Case Study: আমাদের Islamic RAG Project</li>
+            <li>১৭. ছোট Code Walkthrough</li>
+            <li>১৮. সাধারণ ভুল ধারণা</li>
+            <li>১৯. সিরিজ Roadmap — সম্পূর্ণ Learning Path</li>
+            <li>২০. Conclusion</li>
+            <li>২১. Next Episode</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">🧩</span> ১. Introduction: একটি বাস্তব সমস্যা দিয়ে শুরু</h2>
+
+        <p>
+            ধরুন আপনার কাছে আছে:
+        </p>
+
+        <div class="diagram">
+১০,০০০ PDF documents
+১,০০,০০০ company documents
+৪০,০০০ Hadith records
+৬,০০০ Quran verses
+        </div>
+
+        <p>
+            এবং আপনি একটি প্রশ্ন করতে চান:
+        </p>
+
+        <div class="key-point">
+            "Knowledge base অনুযায়ী ধৈর্য (patience) সম্পর্কে কী বলা হয়েছে?"
+        </div>
+
+        <p>
+            স্বাভাবিক প্রশ্ন হলো — কেন আমরা এই সব document সরাসরি একটি LLM-কে পাঠিয়ে দিচ্ছি না? LLM তো টেক্সট পড়ে
+            উত্তর দিতে পারে।
+        </p>
+
+        <h3>কেন সব document সরাসরি LLM-কে পাঠানো যায় না?</h3>
+
+        <div class="technical-box">
+            <strong>কারণ ১ — Context Window সীমিত।</strong><br>
+            প্রতিটি LLM-এর একটি নির্দিষ্ট <strong>context window</strong> আছে (একবারে কতটুকু text পড়তে পারে,
+            token-এ পরিমাপ করা হয়)। ৪১,০০০+ document বা ১,১০,০০০+ PDF কখনোই একটি single request-এ পাঠানো সম্ভব
+            না।<br><br>
+            <strong>কারণ ২ — খরচ ও গতি।</strong><br>
+            প্রতিটি token processing-এর একটি খরচ ও সময় আছে। পুরো knowledge base প্রতিটি প্রশ্নের সাথে পাঠানো
+            practically অসম্ভব ও ব্যয়বহুল।<br><br>
+            <strong>কারণ ৩ — Relevance।</strong><br>
+            "ধৈর্য" সম্পর্কিত প্রশ্নের জন্য মাত্র কয়েকটি অংশ প্রাসঙ্গিক (relevant) — বাকি হাজার হাজার document
+            সম্পূর্ণ অপ্রাসঙ্গিক। এগুলো পাঠানো শুধু noise বাড়ায়।
+        </div>
+
+        <p>
+            তাহলে সমাধান কী? সমাধানটা আসলে খুব স্বাভাবিক যুক্তিতে দাঁড়িয়ে আছে:
+        </p>
+
+        <div class="diagram">
+User Question
+      ↓
+Find Relevant Information
+      ↓
+Give Relevant Information to LLM
+      ↓
+LLM Generates Answer
+        </div>
+
+        <p>
+            অর্থাৎ, পুরো knowledge base না পাঠিয়ে — শুধুমাত্র প্রশ্নের সাথে সম্পর্কিত অংশটুকু খুঁজে বের করে,
+            সেটুকুই LLM-কে দেওয়া হয়। এই সহজ ধারণাটির একটি নাম আছে:
+        </p>
+
+        <div class="diagram">
+Retrieval
++
+Augmented
++
+Generation
+=
+RAG
+        </div>
+
+        <p>প্রতিটি শব্দ আলাদা করে দেখা যাক:</p>
+
+        <table>
+            <tr>
+                <th>শব্দ</th>
+                <th>মানে</th>
+            </tr>
+            <tr>
+                <td><strong>Retrieval</strong></td>
+                <td>প্রাসঙ্গিক তথ্য খুঁজে বের করা (knowledge base থেকে)</td>
+            </tr>
+            <tr>
+                <td><strong>Augmented</strong></td>
+                <td>সেই তথ্য দিয়ে মূল prompt/context-কে "সমৃদ্ধ" (augment) করা</td>
+            </tr>
+            <tr>
+                <td><strong>Generation</strong></td>
+                <td>সেই সমৃদ্ধ context ব্যবহার করে LLM দিয়ে natural-language উত্তর তৈরি করা</td>
+            </tr>
+        </table>
+
+        <div class="key-point">
+            <strong>RAG (Retrieval-Augmented Generation)</strong> মূলত এই তিনটি ধাপের সমন্বয় — আগে relevant তথ্য
+            খুঁজে বের করা, তারপর সেই তথ্য দিয়ে LLM-এর prompt সমৃদ্ধ করা, এবং শেষে LLM দিয়ে উত্তর generate করা।
+        </div>
+
+        <p>
+            এই Episode-এ আমরা কোনো FAISS code লিখব না। আগে একটি শক্ত mental model তৈরি করব — কেন RAG দরকার, এর
+            প্রতিটি অংশ কী কাজ করে, এবং এই অংশগুলো কীভাবে একসাথে বসে। পরবর্তী Episode-গুলোতে আমরা ধাপে ধাপে এই
+            architecture বাস্তবায়ন করব।
+        </p>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🤖</span> ২. LLM কী?</h2>
+
+        <p>
+            RAG বোঝার আগে LLM সম্পর্কে একটি স্পষ্ট, ব্যবহারিক ধারণা থাকা দরকার — গভীর transformer গণিতে না গিয়ে।
+        </p>
+
+        <div class="technical-box">
+            <strong>LLM (Large Language Model)</strong> হলো একটি model, যা বিপুল পরিমাণ text data দিয়ে
+            <strong>train</strong> করা হয়েছে, এবং যা একটি ইনপুট text (prompt) দেখে পরবর্তী, সম্ভাব্য text
+            generate করতে পারে।
+        </div>
+
+        <h3>গুরুত্বপূর্ণ পরিভাষা</h3>
+
+        <table>
+            <tr>
+                <th>টার্ম</th>
+                <th>সহজ ব্যাখ্যা</th>
+            </tr>
+            <tr>
+                <td><strong>Training</strong></td>
+                <td>বিপুল পরিমাণ text data দেখিয়ে model-এর ভেতরের parameter-গুলো সমন্বয় (adjust) করার প্রক্রিয়া — এটি একবার, আগে থেকে করা হয়</td>
+            </tr>
+            <tr>
+                <td><strong>Inference</strong></td>
+                <td>Training শেষ হওয়া model ব্যবহার করে বাস্তব সময়ে (real-time) নতুন input-এর জন্য output তৈরি করা</td>
+            </tr>
+            <tr>
+                <td><strong>Parameters</strong></td>
+                <td>Training-এর সময় শেখা numerical মান, যেগুলো model-এর "জ্ঞান" ধারণ করে (কোটি থেকে বিলিয়ন সংখ্যক হতে পারে)</td>
+            </tr>
+            <tr>
+                <td><strong>Token</strong></td>
+                <td>Text-কে ভাঙার ছোট একক (শব্দ, শব্দাংশ, বা character-এর সমষ্টি হতে পারে) — LLM টেক্সট নয়, token নিয়ে কাজ করে</td>
+            </tr>
+            <tr>
+                <td><strong>Context Window</strong></td>
+                <td>একবারে LLM কতগুলো token (input + output মিলিয়ে) প্রক্রিয়া করতে পারে তার সীমা</td>
+            </tr>
+            <tr>
+                <td><strong>Prompt</strong></td>
+                <td>LLM-কে দেওয়া input text, যার ভিত্তিতে এটি output তৈরি করে</td>
+            </tr>
+            <tr>
+                <td><strong>Generation</strong></td>
+                <td>Prompt-এর ভিত্তিতে LLM-এর token-by-token output তৈরি করার প্রক্রিয়া</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            এই Episode-এ আমরা transformer architecture, attention mechanism, বা training math নিয়ে বিস্তারিত
+            যাব না। এখানে লক্ষ্য শুধু এটুকু বোঝা — LLM একটি prompt নেয়, এবং তার training-এ শেখা প্যাটার্ন অনুযায়ী
+            একটি output generate করে।
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔒</span> ৩. LLM-এর সীমাবদ্ধতা: Training Knowledge ≠ Private Database</h2>
+
+        <p>
+            RAG বোঝার জন্য এই একটি distinction সবচেয়ে গুরুত্বপূর্ণ:
+        </p>
+
+        <div class="diagram">
+Training Knowledge
+        ≠
+Your Private Database
+        </div>
+
+        <p>
+            একটি LLM যখন train করা হয়, তখন এটি একটি নির্দিষ্ট সময় পর্যন্ত সংগৃহীত publicly available text থেকে
+            শেখে। Training শেষ হওয়ার পর, model-এর "জ্ঞান" সেই মুহূর্তে <strong>freeze</strong> হয়ে যায়।
+        </p>
+
+        <div class="key-point">
+            এর মানে, একটি LLM স্বয়ংক্রিয়ভাবে নিচের কোনোটির সাথেই পরিচিত না:
+        </div>
+
+        <ul>
+            <li>আপনার কোম্পানির internal document</li>
+            <li>ব্যক্তিগত (private) PDF ফাইল</li>
+            <li>আপনার database-এ থাকা record</li>
+            <li>Training-এর পরে upload করা নতুন document</li>
+            <li>প্রতিষ্ঠান-নির্দিষ্ট (proprietary) knowledge</li>
+        </ul>
+
+        <p>
+            উদাহরণস্বরূপ, আমাদের Islamic RAG project-এর ক্ষেত্রে — একটি সাধারণ, general-purpose LLM হয়তো ইসলাম
+            সম্পর্কে সাধারণ জ্ঞান রাখে (কারণ এটি public training data-তে ছিল), কিন্তু এটি নির্দিষ্টভাবে আমাদের
+            curated ৪১,০০০+ entry-র Quran ও Hadith dataset-এর সাথে পরিচিত না, এবং নির্দিষ্ট reference/সূত্র
+            (citation) দিয়ে উত্তর দিতে পারবে না — যতক্ষণ না আমরা সেই তথ্য স্পষ্টভাবে সরবরাহ করি।
+        </p>
+
+        <div class="technical-box">
+            <strong>মূল সমস্যা:</strong> LLM-এর training knowledge static (স্থির) এবং general। কিন্তু আমাদের
+            প্রয়োজন প্রায়ই dynamic (পরিবর্তনশীল) এবং specific (নির্দিষ্ট) — যেমন সাম্প্রতিক document, ব্যক্তিগত
+            data, বা কোনো নির্দিষ্ট curated dataset। RAG ঠিক এই ফাঁকটাই পূরণ করে।
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🌀</span> ৪. Hallucination কী?</h2>
+
+        <p>
+            যখন একটি LLM-এর কাছে সঠিক তথ্য থাকে না, তখন সেটি কী করে? এটি সাধারণত "জানি না" বলে না — বরং এটি একটি
+            <strong>plausible</strong> (বিশ্বাসযোগ্য শোনায় এমন) কিন্তু ভুল উত্তর তৈরি করতে পারে। এই সমস্যাটির নাম
+            <strong>Hallucination</strong>।
+        </p>
+
+        <div class="technical-box">
+            <strong>ইংরেজি term:</strong> Hallucination<br>
+            <strong>সহজ বাংলায়:</strong> LLM যখন এমন তথ্য তৈরি করে যা শুনতে স্বাভাবিক ও আত্মবিশ্বাসী মনে হয়, কিন্তু
+            আসলে ভুল, বানানো, বা যাচাইযোগ্য নয় — তখন সেটাকে Hallucination বলা হয়।
+        </div>
+
+        <div class="story-box">
+            <strong>উদাহরণ:</strong> কাউকে যদি জিজ্ঞাসা করা হয় একটি নির্দিষ্ট Hadith-এর exact reference number কী,
+            আর সে সঠিক উত্তর না জানে, তাহলে দুই ধরনের মানুষ থাকে — একজন বলে "আমি নিশ্চিত না", আরেকজন আত্মবিশ্বাসের
+            সাথে একটি ভুল নম্বর বলে দেয়। একটি সাধারণ LLM, প্রাসঙ্গিক context ছাড়া প্রশ্ন করা হলে, অনেকটা দ্বিতীয়
+            মানুষটির মতো আচরণ করতে পারে।
+        </div>
+
+        <p>
+            কেন এটা হয়? কারণ LLM মূলত পরিসংখ্যানগতভাবে (statistically) সবচেয়ে সম্ভাব্য পরবর্তী token predict করে।
+            এটি "সত্য যাচাই" করার কোনো built-in mechanism রাখে না — এটি শুধু ভাষাগতভাবে সামঞ্জস্যপূর্ণ (coherent)
+            টেক্সট তৈরি করতে পারদর্শী।
+        </p>
+
+        <h3>RAG কি Hallucination সম্পূর্ণ দূর করে?</h3>
+
+        <div class="key-point">
+            <strong>না।</strong> RAG প্রাসঙ্গিক external context সরবরাহ করে model-কে সঠিক তথ্যের দিকে
+            "grounded" (ভিত্তিযুক্ত) করার চেষ্টা করে, যার ফলে hallucination কমতে পারে। কিন্তু এটি সম্পূর্ণ সমাধান
+            নয়। Retrieval-এর মান (quality), context-এর প্রাসঙ্গিকতা, prompt design, এবং model-এর নিজস্ব আচরণ —
+            এই সবকিছুর উপর চূড়ান্ত ফলাফল নির্ভর করে।
+        </div>
+
+        <div class="info-box">
+            যদি retrieval ধাপ ভুল বা অপ্রাসঙ্গিক document নিয়ে আসে, তাহলে LLM সেই ভুল তথ্যের উপর ভিত্তি করেই
+            একটি confidently ভুল উত্তর দিতে পারে। তাই RAG-এ শুধু "একটা LLM-এর সামনে কিছু text রেখে দেওয়া" যথেষ্ট
+            না — প্রতিটি ধাপের quality গুরুত্বপূর্ণ।
+        </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">⚖️</span> ৫. Traditional LLM Usage বনাম RAG</h2>
+
+        <p>এখন দুটো approach পাশাপাশি রেখে পার্থক্য স্পষ্ট করা যাক।</p>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>🔹 Traditional LLM Usage</strong><br><br>
+                <div class="diagram">
+User
+ ↓
+Prompt
+ ↓
+LLM
+ ↓
+Answer
+                </div>
+                শুধুমাত্র model-এর training knowledge-এর উপর নির্ভরশীল।
+            </div>
+            <div class="comparison-item">
+                <strong>🔸 RAG</strong><br><br>
+                <div class="diagram">
+User
+ ↓
+Query
+ ↓
+Retriever
+ ↓
+Relevant Documents
+ ↓
+Context
+ ↓
+LLM
+ ↓
+Grounded Answer
+                </div>
+                External knowledge base থেকে প্রাসঙ্গিক তথ্য এনে ব্যবহার করা হয়।
+            </div>
+        </div>
+
+        <h3>তুলনামূলক টেবিল</h3>
+
+        <table>
+            <tr>
+                <th>বিষয়</th>
+                <th>Traditional LLM</th>
+                <th>RAG</th>
+            </tr>
+            <tr>
+                <td>তথ্যের উৎস</td>
+                <td>শুধুমাত্র training data</td>
+                <td>Training data + external knowledge base</td>
+            </tr>
+            <tr>
+                <td>নতুন/private data</td>
+                <td>স্বয়ংক্রিয়ভাবে জানে না</td>
+                <td>Retrieval-এর মাধ্যমে দেওয়া যায়</td>
+            </tr>
+            <tr>
+                <td>Hallucination ঝুঁকি</td>
+                <td>তুলনামূলক বেশি (context ছাড়া অনুমান করে)</td>
+                <td>কম হতে পারে (grounded context থাকলে), তবে শূন্য নয়</td>
+            </tr>
+            <tr>
+                <td>Source/Citation দেখানো</td>
+                <td>সাধারণত সম্ভব না</td>
+                <td>Retrieved document থেকে source দেখানো সম্ভব</td>
+            </tr>
+            <tr>
+                <td>Knowledge আপডেট</td>
+                <td>শুধু re-training/fine-tuning দিয়ে</td>
+                <td>শুধু knowledge base আপডেট করলেই যথেষ্ট</td>
+            </tr>
+            <tr>
+                <td>জটিলতা</td>
+                <td>কম (শুধু prompt পাঠানো)</td>
+                <td>বেশি (retrieval pipeline maintain করতে হয়)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧠</span> ৬. RAG কী? (Retrieval + Augmented + Generation)</h2>
+
+        <div class="success-box">
+            <strong>RAG (Retrieval-Augmented Generation)</strong> হলো এমন একটি architecture, যেখানে একটি LLM
+            উত্তর তৈরি করার আগে, একটি external knowledge base থেকে প্রাসঙ্গিক তথ্য retrieve (খুঁজে বের) করা হয়,
+            এবং সেই তথ্য LLM-এর prompt-এ context হিসেবে যুক্ত (augment) করা হয়।
+        </div>
+
+        <h3>RAG কেন তৈরি হয়েছিল?</h3>
+
+        <ul>
+            <li>LLM-কে বার বার re-train বা fine-tune না করেই নতুন/আপডেটেড তথ্য ব্যবহার করার সুযোগ দেওয়ার জন্য</li>
+            <li>Private বা domain-specific data ব্যবহার করার জন্য, যা public training data-তে নেই</li>
+            <li>উত্তরকে যাচাইযোগ্য উৎসের (source) সাথে যুক্ত (grounded) করার জন্য</li>
+            <li>Hallucination কমানোর একটি ব্যবহারিক উপায় হিসেবে (সম্পূর্ণ সমাধান হিসেবে নয়)</li>
+        </ul>
+
+        <div class="key-point">
+            সহজভাবে: RAG আমাদের বলে — "LLM-কে সব কিছু মুখস্থ করতে বলার দরকার নেই। বরং LLM-কে দরকারের সময় সঠিক
+            বই-এর সঠিক পাতা খুলে দেখিয়ে দাও।"
+        </div>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🏗️</span> ৭. RAG Architecture — সম্পূর্ণ ডায়াগ্রাম, বক্স বাই বক্স</h2>
+
+        <p>এখন সম্পূর্ণ RAG architecture-টি একসাথে দেখি:</p>
+
+        <div class="diagram">
+                ┌─────────────────┐
+                │      User       │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │   User Query    │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Query Embedding │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │  Vector Search  │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Relevant Chunks │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Context Builder │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │       LLM       │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │     Answer      │
+                └─────────────────┘
+        </div>
+
+        <p>প্রতিটি বক্স আলাদা করে ব্যাখ্যা করা যাক:</p>
+
+        <table>
+            <tr>
+                <th>ধাপ</th>
+                <th>কী ঘটে</th>
+            </tr>
+            <tr>
+                <td><strong>User</strong></td>
+                <td>ব্যবহারকারী একটি প্রশ্ন নিয়ে system-এ আসে</td>
+            </tr>
+            <tr>
+                <td><strong>User Query</strong></td>
+                <td>প্রশ্নটি একটি raw text string হিসেবে system-এ প্রবেশ করে (যেমন: "ধৈর্য নিয়ে কী বলা আছে?")</td>
+            </tr>
+            <tr>
+                <td><strong>Query Embedding</strong></td>
+                <td>প্রশ্নটিকে একটি embedding model দিয়ে একটি numerical vector-এ রূপান্তর করা হয়</td>
+            </tr>
+            <tr>
+                <td><strong>Vector Search</strong></td>
+                <td>সেই query vector-এর সাথে knowledge base-এর সব document vector-এর similarity তুলনা করা হয়</td>
+            </tr>
+            <tr>
+                <td><strong>Relevant Chunks</strong></td>
+                <td>সবচেয়ে similar (Top-K) document অংশগুলো (chunk) নির্বাচিত হয়</td>
+            </tr>
+            <tr>
+                <td><strong>Context Builder</strong></td>
+                <td>নির্বাচিত chunk-গুলো একত্র করে, মূল প্রশ্নের সাথে যুক্ত করে একটি সুসংগঠিত prompt তৈরি করা হয়</td>
+            </tr>
+            <tr>
+                <td><strong>LLM</strong></td>
+                <td>এই সমৃদ্ধ (augmented) prompt পেয়ে LLM একটি উত্তর generate করে</td>
+            </tr>
+            <tr>
+                <td><strong>Answer</strong></td>
+                <td>চূড়ান্ত, প্রাসঙ্গিক তথ্যে ভিত্তিযুক্ত (grounded) উত্তর ব্যবহারকারীকে ফেরত দেওয়া হয়</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔀</span> ৮. দুটি প্রধান Pipeline: Ingestion vs Query</h2>
+
+        <p>
+            RAG বোঝার সময় সবচেয়ে গুরুত্বপূর্ণ একটি বিভ্রান্তি এড়ানো দরকার — RAG আসলে <strong>একটি নয়, দুটি
+            আলাদা pipeline</strong>-এর সমন্বয়। এই পার্থক্যটি স্পষ্টভাবে বোঝা অত্যন্ত জরুরি।
+        </p>
+
+        <h3>১. Ingestion Pipeline (Offline)</h3>
+
+        <div class="diagram">
+Documents
+   ↓
+Parsing
+   ↓
+Cleaning
+   ↓
+Chunking
+   ↓
+Embedding
+   ↓
+Vector Index
+   ↓
+Metadata Storage
+        </div>
+
+        <div class="technical-box">
+            এই pipeline চলে <strong>user প্রশ্ন করার আগেই</strong>, সাধারণত একবার (বা document আপডেট হলে
+            আবার)। এখানে raw document (PDF, text file, database record) পড়া, পরিষ্কার করা (cleaning), ছোট ছোট
+            অংশে ভাগ করা (chunking), প্রতিটি অংশের embedding তৈরি করা, এবং সেগুলো একটি vector index-এ সংরক্ষণ করা
+            হয়।
+        </div>
+
+        <p>
+            আমাদের Islamic RAG project-এ এটি হলো সেই ধাপ যেখানে Quran ও Hadith dataset প্রক্রিয়াজাত করে
+            <code>faiss_index.bin</code> এবং <code>documents.npy</code> ফাইল দুটি তৈরি করা হয়েছে।
+        </p>
+
+        <h3>২. Query Pipeline (Online)</h3>
+
+        <div class="diagram">
+User Query
+   ↓
+Query Embedding
+   ↓
+Similarity Search
+   ↓
+Top-K Chunks
+   ↓
+Optional Reranking
+   ↓
+Context Construction
+   ↓
+LLM
+   ↓
+Answer
+        </div>
+
+        <div class="technical-box">
+            এই pipeline চলে <strong>প্রতিবার ব্যবহারকারী প্রশ্ন করলে</strong>, real-time-এ। Ingestion Pipeline-এ
+            আগে থেকে তৈরি করা vector index ব্যবহার করে এখানে দ্রুত search করা হয় — পুরো document আবার প্রক্রিয়া
+            করার দরকার হয় না।
+        </div>
+
+        <div class="key-point">
+            মনে রাখার সহজ উপায়: <strong>Ingestion Pipeline = লাইব্রেরি সাজানো (একবার)।</strong>
+            <strong>Query Pipeline = লাইব্রেরিতে বই খোঁজা (প্রতিবার)।</strong> লাইব্রেরি একবার সাজানো থাকলে,
+            প্রতিবার বই খোঁজা অনেক দ্রুত হয়।
+        </div>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧬</span> ৯. Embedding কী?</h2>
+
+        <div class="technical-box">
+            <strong>Embedding</strong> হলো এমন একটি numerical representation, যেখানে একটি text-এর semantic
+            meaning একটি vector-এর মাধ্যমে প্রকাশ করা হয়। একটি embedding model কোনো text (শব্দ, বাক্য, বা
+            অনুচ্ছেদ) ইনপুট নেয়, এবং একটি নির্দিষ্ট সংখ্যক dimension-এর একটি vector (সংখ্যার তালিকা) output
+            দেয়।
+        </div>
+
+        <h3>কেন এটা দরকার?</h3>
+
+        <p>
+            নিচের দুটি বাক্য লক্ষ্য করুন:
+        </p>
+
+        <div class="diagram">
+"How can I improve my patience?"
+
+"What does Islam teach about patience?"
+        </div>
+
+        <p>
+            এই দুটি বাক্য একই শব্দ ব্যবহার করে না ("improve" বনাম "teach"), কিন্তু <strong>semantically</strong>
+            (অর্থের দিক থেকে) সম্পর্কিত — দুটোই "patience" (ধৈর্য) সম্পর্কিত তথ্য খুঁজছে। একটি ভালো embedding
+            model এই দুই বাক্যকে vector space-এ কাছাকাছি অবস্থানে রাখবে, কারণ তাদের অর্থ কাছাকাছি।
+        </p>
+
+        <div class="key-point">
+            এখানেই traditional <strong>keyword search</strong>-এর সীমাবদ্ধতা প্রকাশ পায়। Keyword search শুধু
+            exact শব্দ মিল খোঁজে। "improve patience" আর "teach about patience" — শব্দগতভাবে ভিন্ন হওয়ায়, শুধু
+            keyword দিয়ে খুঁজলে সম্পর্কটি ধরা নাও পড়তে পারে। কিন্তু Embedding-ভিত্তিক <strong>semantic
+            search</strong> এই সম্পর্ক ধরতে পারে, কারণ এটি শব্দ নয়, অর্থ তুলনা করে।
+        </div>
+
+        <div class="info-box">
+            এই Episode-এ আমরা embedding model কীভাবে ভেতরে ভেতরে কাজ করে (neural network architecture, training
+            objective) তা নিয়ে বিস্তারিত যাব না — এটি সিরিজের একটি পরবর্তী Episode-এ আলাদাভাবে গভীরভাবে আলোচনা
+            করা হবে। এখানে শুধু এটুকু মনে রাখা দরকার: <strong>Embedding = text-কে এমন একটি vector-এ রূপান্তর করা,
+            যেখানে অর্থগতভাবে কাছাকাছি text-গুলো vector space-এও কাছাকাছি থাকে।</strong>
+        </div>
+    </div>
+
+    <!-- PART 10 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📐</span> ১০. Vector ও Vector Search কী?</h2>
+
+        <p>Embedding তৈরি হওয়ার পর, সেটি ব্যবহার করে search করার পুরো প্রক্রিয়াটি দেখা যাক:</p>
+
+        <div class="diagram">
+Text
+ ↓
+Embedding Model
+ ↓
+Vector
+ ↓
+Vector Index
+ ↓
+Similarity Search
+        </div>
+
+        <div class="technical-box">
+            <strong>Embedding বনাম Vector — একটি সূক্ষ্ম কিন্তু গুরুত্বপূর্ণ পার্থক্য:</strong><br><br>
+            <strong>Embedding</strong> = একটি embedding model থেকে তৈরি হওয়া representation (একটি concept/process)<br>
+            <strong>Vector</strong> = system-এর মধ্যে ব্যবহৃত হওয়া সেই numerical representation (সংখ্যার তালিকা)<br><br>
+            প্রায়ক্ষেত্রে এই দুটো শব্দ একে অপরের বদলে ব্যবহার করা হয়, এবং বাস্তবে একটি embedding-ই একটি vector
+            আকারে সংরক্ষিত হয় — কিন্তু concept হিসেবে এই পার্থক্যটি মাথায় রাখা ভালো, বিশেষ করে যখন "vector" শব্দটি
+            embedding ছাড়া অন্য প্রসঙ্গেও (যেমন one-hot encoding) ব্যবহৃত হতে পারে।
+        </div>
+
+        <h3>গুরুত্বপূর্ণ পরিভাষা</h3>
+
+        <table>
+            <tr>
+                <th>টার্ম</th>
+                <th>সহজ ব্যাখ্যা</th>
+            </tr>
+            <tr>
+                <td><strong>Vector Space</strong></td>
+                <td>সব vector যেখানে অবস্থান করে, এমন একটি বহু-মাত্রিক (multi-dimensional) গাণিতিক space</td>
+            </tr>
+            <tr>
+                <td><strong>Dimension</strong></td>
+                <td>প্রতিটি vector-এ কতগুলো সংখ্যা আছে (যেমন 384-dimensional মানে vector-এ ৩৮৪টি সংখ্যা)</td>
+            </tr>
+            <tr>
+                <td><strong>Distance</strong></td>
+                <td>দুটি vector একে অপরের থেকে কতটা "দূরে" আছে তার পরিমাপ</td>
+            </tr>
+            <tr>
+                <td><strong>Similarity</strong></td>
+                <td>দুটি vector কতটা "কাছাকাছি"/সম্পর্কিত তার পরিমাপ (Distance-এর বিপরীত ধারণা)</td>
+            </tr>
+            <tr>
+                <td><strong>Top-K</strong></td>
+                <td>সবচেয়ে বেশি similar এমন K সংখ্যক ফলাফল নির্বাচন করা (যেমন Top-5)</td>
+            </tr>
+        </table>
+
+        <h3>Similarity পরিমাপ করার কয়েকটি common পদ্ধতি</h3>
+
+        <table>
+            <tr>
+                <th>পদ্ধতি</th>
+                <th>সংক্ষিপ্ত ধারণা</th>
+            </tr>
+            <tr>
+                <td><strong>Cosine Similarity</strong></td>
+                <td>দুটি vector-এর মধ্যবর্তী কোণ (angle) পরিমাপ করে — vector-এর দৈর্ঘ্য উপেক্ষা করে শুধু দিক (direction) তুলনা করে</td>
+            </tr>
+            <tr>
+                <td><strong>Euclidean / L2 Distance</strong></td>
+                <td>দুটি vector-এর মধ্যে সরাসরি জ্যামিতিক দূরত্ব (straight-line distance) পরিমাপ করে</td>
+            </tr>
+            <tr>
+                <td><strong>Inner Product / Dot Product</strong></td>
+                <td>দুটি vector-এর উপাদানগুলোর গুণফলের যোগফল — কিছু normalized embedding-এর ক্ষেত্রে cosine similarity-এর সমতুল্য আচরণ করতে পারে</td>
+            </tr>
+        </table>
+
+        <div class="key-point">
+            এই তিনটি পদ্ধতি সব ক্ষেত্রে একে অপরের বদলে ব্যবহারযোগ্য নয়। কোনটি ব্যবহার করা হবে তা নির্ভর করে
+            embedding model কীভাবে train হয়েছে এবং vector index কীভাবে configure করা হয়েছে তার উপর। এই বিষয়ে
+            বিস্তারিত আলোচনা সিরিজের "Similarity Metrics" Episode-এ করা হবে।
+        </div>
+    </div>
+
+    <!-- PART 11 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📦</span> ১১. FAISS কী? (এবং FAISS বনাম Vector Database)</h2>
+
+        <p>
+            আমাদের practical Islamic RAG project-এ vector search-এর জন্য <strong>FAISS</strong> ব্যবহার করা
+            হয়েছে। চলুন এটিকে স্পষ্টভাবে বুঝি।
+        </p>
+
+        <h3>FAISS</h3>
+
+        <div class="technical-box">
+            <strong>What? (এটা কী?)</strong><br>
+            FAISS (Facebook AI Similarity Search) হলো dense vector-এর উপর efficient similarity search করার
+            জন্য একটি library।<br><br>
+            <strong>Why? (কেন দরকার?)</strong><br>
+            হাজার থেকে মিলিয়ন সংখ্যক vector-এর মধ্যে দ্রুত nearest-neighbor খুঁজে বের করার জন্য।<br><br>
+            <strong>How? (এটা কীভাবে কাজ করে?)</strong><br>
+            এটি vector-গুলোকে একটি নির্দিষ্ট গঠনে (index) সংগঠিত করে, এবং সেই index-এর মধ্যে nearest-neighbor
+            search perform করে।<br><br>
+            <strong>Where? (RAG-এর কোথায় বসে?)</strong><br>
+            Retrieval ধাপে — query vector-এর সাথে knowledge base-এর vector-গুলোর similarity মেলানোর জায়গায়।<br><br>
+            <strong>এটা কোন সমস্যার সমাধান করে?</strong><br>
+            বহু সংখ্যক vector-এর মধ্যে efficient similarity search।<br><br>
+            <strong>এটা কোন সমস্যার সমাধান করে না?</strong><br>
+            এটি স্বয়ংক্রিয়ভাবে একটি সম্পূর্ণ document-management বা vector-database প্ল্যাটফর্ম না।
+        </div>
+
+        <div class="key-point">
+            <strong>গুরুত্বপূর্ণ:</strong> "FAISS একটি vector database" — এই বাক্যটি একটি সরলীকরণ, এবং এটি
+            সম্পূর্ণ সঠিক নয়। এই পার্থক্যটি স্পষ্টভাবে বোঝা দরকার।
+        </div>
+
+        <div class="diagram">
+FAISS
+= similarity search library / indexing toolkit
+  (শুধু vector index এবং search algorithm সরবরাহ করে)
+
+Vector Database
+= storage + indexing + metadata + filtering + persistence + API
+  (product অনুযায়ী ভিন্ন হতে পারে — যেমন Qdrant, Chroma, Pinecone,
+   অথবা pgvector-এর মতো PostgreSQL extension)
+        </div>
+
+        <p>
+            FAISS নিজে থেকে metadata filtering, multi-user access, built-in persistence layer, বা REST API
+            সরবরাহ করে না (যদিও FAISS index নিজেই save/load করা যায়)। এই কারণে অনেক production system FAISS-কে
+            একটি বড় infrastructure-এর একটি অংশ হিসেবে ব্যবহার করে, অথবা এর বদলে একটি সম্পূর্ণ vector database
+            (যেমন Qdrant, Chroma, বা pgvector) ব্যবহার করে যেখানে এই সুবিধাগুলো built-in থাকে।
+        </p>
+
+        <h3>আমাদের project-এ FAISS কীভাবে ব্যবহৃত হয়েছে</h3>
+
+        <div class="technical-box">
+            <a href="https://github.com/ThanbirTamim/Islamic_Knowleged_Assistant_RAG_Server" target="_blank" rel="noopener">Islamic_Knowleged_Assistant_RAG_Server</a>
+            repository-তে দুটি মূল artifact আছে:<br><br>
+            <strong><code>faiss_index.bin</code></strong> — FAISS দিয়ে তৈরি করা vector index, যেখানে Quran ও
+            Hadith-এর সব document-এর embedding সংরক্ষিত।<br><br>
+            <strong><code>documents.npy</code></strong> — প্রতিটি vector-এর সাথে সংশ্লিষ্ট আসল document text
+            (NumPy array আকারে সংরক্ষিত)। FAISS index শুধু vector ও তার position রাখে, তাই আসল text আলাদাভাবে
+            এই ফাইলে maintain করা হয়েছে।
+        </div>
+    </div>
+
+    <!-- PART 12 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">✂️</span> ১২. Chunking কী?</h2>
+
+        <div class="technical-box">
+            <strong>Chunking</strong> হলো একটি বড় document-কে ছোট ছোট, manageable অংশে ভাগ করার প্রক্রিয়া, যাতে
+            প্রতিটি অংশ আলাদাভাবে embed ও retrieve করা যায়।
+        </div>
+
+        <h3>কেন পুরো document-কে একটি single vector-এ embed করা যায় না?</h3>
+
+        <ul>
+            <li>বেশিরভাগ embedding model-এর নিজস্ব input length সীমা আছে</li>
+            <li>একটি বড় document-এ একাধিক ভিন্ন topic থাকতে পারে — পুরোটাকে একটি vector-এ ঠাসলে সূক্ষ্ম অর্থ হারিয়ে যায়</li>
+            <li>ব্যবহারকারীর প্রশ্ন সাধারণত document-এর একটি নির্দিষ্ট অংশের সাথে সম্পর্কিত, পুরো document-এর সাথে নয়</li>
+        </ul>
+
+        <div class="diagram">
+Large Document
+       ↓
+     Chunking
+       ↓
+ ┌──────┬──────┬──────┬──────┐
+ │Chunk1│Chunk2│Chunk3│Chunk4│
+ └──────┴──────┴──────┴──────┘
+       ↓
+   Embeddings
+        </div>
+
+        <p>
+            আমাদের Islamic RAG project-এ এই ধারণাটি স্বাভাবিকভাবেই প্রযোজ্য — প্রতিটি Quran verse বা Hadith
+            entry ইতিমধ্যেই একটি স্বাভাবিক, ছোট, স্বয়ংসম্পূর্ণ একক (unit), যা chunk হিসেবে কাজ করে। এটি একধরনের
+            "natural chunking" — dataset-এর গঠন নিজেই ইতিমধ্যে ছোট, অর্থবহ অংশে বিভক্ত।
+        </p>
+
+        <h3>Chunking-এর গুরুত্বপূর্ণ প্যারামিটার ও কৌশল</h3>
+
+        <table>
+            <tr>
+                <th>ধারণা</th>
+                <th>সংক্ষিপ্ত ব্যাখ্যা</th>
+            </tr>
+            <tr>
+                <td><strong>Chunk Size</strong></td>
+                <td>প্রতিটি chunk কত বড় হবে (token বা character সংখ্যায়)</td>
+            </tr>
+            <tr>
+                <td><strong>Chunk Overlap</strong></td>
+                <td>পাশাপাশি chunk-গুলোর মধ্যে কিছু অংশ পুনরাবৃত্তি রাখা, যাতে বাক্যের মাঝখানে কেটে অর্থ না হারায়</td>
+            </tr>
+            <tr>
+                <td><strong>Token-based Chunking</strong></td>
+                <td>নির্দিষ্ট সংখ্যক token অনুযায়ী ভাগ করা</td>
+            </tr>
+            <tr>
+                <td><strong>Character-based Chunking</strong></td>
+                <td>নির্দিষ্ট সংখ্যক character অনুযায়ী ভাগ করা</td>
+            </tr>
+            <tr>
+                <td><strong>Sentence-based Chunking</strong></td>
+                <td>সম্পূর্ণ বাক্য অনুযায়ী ভাগ করা, যাতে অর্থ ভেঙে না যায়</td>
+            </tr>
+            <tr>
+                <td><strong>Paragraph-based Chunking</strong></td>
+                <td>অনুচ্ছেদ অনুযায়ী ভাগ করা</td>
+            </tr>
+            <tr>
+                <td><strong>Recursive Chunking</strong></td>
+                <td>ধাপে ধাপে বড় থেকে ছোট বিভাজক (paragraph → sentence → word) ব্যবহার করে ভাগ করা</td>
+            </tr>
+            <tr>
+                <td><strong>Semantic Chunking</strong></td>
+                <td>নির্দিষ্ট সংখ্যা অনুযায়ী না ভেঙে, অর্থের পরিবর্তন (topic shift) অনুযায়ী ভাগ করা</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            এই Episode-এ প্রতিটি কৌশলের বিস্তারিত বাস্তবায়ন আলোচনা করা হচ্ছে না — শুধু এটুকু বোঝা গুরুত্বপূর্ণ যে
+            <strong>chunking একটি core RAG design decision</strong>, এবং ভুল chunking strategy retrieval quality-কে
+            সরাসরি প্রভাবিত করে। সিরিজের "Chunking Strategies" Episode-এ আমরা প্রতিটি কৌশল বিস্তারিতভাবে তুলনা
+            করব।
+        </div>
+    </div>
+
+    <!-- PART 13 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔍</span> ১৩. Hybrid Search — সংক্ষিপ্ত পরিচিতি</h2>
+
+        <p>
+            Semantic search (embedding-ভিত্তিক) সবসময় সেরা সমাধান নয়। কিছু ক্ষেত্রে সাধারণ keyword search
+            অনেক বেশি কার্যকর।
+        </p>
+
+        <div class="story-box">
+            <strong>উদাহরণ ১:</strong> একজন ব্যবহারকারী সার্চ করল —<br>
+            <code>"ERR_CONNECTION_REFUSED"</code><br><br>
+            এখানে <strong>keyword search</strong> অত্যন্ত কার্যকর, কারণ ব্যবহারকারী একটি exact error code
+            খুঁজছে — semantic similarity এখানে তেমন গুরুত্বপূর্ণ না।<br><br>
+            <strong>উদাহরণ ২:</strong> একজন ব্যবহারকারী প্রশ্ন করল —<br>
+            <code>"How can I become more patient?"</code><br><br>
+            এখানে <strong>semantic search</strong> অনেক বেশি সহায়ক, কারণ knowledge base-এ হয়তো ঠিক এই শব্দগুলো
+            নেই, কিন্তু অর্থগতভাবে সম্পর্কিত content আছে।
+        </div>
+
+        <div class="diagram">
+Keyword Search
+      +
+Semantic Search
+      ↓
+Hybrid Search
+        </div>
+
+        <div class="technical-box">
+            <strong>Hybrid Search</strong> হলো keyword-based (lexical) search এবং embedding-based (semantic)
+            search — উভয়ের ফলাফল একসাথে ব্যবহার করার একটি কৌশল, যাতে দুই ধরনের প্রশ্নের ক্ষেত্রেই ভালো ফলাফল
+            পাওয়া যায়।
+        </div>
+
+        <div class="key-point">
+            Production-grade RAG system প্রায়ই দুই ধরনের retrieval কৌশল একসাথে combine করে। কিন্তু এই বিষয়ের
+            বিস্তারিত (যেমন BM25 algorithm, dense retrieval-এর সাথে score fusion, এবং Reciprocal Rank Fusion বা
+            RRF) সিরিজের পরবর্তী "Advanced Retrieval" Phase-এ আলোচনা করা হবে। এই Episode-এ শুধু concept-টুকু
+            পরিচয় করানো হলো।
+        </div>
+    </div>
+
+    <!-- PART 14 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🎯</span> ১৪. Reranking — সংক্ষিপ্ত পরিচিতি</h2>
+
+        <p>
+            Vector search সাধারণত দ্রুত কিন্তু আনুমানিক (approximate) ফলাফল দেয়। এই ফলাফলের মান আরও উন্নত করার
+            জন্য একটি অতিরিক্ত ধাপ ব্যবহার করা যায়, যাকে বলে <strong>Reranking</strong>।
+        </p>
+
+        <div class="diagram">
+Query
+ ↓
+Retrieve Top 50
+ ↓
+Reranker
+ ↓
+Best 5
+ ↓
+LLM
+        </div>
+
+        <div class="technical-box">
+            প্রথমে একটি দ্রুত, তুলনামূলক কম নিখুঁত retrieval ধাপ (যেমন FAISS দিয়ে Top-50 vector খোঁজা) চালানো
+            হয়। তারপর একটি আলাদা, তুলনামূলক ধীর কিন্তু বেশি নিখুঁত <strong>reranker model</strong> সেই ৫০টি
+            ফলাফলকে আবার মূল্যায়ন করে সবচেয়ে প্রাসঙ্গিক কয়েকটি (যেমন Top-5) বেছে নেয়, যেগুলো তখন LLM-কে দেওয়া
+            হয়।
+        </div>
+
+        <div class="key-point">
+            <strong>Retrieval</strong> এবং <strong>Reranking</strong> দুটি আলাদা ধাপ — Retrieval দ্রুত অনেক
+            candidate খুঁজে বের করে, আর Reranking সেই candidate-গুলোর মধ্যে থেকে সবচেয়ে ভালোগুলো নিখুঁতভাবে
+            বাছাই করে। এই Episode-এ আমরা Reranking বাস্তবায়ন করছি না — শুধু ধারণাটি পরিচয় করালাম, যাতে পরবর্তী
+            Episode-এ যখন এটি নিয়ে বিস্তারিত আলোচনা হবে তখন প্রেক্ষাপট পরিষ্কার থাকে।
+        </div>
+    </div>
+
+    <!-- PART 15 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🆚</span> ১৫. RAG বনাম Fine-tuning</h2>
+
+        <p>
+            আরেকটি সাধারণ বিভ্রান্তি — RAG আর Fine-tuning কি একই জিনিস? না। এই দুটো ভিন্ন সমস্যার সমাধান করে।
+        </p>
+
+        <div class="diagram">
+RAG
+→ Inference-এর সময় external knowledge সরবরাহ করে
+
+Fine-tuning
+→ অতিরিক্ত training-এর মাধ্যমে model-এর behavior/parameter পরিবর্তন করে
+        </div>
+
+        <table>
+            <tr>
+                <th>বিষয়</th>
+                <th>RAG</th>
+                <th>Fine-tuning</th>
+            </tr>
+            <tr>
+                <td>কাজ করে কখন</td>
+                <td>Inference (query) সময়ে</td>
+                <td>Training সময়ে (আগে থেকে)</td>
+            </tr>
+            <tr>
+                <td>Model পরিবর্তন হয়?</td>
+                <td>না, model অপরিবর্তিত থাকে</td>
+                <td>হ্যাঁ, model-এর parameter আপডেট হয়</td>
+            </tr>
+            <tr>
+                <td>নতুন তথ্য যোগ করা</td>
+                <td>Knowledge base আপডেট করলেই যথেষ্ট</td>
+                <td>আবার training/fine-tuning প্রয়োজন</td>
+            </tr>
+            <tr>
+                <td>প্রধান ব্যবহার</td>
+                <td>Factual knowledge সরবরাহ করা, source-ভিত্তিক উত্তর</td>
+                <td>Style, tone, নির্দিষ্ট task-এ behavior পরিবর্তন করা</td>
+            </tr>
+        </table>
+
+        <div class="key-point">
+            RAG এবং Fine-tuning পরস্পরবিরোধী নয় — বাস্তবে এগুলো একসাথেও ব্যবহার করা যায়। যেমন, একটি model-কে
+            নির্দিষ্ট style-এ উত্তর দেওয়ার জন্য fine-tune করা যায়, এবং একই সাথে RAG দিয়ে তাকে সাম্প্রতিক বা
+            domain-specific তথ্য সরবরাহ করা যায়।
+        </div>
+    </div>
+
+    <!-- PART 16 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🕌</span> ১৬. Case Study: আমাদের Islamic RAG Project</h2>
+
+        <p>
+            এখন পর্যন্ত আলোচিত সব ধারণা একটি বাস্তব, কাজ করা project-এর মাধ্যমে দেখা যাক —
+            <a href="https://github.com/ThanbirTamim/Islamic_Knowleged_Assistant_RAG_Server" target="_blank" rel="noopener"><strong>Islamic_Knowleged_Assistant_RAG_Server</strong></a>,
+            একটি offline Islamic Knowledge RAG system।
+        </p>
+
+        <h3>Project-এর বর্তমান Architecture</h3>
+
+        <div class="diagram">
+Quran Dataset (৬,২৩৬+ verses)
+        +
+Hadith Dataset (৩৫,০০০+ entries)
+        ↓
+Document Preparation
+        ↓
+SentenceTransformer
+        ↓
+Embeddings
+        ↓
+FAISS
+        ↓
+User Query
+        ↓
+Query Embedding
+        ↓
+Similarity Search
+        ↓
+Relevant Documents
+        ↓
+Context
+        ↓
+Mistral via Ollama
+        ↓
+Answer
+        </div>
+
+        <p>
+            রিপোজিটরির বর্ণনা অনুযায়ী, dataset-এ মোট প্রায় ৪১,০০০+ entry আছে (Quran + Hadith মিলিয়ে)।
+        </p>
+
+        <h3>প্রতিটি অংশ কীভাবে আমাদের আলোচিত concept-এর সাথে মেলে</h3>
+
+        <table>
+            <tr>
+                <th>Project-এর অংশ</th>
+                <th>আমাদের আলোচিত concept</th>
+            </tr>
+            <tr>
+                <td>Quran + Hadith Dataset</td>
+                <td>Knowledge Base — raw documents</td>
+            </tr>
+            <tr>
+                <td>Document Preparation</td>
+                <td>Ingestion Pipeline-এর Parsing/Cleaning ধাপ; প্রতিটি verse/hadith স্বাভাবিকভাবেই একটি chunk</td>
+            </tr>
+            <tr>
+                <td><code>paraphrase-multilingual-MiniLM-L12-v2</code> (SentenceTransformer)</td>
+                <td>Embedding Model</td>
+            </tr>
+            <tr>
+                <td><code>faiss_index.bin</code></td>
+                <td>Vector Index (FAISS)</td>
+            </tr>
+            <tr>
+                <td><code>documents.npy</code></td>
+                <td>প্রতিটি vector-এর সাথে যুক্ত আসল document text সংরক্ষণ</td>
+            </tr>
+            <tr>
+                <td>User Query → Query Embedding → Similarity Search</td>
+                <td>Query Pipeline</td>
+            </tr>
+            <tr>
+                <td>Mistral (via Ollama)</td>
+                <td>Generation ধাপের LLM — সম্পূর্ণভাবে local/offline চলে</td>
+            </tr>
+        </table>
+
+        <h3>কেন multilingual embedding model ব্যবহার করা হয়েছে?</h3>
+
+        <div class="technical-box">
+            <code>paraphrase-multilingual-MiniLM-L12-v2</code> একটি multilingual embedding model, যার মানে এটি
+            একাধিক ভাষার text-কে একই ধরনের vector space-এ map করতে পারে। Quran ও Hadith dataset-এ Arabic ও
+            English উভয় ভাষার content থাকায়, একটি multilingual model ব্যবহার করার সুবিধা হলো — একজন ব্যবহারকারী
+            English-এ প্রশ্ন করলেও, তার সাথে semantically সম্পর্কিত Arabic বা English content খুঁজে পাওয়া সম্ভব
+            হয়, কারণ উভয় ভাষার embedding একই vector space-এ তুলনাযোগ্য।
+        </div>
+
+        <h3>স্পষ্টভাবে বলা দরকার — Project বর্তমানে কী করে না</h3>
+
+        <div class="key-point">
+            সততার সাথে বলা গুরুত্বপূর্ণ: বর্তমান repository-র বর্ণনা অনুযায়ী এই project-এ বর্তমানে নিচের
+            advanced feature-গুলো implement করা নেই —
+        </div>
+
+        <table>
+            <tr>
+                <th>Feature</th>
+                <th>বর্তমান অবস্থা</th>
+            </tr>
+            <tr>
+                <td>Hybrid Search (keyword + semantic)</td>
+                <td>বর্তমানে implement করা নেই — শুধু FAISS-ভিত্তিক semantic search ব্যবহৃত হয়</td>
+            </tr>
+            <tr>
+                <td>Reranking</td>
+                <td>বর্তমানে implement করা নেই</td>
+            </tr>
+            <tr>
+                <td>BM25 / Reciprocal Rank Fusion (RRF)</td>
+                <td>বর্তমানে implement করা নেই</td>
+            </tr>
+            <tr>
+                <td>Qdrant / pgvector / Chroma-এর মতো dedicated vector database</td>
+                <td>বর্তমানে ব্যবহৃত হয়নি — FAISS index ফাইল (<code>faiss_index.bin</code>) সরাসরি ব্যবহার করা হয়</td>
+            </tr>
+            <tr>
+                <td>Semantic Chunking</td>
+                <td>বর্তমানে প্রয়োজন হয়নি, কারণ dataset ইতিমধ্যে verse/hadith অনুযায়ী স্বাভাবিকভাবে বিভক্ত</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            এগুলো এই project-এর <strong>ভবিষ্যৎ উন্নতির সম্ভাব্য দিক (future improvement)</strong> হিসেবে বিবেচনা
+            করা যেতে পারে, এবং সিরিজের পরবর্তী, advanced Episode-গুলোতে ঠিক এই feature-গুলোই আমরা ধাপে ধাপে যোগ
+            করার চেষ্টা করব — যাতে এই basic architecture থেকে ধীরে ধীরে একটি production-grade RAG system-এ
+            রূপান্তরিত করা যায়।
+        </div>
+    </div>
+
+    <!-- PART 17 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">💻</span> ১৭. ছোট Code Walkthrough</h2>
+
+        <p>
+            এই Episode পুরো system বাস্তবায়ন করছে না — কিন্তু query pipeline-এর মূল ধারণাটি ছোট conceptual code
+            দিয়ে দেখা যাক।
+        </p>
+
+        <h3>ধাপ ১: সংরক্ষিত FAISS index ও document লোড করা</h3>
+
+        <div class="code-box">
+import faiss
+import numpy as np
+
+# আগে থেকে তৈরি করা vector index লোড করা
+index = faiss.read_index("faiss_index.bin")
+
+# প্রতিটি vector-এর সাথে যুক্ত আসল document text লোড করা
+documents = np.load("documents.npy", allow_pickle=True)
+        </div>
+
+        <div class="technical-box">
+            <code>faiss.read_index(...)</code> Ingestion Pipeline-এ আগে থেকে তৈরি করা vector index টি
+            memory-তে লোড করে। <code>documents.npy</code> ফাইলে সেই vector-গুলোর সাথে সংশ্লিষ্ট আসল text
+            সংরক্ষিত — কারণ FAISS নিজে শুধু vector সংরক্ষণ করে, text নয়।
+        </div>
+
+        <h3>ধাপ ২: ব্যবহারকারীর প্রশ্নকে embedding-এ রূপান্তর করা</h3>
+
+        <div class="code-box">
+from sentence_transformers import SentenceTransformer
+
+model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+
+query_embedding = model.encode(
+    ["What does the Quran say about patience?"]
+)
+        </div>
+
+        <div class="technical-box">
+            এখানে একই embedding model ব্যবহার করা হচ্ছে যা Ingestion Pipeline-এ document embed করার সময়ও
+            ব্যবহৃত হয়েছিল — এটি গুরুত্বপূর্ণ, কারণ query ও document একই vector space-এ থাকতে হবে, নাহলে
+            similarity তুলনা অর্থহীন হয়ে যাবে।
+        </div>
+
+        <h3>ধাপ ৩: Vector Search চালানো</h3>
+
+        <div class="code-box">
+distances, indices = index.search(
+    query_embedding,
+    k=5
+)
+        </div>
+
+        <div class="technical-box">
+            <code>index.search(query_embedding, k=5)</code> query vector-এর সাথে সবচেয়ে similar Top-5 vector
+            খুঁজে বের করে। এটি ফেরত দেয় — <code>distances</code> (প্রতিটি ফলাফলের distance/similarity স্কোর) এবং
+            <code>indices</code> (সেই vector-গুলোর position, যা দিয়ে <code>documents</code> array থেকে আসল text
+            বের করা যায়)।
+        </div>
+
+        <h3>ধাপ ৪: প্রাসঙ্গিক text বের করে Context তৈরি করা</h3>
+
+        <div class="code-box">
+relevant_chunks = [documents[i] for i in indices[0]]
+context = "\n".join(relevant_chunks)
+        </div>
+
+        <h3>ধাপ ৫: LLM-কে context সহ প্রশ্ন করা (conceptual)</h3>
+
+        <div class="code-box">
+prompt = f"""নিচের তথ্যের ভিত্তিতে প্রশ্নের উত্তর দাও:
+
+{context}
+
+প্রশ্ন: What does the Quran say about patience?
+"""
+
+# এই prompt-টি এরপর local Mistral model-কে
+# Ollama-এর মাধ্যমে পাঠানো হয়, উত্তর তৈরির জন্য
+        </div>
+
+        <div class="key-point">
+            এই পাঁচটি ধাপই মূলত অংশ ৮-এ আলোচিত <strong>Query Pipeline</strong>-এর একটি সরলীকৃত বাস্তবায়ন। পরের
+            Episode-গুলোতে আমরা প্রতিটি ধাপ আরও গভীরভাবে explore করব — ইনক্লুডিং কীভাবে Ingestion Pipeline চালিয়ে
+            প্রথমে <code>faiss_index.bin</code> ও <code>documents.npy</code> তৈরি করা হয়েছিল।
+        </div>
+    </div>
+
+    <!-- PART 18 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🚧</span> ১৮. সাধারণ ভুল ধারণা</h2>
+
+        <table>
+            <tr>
+                <th>ভুল ধারণা</th>
+                <th>বাস্তবতা</th>
+            </tr>
+            <tr>
+                <td>"RAG মানে LLM-কে fine-tune করা"</td>
+                <td>না। RAG-এ model-এর parameter পরিবর্তন হয় না — inference-এর সময় external context যোগ করা হয়</td>
+            </tr>
+            <tr>
+                <td>"RAG ব্যবহার করলে hallucination একদম শূন্য হয়ে যায়"</td>
+                <td>না। RAG hallucination কমাতে সাহায্য করে, কিন্তু retrieval ও prompt quality-এর উপর নির্ভর করে; সম্পূর্ণ দূর করে না</td>
+            </tr>
+            <tr>
+                <td>"FAISS একটি vector database"</td>
+                <td>সম্পূর্ণ সঠিক না। FAISS একটি similarity search library; একটি সম্পূর্ণ vector database-এ সাধারণত metadata, persistence, ও API-এর মতো অতিরিক্ত সুবিধা থাকে</td>
+            </tr>
+            <tr>
+                <td>"Embedding আর Vector সবসময় সম্পূর্ণ একই জিনিস"</td>
+                <td>খুব কাছাকাছি ধারণা হলেও, Embedding একটি process/representation-এর ধারণা, আর Vector হলো system-এ ব্যবহৃত সেই সংখ্যাগত রূপ</td>
+            </tr>
+            <tr>
+                <td>"Semantic search সবসময় keyword search-এর চেয়ে ভালো"</td>
+                <td>না, নির্দিষ্ট error code, ID, বা exact match-নির্ভর query-তে keyword search বেশি কার্যকর হতে পারে</td>
+            </tr>
+            <tr>
+                <td>"Retrieval আর Reranking একই ধাপ"</td>
+                <td>না, এগুলো আলাদা ধাপ — Retrieval দ্রুত অনেক candidate আনে, Reranking সেগুলোর মধ্যে সেরা কয়েকটি বাছাই করে</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 19 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🗺️</span> ১৯. সিরিজ Roadmap — সম্পূর্ণ Learning Path</h2>
+
+        <p>
+            এই Episode শুধু শুরু। পুরো সিরিজে আমরা ধাপে ধাপে fundamentals থেকে production-grade RAG পর্যন্ত
+            যাব। সম্পূর্ণ পরিকল্পনা নিচে দেওয়া হলো:
+        </p>
+
+        <h3>Phase 1 — Fundamentals</h3>
+        <ol>
+            <li>RAG কী? <em>(এই Episode)</em></li>
+            <li>LLM কীভাবে কাজ করে?</li>
+            <li>Embedding কী? (গভীরভাবে)</li>
+            <li>Vector কী?</li>
+            <li>Vector Database কী?</li>
+        </ol>
+
+        <h3>Phase 2 — Retrieval</h3>
+        <ol start="6">
+            <li>Document Ingestion</li>
+            <li>Chunking</li>
+            <li>Chunking Strategies</li>
+            <li>Semantic Search</li>
+            <li>Metadata Filtering</li>
+        </ol>
+
+        <h3>Phase 3 — Vector Search</h3>
+        <ol start="11">
+            <li>FAISS</li>
+            <li>FAISS Indexes</li>
+            <li>Similarity Metrics</li>
+            <li>Approximate Nearest Neighbor</li>
+            <li>Vector DB Comparison</li>
+        </ol>
+
+        <h3>Phase 4 — Advanced Retrieval</h3>
+        <ol start="16">
+            <li>BM25</li>
+            <li>Hybrid Search</li>
+            <li>Score Fusion</li>
+            <li>Reciprocal Rank Fusion (RRF)</li>
+            <li>Reranking</li>
+        </ol>
+
+        <h3>Phase 5 — Generation</h3>
+        <ol start="21">
+            <li>Context Construction</li>
+            <li>RAG Prompting</li>
+            <li>Grounding</li>
+            <li>Citation</li>
+            <li>Hallucination Mitigation</li>
+        </ol>
+
+        <h3>Phase 6 — Production RAG</h3>
+        <ol start="26">
+            <li>Evaluation</li>
+            <li>Recall@K</li>
+            <li>Precision@K</li>
+            <li>MRR</li>
+            <li>NDCG</li>
+            <li>Latency</li>
+            <li>Caching</li>
+            <li>Scaling</li>
+            <li>Observability</li>
+        </ol>
+
+        <h3>Phase 7 — Advanced RAG</h3>
+        <ol start="35">
+            <li>Query Rewriting</li>
+            <li>Multi-query Retrieval</li>
+            <li>Parent-Child Retrieval</li>
+            <li>HyDE</li>
+            <li>Agentic RAG</li>
+            <li>Multi-step Retrieval</li>
+        </ol>
+
+        <h3>Phase 8 — Practical Project</h3>
+        <p>
+            একটি সম্পূর্ণ RAG system একদম শূন্য থেকে তৈরি করা, এবং ধীরে ধীরে সেটাকে একটি production-oriented
+            architecture-এ রূপান্তর করা — যেখানে আমাদের Islamic RAG project-কে reference হিসেবে ব্যবহার করে,
+            Phase 4-7-এ আলোচিত feature-গুলো (Hybrid Search, Reranking, Evaluation ইত্যাদি) ধাপে ধাপে যোগ করা
+            হবে।
+        </p>
+
+        <div class="info-box">
+            এই roadmap নির্দেশক (guiding), কিন্তু rigid নয় — কিছু Episode একত্র হতে পারে বা প্রয়োজন অনুযায়ী ক্রম
+            সামান্য পরিবর্তিত হতে পারে, যাতে প্রতিটি ধারণা যথাযথ গভীরতায় ব্যাখ্যা করা যায়।
+        </div>
+    </div>
+
+    <!-- PART 20 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">✅</span> ২০. Conclusion</h2>
+
+        <div class="success-box">
+            এই Episode-এ আমরা যা শিখলাম:<br><br>
+            ✓ কেন পুরো knowledge base সরাসরি LLM-কে পাঠানো যায় না, এবং কেন "Retrieval → Augment → Generate" এই
+            সহজ ধারণা থেকে RAG-এর জন্ম<br>
+            ✓ LLM কী, এবং training, inference, parameters, tokens, context window-এর মতো মূল পরিভাষা<br>
+            ✓ Training Knowledge কখনো একটি private/dynamic database-এর বিকল্প নয়<br>
+            ✓ Hallucination কী, এবং কেন RAG এটি সম্পূর্ণ দূর করে না, শুধু কমাতে সাহায্য করে<br>
+            ✓ Traditional LLM usage এবং RAG-এর মধ্যে architecture-ভিত্তিক পার্থক্য<br>
+            ✓ সম্পূর্ণ RAG architecture — User থেকে Answer পর্যন্ত প্রতিটি বক্স<br>
+            ✓ Ingestion Pipeline (offline) ও Query Pipeline (online)-এর মধ্যে স্পষ্ট পার্থক্য<br>
+            ✓ Embedding, Vector, Vector Search, এবং Similarity metric-এর মূল ধারণা<br>
+            ✓ FAISS আসলে কী, এবং কেন এটিকে সরলীকৃতভাবে "vector database" বলা ঠিক না<br>
+            ✓ Chunking কেন প্রয়োজন এবং এর প্রধান কৌশলগুলোর সংক্ষিপ্ত পরিচিতি<br>
+            ✓ Hybrid Search ও Reranking-এর প্রাথমিক ধারণা<br>
+            ✓ RAG এবং Fine-tuning কীভাবে আলাদা এবং একসাথেও ব্যবহারযোগ্য<br>
+            ✓ আমাদের বাস্তব Islamic RAG project কীভাবে এই সব ধারণা প্রয়োগ করে — এবং সততার সাথে, এটি বর্তমানে কী
+            কী করে না
+        </div>
+
+        <p>
+            এই Episode একটি শক্ত mental model তৈরি করেছে। পরবর্তী Episode-গুলোতে আমরা প্রতিটি ধারণা আরও গভীরে
+            গিয়ে, ধাপে ধাপে কোড লিখে বাস্তবায়ন করব।
+        </p>
+    </div>
+
+    <!-- PART 21 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">➡️</span> ২১. Next Episode</h2>
+
+        <div class="key-point">
+            <strong>পরবর্তী Episode:</strong> "LLM কীভাবে কাজ করে?"<br><br>
+            পরের পর্বে আমরা LLM-এর ভেতরের প্রক্রিয়া আরও গভীরভাবে দেখব — tokenization, next-token prediction,
+            এবং কীভাবে prompt থেকে output তৈরি হয়, সেই ভিত্তি তৈরি করব — যা পরবর্তীতে Embedding ও RAG prompting
+            বোঝার জন্য কাজে লাগবে।
+        </div>
+
+        <div class="series-nav">
+            <span class="series-nav-item disabled" style="flex:1;min-width:220px;background:#ccc;color:#888;padding:20px 25px;border-radius:10px;font-weight:600;text-align:center;">
+                ⬅ পূর্ববর্তী Episode (এটাই প্রথম পর্ব)
+            </span>
+            <span class="series-nav-item disabled" style="flex:1;min-width:220px;background:#ccc;color:#888;padding:20px 25px;border-radius:10px;font-weight:600;text-align:center;">
+                পরবর্তী Episode: LLM কীভাবে কাজ করে? (শীঘ্রই) ➡
+            </span>
+        </div>
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০</p>
+            <p>ভাষা: বাংলা</p>
+            <p>সিরিজ: LLM + RAG বাংলা সিরিজ — শূন্য থেকে Production-Grade RAG (Series 1, Episode 01)</p>
+            <p>Practical Reference: <a href="https://github.com/ThanbirTamim/Islamic_Knowleged_Assistant_RAG_Server" target="_blank" rel="noopener">Islamic_Knowleged_Assistant_RAG_Server</a></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
