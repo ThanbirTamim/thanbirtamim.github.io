@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CI/CD এবং Production Deployment সম্পূর্ণ বাংলা গাইড — Testing, Git Workflow, Jenkins Pipeline, Configuration Management, Docker, Kubernetes, Networking এবং Production Debugging একটি বাস্তব গল্পের মাধ্যমে শেখা।">
+    <title>CI/CD এবং Production Deployment - সম্পূর্ণ গাইড (বাংলা)</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            border-left: 8px solid #d63031;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #5f0a0a;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.85rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.8rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.8rem;
+                margin: 15px 0;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home">
+        <i class="fas fa-home"></i>
+    </a>
+</div>
+
+<div class="container">
+
+    <h1><span class="emoji">🚀</span> CI/CD এবং Production Deployment</h1>
+    <p class="subtitle">সম্পূর্ণ বাংলা গাইড - Code থেকে Production পর্যন্ত সম্পূর্ণ যাত্রা</p>
+
+    <!-- TOC -->
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তু</h2>
+        <ul>
+            <li>অংশ ১: সমস্যা এবং সমাধান</li>
+            <li>অংশ ২: Software Delivery Basics</li>
+            <li>অংশ ৩: Testing এবং Pytest</li>
+            <li>অংশ ৪: CI/CD Fundamentals</li>
+            <li>অংশ ৫: Git, Branching এবং Pull Request</li>
+            <li>অংশ ৬: Jenkins এবং Pipeline as Code</li>
+            <li>অংশ ৭: Environment Configuration ও Secrets Management</li>
+            <li>অংশ ৮: Docker এবং Containerization</li>
+            <li>অংশ ৯: Kubernetes Deployment - Production Scale</li>
+            <li>অংশ ১০: Networking, Reverse Proxy এবং Service Discovery</li>
+            <li>অংশ ১১: Production Debugging এবং Monitoring</li>
+            <li>অংশ ১২: Best Practices Checklist</li>
+            <li>অংশ ১৩: উপসংহার</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">🤔</span> অংশ ১: সমস্যা এবং সমাধান</h2>
+
+        <h3>বাস্তব গল্প: তামিম এবং নবীন - Production Disaster</h3>
+
+        <div class="story-box">
+            <strong>🎬 দৃশ্য ১: একটি Tech Company অফিস, সকাল ৯টা</strong><br><br>
+
+            <strong>নবীন:</strong> "তামিম ভাইয়া! 🎉 সুসংবাদ! আমি আমাদের নতুন Product API feature তৈরি করে
+            ফেলেছি!"<br><br>
+
+            <strong>তামিম:</strong> "ওহ! বাহ! Test করেছ?"<br><br>
+
+            <strong>নবীন:</strong> "অবশ্যই ভাইয়া! আমার laptop-এ একদম 100% perfect! 😎"<br><br>
+
+            <strong>তামিম:</strong> "Unit test? Automated test?"<br><br>
+
+            <strong>নবীন:</strong> "না ভাইয়া... আমি নিজেই test করেছি। Browser খুলে API hit করেছি, response আসছে।
+            আর কী test লাগবে?" 😌<br><br>
+
+            <strong>তামিম:</strong> "Code review?"<br><br>
+
+            <strong>নবীন:</strong> "আমি নিজেই code লিখেছি, নিজেই review করেছি। আমার code-কে আমি খুব ভালোভাবে
+            চিনি।" 😎<br><br>
+
+            <strong>তামিম:</strong> "Staging environment-এ deploy করে test করেছ?"<br><br>
+
+            <strong>নবীন:</strong> "ভাইয়া, staging আবার কী? আমার laptop-এই তো সব চলছে!" 😂<br><br>
+
+            <strong>তামিম:</strong> "আচ্ছা... production-এ deploy করেছ?"<br><br>
+
+            <strong>নবীন:</strong> "জি ভাইয়া! ইতিমধ্যে করে ফেলেছি।"<br><br>
+
+            <strong>তামিম:</strong> "😐 ... কোথায় deploy করেছ?"<br><br>
+
+            <strong>নবীন:</strong> "Production server-এ, real users, real data—সব real!" 😁<br><br>
+
+            <strong>তামিম:</strong> "নবীন... তুমি কি আমাকে আজকে চাকরি ছাড়ার একটা কারণ খুঁজে দিতে চাচ্ছ?" 😭<br><br>
+
+            <hr>
+
+            <strong>🕛 দুপুর ১২টা — তিন ঘণ্টা পর...</strong><br><br>
+
+            <strong>🔴 ALERT: PRODUCTION SERVER DOWN!</strong><br>
+            <strong>🔴 API ERROR RATE: 87%</strong><br>
+            <strong>🔴 USERS: ANGRY</strong><br>
+            <strong>🔴 SLACK: EXPLODING</strong><br><br>
+
+            <strong>নবীন:</strong> "ভাইয়া! 😱 API কাজ করছে না!"<br><br>
+
+            <strong>তামিম:</strong> "কখন থেকে?"<br>
+            <strong>নবীন:</strong> "প্রায় ২০ মিনিট ধরে।"<br><br>
+
+            <strong>তামিম:</strong> "Monitoring alert আসেনি? Notification? Automated test? Code review?
+            Staging?"<br>
+            <strong>নবীন:</strong> "...না ভাইয়া। কোনোটাই না।" 🥲<br><br>
+
+            <strong>তামিম:</strong> "তাহলে deploy করলে কীভাবে?"<br><br>
+
+            <strong>নবীন:</strong> "ভাইয়া... আমি শুধু <code>git push</code> করেছি... তারপর server-এ গিয়ে
+            <code>git pull</code> দিয়েছি।" 😐<br><br>
+
+            <strong>তামিম:</strong> "আমি একটু পানি খেয়ে আসি।" 😭<br><br>
+
+            <hr>
+
+            <strong>🧑‍💻 তামিম:</strong> "শোনো নবীন, তোমার একটা জিনিস বুঝতে হবে। তোমার laptop-এ কাজ করছে মানেই
+            production-এ কাজ করবে—এমন কোনো guarantee নেই।"<br><br>
+
+            <strong>নবীন:</strong> "কিন্তু ভাইয়া, আমার laptop-এ তো একদম ঠিক ছিল!"<br><br>
+
+            <strong>তামিম:</strong> "তোমার laptop-এ Python version একরকম হতে পারে, production-এ আরেক version।
+            Dependency আলাদা হতে পারে। Environment variable missing থাকতে পারে। Database configuration আলাদা
+            হতে পারে। এমনকি তোমার laptop-এ যে package install করা আছে, production server-এ সেটাও নাও থাকতে
+            পারে।"<br><br>
+
+            <strong>নবীন:</strong> "তাহলে deploy করার আগে কী করা উচিত ছিল?"<br><br>
+
+            <strong>তামিম:</strong> "এখানেই আসে <strong>CI/CD</strong>।"<br><br>
+
+            <strong>নবীন:</strong> "CI/CD আবার নতুন কোনো programming language?" 🤨<br><br>
+
+            <strong>তামিম:</strong> "না ভাই! 😂 CI/CD কোনো programming language না। এটা software delivery করার
+            একটি automated process। তুমি code লিখবে → Git-এ push করবে → automated test চলবে → code quality
+            check হবে → build হবে → দরকার হলে review হবে → staging-এ deploy হবে → সব ঠিক থাকলে production-এ
+            deploy হবে।"<br><br>
+
+            <strong>নবীন:</strong> "মানে আমি শুধু code push করব, বাকিগুলো automatically হবে?" 😮<br><br>
+
+            <strong>তামিম:</strong> "Exactly! এটাই automation-এর beauty। আর মনে রেখো—"<br><br>
+
+            <strong><em>"It works on my machine" is NOT a deployment strategy!</em></strong> 😂<br><br>
+
+            <strong>তামিম:</strong> "এবার ঠিক আছে। চলো, তোমাকে CI/CD pipeline শেখাই।"<br><br>
+
+            <strong>নবীন:</strong> "জি ভাইয়া! তবে আগে production server-টা বাঁচাই!" 😭😂
+        </div>
+
+        <h3>কী ঘটেছিল?</h3>
+
+        <div class="technical-box">
+            <strong>সমস্যা ১: কোনো Automated Testing ছিল না</strong><br>
+            যদি প্রতিটি code push-এর পর automated tests চলত, তাহলে bug-টি development-এ ধরা পড়ত।<br><br>
+
+            <strong>সমস্যা ২: Code Review Process ছিল না</strong><br>
+            যদি অন্য একজন developer code দেখত, সম্ভবত তারা সমস্যা ধরত।<br><br>
+
+            <strong>সমস্যা ৩: Manual Deployment Process</strong><br>
+            কোনো standardized deployment procedure ছিল না। তাই inconsistency হয়েছে।<br><br>
+
+            <strong>সমস্যা ৪: কোনো Monitoring System ছিল না</strong><br>
+            Production-এ crash হওয়া পর্যন্ত কেউ জানল না।<br><br>
+
+            <strong>সমস্যা ৫: Environment Mismatch</strong><br>
+            নবীনের laptop এবং production server-এর environment ভিন্ন ছিল।
+        </div>
+
+        <h3>তাহলে সমাধান কী?</h3>
+
+        <div class="success-box">
+            <strong>সমাধান হলো—একটি systematic, automated এবং reliable software delivery process তৈরি
+            করা।</strong><br><br>
+
+            এই process নিশ্চিত করবে যে:<br><br>
+
+            ✓ প্রতিটি নতুন code change automated test-এর মধ্য দিয়ে যাবে<br>
+            ✓ Code merge করার আগে proper code review হবে<br>
+            ✓ Build ও deployment একটি standardized এবং reproducible process অনুসরণ করবে<br>
+            ✓ Development, Staging এবং Production environment যতটা সম্ভব consistent থাকবে<br>
+            ✓ Production-এ কোনো সমস্যা হলে সঙ্গে সঙ্গে monitoring alert ও notification পাওয়া যাবে<br>
+            ✓ নতুন version deploy করার সময় deployment controlled এবং reliable হবে<br>
+            ✓ কোনো issue হলে দ্রুত এবং safely আগের stable version-এ rollback করা যাবে<br><br>
+
+            এই পুরো process-টিকেই আমরা <strong>CI/CD Pipeline</strong> হিসেবে ব্যবহার করি।<br><br>
+
+            সহজভাবে বললে—<strong>CI/CD হলো code থেকে production পর্যন্ত software delivery-কে automation,
+            testing, validation এবং monitoring-এর মাধ্যমে নিরাপদ ও repeatable করার একটি পদ্ধতি।</strong>
+        </div>
+
+        <h3>তাহলে CI/CD আসলে কী?</h3>
+
+        <div class="info-box">
+            <strong>CI — Continuous Integration</strong><br><br>
+
+            Developer-রা যখন নতুন code লিখে Git repository-তে push বা merge করে, তখন CI process automatically
+            সেই code যাচাই করে।<br><br>
+
+            সাধারণত এই ধাপে:<br>
+            ✓ Code build করা হয়<br>
+            ✓ Automated unit test চালানো হয়<br>
+            ✓ Linting ও code quality check করা হয়<br>
+            ✓ প্রয়োজনীয় validation চালানো হয়<br>
+            ✓ Test fail করলে developer-কে জানানো হয়<br><br>
+
+            অর্থাৎ, <strong>CI-এর মূল লক্ষ্য হলো—নতুন code যেন existing application-এর functionality নষ্ট না
+            করে, তা দ্রুত যাচাই করা।</strong><br><br>
+
+            <strong>CD — Continuous Delivery / Continuous Deployment</strong><br><br>
+
+            CI-এর মাধ্যমে code সফলভাবে test ও validate হওয়ার পর সেই code-কে deployment-এর জন্য প্রস্তুত করা
+            হয়।<br><br>
+
+            <strong>Continuous Delivery:</strong> Tested এবং validated code automatically deployment-এর জন্য
+            ready থাকে। Production-এ deploy করার জন্য সাধারণত একটি manual approval বা release decision থাকতে
+            পারে।<br><br>
+
+            <strong>Continuous Deployment:</strong> Code সমস্ত automated checks pass করলে সেটি automatically
+            production-এ deploy হয়ে যেতে পারে—অতিরিক্ত manual approval ছাড়াই।<br><br>
+
+            অর্থাৎ, <strong>Delivery</strong> এবং <strong>Deployment</strong> এক জিনিস নয়; Continuous
+            Deployment হলো Continuous Delivery-এর আরও automated form।
+        </div>
+
+        <h3>এক লাইনে CI/CD</h3>
+
+        <div class="info-box">
+            <strong>Developer Code লিখে → Git-এ Push করে → Automated Test → Code Quality Check → Build →
+            Review/Approval → Staging → Production → Monitoring → দরকার হলে Rollback</strong><br><br>
+            এই পুরো workflow-কে automated, consistent এবং repeatable করার ব্যবস্থাই হলো
+            <strong>CI/CD Pipeline</strong>।
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📚</span> অংশ ২: Software Delivery Basics</h2>
+
+        <h3>একটি Application কীভাবে Users-এর কাছে পৌঁছায়?</h3>
+
+        <p>
+            এটি একটি fundamental প্রশ্ন যা আমাদের বুঝতে হবে CI/CD বোঝার আগে। ছোট একটি web application বা
+            microservice থেকে শুরু করে বিশাল enterprise application পর্যন্ত, সবকিছুকে একটি common process
+            follow করতে হয়।
+        </p>
+
+        <h3>সবচেয়ে সহজ Software Delivery Flow</h3>
+
+        <div class="diagram">
+Developer writes code
+        ↓
+Code gets stored in version control (Git)
+        ↓
+Code is compiled/built
+        ↓
+Code is tested
+        ↓
+Code is packaged
+        ↓
+Package is deployed to server
+        ↓
+Application runs on server
+        ↓
+Users access the application
+        ↓
+Users provide feedback
+        ↓
+Cycle repeats for new features
+        </div>
+
+        <h3>প্রতিটি পর্যায় বিস্তারিত</h3>
+
+        <h4>১. Development — Code লেখা</h4>
+
+        <div class="technical-box">
+            <strong>এ পর্যায়ে যা ঘটে:</strong><br><br>
+
+            Developer তার own machine (laptop)-এ নতুন feature বা bug fix লেখে। এই সময় বিভিন্ন tool ব্যবহার
+            করা হয় যেমন IDE (VS Code, PyCharm ইত্যাদি), version control (Git), local testing environment
+            ইত্যাদি।<br><br>
+
+            <strong>উদাহরণ Process:</strong><br>
+            ১. Feature branch তৈরি করুন: <code>git checkout -b feature/new-api-endpoint</code><br>
+            ২. নতুন code লিখুন<br>
+            ৩. Local testing করুন: <code>pytest</code> চালান<br>
+            ৪. সন্তুষ্ট হলে commit করুন: <code>git commit -m "Add new API endpoint"</code><br>
+            ৫. Remote repository-তে push করুন: <code>git push origin feature/new-api-endpoint</code><br><br>
+
+            <strong>এই পর্যায়ে যা গুরুত্বপূর্ণ:</strong><br>
+            • Code clean এবং readable হতে হবে<br>
+            • Local environment-এ সব test pass করতে হবে<br>
+            • Version control-এ সবকিছু properly tracked থাকতে হবে
+        </div>
+
+        <h4>২. Version Control এবং Repository</h4>
+
+        <div class="technical-box">
+            <strong>Git-এর ভূমিকা:</strong><br><br>
+
+            আমাদের code-এ একটি সিস্টেম দরকার যা track করবে কে কী পরিবর্তন করেছে এবং কখন। এটাই Git-এর মূল
+            উদ্দেশ্য।<br><br>
+
+            <strong>প্রতিটি Developer তাদের নিজস্ব Branch-এ কাজ করে:</strong><br>
+            <code>main/master</code> = Production-ready code<br>
+            <code>develop</code> = Development branch<br>
+            <code>feature/user-auth</code> = নতুন feature-এর জন্য branch<br>
+            <code>bugfix/login-issue</code> = Bug fix-এর জন্য branch<br><br>
+
+            <strong>এটি isolated development সম্ভব করে।</strong> কোনো developer-এর কাজ অন্য developer-এর
+            কাজকে ভেঙে দেয় না।<br><br>
+
+            <strong>Repository Location:</strong> Centralized remote repository থাকে (GitHub, GitLab,
+            Bitbucket ইত্যাদিতে) যেখানে সবাই তাদের code push করে।
+        </div>
+
+        <h4>৩. Testing</h4>
+
+        <div class="technical-box">
+            <strong>Test কেন গুরুত্বপূর্ণ?</strong><br><br>
+
+            Code লেখার পর এটি কাজ করছে কিনা তা verify করার জন্য test প্রয়োজন। Manual testing inefficient এবং
+            unreliable। তাই Automated Testing ব্যবহার করা হয়।<br><br>
+
+            <strong>Testing-এর ধরন:</strong><br><br>
+
+            <strong>Unit Testing:</strong> Individual function বা method test করা।<br>
+            উদাহরণ: <code>def add(a, b): return a + b</code> function test করা — <code>assert add(2, 3) ==
+            5</code><br><br>
+
+            <strong>Integration Testing:</strong> একাধিক component একসাথে কাজ করছে কিনা test করা — যেমন
+            database query, API call, response processing সব একসাথে।<br><br>
+
+            <strong>End-to-End Testing:</strong> পুরো application workflow test করা — যেমন user registration
+            থেকে login পর্যন্ত পুরো process।<br><br>
+
+            <strong>Performance Testing:</strong> Application কতটা দ্রুত response দেয় তা test করা।<br><br>
+
+            <strong>Security Testing:</strong> Application-এ security vulnerability আছে কিনা তা check করা।
+        </div>
+
+        <h4>৪. Build</h4>
+
+        <div class="technical-box">
+            <strong>Build মানে কী?</strong><br><br>
+
+            Source code এক জায়গায় রাখলেই যথেষ্ট নয়। এটিকে একটি runnable format-এ convert করতে হয়। এই
+            process-কে build বলা হয়।<br><br>
+
+            <strong>Python-এর ক্ষেত্রে:</strong> Python interpreted language, তাই compile করার প্রয়োজন নেই।
+            কিন্তু dependencies install এবং package করার প্রয়োজন হয়।<br><br>
+
+            <strong>Java-এর ক্ষেত্রে:</strong> <code>javac</code> দিয়ে compile করতে হয় (<code>.java →
+            .class</code>), তারপর <code>.class</code> file-গুলো একটি JAR বা WAR file-এ package করতে হয়।<br><br>
+
+            <strong>Build Process-এ যা হয়:</strong><br>
+            ১. Dependencies সংগ্রহ করা (<code>npm install</code>, <code>pip install</code> ইত্যাদি)<br>
+            ২. Source code compile করা (যদি প্রয়োজন হয়)<br>
+            ৩. Code minify/optimize করা<br>
+            ৪. Assets (images, CSS, JS) bundle করা<br>
+            ৫. একটি executable বা runnable artifact তৈরি করা
+        </div>
+
+        <h4>৫. Packaging — Artifact তৈরি</h4>
+
+        <div class="technical-box">
+            <strong>Build artifact কী?</strong><br><br>
+
+            Build process থেকে যা বেরিয়ে আসে তাকে artifact বলা হয়। এটি হতে পারে JAR file (Java), WAR file
+            (Web Application), Docker Image, Executable binary, বা Wheel package (Python)।<br><br>
+
+            <strong>Artifact-এর বৈশিষ্ট্য:</strong><br>
+            ১. এটি self-contained — এর মধ্যে সব dependencies আছে<br>
+            ২. এটি reproducible — একই source থেকে build করলে একই artifact পাওয়া যায়<br>
+            ৩. এটি versionable — version number দিয়ে track করা যায়<br>
+            ৪. এটি distributable — একটি artifact-কে বিভিন্ন environment-এ deploy করা যায়<br><br>
+
+            <strong>উদাহরণ:</strong> Docker image: <code>myapp:1.2.3</code>, JAR artifact:
+            <code>myapp-1.2.3.jar</code>, Python package: <code>myapp-1.2.3.whl</code>
+        </div>
+
+        <h4>৬. Deployment</h4>
+
+        <div class="technical-box">
+            <strong>Deployment মানে কী?</strong><br><br>
+
+            Artifact-কে একটি server-এ চালানো শুরু করাকে deployment বলা হয়।<br><br>
+
+            <strong>Deployment Process:</strong><br>
+            ১. Artifact-কে server-এ transfer করা<br>
+            ২. Server-এ dependencies install করা<br>
+            ৩. Configuration file setup করা<br>
+            ৪. Database migration চালানো (যদি প্রয়োজন হয়)<br>
+            ৫. Application start করা<br>
+            ৬. Health check করা (Application সঠিকভাবে running কিনা)<br>
+            ৭. Traffic শুরু করা<br><br>
+
+            <strong>Deployment Strategies:</strong><br><br>
+
+            <strong>Big Bang Deployment:</strong> পুরো application একসাথে switch করা। Old version বন্ধ, নতুন
+            version চালু। ঝুঁকিপূর্ণ।<br><br>
+
+            <strong>Rolling Deployment:</strong> Server-গুলোকে একটা একটা করে update করা। বাকি server-গুলো
+            running থাকে। কম downtime।<br><br>
+
+            <strong>Blue-Green Deployment:</strong> দুটি identical environment রাখা। পুরোনো version
+            Blue-তে চলছে, নতুন version Green-এ deploy হয়। তারপর traffic switch করা হয়।<br><br>
+
+            <strong>Canary Deployment:</strong> নতুন version শুধু কয়েকজন user-কে দেওয়া। বাকি user-রা old
+            version ব্যবহার করছে। সমস্যা না হলে ধীরে ধীরে সবাইকে দেওয়া হয়।
+        </div>
+
+        <h3>Production Environment কী?</h3>
+
+        <div class="technical-box">
+            <strong>Production হলো সেই Environment যেখানে real users আপনার application ব্যবহার করছে।</strong><br><br>
+
+            এটি নিয়ে বিশেষ যত্ন নিতে হয় কারণ এখানকার কোনো সমস্যা সরাসরি users-দের impact করে।<br><br>
+
+            <strong>Production-এর বৈশিষ্ট্য:</strong><br>
+            ১. High Availability — Application সবসময় running থাকতে হবে<br>
+            ২. Scalability — Traffic বাড়লে handle করতে পারতে হবে<br>
+            ৩. Security — বিশেষ নিরাপত্তা ব্যবস্থা থাকতে হবে<br>
+            ৪. Monitoring — সবসময় নজরদারি থাকতে হবে<br>
+            ৫. Backup ও Recovery — ডেটা backup এবং disaster recovery থাকতে হবে<br>
+            ৬. Performance Optimization — fast response time<br><br>
+
+            <strong>Development এবং Production-এর পার্থক্য:</strong><br>
+            Development: Single machine, less security, fast iteration<br>
+            Production: Multiple machines, high security, stability focus
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧪</span> অংশ ৩: Testing এবং Pytest</h2>
+
+        <h3>কেন Automated Testing এত গুরুত্বপূর্ণ?</h3>
+
+        <div class="story-box">
+            <strong>একটি ছোট উদাহরণ:</strong><br><br>
+
+            ধরুন একটি simple function আছে যা দুটি সংখ্যা যোগ করে। এটি খুবই সহজ, তাই manual testing করা যায়।
+            একবার test করলাম, ঠিক আছে।<br><br>
+
+            কিন্তু পরে যখন এই function-কে modify করা হলো (exponential যোগ করার জন্য), তখন ভুলবশত আগের
+            functionality ভেঙে গেল।<br><br>
+
+            যদি automated test থাকত, তাহলে সেই test fail হতো এবং আমরা জানতে পারতাম কিছু ভুল আছে। কিন্তু
+            manual test-এ আমরা শুধু exponential functionality-ই test করেছিলাম, সাধারণ যোগটা test করিনি। ফলে
+            bug production-এ চলে গেল।
+        </div>
+
+        <h3>Automated Testing কীভাবে কাজ করে?</h3>
+
+        <div class="technical-box">
+            Automated testing মানে আপনি একবার লিখে রাখবেন কীভাবে test করতে হবে, তারপর সেটি বারবার নিজে নিজে
+            চলবে।<br><br>
+
+            প্রথমে আমাদের একটি function আছে: <code>def add(a, b): return a + b</code><br><br>
+            এখন আমরা একটি test লিখি: <code>def test_add(): assert add(2, 3) == 5</code><br><br>
+
+            এই test-টি আমরা একবার লিখেছি। এখন যখনই আমাদের code change হবে, এই test automatically চলবে। যদি
+            <code>add</code> function-টি ভুলভাবে modify হয়, test fail হবে এবং আমরা জানতে পারব।
+        </div>
+
+        <h3>Pytest - Python Testing Framework</h3>
+
+        <div class="technical-box">
+            <strong>Pytest কী?</strong><br><br>
+
+            Pytest একটি জনপ্রিয় Python testing framework যা automated testing-কে সহজ করে দেয়। এটি test
+            discover করতে পারে, test run করতে পারে, এবং detailed report দিতে পারে।<br><br>
+
+            <strong>Installation:</strong> <code>pip install pytest</code><br><br>
+            নিচে একটি simple test লেখা হলো, ফাইল: <code>test_math.py</code>
+        </div>
+
+        <div class="code-box">
+def add(a, b):
+    """দুটি সংখ্যা যোগ করে।"""
+    return a + b
+
+def subtract(a, b):
+    """দুটি সংখ্যার পার্থক্য বের করে।"""
+    return a - b
+
+# Test cases
+def test_add_positive():
+    """Positive সংখ্যা যোগের test।"""
+    assert add(2, 3) == 5
+    assert add(10, 20) == 30
+    assert add(0, 0) == 0
+
+def test_add_negative():
+    """Negative সংখ্যা যোগের test।"""
+    assert add(-5, -3) == -8
+    assert add(-10, 5) == -5
+
+def test_subtract():
+    """বিয়োগের test।"""
+    assert subtract(10, 3) == 7
+    assert subtract(5, 5) == 0
+        </div>
+
+        <div class="technical-box">
+            <strong>এই test-গুলো run করতে:</strong> <code>pytest test_math.py</code><br><br>
+
+            <strong>Output:</strong>
+        </div>
+
+        <div class="code-box">
+test_math.py::test_add_positive PASSED
+test_math.py::test_add_negative PASSED
+test_math.py::test_subtract PASSED
+======= 3 passed in 0.05s =======
+        </div>
+
+        <div class="technical-box">
+            <strong>যদি কোনো test fail হয়:</strong>
+        </div>
+
+        <div class="code-box">
+test_math.py::test_add_positive FAILED
+AssertionError: assert 6 == 5
+        </div>
+
+        <p>এটি বলছে আমরা <code>add(2, 3)</code>-এ 6 পেয়েছি কিন্তু আশা করেছিলাম 5।</p>
+
+        <h3>Real-World API Testing-এর উদাহরণ</h3>
+
+        <div class="technical-box">
+            <strong>একটি সাধারণ API থাকে যা Products return করে:</strong> <code>GET /api/products</code><br><br>
+            আমরা এর জন্য test লিখতে পারি:
+        </div>
+
+        <div class="code-box">
+import pytest
+import requests
+
+@pytest.fixture
+def api_url():
+    """Test-এর জন্য API URL।"""
+    return "http://localhost:5000"
+
+def test_get_products_success(api_url):
+    """Products endpoint ঠিকভাবে কাজ করছে কিনা।"""
+    response = requests.get(f"{api_url}/api/products")
+
+    # Status code check
+    assert response.status_code == 200
+
+    # Response format check
+    data = response.json()
+    assert isinstance(data, list)
+    assert len(data) > 0
+
+    # Product structure check
+    product = data[0]
+    assert "id" in product
+    assert "name" in product
+    assert "price" in product
+
+def test_get_product_by_id(api_url):
+    """একটি নির্দিষ্ট product fetch করা।"""
+    response = requests.get(f"{api_url}/api/products/1")
+    assert response.status_code == 200
+    product = response.json()
+    assert product["id"] == 1
+
+def test_create_product(api_url):
+    """নতুন product তৈরি করা।"""
+    new_product = {"name": "New Product", "price": 100}
+    response = requests.post(f"{api_url}/api/products", json=new_product)
+    assert response.status_code == 201
+    created_product = response.json()
+    assert created_product["name"] == "New Product"
+    assert created_product["price"] == 100
+
+def test_delete_product(api_url):
+    """Product delete করা।"""
+    response = requests.delete(f"{api_url}/api/products/1")
+    assert response.status_code == 204
+
+def test_product_not_found(api_url):
+    """Non-existent product fetch করা।"""
+    response = requests.get(f"{api_url}/api/products/99999")
+    assert response.status_code == 404
+        </div>
+
+        <h3>Test Coverage — আমরা কতটুকু test করেছি?</h3>
+
+        <div class="technical-box">
+            <strong>Code coverage measure করে code-এর কত অংশ tests দিয়ে cover হয়েছে।</strong><br><br>
+
+            <strong>Coverage বিভিন্ন level-এ হতে পারে:</strong><br>
+            • 50% coverage: Code-এর অর্ধেক test হয়েছে<br>
+            • 80% coverage: Code-এর ৮০% test হয়েছে<br>
+            • 100% coverage: সব code test হয়েছে<br><br>
+
+            <strong>কিন্তু গুরুত্বপূর্ণ:</strong> 100% coverage মানে সব code test হয়েছে, কিন্তু সব edge case
+            cover হয়েছে তা নয়।<br><br>
+
+            <strong>Coverage measure করতে:</strong><br>
+            <code>pip install pytest-cov</code><br>
+            <code>pytest --cov=myapp test_myapp.py</code><br><br>
+
+            এটি একটি report দেবে যা দেখাবে কোন ফাংশন বা ফাইল test হয়নি।
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">⚙️</span> অংশ ৪: CI/CD Fundamentals - সম্পূর্ণ ব্যাখ্যা</h2>
+
+        <h3>CI/CD আসলে কীভাবে কাজ করে?</h3>
+
+        <div class="story-box">
+            <strong>একটি বাস্তব Scenario:</strong><br><br>
+
+            তামিম একটি নতুন feature develop করছে। সে তার own branch-এ কাজ করছে।<br><br>
+
+            ১. সে কাজ শেষ করলে code commit এবং push করে।<br>
+            ২. GitHub-এ একটি Pull Request খোলে।<br>
+            ৩. সাথে সাথে একটি webhook GitHub থেকে Jenkins server-এ signal পাঠায়।<br>
+            ৪. Jenkins automatic পুরো testing + build + deployment process শুরু করে।<br>
+            ৫. সব test pass হলে Jenkins GitHub-কে বলে "সব ঠিক আছে"।<br>
+            ৬. তামিম code review-র জন্য team-কে notify করে।<br>
+            ৭. অন্য developer code review করে approve করে।<br>
+            ৮. তামিম merge button চাপে।<br>
+            ৯. Jenkins আবার পুরো process চালায় এবং production-এ deploy করে।<br><br>
+
+            <strong>সবকিছু automated এবং systematic।</strong>
+        </div>
+
+        <h3>Continuous Integration (CI) বিস্তারিত</h3>
+
+        <div class="technical-box">
+            <strong>CI-এর মূল উদ্দেশ্য:</strong> Developer-দের code একটি shared repository-তে merge করার পরও
+            Application সঠিকভাবে কাজ করে তা নিশ্চিত করা।<br><br>
+
+            <strong>CI Process-এর ধাপ:</strong><br><br>
+
+            <strong>ধাপ ১: Code Push হয়</strong><br>
+            Developer code commit করে এবং repository-তে push করে। এই action-এর পর webhook trigger হয়।<br><br>
+
+            <strong>ধাপ ২: CI Server জেগে ওঠে</strong><br>
+            Jenkins বা অন্য CI server webhook notification পায় এবং job শুরু করে।<br><br>
+
+            <strong>ধাপ ৩: Repository Checkout</strong><br>
+            CI server latest code checkout করে: <code>git clone repository</code><br><br>
+
+            <strong>ধাপ ৪: Dependencies Install</strong><br>
+            সব প্রয়োজনীয় dependencies install করা হয়।<br>
+            Python: <code>pip install -r requirements.txt</code><br>
+            Node.js: <code>npm install</code><br>
+            Java: Maven/Gradle দিয়ে download<br><br>
+
+            <strong>ধাপ ৫: Code Quality Check</strong><br>
+            Linting এবং code style checking — Pylint/Flake8 (Python), ESLint (JavaScript), SonarQube
+            (general)।<br><br>
+
+            <strong>ধাপ ৬: Unit Tests চলে</strong><br>
+            <code>pytest</code> বা অন্য testing framework সব test run করে।<br><br>
+
+            <strong>ধাপ ৭: Integration Tests চলে</strong><br>
+            একাধিক component একসাথে কাজ করছে কিনা তা test করা।<br><br>
+
+            <strong>ধাপ ৮: Security Scan</strong><br>
+            Dependency-তে কোনো known vulnerability আছে কিনা তা check করা — OWASP Dependency Check, Snyk-এর
+            মতো tool দিয়ে।<br><br>
+
+            <strong>ধাপ ৯: Build</strong><br>
+            যদি সব test pass হয়, তাহলে build করা হয়।<br><br>
+
+            <strong>ধাপ ১০: Result Report</strong><br>
+            সব ফলাফল GitHub-এ comment করা হয় যাতে developer জানে সবকিছু pass হয়েছে।<br><br>
+
+            <strong>যদি কোনো ধাপ fail হয়:</strong> CI server সাথে সাথে job stop করে এবং developer-কে
+            notification দেয়। Merge করা যায় না।
+        </div>
+
+        <h3>Continuous Delivery (CD) বিস্তারিত</h3>
+
+        <div class="technical-box">
+            <strong>CD-এর মূল উদ্দেশ্য:</strong> যে code test pass করেছে এবং code review-এর মধ্য দিয়ে গেছে,
+            সেটিকে production-এ deploy করার জন্য প্রস্তুত করা।<br><br>
+
+            <strong>CD Process-এর ধাপ:</strong><br><br>
+
+            <strong>ধাপ ১: Artifact তৈরি</strong><br>
+            Build থেকে যা বেরিয়ে আসে (Docker image, JAR file ইত্যাদি) তাকে artifact বলা হয়। এটিকে একটি
+            version number দিয়ে tag করা হয় — যেমন <code>myapp:1.2.3</code><br><br>
+
+            <strong>ধাপ ২: Artifact Publish করা</strong><br>
+            Artifact-কে একটি registry-তে push করা — Docker: Docker Registry-তে, Java: Artifactory/Nexus-এ,
+            Python: PyPI-তে।<br><br>
+
+            <strong>ধাপ ৩: Staging Deployment</strong><br>
+            প্রথমে staging environment-এ deploy করা হয় (যা production-এর মতো কিন্তু real user-দের জন্য নয়)।<br><br>
+
+            <strong>ধাপ ৪: Staging Tests</strong><br>
+            Staging environment-এ smoke test চালানো — health check, API endpoint test, integration test।<br><br>
+
+            <strong>ধাপ ৫: Manual Approval (Optional)</strong><br>
+            কেউ manually approve করতে পারে production deployment-এর আগে।<br><br>
+
+            <strong>ধাপ ৬: Production Deployment</strong><br>
+            Artifact production environment-এ deploy করা।<br><br>
+
+            <strong>ধাপ ৭: Production Health Checks</strong><br>
+            Deployment-এর পরে application সঠিকভাবে running কিনা তা verify করা।<br><br>
+
+            <strong>ধাপ ৮: Monitoring এবং Alerting</strong><br>
+            Production application-এর performance, error, এবং health continuously monitor করা।
+        </div>
+
+        <h3>Continuous Deployment বনাম Continuous Delivery</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Continuous Delivery</strong><br><br>
+                Code production-এর জন্য ready থাকে, কিন্তু deploy করার জন্য human approval দরকার।<br><br>
+                Manual deployment step থাকে, যা সাধারণত একজন DevOps engineer করে।<br><br>
+                Safer কিন্তু তুলনামূলক ধীর।
+            </div>
+
+            <div class="comparison-item">
+                <strong>Continuous Deployment</strong><br><br>
+                Code automatically production-এ deploy হয়, কোনো human approval ছাড়াই।<br><br>
+                সম্পূর্ণ automated process, কোনো manual step নেই।<br><br>
+                দ্রুত, কিন্তু tests comprehensive না হলে ঝুঁকিপূর্ণ।
+            </div>
+        </div>
+
+        <h3>CI/CD Pipeline Visualization</h3>
+
+        <div class="diagram">
+Developer commits code
+        ↓
+git push origin feature-branch
+        ↓
+GitHub receives push
+        ↓
+Webhook triggers CI server
+        ↓
+========== CI PHASE ==========
+CI job starts
+  ├─ Checkout code
+  ├─ Install dependencies
+  ├─ Run linting/code quality checks
+  ├─ Run unit tests
+  ├─ Run integration tests
+  ├─ Run security scans
+  └─ Build artifact
+        ↓
+All checks PASSED?
+  ├─ YES → Continue
+  └─ NO  → Send failure notification, Stop
+        ↓
+========== CD PHASE ==========
+Create artifact (Docker image)
+        ↓
+Tag artifact with version number
+        ↓
+Push artifact to registry
+        ↓
+Deploy to staging environment
+        ↓
+Run smoke tests on staging
+        ↓
+Await manual approval (if needed)
+        ↓
+Deploy to production
+        ↓
+Run health checks
+        ↓
+Monitor and alert
+        ↓
+SUCCESS! Application live for users
+        </div>
+
+        <h3>CI/CD Pipeline Tools-এর উদাহরণ</h3>
+
+        <div class="technical-box">
+            <strong>বিভিন্ন stage-এর জন্য বিভিন্ন tool ব্যবহার করা হয়:</strong>
+        </div>
+
+        <table>
+            <tr>
+                <th>Stage</th>
+                <th>জনপ্রিয় Tools</th>
+            </tr>
+            <tr>
+                <td>Version Control</td>
+                <td>Git, GitHub, GitLab, Bitbucket</td>
+            </tr>
+            <tr>
+                <td>CI/CD Orchestration</td>
+                <td>Jenkins, GitLab CI, GitHub Actions, CircleCI</td>
+            </tr>
+            <tr>
+                <td>Testing</td>
+                <td>Pytest, JUnit, Mocha, RSpec</td>
+            </tr>
+            <tr>
+                <td>Code Quality</td>
+                <td>SonarQube, Pylint, ESLint, Checkstyle</td>
+            </tr>
+            <tr>
+                <td>Build Tools</td>
+                <td>Maven, Gradle, Make, npm</td>
+            </tr>
+            <tr>
+                <td>Container Registry</td>
+                <td>Docker Hub, AWS ECR, Google Artifact Registry</td>
+            </tr>
+            <tr>
+                <td>Deployment</td>
+                <td>Kubernetes, Docker Swarm, ECS, Lambda</td>
+            </tr>
+            <tr>
+                <td>Monitoring</td>
+                <td>Prometheus, Grafana, ELK Stack, Datadog</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🌿</span> অংশ ৫: Git, Branching এবং Pull Request</h2>
+
+        <h3>কেন Git দরকার?</h3>
+
+        <div class="story-box">
+            তিনজন developer একসাথে একই project-এ কাজ করছে — তামিম, নবীন এবং রহিম।<br><br>
+
+            <strong>Scenario 1 — Version Control ছাড়া:</strong><br>
+            সবাই একই folder-এ কাজ করছে। নবীন একটি feature নিয়ে কাজ করছে, তামিম একটি architecture improvement
+            করছে, রহিম documentation update করছে। কিন্তু তারা একই file modify করেছে! এখন কার version রাখবে?
+            আর তিন সপ্তাহ আগের code দরকার হলে, সেটা কীভাবে পাওয়া যাবে? <strong>Chaos! 😱</strong><br><br>
+
+            <strong>Scenario 2 — Git দিয়ে:</strong><br>
+            এখন প্রত্যেকে নিজস্ব branch তৈরি করে কাজ করছে —<br>
+            নবীন: <code>git checkout -b feature/new-api</code><br>
+            তামিম: <code>git checkout -b feature/architecture-refactor</code><br>
+            রহিম: <code>git checkout -b docs/update-readme</code><br><br>
+
+            প্রত্যেকে isolated ভাবে কাজ করছে, একে অপরকে কোনো সমস্যায় ফেলছে না। কাজ শেষ হলে সবাই নিজস্ব
+            changes commit করে, Pull Request খোলে, এবং একে অপরের code review করে দেয়। <strong>Order! 🎯</strong>
+        </div>
+
+        <h3>Branching Strategy</h3>
+
+        <div class="technical-box">
+            <strong>প্রতিটি organization-এর একটি নির্দিষ্ট branching strategy থাকে। সবচেয়ে জনপ্রিয় হলো Git
+            Flow:</strong><br><br>
+
+            • <strong>main/master branch:</strong> Production-ready code। এখানে শুধু release-ready code
+            থাকে।<br><br>
+            • <strong>develop branch:</strong> Development branch। নতুন feature এখানে merge হয়।<br><br>
+            • <strong>feature/* branches:</strong> নতুন feature-এর জন্য — যেমন
+            <code>feature/user-authentication</code><br><br>
+            • <strong>bugfix/* branches:</strong> Bug fix-এর জন্য — যেমন <code>bugfix/login-crash</code><br><br>
+            • <strong>release/* branches:</strong> একটি release ready করার জন্য — যেমন
+            <code>release/1.2.0</code><br><br>
+            • <strong>hotfix/* branches:</strong> Production-এ urgent fix-এর জন্য — যেমন
+            <code>hotfix/security-vulnerability</code>
+        </div>
+
+        <h3>Branching Flow Diagram</h3>
+
+        <div class="diagram">
+main (v1.0.0)
+  │
+  ├── develop
+  │     │
+  │     ├── feature/user-auth (Developer A)
+  │     │     commits: "Add login endpoint"
+  │     │     commits: "Add password hashing"
+  │     │     [Pull Request → Code Review → Merge]
+  │     │
+  │     ├── feature/payment (Developer B)
+  │     │     commits: "Add payment API"
+  │     │     [Pull Request → Code Review → Merge]
+  │     │
+  │     └── bugfix/search (Developer C)
+  │           commits: "Fix search algorithm"
+  │           [Pull Request → Code Review → Merge]
+  │
+  └── release/1.1.0
+        commits: "Version bump to 1.1.0"
+        [Final tests]
+        └── Merge to main + tag v1.1.0
+        </div>
+
+        <h3>Pull Request Workflow সম্পূর্ণ ব্যাখ্যা</h3>
+
+        <div class="technical-box">
+            <strong>Pull Request (PR) হলো একটি formal request যা বলে:</strong> "আমি develop branch-এ নতুন
+            changes merge করতে চাই। দয়া করে review করুন এবং approve করুন।"<br><br>
+
+            <strong>PR-এর একটি সম্পূর্ণ lifecycle:</strong><br><br>
+
+            <strong>ধাপ ১: Branch তৈরি করা</strong><br>
+            <code>git checkout -b feature/new-payment-gateway</code><br><br>
+
+            <strong>ধাপ ২: কাজ করা এবং Commit করা</strong><br>
+            <code>git add .</code><br>
+            <code>git commit -m "Add payment gateway integration"</code><br><br>
+
+            <strong>ধাপ ৩: Remote-এ Push করা</strong><br>
+            <code>git push origin feature/new-payment-gateway</code><br><br>
+
+            <strong>ধাপ ৪: GitHub-এ Pull Request খোলা</strong><br>
+            GitHub-এ "Create Pull Request" বাটনে click করে PR খোলা হয়, যেখানে PR title ও description
+            (কী changes করা হয়েছে, related issue, testing done) লেখা হয়।<br><br>
+
+            <strong>ধাপ ৫: Automated Checks চলে</strong><br>
+            এখানেই CI/CD pipeline কাজ করে — code checkout, tests, code quality check, build, এবং result
+            GitHub-এ report করা। সব pass হলে ✅ green checkmark, কোনোটা fail হলে ❌ red X দেখা যায়।<br><br>
+
+            <strong>ধাপ ৬: Code Review</strong><br>
+            সব test pass করার পরে, একজন বা একাধিক senior developer PR review করে — code logic, security
+            issue, performance, code style, এবং test coverage যাচাই করে। প্রয়োজনে comment দেয় — যেমন
+            "এই query-তে SQL injection risk আছে, parameterized query ব্যবহার করো।"<br><br>
+
+            <strong>ধাপ ৭: Developer পরিবর্তন করে</strong><br>
+            Developer review comment address করে নতুন commit push করে।<br><br>
+
+            <strong>ধাপ ৮: Re-review ও Approve</strong><br>
+            Reviewer আবার changes দেখে, ঠিক থাকলে approve করে।<br><br>
+
+            <strong>ধাপ ৯: Merge</strong><br>
+            Approve হলে "Merge" বাটনে click করে branch merge করা হয়।<br><br>
+
+            <strong>ধাপ ১০: Branch Delete</strong><br>
+            Merge-এর পরে feature branch delete করা হয়।<br><br>
+
+            <strong>ধাপ ১১: CI/CD Final Run</strong><br>
+            develop branch-এ merge হওয়ার পরে CI/CD pipeline আবার চলে; সব pass হলে artifact তৈরি হয় এবং
+            staging environment-এ deploy হয়।
+        </div>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔧</span> অংশ ৬: Jenkins এবং Pipeline as Code</h2>
+
+        <h3>Jenkins কেন দরকার?</h3>
+
+        <div class="story-box">
+            নবীন: "তামিম ভাইয়া, প্রতিবার manually test চালানো, build করা, deploy করা — এত ধাপ কে মনে
+            রাখবে?"<br><br>
+
+            তামিম: "এটাই তো automation-এর কাজ! আমরা এই পুরো process একটি script-এ লিখে রাখব, আর Jenkins নামের
+            একটি tool সেটা প্রতিবার আমাদের হয়ে চালাবে।"<br><br>
+
+            নবীন: "Jenkins আবার কী?"<br><br>
+
+            তামিম: "Jenkins একটি automation server। এটি একটি event (যেমন কেউ code push করলে) দেখে, এবং সেই
+            event অনুযায়ী পূর্বনির্ধারিত ধাপগুলো (build, test, deploy) automatically চালায়।"
+        </div>
+
+        <h3>Jenkins কী?</h3>
+
+        <div class="technical-box">
+            <strong>Jenkins</strong> একটি ওপেন-সোর্স automation server, যা CI/CD pipeline চালানোর জন্য
+            ব্যবহৃত হয়। এটি GitHub/GitLab-এর মতো repository-র সাথে যুক্ত থাকে (webhook-এর মাধ্যমে), এবং
+            নির্দিষ্ট trigger (যেমন push, PR, বা schedule) অনুযায়ী pipeline চালু করে।<br><br>
+
+            <strong>Jenkins-এর মূল ধারণাগুলো:</strong><br>
+            • <strong>Job/Pipeline:</strong> কী কী ধাপ চালানো হবে তার সংজ্ঞা<br>
+            • <strong>Agent:</strong> যে machine/container-এ pipeline চলে<br>
+            • <strong>Webhook:</strong> GitHub থেকে Jenkins-কে notify করার mechanism<br>
+            • <strong>Plugin:</strong> Jenkins-এর কার্যকারিতা বাড়ানোর জন্য extension (Docker, Kubernetes,
+            Slack notification ইত্যাদির জন্য plugin আছে)
+        </div>
+
+        <h3>Pipeline as Code — Jenkinsfile</h3>
+
+        <div class="technical-box">
+            <strong>ইংরেজি term:</strong> Pipeline as Code<br>
+            <strong>সহজ বাংলায়:</strong> CI/CD pipeline-এর প্রতিটি ধাপ Jenkins-এর UI দিয়ে click করে configure
+            না করে, একটি text file (<code>Jenkinsfile</code>)-এ কোড আকারে লেখা হয়, এবং সেই file-টি project-এর
+            সাথেই Git repository-তে সংরক্ষিত থাকে। এর ফলে pipeline configuration-ও code-এর মতো version
+            control-এ থাকে, review করা যায়, এবং history track করা যায়।
+        </div>
+
+        <p>আমাদের <code>product-api</code> project-এর জন্য একটি বাস্তব <code>Jenkinsfile</code> উদাহরণ:</p>
+
+        <div class="code-box">
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_REGISTRY = "docker.io/mycompany"
+        APP_VERSION = "1.0.${BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+
+        stage('Lint') {
+            steps {
+                sh 'flake8 app/'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'pytest --cov=app tests/'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t ${DOCKER_REGISTRY}/product-api:${APP_VERSION} .'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker push ${DOCKER_REGISTRY}/product-api:${APP_VERSION}'
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                sh 'kubectl set image deployment/product-api-staging app=${DOCKER_REGISTRY}/product-api:${APP_VERSION}'
+            }
+        }
+
+        stage('Smoke Test on Staging') {
+            steps {
+                sh 'curl -f https://staging.example.com/health || exit 1'
+            }
+        }
+
+        stage('Deploy to Production') {
+            when {
+                branch 'main'
+            }
+            steps {
+                input message: 'Deploy to production?'
+                sh 'kubectl set image deployment/product-api app=${DOCKER_REGISTRY}/product-api:${APP_VERSION}'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline সফলভাবে সম্পন্ন হয়েছে!"
+        }
+        failure {
+            echo "Pipeline fail করেছে। Rollback বিবেচনা করুন।"
+        }
+    }
+}
+        </div>
+
+        <h3>Jenkinsfile-এর প্রতিটি অংশ বুঝি</h3>
+
+        <div class="technical-box">
+            <strong><code>agent any</code></strong> — এই pipeline যেকোনো available Jenkins agent-এ চলতে
+            পারবে।<br><br>
+
+            <strong><code>environment { ... }</code></strong> — পুরো pipeline জুড়ে ব্যবহৃত environment
+            variable define করা হয়।<br><br>
+
+            <strong><code>stages { stage('...') { steps { ... } } }</code></strong> — Pipeline কে ধাপে ধাপে
+            (stage) ভাগ করা হয়, প্রতিটি stage-এর ভেতরে নির্দিষ্ট কমান্ড (<code>steps</code>) থাকে।<br><br>
+
+            <strong><code>when { branch 'main' }</code></strong> — এই stage শুধুমাত্র <code>main</code>
+            branch-এর জন্য চলবে, feature branch-এর জন্য না।<br><br>
+
+            <strong><code>input message: '...'</code></strong> — এখানে pipeline থেমে manual approval-এর
+            অপেক্ষা করে, যা আগে আলোচিত Continuous Delivery-এর manual approval ধাপের বাস্তবায়ন।<br><br>
+
+            <strong><code>post { success { ... } failure { ... } }</code></strong> — Pipeline শেষ হওয়ার পরে,
+            ফলাফল অনুযায়ী (success/failure) নির্দিষ্ট action চালানো হয় — যেমন team-কে notify করা।
+        </div>
+
+        <div class="key-point">
+            লক্ষ্য করুন — এই Jenkinsfile-এর প্রতিটি ধাপ ঠিক অংশ ৪-এ আলোচিত CI/CD process-এর সাথে মিলে যায়:
+            Checkout → Test → Build → Staging → (Approval) → Production। Jenkins শুধু এই ধাপগুলোকে automate
+            করছে।
+        </div>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔐</span> অংশ ৭: Environment Configuration ও Secrets Management</h2>
+
+        <h3>নবীনের Configuration সমস্যা</h3>
+
+        <div class="story-box">
+            নবীন: "তামিম ভাইয়া, আমি Jenkins pipeline সেটআপ করেছি এবং Docker image ready। এখন কি deploy করতে
+            পারি?"<br><br>
+
+            তামিম: "নবীন, আরও একটি গুরুত্বপূর্ণ জিনিস বাকি — Configuration। Development, Staging এবং
+            Production-এ আলাদা আলাদা configuration প্রয়োজন — আলাদা database URL, আলাদা API key।"<br><br>
+
+            নবীন: "আমার তো একটা <code>.env</code> file আছে!"<br><br>
+
+            তামিম: "ভালো শুরু। কিন্তু <code>.env</code> file-এ যদি production-এর secret (database password,
+            API key) থাকে, আর সেটা যদি ভুলবশত Git-এ commit হয়ে যায়, তাহলে সেটা একটি বড় security ঝুঁকি হয়ে
+            দাঁড়ায়। তাই config আর secret আলাদাভাবে, নিরাপদে manage করতে হয়।"
+        </div>
+
+        <h3>Configuration বনাম Secrets</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Configuration</strong><br><br>
+                সাধারণ, non-sensitive সেটিং — যেমন log level, feature flag, replica count।<br><br>
+                Git-এ commit করা নিরাপদ। Kubernetes-এ <strong>ConfigMap</strong> হিসেবে রাখা হয়।
+            </div>
+            <div class="comparison-item">
+                <strong>Secrets</strong><br><br>
+                Sensitive তথ্য — যেমন database password, API key, TLS certificate।<br><br>
+                কখনো plain text-এ Git-এ commit করা উচিত না। Kubernetes-এ <strong>Secret</strong> হিসেবে বা
+                একটি dedicated secret manager-এ রাখা হয়।
+            </div>
+        </div>
+
+        <h3>Environment-ভিত্তিক Configuration (12-Factor App নীতি)</h3>
+
+        <div class="technical-box">
+            একটি সুপরিচিত নীতি হলো — application code-এর মধ্যে কোনো environment-নির্দিষ্ট মান (hardcoded
+            value) না রেখে, সেগুলো environment variable-এর মাধ্যমে সরবরাহ করা। এর ফলে একই Docker image
+            development, staging, এবং production — সব জায়গায় ব্যবহার করা যায়, শুধু environment variable
+            পাল্টে।
+        </div>
+
+        <div class="code-box">
+# .env.example — শুধু structure দেখানোর জন্য, আসল secret এখানে থাকে না
+
+DATABASE_URL=postgresql://user:password@localhost:5432/product_dev
+REDIS_URL=redis://localhost:6379
+LOG_LEVEL=DEBUG
+ENVIRONMENT=development
+        </div>
+
+        <div class="warning-box">
+            <strong>গুরুত্বপূর্ণ:</strong> <code>.env</code> file-এ আসল secret রাখা হলে, সেটি অবশ্যই
+            <code>.gitignore</code>-এ যুক্ত করতে হবে, যাতে ভুলবশত Git repository-তে commit না হয়ে যায়। শুধু
+            <code>.env.example</code> (placeholder value সহ) Git-এ রাখা উচিত।
+        </div>
+
+        <h3>Kubernetes-এ ConfigMap ও Secret</h3>
+
+        <div class="technical-box">
+            Kubernetes-এ non-sensitive configuration রাখা হয় <strong>ConfigMap</strong>-এ, আর sensitive তথ্য
+            রাখা হয় <strong>Secret</strong>-এ (যা base64-encoded থাকে — এটি encryption না, তাই cluster-level
+            access control এবং প্রয়োজনে external secret manager ব্যবহার করা গুরুত্বপূর্ণ)।
+        </div>
+
+        <div class="code-box">
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-api-config
+  namespace: production
+data:
+  LOG_LEVEL: "INFO"
+  ENVIRONMENT: "production"
+  FEATURE_CACHE_ENABLED: "true"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product-api-secrets
+  namespace: production
+type: Opaque
+data:
+  # মান base64-encoded আকারে রাখা হয়
+  database-url: cG9zdGdyZXNxbDovL3VzZXI6cGFzc0Bwcm9kLWRiOjU0MzIvcHJvZHVjdA==
+        </div>
+
+        <p>Deployment-এর ভেতরে এগুলো environment variable হিসেবে ব্যবহার করা যায়:</p>
+
+        <div class="code-box">
+env:
+  - name: LOG_LEVEL
+    valueFrom:
+      configMapKeyRef:
+        name: product-api-config
+        key: LOG_LEVEL
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: product-api-secrets
+        key: database-url
+        </div>
+
+        <h3>Jenkins-এ Secrets ব্যবহার</h3>
+
+        <div class="technical-box">
+            Jenkins-এ সরাসরি Jenkinsfile-এর মধ্যে password/API key লেখা হয় না। এর বদলে Jenkins-এর
+            <strong>Credentials</strong> feature ব্যবহার করা হয়, যেখানে secret একবার নিরাপদে সংরক্ষণ করে
+            রাখা যায়, এবং pipeline-এ শুধু একটি reference ID ব্যবহার করা হয়।
+        </div>
+
+        <div class="code-box">
+environment {
+    DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
+}
+
+stages {
+    stage('Push Image') {
+        steps {
+            sh 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
+            sh 'docker push ${DOCKER_REGISTRY}/product-api:${APP_VERSION}'
+        }
+    }
+}
+        </div>
+
+        <h3>Configuration Management Best Practices</h3>
+
+        <div class="key-point">
+            <strong>১. Secrets আলাদা রাখুন</strong><br>
+            Database password, API key ইত্যাদি কখনো code-এ hardcode করবেন না — Kubernetes Secret বা একটি
+            dedicated secret manager ব্যবহার করুন।<br><br>
+
+            <strong>২. Environment-specific config</strong><br>
+            প্রতিটি environment (dev, staging, prod)-এর জন্য আলাদা configuration রাখুন, কিন্তু একই code/image
+            ব্যবহার করুন।<br><br>
+
+            <strong>৩. .gitignore ঠিকভাবে সেট করুন</strong><br>
+            <code>.env</code>-এর মতো secret-বহনকারী file যেন কখনো Git-এ commit না হয়।<br><br>
+
+            <strong>৪. Configuration version control-এ রাখুন (secret ছাড়া)</strong><br>
+            ConfigMap-এর মতো non-sensitive config YAML file Git-এ রাখা যায়, review করা যায়।<br><br>
+
+            <strong>৫. Access ও পরিবর্তনের audit trail রাখুন</strong><br>
+            কে কখন কোন secret access করেছে বা পরিবর্তন করেছে, তা track করা প্রোডাকশন সিস্টেমে গুরুত্বপূর্ণ।
+        </div>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🐳</span> অংশ ৮: Docker এবং Containerization</h2>
+
+        <h3>নবীনের Docker Nightmare</h3>
+
+        <div class="story-box">
+            নবীন একটি Python application লিখেছে। Local machine-এ একদম perfect কাজ করছে।<br><br>
+
+            নবীন: "তামিম ভাইয়া, এটা production-এ যাবে। কিন্তু আমি যদি production server-এ code সরাসরি push
+            করি, তাহলে environment issue হবে না?"<br><br>
+
+            তামিম: "হবে নবীন, একশ বার হবে। তাই Docker ব্যবহার করব। Docker একটি container-এর মধ্যে আমাদের
+            application এবং সব dependency, পুরো environment সহ প্যাক করে রাখে।"<br><br>
+
+            নবীন: "মানে Virtual Machine?"<br><br>
+
+            তামিম: "না, VM-এর চেয়ে অনেক হালকা এবং দ্রুত। VM একটি সম্পূর্ণ OS চালায়। Docker শুধু application
+            চালায়, host-এর OS kernel share করে।"
+        </div>
+
+        <h3>Docker Architecture</h3>
+
+        <div class="diagram">
+Developer's Laptop
+  ├─ Dockerfile
+  ├─ app.py
+  ├─ requirements.txt
+  └─ other files
+        ↓
+docker build -t myapp:1.0 .
+        ↓
+Docker Image (Artifact)
+  ├─ Base OS layer (Ubuntu, Alpine, etc)
+  ├─ Python layer
+  ├─ Dependencies layer
+  ├─ Application code layer
+  └─ Metadata
+        ↓
+Push to Docker Registry
+  ├─ Docker Hub
+  ├─ AWS ECR
+  └─ Google Artifact Registry
+        ↓
+Production Environment
+  ├─ docker run myapp:1.0
+  ├─ Container starts
+  └─ Application running
+        </div>
+
+        <h3>একটি Real-World Dockerfile (Multi-stage Build)</h3>
+
+        <div class="code-box">
+# Stage 1: Builder
+FROM python:3.9-slim as builder
+
+WORKDIR /build
+
+# Build dependencies install করা
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+# Virtual environment তৈরি করা
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Stage 2: Runtime
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Builder থেকে শুধু virtual environment কপি করা
+COPY --from=builder /opt/venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+COPY . .
+
+# Security-এর জন্য non-root user তৈরি করা
+RUN useradd -m -u 1000 appuser && \
+    chown -R appuser:appuser /app
+
+USER appuser
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
+    CMD python -c "import requests; requests.get('http://localhost:8000/health')"
+
+EXPOSE 8000
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "app:app"]
+        </div>
+
+        <div class="technical-box">
+            <strong>Multi-stage build কেন?</strong> Stage 1 (builder)-এ compiler ও build tool ইনস্টল হয়,
+            যেগুলো final image-এ থাকার দরকার নেই। শুধু Stage 2-তে প্রয়োজনীয় virtual environment এবং code
+            কপি করা হয় — ফলে final image ছোট ও নিরাপদ হয়।
+        </div>
+
+        <h3>Docker Commands যা Development থেকে Production পর্যন্ত চলে</h3>
+
+        <div class="technical-box">
+            <strong>Development:</strong><br>
+            <code>docker build -t product-api:dev .</code><br>
+            <code>docker run -p 8000:8000 product-api:dev</code><br><br>
+
+            <strong>Testing:</strong><br>
+            <code>docker run product-api:dev pytest</code><br><br>
+
+            <strong>Production Build ও Push:</strong><br>
+            <code>docker build -t product-api:1.2.3 .</code><br>
+            <code>docker tag product-api:1.2.3 docker.io/mycompany/product-api:1.2.3</code><br>
+            <code>docker push docker.io/mycompany/product-api:1.2.3</code><br><br>
+
+            <strong>Production-এ Run:</strong><br>
+            <code>docker pull docker.io/mycompany/product-api:1.2.3</code><br>
+            <code>docker run -d -p 8000:8000 --name product-api -e DATABASE_URL=... docker.io/mycompany/product-api:1.2.3</code>
+        </div>
+
+        <h3>Docker Compose — একাধিক Service একসাথে</h3>
+
+        <div class="code-box">
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: product_app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://user:pass@db:5432/product
+      - REDIS_URL=redis://cache:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  db:
+    image: postgres:13-alpine
+    container_name: product_db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=product
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cache:
+    image: redis:7-alpine
+    container_name: product_cache
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
+        </div>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">☸️</span> অংশ ৯: Kubernetes Deployment - Production Scale</h2>
+
+        <h3>নবীনের Scaling Problem</h3>
+
+        <div class="story-box">
+            নবীনের product-api এখন viral হয়েছে। একদিনে ১০ লক্ষ request আসছে।<br><br>
+
+            নবীন: "তামিম ভাইয়া, server crash হয়ে যাচ্ছে। একটা server তো এই লোড সামলাতে পারছে না।"<br><br>
+
+            তামিম: "এখন আমাদের Kubernetes দরকার। Kubernetes তোমার container-গুলোকে একাধিক server-এ distribute
+            করে এবং load balance করে।"<br><br>
+
+            নবীন: "কিন্তু আমি যদি ১০টি server-এ ১০টি container চালাই, তাহলে সেগুলো manually manage করব
+            কীভাবে?"<br><br>
+
+            তামিম: "এটাই Kubernetes-এর কাজ। তুমি বলবে 'আমার ৫টি replica দরকার', Kubernetes নিজে নিজে ৫টি pod
+            চালু করবে। কোনো pod crash করলে এটি নতুন একটি চালু করবে। Traffic বাড়লে স্বয়ংক্রিয়ভাবে আরও pod
+            চালু করবে।"
+        </div>
+
+        <h3>Kubernetes Deployment উদাহরণ</h3>
+
+        <div class="code-box">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-api
+  namespace: production
+  labels:
+    app: product-api
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: product-api
+  template:
+    metadata:
+      labels:
+        app: product-api
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: app
+          image: docker.io/mycompany/product-api:1.2.3
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: product-api-config
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: product-api-secrets
+                  key: database-url
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-api
+  namespace: production
+spec:
+  type: ClusterIP
+  selector:
+    app: product-api
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8000
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: product-api-hpa
+  namespace: production
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: product-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+        </div>
+
+        <h3>Kubernetes-এর গুরুত্বপূর্ণ ধারণা</h3>
+
+        <table>
+            <tr>
+                <th>ধারণা</th>
+                <th>ব্যাখ্যা</th>
+            </tr>
+            <tr>
+                <td><strong>Pod</strong></td>
+                <td>Kubernetes-এর সবচেয়ে ছোট deployable একক — এক বা একাধিক container একসাথে চলে</td>
+            </tr>
+            <tr>
+                <td><strong>Deployment</strong></td>
+                <td>কতগুলো Pod replica চলবে এবং কীভাবে update হবে তা নিয়ন্ত্রণ করে</td>
+            </tr>
+            <tr>
+                <td><strong>Service</strong></td>
+                <td>Pod-গুলোর জন্য একটি stable network endpoint সরবরাহ করে</td>
+            </tr>
+            <tr>
+                <td><strong>Liveness Probe</strong></td>
+                <td>Container "বেঁচে" আছে কিনা যাচাই করে — fail করলে Kubernetes container restart করে</td>
+            </tr>
+            <tr>
+                <td><strong>Readiness Probe</strong></td>
+                <td>Container traffic নেওয়ার জন্য প্রস্তুত কিনা যাচাই করে — fail করলে traffic পাঠানো বন্ধ হয়</td>
+            </tr>
+            <tr>
+                <td><strong>HPA (Horizontal Pod Autoscaler)</strong></td>
+                <td>CPU/Memory ব্যবহারের উপর ভিত্তি করে Pod-এর সংখ্যা স্বয়ংক্রিয়ভাবে বাড়ায়/কমায়</td>
+            </tr>
+        </table>
+
+        <h3>Kubernetes-এ কীভাবে Rolling Update হয়</h3>
+
+        <div class="technical-box">
+            <strong>নতুন version deploy করার সময়:</strong><br><br>
+            ১. একটি নতুন pod চালু হয় (নতুন version-এর)<br>
+            ২. নতুন pod-এ readiness probe চলে<br>
+            ৩. যদি healthy হয়, traffic ধীরে ধীরে নতুন pod-এ যেতে শুরু করে<br>
+            ৪. পুরোনো pod-গুলো একটার পর একটা gracefully shutdown হয়<br>
+            ৫. এই প্রক্রিয়া সব pod update না হওয়া পর্যন্ত চলতে থাকে<br><br>
+
+            <strong>উপযোগী Commands:</strong><br>
+            <code>kubectl rollout status deployment/product-api</code><br>
+            <code>kubectl rollout history deployment/product-api</code><br>
+            <code>kubectl rollout undo deployment/product-api</code><br>
+            <code>kubectl set image deployment/product-api app=docker.io/mycompany/product-api:2.0.0</code>
+        </div>
+    </div>
+
+    <!-- PART 10 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔗</span> অংশ ১০: Networking, Reverse Proxy এবং Service Discovery</h2>
+
+        <h3>প্রথমে বুঝি: কেন সরাসরি Application Expose করা যায় না</h3>
+
+        <div class="story-box">
+            নবীন তার Python application container-এ রেখেছে, port 8000-এ listen করছে।<br><br>
+
+            তামিম: "এখন আমাদের একটি web server দরকার, যা HTTP/HTTPS request handle করবে, SSL certificate
+            manage করবে, এবং user-দের request সঠিকভাবে আমাদের application-এ forward করবে।"<br><br>
+
+            নবীন: "আমরা কি সরাসরি port 8000 user-দের জন্য expose করতে পারি না?"<br><br>
+
+            তামিম: "এটি একাধিক সমস্যা তৈরি করবে — Standard HTTP(80)/HTTPS(443) port ব্যবহার করা যাবে না, SSL
+            certificate manage করা কঠিন হবে, একাধিক application থাকলে port conflict হবে, এবং load balancing
+            করা কঠিন হবে। এর জন্য আমরা একটি <strong>Reverse Proxy</strong> ব্যবহার করি — যেমন Caddy।"
+        </div>
+
+        <h3>Caddy কী?</h3>
+
+        <div class="technical-box">
+            <strong>Caddy</strong> একটি modern web server এবং reverse proxy, যা automatic HTTPS support দেয়।<br><br>
+
+            <strong>মূল বৈশিষ্ট্য:</strong><br>
+            ✓ <strong>Automatic HTTPS:</strong> Let's Encrypt-এর মাধ্যমে স্বয়ংক্রিয় SSL certificate<br>
+            ✓ <strong>Easy Configuration:</strong> Caddyfile নামের সহজ configuration format<br>
+            ✓ <strong>Reverse Proxy:</strong> Request backend server-এ forward করে<br>
+            ✓ <strong>Load Balancing:</strong> একাধিক backend-এ traffic distribute করে<br><br>
+
+            সহজভাবে: <strong>Caddy = Production-ready Web Server + Reverse Proxy + HTTPS Management</strong>
+        </div>
+
+        <h3>Caddy কীভাবে কাজ করে</h3>
+
+        <div class="diagram">
+Internet Users
+        ↓
+HTTPS (443)
+        ↓
+Caddy (Reverse Proxy)
+  ├─ SSL/TLS Termination
+  ├─ Request Routing
+  ├─ Load Balancing
+  └─ Logging
+        ↓
+HTTP (8000)
+        ↓
+Python Application
+        ↓
+Response ফিরে যায় Caddy হয়ে User-এর কাছে
+        </div>
+
+        <h3>একটি Simple Caddyfile</h3>
+
+        <div class="code-box">
+# Caddyfile
+
+api.example.com {
+    # Automatic HTTPS by default
+
+    reverse_proxy localhost:8000 {
+        header_up X-Forwarded-For {http.request.remote}
+        header_up X-Forwarded-Proto {http.request.proto}
+    }
+
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+}
+
+# HTTP কে HTTPS-এ redirect করা
+example.com {
+    redir https://api.example.com{uri}
+}
+        </div>
+
+        <h3>Docker Compose-এ Caddy</h3>
+
+        <div class="code-box">
+services:
+  app:
+    build: .
+    container_name: python_app
+    expose:
+      - "8000"
+    networks:
+      - app-network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy_server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    networks:
+      - app-network
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+
+networks:
+  app-network:
+    driver: bridge
+        </div>
+
+        <h3>Caddy বনাম Nginx</h3>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Caddy</strong><br><br>
+                ✓ Automatic HTTPS<br>
+                ✓ সহজ configuration<br>
+                ✓ Modern, Go-based<br>
+                ✗ Nginx-এর চেয়ে কম popular/battle-tested
+            </div>
+            <div class="comparison-item">
+                <strong>Nginx</strong><br><br>
+                ✓ অত্যন্ত দ্রুত ও lightweight<br>
+                ✓ ব্যাপকভাবে ব্যবহৃত ও পরীক্ষিত<br>
+                ✗ Configuration তুলনামূলক জটিল<br>
+                ✗ HTTPS setup manual (certbot ইত্যাদি লাগে)
+            </div>
+        </div>
+
+        <h3>Kubernetes-এ Service Discovery</h3>
+
+        <div class="story-box">
+            নবীন ৩টি pod চালাচ্ছে — একটি request handle করছে, একটি database queries করছে, একটি cache handle
+            করছে।<br><br>
+
+            নবীন: "তামিম ভাইয়া, এই pod-গুলো একে অপরের সাথে কীভাবে communicate করবে? IP address দিয়ে সরাসরি
+            না?"<br><br>
+
+            তামিম: "Pod IP restart হলেই পরিবর্তিত হয়ে যায়, তাই সেটার উপর নির্ভর করা যায় না। আমরা Kubernetes
+            <strong>Service</strong> ব্যবহার করি — এটি একটি stable নাম/endpoint দেয়, যা সবসময় সঠিক pod-এর
+            কাছে request পৌঁছে দেয়।"
+        </div>
+
+        <h3>Service-এর ধরন</h3>
+
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>ব্যবহার</th>
+            </tr>
+            <tr>
+                <td><strong>ClusterIP</strong> (ডিফল্ট)</td>
+                <td>শুধুমাত্র cluster-এর ভেতরে যোগাযোগের জন্য, বাইরে থেকে access নেই</td>
+            </tr>
+            <tr>
+                <td><strong>NodePort</strong></td>
+                <td>প্রতিটি node-এ একটি নির্দিষ্ট port open করে বাইরে থেকে access দেয়</td>
+            </tr>
+            <tr>
+                <td><strong>LoadBalancer</strong></td>
+                <td>Cloud provider-এর load balancer ব্যবহার করে বাইরে থেকে access দেয়</td>
+            </tr>
+            <tr>
+                <td><strong>Ingress</strong></td>
+                <td>HTTP/HTTPS routing সহ advanced, domain/path-ভিত্তিক networking</td>
+            </tr>
+        </table>
+
+        <div class="code-box">
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-api-ingress
+  namespace: production
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - api.example.com
+      secretName: api-example-tls
+  rules:
+    - host: api.example.com
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: product-api
+                port:
+                  number: 80
+        </div>
+
+        <h3>Service Discovery কীভাবে কাজ করে</h3>
+
+        <div class="diagram">
+Pod A (App)
+        ↓
+curl http://product-db:5432
+        ↓
+Kubernetes DNS lookup
+        ↓
+product-db.production.svc.cluster.local
+        ↓
+Service-এর stable IP (উদাহরণ: 10.0.1.50)
+        ↓
+Endpoints list lookup
+  Available Pods:
+    - 10.0.2.10:5432
+    - 10.0.2.11:5432
+        ↓
+Load balancer একটি Pod বেছে নেয়
+        ↓
+Connection established
+        </div>
+    </div>
+
+    <!-- PART 11 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔍</span> অংশ ১১: Production Debugging এবং Monitoring</h2>
+
+        <h3>নবীনের রাত ৩টার Crisis Call</h3>
+
+        <div class="story-box">
+            রাত ৩টা। নবীনের ফোন বেজে উঠল — একটি alert এসেছে।<br><br>
+
+            <strong>Alert:</strong> "product-api pods CrashLoopBackOff status-এ আছে"<br><br>
+
+            নবীন তামিম ভাইয়াকে call করে: "সিনিয়র, pod crash করছে। কীভাবে debug করব?"<br><br>
+
+            তামিম: "প্রথমে শান্ত থাকো। Step by step যাই। প্রথমে pod-এর status দেখো।"<br><br>
+
+            নবীন: <code>kubectl get pods -n production</code><br>
+            Output: <code>product-api-xxxxx   0/1   CrashLoopBackOff   5   2m</code><br><br>
+
+            তামিম: "এখন logs দেখো।"<br><br>
+
+            নবীন: <code>kubectl logs product-api-xxxxx -n production</code><br>
+            Logs: <code>Error: Connection refused: postgresql://product-db:5432</code><br><br>
+
+            তামিম: "আহ, database connection সমস্যা। Postgres-এর Service আছে কি?"<br><br>
+
+            নবীন: <code>kubectl get svc -n production</code><br>
+            Output: Database service missing!<br><br>
+
+            তামিম: "এটাই সমস্যা। Database deployment ও তার Service ছাড়া app connect করতে পারবে না। Database
+            deployment redeploy করো।"
+        </div>
+
+        <h3>Production Debugging Checklist</h3>
+
+        <div class="key-point">
+            <strong>Pod-এ সমস্যা?</strong><br>
+            <code>kubectl get pods -n production</code><br>
+            <code>kubectl describe pod &lt;pod-name&gt; -n production</code><br>
+            <code>kubectl logs &lt;pod-name&gt; -n production</code><br><br>
+
+            <strong>Service connect করছে না?</strong><br>
+            <code>kubectl get svc -n production</code><br>
+            <code>kubectl get endpoints &lt;service-name&gt; -n production</code><br><br>
+
+            <strong>Networking সমস্যা?</strong><br>
+            <code>kubectl exec -it &lt;pod&gt; -- ping &lt;service&gt;</code><br>
+            <code>kubectl exec -it &lt;pod&gt; -- nslookup &lt;service&gt;</code><br><br>
+
+            <strong>Resource limit সমস্যা?</strong><br>
+            <code>kubectl top nodes</code><br>
+            <code>kubectl top pods -n production</code><br><br>
+
+            <strong>Configuration সমস্যা?</strong><br>
+            <code>kubectl get configmap -n production</code><br>
+            <code>kubectl get secrets -n production</code><br>
+            <code>kubectl describe configmap &lt;name&gt; -n production</code>
+        </div>
+
+        <h3>সাধারণ Production সমস্যা ও সমাধান</h3>
+
+        <table>
+            <tr>
+                <th>সমস্যা</th>
+                <th>সমাধান</th>
+            </tr>
+            <tr>
+                <td>Pod CrashLoopBackOff</td>
+                <td>Logs check করুন — সাধারণত configuration, environment variable, বা resource সমস্যা</td>
+            </tr>
+            <tr>
+                <td>502 Bad Gateway</td>
+                <td>Backend service চালু আছে কিনা এবং health check ঠিক আছে কিনা যাচাই করুন</td>
+            </tr>
+            <tr>
+                <td>Connection Timeout</td>
+                <td>Service-এর endpoint available কিনা, এবং network policy বাধা দিচ্ছে কিনা দেখুন</td>
+            </tr>
+            <tr>
+                <td>Memory Leak</td>
+                <td><code>kubectl top pods</code> দিয়ে memory usage monitor করুন, প্রয়োজনে limit adjust করুন</td>
+            </tr>
+            <tr>
+                <td>Pod Pending অবস্থায় আটকে আছে</td>
+                <td>Node-এ যথেষ্ট resource আছে কিনা, <code>kubectl describe pod</code>-এর events দেখুন</td>
+            </tr>
+        </table>
+
+        <h3>Monitoring ও Alerting</h3>
+
+        <div class="technical-box">
+            Production system-এ সমস্যা হওয়ার সাথে সাথে জানা প্রয়োজন — user-এর অভিযোগের অপেক্ষায় থাকা যাবে
+            না। এর জন্য ব্যবহৃত হয় monitoring ও alerting tool, যেমন Prometheus (metrics সংগ্রহ) এবং Grafana
+            (visualization)।
+        </div>
+
+        <div class="code-box">
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: product-api-alerts
+  namespace: production
+spec:
+  groups:
+    - name: product-api
+      rules:
+        - alert: HighErrorRate
+          expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+          for: 5m
+          annotations:
+            summary: "High error rate detected"
+
+        - alert: PodCrashLooping
+          expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+          for: 5m
+          annotations:
+            summary: "Pod is crash looping"
+
+        - alert: HighMemoryUsage
+          expr: (sum(container_memory_usage_bytes) by (pod) / 1024^3) > 0.4
+          for: 5m
+          annotations:
+            summary: "Pod memory usage is high"
+        </div>
+
+        <div class="key-point">
+            এই alert-গুলো নিশ্চিত করে যে কোনো সমস্যা হলে team সাথে সাথে জানতে পারে — user অভিযোগ করার আগেই।
+            এটাই অংশ ১-এ আলোচিত "কোনো Monitoring System ছিল না" সমস্যাটির বাস্তব সমাধান।
+        </div>
+    </div>
+
+    <!-- PART 12 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">✅</span> অংশ ১২: Best Practices Checklist</h2>
+
+        <p>এই সিরিজে আলোচিত সবকিছুকে একটি ব্যবহারিক checklist-এ সংক্ষিপ্ত করা যাক।</p>
+
+        <div class="key-point">
+            <strong>✓ Testing</strong><br>
+            প্রতিটি গুরুত্বপূর্ণ function/endpoint-এর জন্য automated test লিখুন। Coverage measure করুন,
+            কিন্তু শুধু সংখ্যার পেছনে না ছুটে অর্থবহ test লিখুন।<br><br>
+
+            <strong>✓ Code Review</strong><br>
+            কোনো code সরাসরি <code>main</code>/<code>develop</code>-এ merge করবেন না — Pull Request ও review
+            বাধ্যতামূলক করুন।<br><br>
+
+            <strong>✓ CI/CD Automation</strong><br>
+            Build, test, এবং deployment manual না করে Jenkins/GitHub Actions-এর মতো tool দিয়ে automate করুন।<br><br>
+
+            <strong>✓ Environment Parity</strong><br>
+            Development, Staging, এবং Production যতটা সম্ভব একই রকম রাখুন — একই Docker image, শুধু
+            configuration আলাদা।<br><br>
+
+            <strong>✓ Secrets Management</strong><br>
+            কোনো secret কখনো code বা Git history-তে hardcode করবেন না।<br><br>
+
+            <strong>✓ Health Checks</strong><br>
+            প্রতিটি service-এ liveness ও readiness endpoint রাখুন, যাতে orchestrator সঠিকভাবে সিদ্ধান্ত নিতে
+            পারে।<br><br>
+
+            <strong>✓ Monitoring ও Alerting</strong><br>
+            User-এর অভিযোগের আগেই সমস্যা ধরার জন্য monitoring ও alert সেট করুন।<br><br>
+
+            <strong>✓ Rollback Plan</strong><br>
+            নতুন deployment খারাপ হলে দ্রুত আগের version-এ ফিরে যাওয়ার একটি পরীক্ষিত উপায় থাকা উচিত
+            (<code>kubectl rollout undo</code>)।
+        </div>
+    </div>
+
+    <!-- PART 13 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🏁</span> অংশ ১৩: উপসংহার</h2>
+
+        <div class="success-box">
+            নবীনের সেই production disaster দিয়ে আমরা শুরু করেছিলাম — একটি automated test, code review, বা
+            staging environment ছাড়াই সরাসরি production-এ deploy করার পরিণতি। সেখান থেকে আমরা দেখেছি:<br><br>
+
+            ✓ Software delivery-এর প্রতিটি ধাপ (development → build → test → package → deploy)<br>
+            ✓ Automated Testing এবং Pytest দিয়ে কীভাবে bug আগেই ধরা যায়<br>
+            ✓ CI ও CD-এর মধ্যে পার্থক্য, এবং Continuous Delivery বনাম Continuous Deployment<br>
+            ✓ Git branching strategy ও Pull Request-এর সম্পূর্ণ lifecycle<br>
+            ✓ Jenkins ও Pipeline as Code (Jenkinsfile) দিয়ে পুরো process automate করা<br>
+            ✓ Configuration ও Secrets কীভাবে নিরাপদে, environment-ভিত্তিকভাবে manage করা হয়<br>
+            ✓ Docker দিয়ে Application ও তার environment প্যাকেজ করা<br>
+            ✓ Kubernetes দিয়ে Production scale-এ deployment পরিচালনা করা<br>
+            ✓ Caddy/reverse proxy এবং Kubernetes Service দিয়ে Networking ও Service Discovery<br>
+            ✓ Production-এ সমস্যা দেখা দিলে কীভাবে systematically debug করা হয়<br><br>
+
+            <strong>মূল শিক্ষা:</strong> CI/CD কোনো একটি টুল নয় — এটি একটি সংস্কৃতি (culture) এবং প্র্যাকটিস,
+            যা code থেকে production পর্যন্ত পুরো যাত্রাকে নিরাপদ, দ্রুত এবং repeatable করে তোলে।
+        </div>
+
+        <p>
+            নবীন এখন জানে — <em>"It works on my machine" is NOT a deployment strategy।</em> Production-এ
+            যাওয়ার আগে test, review, staging, এবং monitoring — প্রতিটি ধাপই গুরুত্বপূর্ণ।
+        </p>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p><strong>📄 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ২.০ (সম্পূর্ণ পুনর্লিখিত সংস্করণ)</p>
+            <p>ভাষা: বাংলা</p>
+            <p>টপিক: CI/CD এবং Production Deployment</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
