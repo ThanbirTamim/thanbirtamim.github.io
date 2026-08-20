@@ -4,7 +4,9 @@
       "tanstack.com",
       "api.github.com",
       "en.wikipedia.org",
-      "www.githubstatus.com"
+      "www.githubstatus.com",
+      "hits.sh",
+      "api.counterapi.dev"
     ]
   }
 }
