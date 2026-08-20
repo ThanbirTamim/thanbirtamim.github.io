@@ -2,7 +2,8 @@
   "network": {
     "allowedDomains": [
       "tanstack.com",
-      "api.github.com"
+      "api.github.com",
+      "en.wikipedia.org"
     ]
   }
 }
