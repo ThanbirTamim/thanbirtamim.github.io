@@ -3,7 +3,8 @@
     "allowedDomains": [
       "tanstack.com",
       "api.github.com",
-      "en.wikipedia.org"
+      "en.wikipedia.org",
+      "www.githubstatus.com"
     ]
   }
 }
