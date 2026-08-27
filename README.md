@@ -1,3 +1,10 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/img/dark_mode.svg" />
+  <source media="(prefers-color-scheme: light)" srcset="assets/img/light_mode.svg" />
+  <img alt="thanbirtamim's GitHub profile" src="assets/img/dark_mode.svg" />
+</picture>
+
+
 # Thanbir Tamim - Personal Professional Bio Website
 
 Welcome to my personal professional bio website hosted on GitHub Pages.
