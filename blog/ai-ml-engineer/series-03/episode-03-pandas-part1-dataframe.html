@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pandas DataFrame, data loading, selection ও filtering — real data নিয়ে কাজের প্রথম ধাপ বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pandas Part 1: DataFrame, filtering, selection — data-র Excel-on-steroids | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Pandas DataFrame, data loading, selection ও filtering — real data নিয়ে কাজের প্রথম ধাপ বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Pandas Part 1: DataFrame, filtering, selection — data-র Excel-on-steroids | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 03
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Pandas Part 1: DataFrame, filtering, selection — data-র Excel-on-steroids</h1>
+    <p class="subtitle">real dataset load ও slice করা (Series 03, Episode 03)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 03 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim প্রথমবার real data খুলল</li>
+        <li>২. সমস্যা: NumPy array-তে column-এর নাম নেই</li>
+        <li>৩. Pandas কী এবং কেন দরকার</li>
+        <li>৪. তিন Level-এ DataFrame বোঝা</li>
+        <li>৫. Series বনাম DataFrame</li>
+        <li>৬. Data load করা (CSV, JSON)</li>
+        <li>৭. প্রথম নজর: data-কে চেনা</li>
+        <li>৮. Column ও row বেছে নেওয়া: loc বনাম iloc</li>
+        <li>৯. Filtering: শর্ত দিয়ে row বাছাই</li>
+        <li>১০. নতুন column তৈরি</li>
+        <li>১১. বাস্তব উদাহরণ: job dataset নিয়ে প্রশ্ন</li>
+        <li>১২. একজন AI Engineer-এর দৃষ্টিতে Pandas</li>
+        <li>১৩. Boss Question</li>
+        <li>১৪. Job Requirement Decoder</li>
+        <li>১৫. সাধারণ ভুল ধারণা</li>
+        <li>১৬. Interview Prep</li>
+        <li>১৭. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৮. Project Connection</li>
+        <li>১৯. সারসংক্ষেপ</li>
+        <li>২০. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim প্রথমবার real data খুলল</h2>
+
+    <p>
+        Nila একটা CSV file পাঠাল — <code>jobs.csv</code> — বাংলাদেশের কিছু tech job post। Rahim NumPy দিয়ে
+        খুলতে গিয়ে দেখল ঝামেলা: এখানে তো সংখ্যা আর লেখা মিশে আছে — title (লেখা), salary (সংখ্যা), city (লেখা),
+        experience (সংখ্যা)। NumPy তো সব একই dtype চায়!
+    </p>
+
+    <div class="story-box">
+        <strong>Rahim:</strong> <em>"আপা, এই data-তে তো column-এর নাম আছে, আর একেক column একেক ধরনের। NumPy
+        দিয়ে এটা সামলানো তো কঠিন হয়ে যাচ্ছে।"</em><br><br>
+        <strong>Nila:</strong> <em>"ঠিক ধরেছ। NumPy বিশুদ্ধ সংখ্যার জন্য। কিন্তু real-world data table-এ column-এর
+        নাম, মিশ্র type, missing value — সব থাকে। এই কাজের জন্যই বানানো হয়েছে <strong>Pandas</strong>। ভাবো
+        এটা হলো Python-এর ভেতরে একটা super-powered Excel — কিন্তু লাখ লাখ row সামলাতে পারে, আর সবকিছু
+        automate করা যায়।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: NumPy array-তে column-এর নাম নেই</h2>
+
+    <p>NumPy array দিয়ে real tabular data সামলাতে গেলে কিছু সমস্যা:</p>
+    <ul>
+        <li>column-এর নাম নেই — <code>data[:, 2]</code> মানে কী? মনে রাখা কঠিন।</li>
+        <li>এক array-তে সব একই dtype — কিন্তু title লেখা, salary সংখ্যা।</li>
+        <li>missing value (ফাঁকা ঘর) সামলানো ঝামেলার।</li>
+        <li>"salary 50k-এর বেশি এমন সব job-এর city দেখাও" — এমন প্রশ্ন কঠিন হয়ে যায়।</li>
+    </ul>
+    <p>Pandas এই সবগুলোই সহজ করে — কারণ এটা label (নাম) + mixed type + missing value একসাথে সামলায়।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📚</span> ৩. Pandas কী এবং কেন দরকার</h2>
+
+    <p>
+        <strong>Pandas</strong> হলো Python-এর সবচেয়ে জনপ্রিয় data manipulation library। এর দুটো মূল জিনিস:
+        <strong>Series</strong> (একটা labeled column) আর <strong>DataFrame</strong> (নাম-সহ column-এর একটা table)।
+        Pandas ভেতরে NumPy ব্যবহার করে, কিন্তু ওপরে label, mixed type, missing value handling ও হাজারো সুবিধাজনক
+        function যোগ করে।
+    </p>
+
+    <div class="key-point">
+        <strong>কেন এই tech?</strong> real-world structured data প্রায় সবসময় table আকারে আসে (CSV, Excel,
+        SQL, API)। বাংলাদেশ ও বিশ্বজুড়ে প্রায় প্রতিটা data/ML job-এ Pandas চাওয়া হয় — এটা junior-দের জন্য
+        একটা "must know" skill।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ DataFrame বোঝা</h2>
+
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        একটা DataFrame হলো Excel বা Google Sheets-এর একটা sheet — উপরে column-এর নাম, বাঁয়ে row-এর নম্বর
+        (index), আর প্রতিটা ঘরে একটা value। পার্থক্য: Excel-এ আপনি মাউস দিয়ে কাজ করেন, DataFrame-এ code দিয়ে —
+        তাই এটা automate করা যায়, বারবার ঠিকভাবে চালানো যায়, আর লাখ লাখ row সামলায়।
+    </p>
+
+    <h3>Level 2 — technical ভাবে</h3>
+    <p>
+        DataFrame হলো একগুচ্ছ Series-এর সমষ্টি, যাদের একটা common index আছে। প্রতিটা column আসলে একটা
+        <code>Series</code> — যার নিচে একটা NumPy array। তাই একটা column-এর হিসাব (যেমন <code>df["salary"].mean()</code>)
+        আসলে NumPy-র গতিতে হয়।
+    </p>
+
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        engineer রা DataFrame-কে data pipeline-এর কেন্দ্রীয় object হিসেবে দেখে: raw data → DataFrame-এ load →
+        clean → transform → model-এ ঢোকানোর মতো array-তে রূপান্তর। তারা <code>df.info()</code> আর <code>df.head()</code>
+        দিয়ে যেকোনো নতুন data-র সাথে প্রথম পরিচয় করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧱</span> ৫. Series বনাম DataFrame</h2>
+
+    <div class="code-box">
+import pandas as pd
+
+# Series — একটা labeled column
+salary = pd.Series([25000, 40000, 60000], name="salary")
+print(salary)
+# 0    25000
+# 1    40000
+# 2    60000
+# Name: salary, dtype: int64
+
+# DataFrame — নাম-সহ অনেক column-এর table
+df = pd.DataFrame({
+    "title":      ["Python Dev", "ML Engineer", "Data Analyst"],
+    "salary":     [40000, 90000, 45000],
+    "city":       ["Dhaka", "Dhaka", "Chattogram"],
+    "experience": [1, 3, 2],
+})
+print(df)
+    </div>
+
+    <div class="diagram">
+DataFrame-এর গঠন:
+
+        title        salary   city         experience
+index  ┌───────────┬────────┬────────────┬───────────┐
+  0    │ Python Dev │ 40000 │ Dhaka       │    1      │
+  1    │ ML Engineer│ 90000 │ Dhaka       │    3      │
+  2    │ Data Analyst│45000 │ Chattogram  │    2      │
+       └───────────┴────────┴────────────┴───────────┘
+        ↑ প্রতিটা column একটা Series
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📥</span> ৬. Data load করা (CSV, JSON)</h2>
+
+    <div class="code-box">
+import pandas as pd
+
+# CSV থেকে — সবচেয়ে সাধারণ
+df = pd.read_csv("jobs.csv")
+
+# বাংলা লেখা থাকলে encoding দিতে হতে পারে
+df = pd.read_csv("jobs.csv", encoding="utf-8")
+
+# JSON (API response) থেকে
+df = pd.read_json("jobs.json")
+
+# Excel থেকে
+df = pd.read_excel("jobs.xlsx")
+
+# হাতে বানানো (উদাহরণের জন্য)
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Data Analyst", "Backend Dev"],
+    "salary": [40000, 90000, 45000, 70000],
+    "city":   ["Dhaka", "Dhaka", "Chattogram", "Sylhet"],
+    "experience": [1, 3, 2, 4],
+})
+    </div>
+
+    <div class="info-box">
+        বাংলাদেশি data-তে <code>encoding="utf-8"</code> প্রায়ই লাগে (বাংলা লেখার জন্য)। ভুল encoding দিলে
+        "গার্বেজ" অক্ষর দেখাবে — এটা একটা common junior সমস্যা, তাই মনে রাখুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👀</span> ৭. প্রথম নজর: data-কে চেনা</h2>
+
+    <p>নতুন কোনো data পেলে engineer রা প্রথমেই এই function-গুলো চালায় — এটাই "data-র সাথে হ্যান্ডশেক":</p>
+
+    <div class="code-box">
+df.head()        # প্রথম ৫ row — data কেমন দেখতে
+df.tail(3)       # শেষ ৩ row
+df.shape         # (row সংখ্যা, column সংখ্যা)
+df.columns       # column-এর নামগুলো
+df.info()        # প্রতিটা column-এর type ও কতগুলো non-null value
+df.describe()    # সংখ্যার column-এর summary (mean, min, max, ...)
+df.dtypes        # প্রতিটা column-এর data type
+df["city"].unique()        # city-তে কী কী distinct value আছে
+df["city"].value_counts()  # প্রতিটা city কতবার এসেছে
+    </div>
+
+    <div class="key-point">
+        <code>df.info()</code> আর <code>df.describe()</code> — এই দুটো যেকোনো নতুন dataset-এ প্রথমেই চালানোর
+        অভ্যাস করুন। <code>info()</code> missing value ও type ধরিয়ে দেয়; <code>describe()</code> outlier ও
+        অদ্ভুত value-র ইঙ্গিত দেয় (যেমন salary-র max যদি ৪০ লাখ হয়, বুঝবেন কিছু ভুল আছে)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৮. Column ও row বেছে নেওয়া: loc বনাম iloc</h2>
+
+    <div class="code-box">
+# একটা column (Series হিসেবে)
+df["salary"]
+
+# একাধিক column (DataFrame হিসেবে) — দুটো bracket
+df[["title", "salary"]]
+
+# --- loc: label (নাম) দিয়ে ---
+df.loc[0]                       # index label 0 এর পুরো row
+df.loc[0, "salary"]             # row 0, column "salary"
+df.loc[0:2, ["title", "city"]]  # row 0-2, নির্দিষ্ট column (0,1,2 তিনটাই)
+
+# --- iloc: position (নম্বর) দিয়ে ---
+df.iloc[0]        # প্রথম row (position 0)
+df.iloc[0, 1]     # প্রথম row, দ্বিতীয় column
+df.iloc[0:2]      # প্রথম ২ row (position 0,1 — 2 বাদ)
+    </div>
+
+    <div class="technical-box">
+        <strong>loc বনাম iloc — junior-দের সবচেয়ে বড় বিভ্রান্তি:</strong><br>
+        • <code>loc</code> = <strong>label</strong> (নাম) দিয়ে; আর slicing-এ শেষ সীমা <em>অন্তর্ভুক্ত</em> (<code>0:2</code> মানে 0,1,2)।<br>
+        • <code>iloc</code> = <strong>integer position</strong> দিয়ে; slicing Python-এর মতো শেষ সীমা <em>বাদ</em> (<code>0:2</code> মানে 0,1)।<br>
+        এই পার্থক্যটা interview-তে খুব জিজ্ঞেস করা হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৯. Filtering: শর্ত দিয়ে row বাছাই</h2>
+
+    <p>মনে আছে NumPy-র boolean indexing? Pandas ঠিক সেটাই ব্যবহার করে, কিন্তু আরও পঠনযোগ্য উপায়ে:</p>
+
+    <div class="code-box">
+# salary 50000-এর বেশি এমন সব job
+df[df["salary"] &gt; 50000]
+
+# Dhaka-র job
+df[df["city"] == "Dhaka"]
+
+# একাধিক শর্ত — & (and), | (or), প্রতিটা শর্ত () তে
+# Dhaka-তে salary 50k-এর বেশি
+df[(df["city"] == "Dhaka") &amp; (df["salary"] &gt; 50000)]
+
+# Dhaka অথবা Sylhet
+df[df["city"].isin(["Dhaka", "Sylhet"])]
+
+# title-এ "Engineer" আছে এমন
+df[df["title"].str.contains("Engineer")]
+
+# শুধু নির্দিষ্ট column দেখা, filter করার পর
+df[df["salary"] &gt; 50000][["title", "salary"]]
+    </div>
+
+    <div class="info-box">
+        <strong>খুব গুরুত্বপূর্ণ:</strong> Pandas-এ <code>and</code>/<code>or</code> নয়, বরং <code>&amp;</code>/<code>|</code>
+        ব্যবহার করুন, আর প্রতিটা শর্তকে বন্ধনীতে <code>()</code> রাখুন। নাহলে error বা ভুল result পাবেন — এটা
+        junior-দের এক নম্বর ভুল।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➕</span> ১০. নতুন column তৈরি</h2>
+
+    <div class="code-box">
+# 10% increment-এর পর নতুন salary
+df["salary_new"] = df["salary"] * 1.10
+
+# বছরে salary (মাসিক × 12)
+df["yearly"] = df["salary"] * 12
+
+# একটা শর্তভিত্তিক column — senior নাকি junior
+df["level"] = df["experience"].apply(
+    lambda x: "senior" if x &gt;= 3 else "junior"
+)
+
+# আরও পরিষ্কার উপায় (vectorized) বড় data-তে দ্রুত:
+import numpy as np
+df["level"] = np.where(df["experience"] &gt;= 3, "senior", "junior")
+    </div>
+
+    <p>
+        লক্ষ করুন — <code>df["salary"] * 1.10</code> পুরো column-এ একসাথে হিসাব করছে (vectorized, NumPy-র মতো)।
+        এটাই Pandas-এর শক্তি: Excel-এর সুবিধা + NumPy-র গতি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাস্তব উদাহরণ: job dataset নিয়ে প্রশ্ন</h2>
+
+    <div class="code-box">
+import pandas as pd
+
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Data Analyst",
+               "Backend Dev", "Frontend Dev", "ML Engineer"],
+    "salary": [40000, 90000, 45000, 70000, 55000, 110000],
+    "city":   ["Dhaka", "Dhaka", "Chattogram",
+               "Sylhet", "Dhaka", "Dhaka"],
+    "experience": [1, 3, 2, 4, 2, 5],
+})
+
+# প্রশ্ন ১: Dhaka-র job কয়টা?
+print(len(df[df["city"] == "Dhaka"]))          # 4
+
+# প্রশ্ন ২: ML Engineer-দের গড় salary?
+ml = df[df["title"] == "ML Engineer"]
+print(ml["salary"].mean())                     # 100000.0
+
+# প্রশ্ন ৩: সবচেয়ে বেশি salary-র job-টা কোনটা?
+print(df.loc[df["salary"].idxmax(), "title"])  # ML Engineer
+
+# প্রশ্ন ৪: অভিজ্ঞতা 3+ বছর, এমন job-এর title ও salary
+print(df[df["experience"] &gt;= 3][["title", "salary"]])
+    </div>
+
+    <p>
+        দেখুন — মাত্র কয়েক লাইনে আমরা data থেকে বাস্তব প্রশ্নের উত্তর বের করলাম। এটাই EDA (Exploratory Data
+        Analysis)-এর শুরু — data-কে প্রশ্ন করা।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ১২. একজন AI Engineer-এর দৃষ্টিতে Pandas</h2>
+    <ul>
+        <li><strong>প্রথমে চেনা:</strong> নতুন data পেলে <code>head()</code>, <code>info()</code>, <code>describe()</code> — সবসময়।</li>
+        <li><strong>Chaining সাবধানে:</strong> filter করে নতuন DataFrame বানানোর সময় <code>.copy()</code> ব্যবহার করে "SettingWithCopyWarning" এড়ানো।</li>
+        <li><strong>Vectorized ভাবনা:</strong> <code>apply</code> দিয়ে row-loop-এর বদলে সম্ভব হলে vectorized operation (দ্রুত)।</li>
+        <li><strong>Reproducible:</strong> data cleaning-এর প্রতিটা ধাপ notebook/script-এ লেখা, যাতে অন্যরা একই ফল পায়।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৩. Boss Question</h2>
+    <div class="story-box">
+        <strong>Boss:</strong> <em>"এই hisab তো আমি Excel-এই করতে পারি। তাহলে Pandas শিখে সময় নষ্ট কেন?"</em><br><br>
+        <strong>উত্তর:</strong> Excel ছোট, একবারের কাজে ভালো। কিন্তু (১) আমাদের data লাখ লাখ row — Excel hang করবে;
+        (২) প্রতি সপ্তাহে নতুন data এলে Excel-এ হাতে আবার করতে হবে, Pandas-এ একই script আবার চালালেই হবে (automation);
+        (৩) Excel-এ ভুল হলে ধরা কঠিন, code review করা যায়; (৪) এই data-ই পরে ML model-এ যাবে — Excel থেকে সেটা করা যায় না।
+        মানে দ্রুত, নির্ভুল, বারবার চালানো যায় এমন কাজ — এটাই business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৪. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Hands-on experience with Pandas for data analysis and manipulation."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি DataFrame load, explore, filter, select ও transform করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>প্রায় সব structured data Pandas দিয়েই বিশ্লেষণ ও ML-এর জন্য প্রস্তুত করা হয়।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>বড় data-তে দ্রুত, automate-যোগ্য, নির্ভুল বিশ্লেষণ — Excel-এর সীমাবদ্ধতা এড়ায়।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>load, head/info/describe, loc/iloc, filtering, নতুন column, value_counts — মূল কাজগুলো।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>MultiIndex, উন্নত pivot, performance tuning, বড় out-of-memory data — পরে।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা real dataset নিয়ে EDA notebook — প্রশ্ন → Pandas code → উত্তর।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"loc vs iloc?", "একাধিক শর্তে filter কীভাবে?", "নতুন column কীভাবে বানাও?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৫. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> filter-এ <code>and</code>/<code>or</code> ব্যবহার। →
+        <strong>ঠিক:</strong> Pandas-এ <code>&amp;</code>/<code>|</code>, প্রতিটা শর্ত <code>()</code>-তে।<br><br>
+
+        <strong>ভুল ২:</strong> <code>loc</code> আর <code>iloc</code> এক ভাবা। →
+        <strong>ঠিক:</strong> loc = label (শেষ সীমা অন্তর্ভুক্ত); iloc = position (শেষ সীমা বাদ)।<br><br>
+
+        <strong>ভুল ৩:</strong> <code>df["a", "b"]</code> দিয়ে multiple column চাওয়া। →
+        <strong>ঠিক:</strong> দুটো bracket লাগে: <code>df[["a", "b"]]</code>।<br><br>
+
+        <strong>ভুল ৪:</strong> filter করা DataFrame-এ সরাসরি value বসিয়ে original বদলানোর চেষ্টা। →
+        <strong>ঠিক:</strong> নতুন DataFrame হলে <code>.copy()</code> নিন; original বদলাতে <code>.loc[শর্ত, "col"] = value</code>।<br><br>
+
+        <strong>ভুল ৫:</strong> সব কাজে <code>apply</code>/loop। →
+        <strong>ঠিক:</strong> সম্ভব হলে vectorized operation বা <code>np.where</code> — দ্রুত।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৬. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> <code>loc</code> আর <code>iloc</code>-এর পার্থক্য?<br>
+        <em>উত্তর:</em> loc label দিয়ে বাছে (slice-এ শেষ সীমা অন্তর্ভুক্ত); iloc integer position দিয়ে (শেষ সীমা বাদ)।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> Series আর DataFrame-এর পার্থক্য?<br>
+        <em>উত্তর:</em> Series একটা labeled 1D column; DataFrame হলো common index-এর অধীনে একাধিক Series-এর 2D table।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> নতুন dataset পেলে প্রথমে কী চালাও?<br>
+        <em>উত্তর:</em> <code>head()</code>, <code>shape</code>, <code>info()</code>, <code>describe()</code>, আর কিছু column-এ <code>value_counts()</code>।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> একাধিক শর্তে filter কীভাবে?<br>
+        <em>উত্তর:</em> <code>df[(cond1) &amp; (cond2)]</code> — প্রতিটা শর্ত বন্ধনীতে, <code>&amp;</code>/<code>|</code> দিয়ে যুক্ত।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৭. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        <strong>🧪 হাতে-কলমে:</strong> ওপরের উদাহরণের DataFrame টা বানিয়ে নিচের কাজগুলো করুন:<br><br>
+        ১. <code>df.info()</code> ও <code>df.describe()</code> চালিয়ে দেখুন কী বলে।<br>
+        ২. শুধু <code>title</code> ও <code>salary</code> column দেখান।<br>
+        ৩. Dhaka-র বাইরের সব job filter করুন।<br>
+        ৪. salary 12 দিয়ে গুণ করে একটা <code>yearly</code> column বানান।<br>
+        ৫. <code>city</code>-তে <code>value_counts()</code> চালিয়ে দেখুন কোন শহরে সবচেয়ে বেশি job।<br><br>
+        <em>বোনাস: <code>df.sort_values("salary", ascending=False)</code> দিয়ে salary অনুযায়ী সাজান।</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৮. Project Connection</h2>
+    <p>
+        flagship <strong>V2 (Data Analyzer)</strong>-এর প্রথম বাস্তব ধাপ এটাই — আমরা bangladesh job market data
+        একটা DataFrame-এ load করব, <code>info()</code>/<code>describe()</code> দিয়ে চিনব, তারপর filtering দিয়ে
+        প্রাথমিক প্রশ্নের উত্তর বের করব ("Dhaka-তে কত job?", "কোন role-এ salary বেশি?")।
+    </p>
+    <div class="info-box">
+        এই episode-এ আমরা data <em>দেখা</em> ও <em>বাছাই</em> শিখলাম। পরের episode-এ (Part 2) শিখব data
+        <em>গোছানো ও পরিষ্কার</em> করা — groupby দিয়ে aggregate, merge দিয়ে জোড়া, আর missing value ও duplicate সামলানো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৯. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ <strong>Pandas</strong> — NumPy-র উপর তৈরি, কিন্তু label + mixed type + missing value সামলায়<br>
+        ✓ <strong>Series</strong> (labeled column) বনাম <strong>DataFrame</strong> (নাম-সহ table)<br>
+        ✓ data load: <code>read_csv</code>/<code>read_json</code>; বাংলা লেখায় <code>encoding="utf-8"</code><br>
+        ✓ প্রথম নজর: <code>head</code>, <code>info</code>, <code>describe</code>, <code>value_counts</code><br>
+        ✓ <strong>loc</strong> (label) বনাম <strong>iloc</strong> (position) — junior-দের বড় বিভ্রান্তি<br>
+        ✓ filtering (<code>&amp;</code>/<code>|</code>, বন্ধনী) ও নতুন column তৈরি (vectorized)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ২০. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E04):</strong> "Pandas Part 2: groupby, merge, missing values, duplicates।"<br><br>
+        Data দেখা ও filter করা শিখলাম, এবার আসল wrangling — <code>groupby</code> দিয়ে "প্রতি শহরে গড় salary কত"
+        বের করা, <code>merge</code> দিয়ে দুটো table জোড়া, আর real data-র বড় মাথাব্যথা — missing value ও
+        duplicate — কীভাবে সামলাতে হয়, পরের পর্বে সেটাই শিখব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-02-numpy-arrays-vectorization.html">⬅ পূর্ববর্তী: NumPy</a>
+            <a href="episode-04-pandas-part2-groupby-merge.html">পরবর্তী: Pandas ২ ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 03)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e03.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="বাংলাদেশের AI/ML চাকরির বাজার ও job description কীভাবে decode করবেন — Must Know, Advantage ও Specialization ভাগে।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="বাংলাদেশে AI/ML চাকরির বাজার: Job Description কীভাবে পড়তে হয় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="বাংলাদেশের AI/ML চাকরির বাজার ও job description কীভাবে decode করবেন — Must Know, Advantage ও Specialization ভাগে।">
+    <meta property="og:locale" content="bn_BD">
+    <title>বাংলাদেশে AI/ML চাকরির বাজার: Job Description কীভাবে পড়তে হয় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 01 &raquo; Episode 05
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> বাংলাদেশে AI/ML চাকরির বাজার: Job Description কীভাবে পড়তে হয়</h1>
+    <p class="subtitle">Must Know, Strong Advantage আর Specialization — JD ভাঙার প্রথম পাঠ (Series 01, Episode 05)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 01 — AI/ML-এর দুনিয়া</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 05 / 06</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim প্রথম JD পড়ে ভয় পেল</li>
+        <li>২. আসল সমস্যা: JD দেখে নিজেকে "অযোগ্য" ভাবা</li>
+        <li>৩. কেন JD-তে এত কিছু লেখা থাকে</li>
+        <li>৪. তিনটি বাক্স: Must Know / Strong Advantage / Specialization</li>
+        <li>৫. বাংলাদেশের বাজারে দুটি প্রধান role</li>
+        <li>৬. একটা বাস্তব JD ভেঙে দেখা</li>
+        <li>৭. Visual: JD decode করার ছক</li>
+        <li>৮. তিন স্তরে বোঝা</li>
+        <li>৯. "understand" বনাম "master"</li>
+        <li>১০. Boss Question</li>
+        <li>১১. Job Requirement Decoder (এই section-এর হৃদয়)</li>
+        <li>১২. সাধারণ ভুল ধারণা</li>
+        <li>১৩. Interview Prep</li>
+        <li>১৪. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৫. Project Connection</li>
+        <li>১৬. সারসংক্ষেপ</li>
+        <li>১৭. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim প্রথম JD পড়ে ভয় পেল</h2>
+
+    <p>
+        Rahim একটা "Junior AI/ML Engineer" পদের job description খুলল। পড়তে গিয়ে তার হাত-পা ঠান্ডা হয়ে গেল —
+        Python, NumPy, Pandas, SQL, scikit-learn, PyTorch, TensorFlow, Hugging Face, NLP, LLM, RAG, vector database,
+        Docker, Kubernetes, AWS, MLOps, CI/CD... তালিকা যেন শেষই হয় না।
+    </p>
+
+    <div class="story-box">
+        Rahim হতাশ হয়ে Nila-কে (data scientist) দেখাল:<br><br>
+        <em>"আপা, এত কিছু! আমি তো এর অর্ধেকও জানি না। আমার কি apply করাই উচিত না?"</em><br><br>
+        Nila হেসে বলল: <em>"একটা গোপন কথা বলি — যে JD লিখেছে, সে নিজেও এই সব একসাথে চায় না। JD হলো একটা wishlist।
+        আসল কথা হলো — কোনটা <strong>must</strong>, কোনটা থাকলে <strong>bonus</strong>, আর কোনটা <strong>পরে শিখলেও চলবে</strong> —
+        সেটা আলাদা করতে শেখা। এই skill-টা থাকলে তুমি JD দেখে ভয় পাবে না, বরং কৌশলে apply করবে।"</em>
+    </div>
+
+    <p>এই পর্বে আমরা ঠিক সেই skill-টাই শিখব — যেকোনো AI/ML JD-কে ঠান্ডা মাথায় ভেঙে ফেলা।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: JD দেখে নিজেকে "অযোগ্য" ভাবা</h2>
+
+    <p>দুটো সাধারণ ভুল প্রতিক্রিয়া:</p>
+    <ul>
+        <li><strong>Impostor reaction:</strong> "১০০% না মিললে apply করব না।" — ফল: কখনো apply-ই করা হয় না। বাস্তবে ৬০–৭০% মিললেই apply করা উচিত।</li>
+        <li><strong>Panic learning:</strong> JD-র প্রতিটা শব্দ ধরে ধরে সব একসাথে শিখতে গিয়ে কোনোটাই ভালোভাবে শেখা হয় না।</li>
+    </ul>
+
+    <div class="key-point">
+        JD একটা <strong>wishlist</strong>, checklist নয়। কোম্পানি "ideal" প্রার্থীর কল্পনা লেখে, কিন্তু hire করে
+        "best available" প্রার্থীকে। তাই আপনার কাজ — কোনটা সত্যিই দরকারি সেটা চিনে ঐগুলোতে জোর দেওয়া।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🤔</span> ৩. কেন JD-তে এত কিছু লেখা থাকে</h2>
+
+    <ul>
+        <li><strong>Copy-paste:</strong> অনেক JD পুরনো template বা অন্য কোম্পানি থেকে কপি করা হয়।</li>
+        <li><strong>Future-proofing:</strong> HR ভাবে "যদি ভবিষ্যতে লাগে" — তাই বাড়তি skill জুড়ে দেয়।</li>
+        <li><strong>একাধিক role মেশানো:</strong> ছোট কোম্পানিতে এক পদে Data Engineer + ML Engineer + AI Engineer-এর কাজ চাওয়া হয়।</li>
+        <li><strong>Buzzword pressure:</strong> "AI" trend-এ থাকতে JD-তে সব জনপ্রিয় শব্দ ঢুকে যায়।</li>
+    </ul>
+
+    <div class="technical-box">
+        এজন্যই একটা JD-কে আক্ষরিকভাবে না নিয়ে <em>বিশ্লেষণ</em> করতে হয়। responsibilities section সাধারণত
+        requirements section-এর চেয়ে বেশি সত্য কথা বলে — কারণ সেখানে আসল কাজটা লেখা থাকে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📦</span> ৪. তিনটি বাক্স: Must Know / Strong Advantage / Specialization</h2>
+
+    <p>যেকোনো AI/ML JD-র প্রতিটা requirement আপনি এই তিন বাক্সে ফেলবেন:</p>
+
+    <table>
+        <tr><th>বাক্স</th><th>মানে</th><th>উদাহরণ (junior AI/ML)</th></tr>
+        <tr>
+            <td><strong>🟢 Must Know</strong></td>
+            <td>এটা না থাকলে সাধারণত call-ই আসে না</td>
+            <td>Python, NumPy, Pandas, SQL, scikit-learn, ML basics, Git, একটু API</td>
+        </tr>
+        <tr>
+            <td><strong>🟡 Strong Advantage</strong></td>
+            <td>থাকলে অন্যদের থেকে এগিয়ে থাকবেন</td>
+            <td>PyTorch + একটা DL project, NLP/Transformers, RAG, embeddings, vector DB, Docker</td>
+        </tr>
+        <tr>
+            <td><strong>🔴 Specialization</strong></td>
+            <td>পরে/on-the-job শিখলেও চলে</td>
+            <td>fine-tuning (LoRA), advanced MLOps, Kubernetes, distributed training, CV depth, agents</td>
+        </tr>
+    </table>
+
+    <div class="info-box">
+        <strong>মনে রাখুন:</strong> এই তালিকা বাংলাদেশের বাজারে বারবার দেখা যাওয়া প্যাটার্নের ভিত্তিতে (Bdjobs,
+        LinkedIn, স্থানীয় কোম্পানির career page)। কোম্পানি ও role অনুযায়ী কিছুটা বদলাবে — কিন্তু কাঠামোটা একই থাকে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏢</span> ৫. বাংলাদেশের বাজারে দুটি প্রধান role</h2>
+
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>ML Engineer / Data Scientist</strong><br>
+            (বড় ও স্থিতিশীল বাজার)<br><br>
+            • structured data, classical ML<br>
+            • fraud detection, churn, recommendation<br>
+            • fintech, telco, e-commerce<br>
+            • মূল: Python, SQL, Pandas, sklearn, deploy
+        </div>
+        <div class="comparison-item">
+            <strong>AI Engineer / GenAI Engineer</strong><br>
+            (নতুন, দ্রুত বাড়ছে)<br><br>
+            • LLM, RAG, chatbot, document assistant<br>
+            • customer support, content, summarization<br>
+            • startup, product কোম্পানি, remote<br>
+            • মূল: LLM API, prompt, RAG, embeddings, software
+        </div>
+    </div>
+
+    <p>
+        দুটোরই ভিত্তি এক — শক্ত Python, data handling, আর software engineering। তাই ভিত্তি ঠিক থাকলে আপনি দুই
+        দিকেই যেতে পারবেন; JD দেখে ঠিক করবেন কোন দিকে জোর দেবেন।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📄</span> ৬. একটা বাস্তব JD ভেঙে দেখা</h2>
+
+    <p>ধরুন একটা সাধারণ (typical) junior JD-তে এই লাইনগুলো আছে। চলুন প্রতিটা বাক্সে ফেলি:</p>
+
+    <div class="code-box">
+JD Requirement                          →  বাক্স
+─────────────────────────────────────────────────────
+"Proficiency in Python"                 →  🟢 Must Know
+"Experience with Pandas, NumPy"         →  🟢 Must Know
+"SQL and relational databases"          →  🟢 Must Know
+"Familiarity with scikit-learn"         →  🟢 Must Know
+"Understanding of ML concepts"          →  🟢 Must Know
+"Version control (Git)"                 →  🟢 Must Know
+"Experience with PyTorch/TensorFlow"    →  🟡 Strong Advantage
+"NLP / LLM / RAG exposure"              →  🟡 Strong Advantage
+"Docker &amp; cloud (AWS/GCP)"              →  🟡 Strong Advantage
+"Experience with Kubernetes"            →  🔴 Specialization
+"Fine-tuning LLMs / LoRA"               →  🔴 Specialization
+"MLOps pipelines (Kubeflow, etc.)"      →  🔴 Specialization
+    </div>
+
+    <div class="key-point">
+        দেখুন — ভয়ংকর লম্বা তালিকাটা আসলে মাত্র ৬টা "must" নিয়ে দাঁড়িয়ে। ঐ ৬টা শক্ত করলে আপনি apply করার যোগ্য।
+        বাকিগুলো এগিয়ে থাকা বা পরে শেখার জিনিস। এই একটা দৃষ্টিভঙ্গি আপনার আত্মবিশ্বাস বদলে দেবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৭. Visual: JD decode করার ছক</h2>
+
+    <div class="diagram">
+             ┌─────────────────────────────┐
+             │   একটা JD পড়ছি              │
+             └──────────────┬──────────────┘
+                            ▼
+        প্রতিটা requirement ধরে প্রশ্ন করি:
+                            │
+     ┌──────────────────────┼──────────────────────┐
+     ▼                      ▼                       ▼
+"না থাকলে বাদ?"      "থাকলে এগিয়ে?"       "পরে শিখলেও চলে?"
+     │                      │                       │
+     ▼                      ▼                       ▼
+🟢 Must Know          🟡 Strong Advantage      🔴 Specialization
+(এখনই শিখি)          (ভিত্তির পরে শিখি)       (চাকরির পরে/দরকারে)
+     │
+     ▼
+Must Know-র ৬০-৭০% মিললে → APPLY করি
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧠</span> ৮. তিন স্তরে বোঝা</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> JD পড়া মানে "তারা আসলে কী চায়" সেটা অনুবাদ করা — buzzword-এর ভিড়ের নিচে লুকানো আসল দরকারটা খুঁজে বের করা।</p>
+
+    <p><strong>Level 2 — technical:</strong> প্রতিটা requirement-কে তিন বাক্সে ভাগ করুন; responsibilities অংশে বেশি গুরুত্ব দিন (ওখানে আসল কাজ); "nice to have" শব্দগুলো চিনুন — ওগুলো প্রায়ই Advantage/Specialization।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> একজন অভিজ্ঞ প্রার্থী JD দেখে তিনটা সিদ্ধান্ত নেয় — (১) apply করব কিনা, (২) resume-তে কোন skill সামনে আনব, (৩) interview-র আগে কোন gap দ্রুত পূরণ করব। JD শুধু বাধা নয়, এটা প্রস্তুতির রোডম্যাপও।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৯. "understand" বনাম "master"</h2>
+
+    <p>JD-তে "experience with X" দেখে আতঙ্কিত হবেন না — কারণ সব X একই গভীরতায় লাগে না।</p>
+
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Understand the concept</strong><br><br>
+            • এটা কী, কেন আছে, কখন লাগে — বলতে পারা<br>
+            • trade-off বোঝা, tool বাছাই করতে পারা<br>
+            • interview-তে ব্যাখ্যা করতে পারা<br>
+            <em>Specialization item-গুলোর জন্য এটুকুই junior লেভেলে যথেষ্ট।</em>
+        </div>
+        <div class="comparison-item">
+            <strong>Master the technology</strong><br><br>
+            • নিজে বানানো, debug করা, optimize করা<br>
+            • production-এ ship করতে পারা<br>
+            • প্রান্তিক সমস্যা সামলাতে পারা<br>
+            <em>শুধু Must Know core-এর জন্য junior লেভেলে এটা দরকার।</em>
+        </div>
+    </div>
+
+    <div class="info-box">
+        উদাহরণ: junior হিসেবে vector database "understand" করলেই যথেষ্ট (কী, কেন, কীভাবে কাজ করে); Pinecone-এর
+        প্রতিটা config "master" করা লাগে না। কিন্তু Python আর Pandas — এগুলো "master" পর্যায়ে জানা চাই।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১০. Boss Question</h2>
+
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"তুমি তো Kubernetes জানো না, তাহলে তোমাকে নেব কেন? JD-তে তো লেখা আছে।"</em><br><br>
+        <strong>উত্তর:</strong> এখানে আত্মবিশ্বাসী ও সৎ থাকা জরুরি: "আমি Kubernetes এখনো master করিনি, কিন্তু Docker
+        জানি এবং containerization-এর ধারণা পরিষ্কার — Kubernetes দরকার হলে দ্রুত শিখে নিতে পারব। তবে যে কাজটা আপনার
+        এখন সবচেয়ে বেশি দরকার — data থেকে model বানিয়ে API হিসেবে deploy করা — সেটা আমি এখনই পারি, এই project-টা তার
+        প্রমাণ।" Boss জানে ১০০% match পাওয়া যায় না; সে চায় দরকারি কাজটা যে করতে পারে আর দ্রুত শিখতে পারে। gap-কে
+        অজুহাত না বানিয়ে শেখার ক্ষমতা দেখান।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১১. Job Requirement Decoder (এই section-এর হৃদয়)</h2>
+
+    <p>
+        পুরো সিরিজ জুড়ে আমরা প্রতিটা বড় technology-কে এই ৭টা প্রশ্ন দিয়ে ভাঙব। এই episode-এ decoder-এর
+        <em>কাঠামোটাই</em> শিখিয়ে দিচ্ছি — উদাহরণ হিসেবে "Machine Learning" শব্দটা নিলাম:
+    </p>
+
+    <div class="info-box">
+        <strong>🔎 Job Requirement Decoder — "Experience with Machine Learning"</strong><br><br>
+        <strong>১. এর মানে কী?</strong> data থেকে শেখা model (regression/classification) বানানো ও ব্যবহারের অভিজ্ঞতা।<br><br>
+        <strong>২. কোম্পানি কেন চায়?</strong> কারণ তাদের data থেকে prediction/সিদ্ধান্ত দরকার — churn, fraud, demand ইত্যাদি।<br><br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> নিয়ম হাতে লেখা অসম্ভব এমন pattern data থেকে শেখা।<br><br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> supervised learning basics, scikit-learn, evaluation metric, overfitting/leakage — Series 05-এ পুরোটা।<br><br>
+        <strong>৫. এখনই কী master লাগে না?</strong> নিজে নতুন algorithm লেখা, distributed training — এসব না।<br><br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> একটা end-to-end project: raw data → preprocessing → model → evaluation → prediction (আমাদের P2/P3 project ঠিক এটাই)।<br><br>
+        <strong>৭. Interview-তে কী?</strong> "supervised vs unsupervised?", "overfitting কী ও কীভাবে ঠেকাবে?", "কোন metric কেন বাছবে?"
+    </div>
+
+    <div class="key-point">
+        এই ৭ প্রশ্নের ছক মাথায় রাখুন। যতবার JD-তে নতুন কোনো technology দেখবেন (SQL, PyTorch, RAG, Docker...),
+        নিজেকে এই ৭টা প্রশ্ন করুন। ভয় জায়গা করে দেবে কৌশলকে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১২. সাধারণ ভুল ধারণা</h2>
+
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "JD-র সব skill না থাকলে apply করা যাবে না।" → <strong>ঠিক:</strong> Must Know-র ৬০–৭০% মিললেই apply করুন।<br><br>
+        <strong>ভুল ২:</strong> "JD = নিশ্চিত checklist।" → <strong>ঠিক:</strong> JD একটা wishlist; responsibilities বেশি সত্য বলে।<br><br>
+        <strong>ভুল ৩:</strong> "সব technology সমান গভীরতায় লাগে।" → <strong>ঠিক:</strong> কিছু "master", বেশিরভাগ শুধু "understand" করলেই চলে।<br><br>
+        <strong>ভুল ৪:</strong> "বেশি buzzword মানে ভালো candidate।" → <strong>ঠিক:</strong> কম কিন্তু গভীর দক্ষতা + প্রমাণ (project) বেশি কার্যকর।<br><br>
+        <strong>ভুল ৫:</strong> "gap থাকলে চুপ থাকি।" → <strong>ঠিক:</strong> সৎভাবে gap স্বীকার করে শেখার ক্ষমতা দেখানোই ভালো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৩. Interview Prep</h2>
+
+    <div class="info-box">
+        <strong>🎤 Interview Prep</strong><br><br>
+        <strong>প্রশ্ন ১:</strong> এই role-এ কেন apply করলে?<br>
+        <em>উত্তর:</em> responsibilities-এর সাথে নিজের skill মিলিয়ে ২-৩টা concrete জায়গা দেখান ("আপনি churn model চান, আমি ঠিক এমন একটা বানিয়েছি")।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> JD-তে থাকা X (যেটা জানো না) নিয়ে কী বলবে?<br>
+        <em>উত্তর:</em> সৎভাবে বলুন এখনো master করেননি, কিন্তু কাছের concept জানেন এবং দ্রুত শিখতে পারবেন — একটা উদাহরণ দিন কীভাবে আগে নতুন কিছু দ্রুত শিখেছিলেন।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> তোমার সবচেয়ে শক্তিশালী skill কোনটা, JD-র সাপেক্ষে?<br>
+        <em>উত্তর:</em> Must Know বাক্সের যেটায় আপনি সবচেয়ে ভালো, সেটা project-এর প্রমাণসহ বলুন।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> ML Engineer আর GenAI Engineer role-এর মধ্যে কোনটা তোমার লক্ষ্য?<br>
+        <em>উত্তর:</em> নিজের background অনুযায়ী সৎ উত্তর দিন; দুটোরই common ভিত্তি (Python, data, software) আপনার আছে সেটা বলুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৪. হাতে-কলমে (Mini Exercise)</h2>
+
+    <div class="key-point">
+        <strong>✍️ হাতে-কলমে</strong><br><br>
+        Bdjobs বা LinkedIn থেকে একটা আসল "AI/ML Engineer" বা "Data Scientist" JD কপি করুন। একটা টেবিল বানান তিন
+        কলামে — Must Know / Strong Advantage / Specialization — আর প্রতিটা requirement সঠিক কলামে বসান।<br><br>
+        তারপর দুটো সংখ্যা লিখুন:<br>
+        ১. Must Know-র কত % আপনি এখন পারেন?<br>
+        ২. এই মুহূর্তে সবচেয়ে জরুরি কোন ১টা gap পূরণ করলে আপনি apply-ready হয়ে যাবেন?<br><br>
+        <em>লক্ষ্য:</em> JD-কে ভয় নয়, রোডম্যাপ হিসেবে ব্যবহার করা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৫. Project Connection</h2>
+
+    <p>
+        মজার ব্যাপার — আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এর একটা মূল feature-ই
+        হবে JD বিশ্লেষণ! Series 03-এ আমরা অনেকগুলো job description-এর data নিয়ে বিশ্লেষণ করব —
+    </p>
+    <div class="info-box">
+        ➜ "বাংলাদেশে junior AI/ML role-এ সবচেয়ে বেশি কোন skill চাওয়া হয়?" (Series 03, data দিয়ে উত্তর)<br>
+        ➜ পরে (Series 08) LLM + RAG দিয়ে assistant-টি একটা JD পড়ে বলে দেবে — "আপনার কোন skill আছে, কোনটা নেই"।<br><br>
+        অর্থাৎ আজ আপনি হাতে যে JD-decode করছেন, সেই কাজটাই project শেষে আপনার AI system স্বয়ংক্রিয়ভাবে করবে। এটাই
+        পুরো journey-র সৌন্দর্য।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৬. সারসংক্ষেপ</h2>
+
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ JD একটা wishlist, checklist নয়; responsibilities অংশ বেশি সত্য বলে<br>
+        ✓ প্রতিটা requirement তিন বাক্সে ফেলুন — 🟢 Must Know / 🟡 Strong Advantage / 🔴 Specialization<br>
+        ✓ Must Know-র ৬০–৭০% মিললেই apply করা উচিত; ১০০% match কেউ আশা করে না<br>
+        ✓ বাংলাদেশে দুই প্রধান পথ — ML Engineer/Data Scientist ও AI/GenAI Engineer; ভিত্তি একই<br>
+        ✓ "understand the concept" বনাম "master the technology" — সব skill সমান গভীরতায় লাগে না<br>
+        ✓ ৭-প্রশ্নের Job Requirement Decoder দিয়ে যেকোনো technology-কে ভেঙে ফেলা যায়<br>
+        ✓ JD ভয়ের জিনিস নয় — প্রস্তুতির রোডম্যাপ
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৭. পরবর্তী পর্বে কী শিখব</h2>
+
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S01E06):</strong> "Zero to Job-Ready: সম্পূর্ণ Roadmap ও এই সিরিজ কীভাবে পড়বেন"<br><br>
+        এখন Rahim জানে AI/ML কী, কোন role আছে, কতটা গণিত লাগে, আর JD কীভাবে পড়তে হয়। Series 01-এর শেষ পর্বে আমরা
+        পুরো ১০টি সিরিজের মানচিত্র একসাথে দেখব, flagship project কীভাবে ধাপে ধাপে গড়ে উঠবে বুঝব, আর একটা বাস্তব
+        study plan বানাব — যাতে আপনি জানেন ঠিক কোন পথে হাঁটছেন।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-04-math-fear-reality.html">⬅ পূর্ববর্তী: গণিত ভয়</a>
+            <a href="episode-06-zero-to-jobready-roadmap.html">পরবর্তী: সম্পূর্ণ Roadmap ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 01, Episode 05)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s01e05.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

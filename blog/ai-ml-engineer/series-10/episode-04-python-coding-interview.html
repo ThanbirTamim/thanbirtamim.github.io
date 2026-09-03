@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI/ML role-এর Python ও coding interview prep — data structure, OOP ও practical problem, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Python ও Coding Interview: data structures, OOP, practical problem | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="AI/ML role-এর Python ও coding interview prep — data structure, OOP ও practical problem, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Python ও Coding Interview: data structures, OOP, practical problem | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 10 &raquo; Episode 04
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Python ও Coding Interview: data structures, OOP, practical problem</h1>
+    <p class="subtitle">coding screen পার হওয়া (Series 10, Episode 04)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 10 — AI/ML Engineer হিসেবে চাকরি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 04 / 10</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর প্রথম coding screen</li>
+        <li>২. সমস্যা: AI/ML role-এও coding round কেন</li>
+        <li>৩. কী কী আসে: তিন ধরনের প্রশ্ন</li>
+        <li>৪. Data Structures: complexity intuition</li>
+        <li>৫. Practical: dict/set দিয়ে দ্রুত সমাধান</li>
+        <li>৬. OOP প্রশ্ন: কেন sklearn/PyTorch class-based</li>
+        <li>৭. একটা bug-fix/reasoning প্রশ্ন</li>
+        <li>৮. Pythonic code: interviewer যা খোঁজে</li>
+        <li>৯. Live coding-এ কীভাবে কথা বলবেন</li>
+        <li>১০. Job Requirement Decoder: "strong Python fundamentals"</li>
+        <li>১১. সাধারণ ভুল</li>
+        <li>১২. Interview Prep</li>
+        <li>১৩. হাতে-কলমে</li>
+        <li>১৪. Project Connection</li>
+        <li>১৫. সারসংক্ষেপ</li>
+        <li>১৬. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর প্রথম coding screen</h2>
+    <p>
+        Interview call এল! কিন্তু প্রথম round দেখে Rahim অবাক — এটা কোনো ML প্রশ্ন নয়, বরং একটা coding
+        problem: "একটা list-এ duplicate আছে কিনা বের করো, তারপর optimize করো।" Rahim ভেবেছিল AI/ML role
+        মানে শুধু model নিয়ে প্রশ্ন হবে।
+    </p>
+    <div class="story-box">
+        <strong>Arif:</strong> <em>"AI/ML Engineer আগে একজন engineer। তুমি model বানাও ঠিকই, কিন্তু সেই model-এর
+        চারপাশে data pipeline, API, preprocessing — সব কোড দিয়ে লিখতে হয়। তাই কোম্পানি আগে দেখে তুমি
+        পরিষ্কার, correct কোড লিখতে পারো কিনা। এই round-টা LeetCode grandmaster হওয়ার পরীক্ষা নয় — এটা
+        দেখার পরীক্ষা যে তুমি চিন্তা করে, কথা বলতে বলতে, একটা সমস্যা সমাধান করতে পারো।"</em>
+    </div>
+    <p>এই পর্বে আমরা AI/ML role-এর coding screen-এর জন্য practical প্রস্তুতি নেব।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🤔</span> ২. সমস্যা: AI/ML role-এও coding round কেন</h2>
+    <p>
+        অনেক candidate ভাবে "আমি তো data scientist/AI হবো, coding round কেন?" বাস্তবতা হলো — একজন AI/ML
+        Engineer-এর দৈনন্দিন কাজের বড় অংশ কোড: data নিয়ে আসা, পরিষ্কার করা, feature বানানো, API লেখা।
+        দুর্বল কোড মানে ধীর, bug-ভরা, unmaintainable system।
+    </p>
+    <div class="key-point">
+        junior AI/ML coding screen সাধারণত <strong>medium-easy</strong> — advanced dynamic programming নয়।
+        তারা দেখে: correctness, complexity সম্পর্কে ধারণা, পরিষ্কার Python, আর তুমি চিন্তা করতে করতে কথা বলতে পারো কিনা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗂️</span> ৩. কী কী আসে: তিন ধরনের প্রশ্ন</h2>
+    <table>
+        <tr><th>ধরন</th><th>উদাহরণ</th><th>কী পরীক্ষা করে</th></tr>
+        <tr><td>Data structure / algo (easy-medium)</td><td>duplicate খোঁজা, two-sum, frequency count</td><td>list/dict/set, complexity ধারণা</td></tr>
+        <tr><td>Practical/Pythonic</td><td>CSV parse, text-এ word count, data transform</td><td>বাস্তব কোড লেখার দক্ষতা</td></tr>
+        <tr><td>OOP / design</td><td>একটা small class design, "কেন এই design"</td><td>abstraction, sklearn-style ভাবনা</td></tr>
+    </table>
+    <div class="info-box">
+        <strong>Must Know / Learn Later:</strong> চাকরির আগে must — list/dict/set, loop, function, basic
+        time complexity (O(n) vs O(n²)), string/CSV handling। Learn later — advanced DP, graph algorithm,
+        system-level algorithm (এগুলো junior AI role-এ খুব একটা লাগে না)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⏱️</span> ৪. Data Structures: complexity intuition</h2>
+    <p>
+        সবচেয়ে বেশি কাজে লাগে — কখন কোন structure। এটাই সেই "duplicate" প্রশ্নের মূল।
+    </p>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> list মানে একটা লাইনে দাঁড়ানো মানুষ — কাউকে খুঁজতে হলে একজন একজন
+        করে দেখতে হয় (ধীর)। dict/set মানে নাম ধরে সরাসরি ডাক দেওয়া — instant।<br><br>
+        <strong>Level 2 — technical:</strong> list-এ <code>x in mylist</code> হলো O(n)। set/dict-এ
+        <code>x in myset</code> হলো গড়ে O(1) (hashing)। তাই membership/lookup-এ set/dict অনেক দ্রুত।<br><br>
+        <strong>Level 3 — engineer perspective:</strong> ১০ লাখ row data নিয়ে কাজ করলে O(n²) কোড কার্যত জমে
+        যায়। set/dict দিয়ে সেটা O(n) করা — এই সিদ্ধান্তই real work-এ পার্থক্য গড়ে দেয়।
+    </div>
+    <div class="code-box">
+# duplicate খোঁজা - naive: O(n^2)
+def has_dup_slow(nums):
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] == nums[j]:
+                return True
+    return False
+
+# optimized: O(n) time, O(n) space  (set দিয়ে)
+def has_dup_fast(nums):
+    seen = set()
+    for x in nums:
+        if x in seen:      # গড়ে O(1) lookup
+            return True
+        seen.add(x)
+    return False
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚡</span> ৫. Practical: dict/set দিয়ে দ্রুত সমাধান</h2>
+    <p>
+        AI/ML interview-তে খুব common একটা practical প্রশ্ন — text/data-তে frequency count। এটা আসলে
+        Bag-of-Words-এর ভিত্তি (Series 07), তাই ML-প্রাসঙ্গিকও।
+    </p>
+    <div class="code-box">
+from collections import Counter
+
+def top_k_words(text: str, k: int) -&gt; list[tuple[str, int]]:
+    words = text.lower().split()
+    counts = Counter(words)          # dict-এর মতো, O(n)
+    return counts.most_common(k)
+
+# ব্যবহার
+sample = "python sql python ml python sql"
+print(top_k_words(sample, 2))
+# [('python', 3), ('sql', 2)]
+    </div>
+    <div class="info-box">
+        <strong>কেন এই approach?</strong> <code>Counter</code> হলো একটা specialized dict — একবার data ঘুরে
+        (O(n)) count বানায়। manual loop-এও করা যায়, কিন্তু interviewer-কে বলুন আপনি standard library চেনেন,
+        আর কেন এটা O(n)। "আমি Pythonic এবং efficient দুইই জানি" — এই signal দিন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏛️</span> ৬. OOP প্রশ্ন: কেন sklearn/PyTorch class-based</h2>
+    <p>
+        AI/ML role-এ OOP প্রশ্ন প্রায়ই ML-এর সাথে জোড়া লাগে — "একটা simple estimator class design করো"
+        বা "sklearn-এর fit/predict pattern কেন?"
+    </p>
+    <div class="code-box">
+class MinMaxScaler:
+    """একটা ছোট, sklearn-style transformer।"""
+
+    def __init__(self):
+        self.min_ = None
+        self.max_ = None
+
+    def fit(self, data: list[float]) -&gt; "MinMaxScaler":
+        self.min_ = min(data)
+        self.max_ = max(data)
+        return self                      # chaining-এর জন্য
+
+    def transform(self, data: list[float]) -&gt; list[float]:
+        rng = self.max_ - self.min_
+        if rng == 0:
+            return [0.0 for _ in data]
+        return [(x - self.min_) / rng for x in data]
+
+    def fit_transform(self, data: list[float]) -&gt; list[float]:
+        return self.fit(data).transform(data)
+    </div>
+    <div class="technical-box">
+        <strong>বলার মতো কথা:</strong> fit/transform আলাদা কেন? কারণ <em>train data-তে fit করে সেই একই
+        parameter test data-তে apply করতে হয়</em> — নাহলে data leakage (Series 03/05)। এই একটা উত্তর দিলে
+        interviewer বুঝবে তুমি শুধু OOP নয়, ML সঠিকভাবেও বোঝো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🐞</span> ৭. একটা bug-fix/reasoning প্রশ্ন</h2>
+    <p>
+        একটা খুব common Python "gotcha" যা interview-তে আসে — mutable default argument। এটা AI code-এও
+        বাস্তব bug ঘটায়।
+    </p>
+    <div class="code-box">
+# ভুল: default list সব call-এ shared হয়ে যায়!
+def add_feature(x, features=[]):
+    features.append(x)
+    return features
+
+print(add_feature(1))   # [1]
+print(add_feature(2))   # [1, 2]  &lt;- অপ্রত্যাশিত!
+
+# ঠিক:
+def add_feature(x, features=None):
+    if features is None:
+        features = []
+    features.append(x)
+    return features
+    </div>
+    <p>
+        এই ধরনের প্রশ্নে interviewer দেখে তুমি "কেন" বুঝতে পারো কিনা — default argument function
+        definition-এর সময় একবারই তৈরি হয়, তাই mutable default বিপজ্জনক।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✨</span> ৮. Pythonic code: interviewer যা খোঁজে</h2>
+    <ul>
+        <li>অর্থপূর্ণ নাম (<code>seen</code>, <code>counts</code> — <code>a</code>, <code>b</code> নয়)</li>
+        <li>list comprehension যেখানে পরিষ্কার হয়</li>
+        <li>standard library ব্যবহার (<code>Counter</code>, <code>enumerate</code>, <code>zip</code>)</li>
+        <li>edge case ভাবা (empty input, single element, division by zero)</li>
+        <li>type hint (junior-এর জন্য bonus, engineer signal)</li>
+    </ul>
+    <div class="code-box">
+# comprehension + enumerate: পরিষ্কার এবং Pythonic
+def indices_of(nums: list[int], target: int) -&gt; list[int]:
+    return [i for i, x in enumerate(nums) if x == target]
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗣️</span> ৯. Live coding-এ কীভাবে কথা বলবেন</h2>
+    <p>
+        Coding screen শুধু কোড নয়, একটা <strong>communication</strong> পরীক্ষা। এই ধাপগুলো অনুসরণ করুন:
+    </p>
+    <div class="diagram">
+1. প্রশ্ন repeat করো + clarifying প্রশ্ন করো
+   ("input কি sorted? duplicate থাকতে পারে? size কত বড়?")
+2. একটা naive solution বলো (brute force) + তার complexity
+3. optimize করার idea বলো, তারপর কোড লেখো
+4. কোড লেখার সময় জোরে চিন্তা করো
+5. একটা উদাহরণ দিয়ে dry-run করো (edge case সহ)
+6. শেষে time/space complexity বলো
+    </div>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"এই algorithm-টা তো Google-এ search করলেই পাওয়া যায়। interview-তে এমন প্রশ্ন করে কী লাভ?"</em><br><br>
+        <strong>উত্তর:</strong> লাভ হলো — কোড লেখা নয়, <em>চিন্তার প্রক্রিয়া</em> দেখা। বাস্তব কাজে একজন engineer
+        রোজ নতুন সমস্যা পায় যার উত্তর Google-এ নেই। interviewer দেখতে চায়: তুমি কি প্রশ্ন স্পষ্ট করো, trade-off
+        নিয়ে ভাবো, ভুল ধরলে শুধরে নাও? এই soft-signal গুলোই একজন junior-কে team-ready প্রমাণ করে — সেটাই আসল business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১০. Job Requirement Decoder</h2>
+    <p>JD-তে প্রায়ই থাকে: <strong>"Strong Python fundamentals and problem-solving ability."</strong></p>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>কী বোঝায়?</td><td>পরিষ্কার, correct Python লিখতে পারো এবং নতুন সমস্যা যুক্তি দিয়ে ভাঙতে পারো।</td></tr>
+        <tr><td>কেন চায়?</td><td>ML-এর চারপাশের ৮০% কাজই সাধারণ Python engineering।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>ধীর, bug-ভরা, unmaintainable কোডের ঝুঁকি কমায়।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>list/dict/set, complexity intuition, OOP basics, Pythonic idiom, edge case।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>advanced DP, graph algorithm, competitive programming।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>পরিষ্কার src কোড, test, type hint — Series 10 E02-এর repo।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"এই list-এ duplicate?", "dict বনাম list কখন?", "এই code-এর complexity কত?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১১. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> চুপচাপ কোড লেখা। → <strong>ঠিক:</strong> জোরে চিন্তা করো, approach আগে বলো।<br><br>
+        <strong>ভুল ২:</strong> clarifying প্রশ্ন না করে ধরে নেওয়া। → <strong>ঠিক:</strong> input/constraint স্পষ্ট করো।<br><br>
+        <strong>ভুল ৩:</strong> complexity নিয়ে ধারণা নেই। → <strong>ঠিক:</strong> অন্তত O(n) vs O(n²) বলতে পারো।<br><br>
+        <strong>ভুল ৪:</strong> edge case ভুলে যাওয়া (empty, একটা element)। → <strong>ঠিক:</strong> আগে থেকে ভাবো ও উল্লেখ করো।<br><br>
+        <strong>ভুল ৫:</strong> সরাসরি optimal solution মুখস্থ বলা কিন্তু ব্যাখ্যা নেই। → <strong>ঠিক:</strong> কেন কাজ করে ব্যাখ্যা করো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১২. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> list আর set/dict-এ membership check-এ পার্থক্য কী?<br>
+        <em>উত্তর:</em> list O(n), set/dict গড়ে O(1) (hashing); বড় data-তে বিশাল পার্থক্য।<br><br>
+        <strong>প্রশ্ন ২:</strong> Python-এ mutable default argument কেন বিপজ্জনক?<br>
+        <em>উত্তর:</em> default একবারই তৈরি হয়, সব call-এ shared; <code>None</code> ব্যবহার করে ভেতরে init করা উচিত।<br><br>
+        <strong>প্রশ্ন ৩:</strong> sklearn-এ fit আর transform আলাদা কেন?<br>
+        <em>উত্তর:</em> train data-তে fit করা parameter test-এ apply করতে; নাহলে data leakage হয়।<br><br>
+        <strong>প্রশ্ন ৪:</strong> list comprehension কখন ব্যবহার করবে, কখন না?<br>
+        <em>উত্তর:</em> সহজ transform/filter-এ ব্যবহার করো; জটিল nested logic হলে পরিষ্কার loop ভালো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৩. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        সময় ধরে (২০ মিনিট) সমাধান করো, জোরে চিন্তা করতে করতে:<br><br>
+        ১. একটা list-এ দুইটা সংখ্যা খুঁজে বের করো যাদের যোগফল <code>target</code> (two-sum) — O(n) solution লেখো।<br>
+        ২. একটা string-এ প্রতিটা character কতবার আছে বের করো।<br>
+        ৩. উপরের <code>MinMaxScaler</code> class-এ একটা <code>inverse_transform</code> method যোগ করো।<br><br>
+        প্রতিটার শেষে নিজের কোডের time ও space complexity বলো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৪. Project Connection</h2>
+    <p>
+        Flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ তুমি ইতিমধ্যে এই skill ব্যবহার করেছ:
+        job description থেকে skill count করা (dict/Counter), preprocessing function (পরিষ্কার Python),
+        একটা transformer/estimator class (OOP)। interview-তে coding প্রশ্নের উত্তর দেওয়ার সময় নিজের project
+        থেকে উদাহরণ টানলে সেটা অনেক বিশ্বাসযোগ্য শোনায় — "আমার career assistant-এ ঠিক এভাবেই skill frequency বের করেছি"।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৫. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ AI/ML role-এও coding screen থাকে — engineer আগে, তারপর ML<br>
+        ✓ তিন ধরন: data structure/algo, practical/Pythonic, OOP/design<br>
+        ✓ list O(n) বনাম set/dict O(1) — সঠিক structure বাছাই সবচেয়ে দামি<br>
+        ✓ fit/transform পার্থক্য = data leakage এড়ানো (ML + OOP একসাথে)<br>
+        ✓ mutable default argument-এর মতো Python gotcha জানা থাকা চাই<br>
+        ✓ Live coding = communication: প্রশ্ন করো, জোরে চিন্তা করো, complexity বলো
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৬. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S10E05):</strong> "ML ও Statistics Interview: overfitting, leakage, metrics,
+        feature engineering, probability"।<br><br>
+        Coding round পার হলাম। এবার আসল ML round — যেখানে তোমার overfitting, data leakage, সঠিক metric আর
+        probability-র বোঝাপড়া যাচাই হবে। পরের পর্বে একটা model-answer সহ question bank তৈরি করব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-03-portfolio-strategy.html">⬅ পূর্ববর্তী: Portfolio Strategy</a>
+            <a href="episode-05-ml-stats-interview.html">পরবর্তী: ML Interview ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 10, Episode 04)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s10e04.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

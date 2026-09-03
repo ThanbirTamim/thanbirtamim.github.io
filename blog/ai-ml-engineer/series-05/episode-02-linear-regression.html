@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Linear Regression দিয়ে house price prediction — scikit-learn-এ প্রথম ML model, বাংলায় হাতে-কলমে।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Linear Regression: prediction-এর &#x27;Hello World&#x27; (House Price দিয়ে) | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Linear Regression দিয়ে house price prediction — scikit-learn-এ প্রথম ML model, বাংলায় হাতে-কলমে।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Linear Regression: prediction-এর &#x27;Hello World&#x27; (House Price দিয়ে) | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 05 &raquo; Episode 02
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Linear Regression: prediction-এর 'Hello World' (House Price দিয়ে)</h1>
+    <p class="subtitle">প্রথম trained model (Series 05, Episode 02)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 05 — Classical Machine Learning</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 11</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: বাড়ির দাম কে ঠিক করে?</li>
+        <li>২. সমস্যা: একটা সংখ্যা predict করা</li>
+        <li>৩. Linear Regression আসলে কী? (৩ স্তরে)</li>
+        <li>৪. Visual: সেই বিখ্যাত "best-fit line"</li>
+        <li>৫. Model কীভাবে line টানে (intuition)</li>
+        <li>৬. কোড: scikit-learn দিয়ে House Price model (P2)</li>
+        <li>৭. Multiple features — সোজা লাইন থেকে plane</li>
+        <li>৮. Coefficient পড়া: model কী শিখল</li>
+        <li>৯. Linear Regression-এর assumptions</li>
+        <li>১০. বাংলাদেশের বাস্তব উদাহরণ</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection ও সারসংক্ষেপ</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏠</span> ১. গল্প: বাড়ির দাম কে ঠিক করে?</h2>
+    <p>
+        Rahim ঢাকায় একটা flat কিনতে চায়। bikroy আর property site ঘুরে সে confused —
+        একই এলাকায় কেন একটার দাম ৮০ লাখ, আরেকটার ১.২ কোটি? Nila (data scientist) বলল —
+        "তুই ভাব, দাম আসলে কয়েকটা জিনিসের উপর নির্ভর করে: আয়তন (sqft), bedroom সংখ্যা, এলাকা, বয়স।
+        যদি আমরা অনেক বাড়ির এই তথ্য আর তাদের দাম জোগাড় করি, একটা model শিখতে পারে —
+        <em>কোন feature দাম কতটা বাড়ায়/কমায়</em>।"
+    </p>
+    <div class="story-box">
+        Rahim: "কিন্তু দাম তো একটা সংখ্যা — হ্যাঁ/না নয়। আগের churn উদাহরণে তো উত্তর ছিল Yes/No।"<br><br>
+        Nila: "ঠিক ধরেছিস। যখন উত্তর একটা <strong>সংখ্যা (continuous value)</strong>, সেটা
+        <strong>Regression</strong>। আর সবচেয়ে সহজ, সবচেয়ে ভিত্তিমূলক regression হলো
+        <strong>Linear Regression</strong> — ML-এর 'Hello World'।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: একটা সংখ্যা predict করা</h2>
+    <p>
+        গত episode-এ শিখেছি — supervised learning-এর দুই ভাগ। এবার আমরা <strong>Regression</strong> দিকটা ধরছি:
+        input features দিয়ে একটা <strong>সংখ্যা</strong> predict করা। উদাহরণ:
+    </p>
+    <ul>
+        <li>বাড়ির দাম (টাকা) — আয়তন, bedroom, এলাকা থেকে।</li>
+        <li>আগামী মাসের বিক্রি (units)।</li>
+        <li>একজন employee-র expected salary।</li>
+    </ul>
+    <div class="key-point">
+        Regression = <strong>continuous সংখ্যা</strong> predict। Classification = <strong>category/label</strong> predict।
+        একই সমস্যা কখনো দুইভাবে দেখা যায়: "দাম কত?" (regression) বনাম "দাম কি ১ কোটির বেশি?" (classification)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📈</span> ৩. Linear Regression আসলে কী? (৩ স্তরে)</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> একটা graph-এ অনেকগুলো বিন্দু (প্রতিটা একটা বাড়ি: x = আয়তন,
+        y = দাম) ছড়ানো আছে। এই বিন্দুগুলোর মাঝ দিয়ে একটা <em>সোজা রেখা</em> (straight line) টানুন যেটা সব বিন্দুর
+        যতটা সম্ভব কাছ দিয়ে যায়। নতুন একটা বাড়ির আয়তন দিলে, সেই রেখা ধরে দাম পড়ে নেওয়াই prediction।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> Linear Regression একটা function শেখে:
+        <code>y = w1·x1 + w2·x2 + ... + b</code>। এখানে <code>x</code>-গুলো feature,
+        <code>w</code>-গুলো weight (coefficient — প্রতিটা feature-এর গুরুত্ব), আর <code>b</code> হলো bias/intercept।
+        Training মানে এমন <code>w</code> ও <code>b</code> খুঁজে বের করা যাতে prediction আর আসল দামের
+        গড় ভুল (error) সবচেয়ে কম হয়।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — Engineer perspective:</strong> Linear Regression প্রায়ই আপনার প্রথম
+        <strong>baseline</strong>। এটা দ্রুত, ব্যাখ্যাযোগ্য (কোন feature দাম কতটা বাড়ায় সরাসরি বলা যায়),
+        আর হালকা। একজন ভালো engineer আগে এই simple baseline বানায়, তারপর জটিল model (Random Forest, XGBoost)
+        এর চেয়ে ভালো করছে কিনা মাপে। জটিলতা তখনই, যখন সেটা সত্যিই value দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৪. Visual: সেই বিখ্যাত "best-fit line"</h2>
+    <div class="diagram">
+ দাম (y)
+  |                                   •
+  |                             •   /
+  |                        •     /
+  |                 •        /  •      ← best-fit line
+  |            •       /  •
+  |        •     /  •
+  |     •   /  •
+  |   /  •
+  +---------------------------------------  আয়তন (x, sqft)
+
+ নতুন আয়তন x=1500 দিলে → line-এ গিয়ে y (দাম) পড়ে নিই
+    </div>
+    <p>
+        Model-এর কাজ এমন একটা line খোঁজা যেখানে প্রতিটা বিন্দু থেকে line পর্যন্ত উল্লম্ব দূরত্ব
+        (এটাই error) সব মিলিয়ে সবচেয়ে ছোট।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৫. Model কীভাবে line টানে (intuition)</h2>
+    <p>
+        Model শুরুতে যেকোনো একটা line ধরে (random <code>w</code>, <code>b</code>)। তারপর মাপে — এই line
+        দিয়ে prediction কতটা ভুল হচ্ছে। এই ভুল মাপার নাম <strong>loss function</strong>; regression-এ
+        সাধারণত <strong>Mean Squared Error (MSE)</strong>। এরপর line-টা একটু নাড়িয়ে error কমানোর চেষ্টা করে,
+        বারবার — যতক্ষণ না error আর কমে। এই "ভুল থেকে শেখার" পদ্ধতির নাম <strong>Gradient Descent</strong>
+        (Series 04-এ বিস্তারিত)।
+    </p>
+    <div class="info-box">
+        সুখবর: scikit-learn-এর <code>LinearRegression</code> এই গণিতটা closed-form (Normal Equation) দিয়ে
+        এক ধাপেই solve করে — আপনাকে gradient descent হাতে লিখতে হয় না। কিন্তু <em>কী ঘটছে</em> সেটা বোঝা
+        জরুরি, কারণ Deep Learning-এ (Series 06) এই gradient descent-ই সবকিছুর ভিত্তি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৬. কোড: scikit-learn দিয়ে House Price model (Project P2)</h2>
+    <p><strong>কেন scikit-learn?</strong> classical ML-এর standard; <code>fit</code>/<code>predict</code>
+    একই API সব model-এ। চলুন Project P2 (House Price Prediction) শুরু করি:</p>
+    <div class="code-box">
+# pip install scikit-learn pandas numpy
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, r2_score
+
+# ১. ডেটা (বাস্তবে bikroy/property CSV থেকে আসবে)
+df = pd.DataFrame({
+    "sqft":     [850, 1200, 1500, 950, 1800, 1100, 1650, 2000, 750, 1350],
+    "bedrooms": [2,    3,    3,    2,    4,    2,    3,    4,    1,   3],
+    "age_yrs":  [10,   5,    2,    12,   1,    8,    3,    1,    15,  6],
+    # দাম লাখ টাকায়
+    "price":    [55,   82,  110,   60,  140,   70,  118,  160,  42,   95],
+})
+
+X = df[["sqft", "bedrooms", "age_yrs"]]
+y = df["price"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# ২. Training — best-fit "hyperplane" খুঁজছে
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# ৩. Test set-এ prediction (inference)
+preds = model.predict(X_test)
+print("MAE (লাখ টাকা):", round(mean_absolute_error(y_test, preds), 2))
+print("R2 score:", round(r2_score(y_test, preds), 3))
+
+# ৪. নতুন একটা বাড়ি: 1400 sqft, 3 bed, 4 yrs
+new_house = pd.DataFrame(
+    [[1400, 3, 4]], columns=["sqft", "bedrooms", "age_yrs"]
+)
+print("অনুমানিত দাম (লাখ):", round(model.predict(new_house)[0], 1))
+    </div>
+    <div class="info-box">
+        <strong>লক্ষণীয়:</strong> এই সিরিজে MAE/R² সংক্ষেপে দেখাচ্ছি — পরের episode (E03) পুরোপুরি
+        regression evaluation নিয়ে, তখন MAE, MSE, RMSE, R² গভীরে বুঝব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧮</span> ৭. Multiple features — সোজা লাইন থেকে plane</h2>
+    <p>
+        একটা feature (শুধু sqft) হলে model একটা <strong>line</strong>। দুটো feature (sqft + bedrooms) হলে
+        একটা <strong>plane</strong>। তিন বা তার বেশি হলে একটা <strong>hyperplane</strong> — যেটা কল্পনা করা
+        কঠিন, কিন্তু গণিত একই: <code>price = w1·sqft + w2·bedrooms + w3·age + b</code>। এটাকে বলে
+        <strong>Multiple Linear Regression</strong>, আর বাস্তবে প্রায় সবসময় এটাই ব্যবহার হয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৮. Coefficient পড়া: model কী শিখল</h2>
+    <p>Linear Regression-এর সবচেয়ে বড় সুবিধা — এটা <strong>interpretable</strong>। কী শিখল দেখা যায়:</p>
+    <div class="code-box">
+for name, coef in zip(X.columns, model.coef_):
+    print(f"{name}: {coef:.2f}")
+print("intercept (b):", round(model.intercept_, 2))
+
+# উদাহরণ output (আনুমানিক):
+# sqft: 0.06        &lt;- প্রতি ১ sqft-এ দাম ~0.06 লাখ বাড়ে
+# bedrooms: 3.50    &lt;- প্রতি bedroom-এ ~3.5 লাখ বাড়ে
+# age_yrs: -1.20    &lt;- প্রতি বছর পুরনো হলে ~1.2 লাখ কমে (negative!)
+    </div>
+    <div class="key-point">
+        <code>age_yrs</code>-এর coefficient <strong>negative</strong> — মানে বাড়ি যত পুরনো, দাম তত কম।
+        Model এই সম্পর্ক data থেকে নিজে শিখেছে, কেউ বলে দেয়নি। এই ব্যাখ্যাযোগ্যতাই Boss/stakeholder-দের
+        বোঝানোর সময় সোনার মতো কাজে দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📏</span> ৯. Linear Regression-এর assumptions</h2>
+    <p>Interview-তে প্রায়ই আসে "assumptions of linear regression"। মূল কয়েকটা:</p>
+    <ul>
+        <li><strong>Linearity:</strong> feature ও target-এর সম্পর্ক মোটামুটি সরল (linear)।</li>
+        <li><strong>Independence:</strong> observation-গুলো একে অপরের উপর নির্ভরশীল নয়।</li>
+        <li><strong>Homoscedasticity:</strong> error-এর ছড়ানো (variance) মোটামুটি সমান থাকে।</li>
+        <li><strong>No severe multicollinearity:</strong> feature-রা নিজেরা একে অপরের প্রায় হুবহু নকল নয়।</li>
+    </ul>
+    <div class="info-box">
+        <strong>Must Know:</strong> linearity ও multicollinearity-র ধারণা।
+        <strong>Good to Know:</strong> homoscedasticity, residual plot।
+        <strong>Learn Later:</strong> এদের formal statistical test — junior চাকরির জন্য এখন লাগবে না।
+        বাস্তবে সম্পর্ক non-linear হলে polynomial feature বা tree-based model (E06, E07) ভালো কাজ করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের বাস্তব উদাহরণ</h2>
+    <ul>
+        <li><strong>Real-estate / property-tech:</strong> এলাকা, আয়তন, floor দিয়ে flat-এর দাম বা ভাড়া অনুমান।</li>
+        <li><strong>E-commerce (Daraz):</strong> historical data দিয়ে কোনো product-এর expected demand/বিক্রি।</li>
+        <li><strong>Ride-sharing (Pathao, Uber):</strong> distance, time, demand দিয়ে fare estimation-এর baseline।</li>
+        <li><strong>HR-tech:</strong> experience, skill, location দিয়ে একটা role-এর expected salary range।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: "এই line টানা দিয়ে আমার কী লাভ?"<br><br>
+        <strong>উত্তর:</strong> ধরুন আপনি property business-এ। এখন প্রতিটা flat-এর দাম ঠিক করতে একজন
+        অভিজ্ঞ লোক ২ ঘণ্টা সময় নেয় এবং মেজাজ অনুযায়ী ভুল করে। একটা Linear Regression model সেকেন্ডে
+        হাজারটা flat-এর <em>consistent, ব্যাখ্যাযোগ্য</em> price estimate দেবে — আর কেন এই দাম, সেটাও
+        coefficient দেখিয়ে justify করা যাবে। business value: দ্রুত, সস্তা, স্বচ্ছ pricing।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="info-box">
+        JD: <em>"Experience building regression models (e.g., Linear Regression) with scikit-learn."</em><br><br>
+        <strong>১. কী বোঝায়?</strong> সংখ্যা predict করার model বানাতে ও ব্যাখ্যা করতে পারা।<br>
+        <strong>২. কেন চায়?</strong> pricing, demand, forecasting — সব business-এই regression-এর দরকার হয়।<br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> continuous outcome অনুমান (কত টাকা, কত unit)।<br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> <code>fit</code>/<code>predict</code>, coefficient পড়া, MAE/R² দিয়ে মাপা, assumption-এর মূল ধারণা।<br>
+        <strong>৫. এখনই master লাগবে না:</strong> regularization-এর গভীর গণিত (Ridge/Lasso নাম জানলেই যথেষ্ট এখন), statistical inference।<br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> House Price notebook — EDA → model → coefficient interpretation → error metric, পরিষ্কার README।<br>
+        <strong>৭. Interview:</strong> "Assumptions of linear regression?", "Coefficient কী বোঝায়?", "Regression vs classification?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> Classification সমস্যায় Linear Regression লাগানো → <strong>ঠিক:</strong> Yes/No হলে Logistic Regression (E04)।<br><br>
+        <strong>ভুল ২:</strong> feature-এর scale ভুলে যাওয়া → একটা feature ০-১, আরেকটা ০-২০০০ হলে interpretation ঘোলাটে; scaling সাহায্য করে (Series 03)।<br><br>
+        <strong>ভুল ৩:</strong> "R² বেশি মানেই ভালো" — training R² বেশি কিন্তু test R² কম হলে overfitting (E08)।<br><br>
+        <strong>ভুল ৪:</strong> non-linear সম্পর্কে জোর করে straight line — তখন model খারাপ করবে; feature transform বা অন্য model দরকার।<br><br>
+        <strong>ভুল ৫:</strong> outlier উপেক্ষা — একটা ভুল entry (১০০ কোটি দাম) পুরো line কে টেনে নষ্ট করে দিতে পারে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্র: Linear Regression কী শেখে?</strong><br>
+        উ: প্রতিটা feature-এর weight (coefficient) আর একটা intercept, যাতে predicted ও actual-এর MSE সবচেয়ে কম হয়।<br><br>
+        <strong>প্র: Coefficient negative হলে কী মানে?</strong><br>
+        উ: ওই feature বাড়লে target কমে (যেমন বাড়ির বয়স বাড়লে দাম কমে)।<br><br>
+        <strong>প্র: Linear Regression-এর মূল assumption?</strong><br>
+        উ: linearity, independence, homoscedasticity, low multicollinearity।<br><br>
+        <strong>প্র: কখন Linear Regression খারাপ করে?</strong><br>
+        উ: সম্পর্ক strongly non-linear হলে, বা outlier বেশি থাকলে।<br><br>
+        <strong>প্র: MSE loss কেন?</strong><br>
+        উ: বড় ভুলকে বেশি শাস্তি দেয় (বর্গ করার কারণে) এবং গাণিতিকভাবে সহজে minimize করা যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. উপরের House Price কোডটা চালান। তারপর dataset-এ আরও ৫টা বাড়ির (কাল্পনিক) row যোগ করুন এবং
+        দেখুন R² বদলায় কিনা।<br>
+        ২. শুধু <code>sqft</code> feature দিয়ে model train করুন (একটা feature)। তারপর সব feature দিয়ে।
+        MAE কি কমল?<br>
+        ৩. <code>model.coef_</code> ছাপান — কোন feature দাম সবচেয়ে বেশি প্রভাবিত করে বলুন।<br><br>
+        <em>লক্ষ্য: feature বাড়লে কীভাবে prediction উন্নত হয়, নিজের চোখে দেখা।</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection ও সারসংক্ষেপ</h2>
+    <p>
+        এটা ছিল আমাদের standalone <strong>Project P2 (House Price Prediction)</strong>-এর শুরু —
+        portfolio-র প্রথম regression project। পরের কয়েক episode-এ এই model-কেই আমরা ভালোভাবে
+        evaluate (E03), তারপর আরও শক্তিশালী model (E06, E07) দিয়ে improve করব। আমাদের flagship
+        <strong>Career Assistant</strong>-এও regression লাগবে — যেমন একটা role-এর expected salary range অনুমান।
+    </p>
+    <div class="success-box">
+        এই Episode-এ শিখলাম:<br><br>
+        ✓ Regression = সংখ্যা predict; Linear Regression হলো এর সবচেয়ে সহজ রূপ ও প্রথম baseline<br>
+        ✓ Model শেখে <code>y = w1·x1 + ... + b</code> — best-fit line/hyperplane<br>
+        ✓ Training = MSE সবচেয়ে কম করা (gradient descent/normal equation)<br>
+        ✓ scikit-learn-এ <code>LinearRegression().fit().predict()</code> — Project P2 শুরু<br>
+        ✓ Coefficient পড়ে model কী শিখল বোঝা যায় (interpretable)<br>
+        ✓ মূল assumption ও কখন এটা খারাপ করে<br>
+        ✓ single vs multiple feature — line → hyperplane
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode:</strong> "model ভালো হলো কিনা কীভাবে বুঝব?" — Regression Evaluation।
+        MAE, MSE, RMSE, R² — কোনটা কী বলে, আর কখন কোনটা দেখতে হয়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-01-what-is-ml.html">⬅ পূর্ববর্তী: ML কী</a>
+            <a href="episode-03-regression-evaluation.html">পরবর্তী: Regression Metrics ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 05, Episode 02)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s05e02.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

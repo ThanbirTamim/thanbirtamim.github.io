@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI/ML resume — structure, quantified project bullet, skills section ও common mistake, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI/ML Resume যেটা recruiter ৬ সেকেন্ডে পড়ে: measurable achievement লেখা | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="AI/ML resume — structure, quantified project bullet, skills section ও common mistake, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>AI/ML Resume যেটা recruiter ৬ সেকেন্ডে পড়ে: measurable achievement লেখা | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 10 &raquo; Episode 01
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> AI/ML Resume যেটা recruiter ৬ সেকেন্ডে পড়ে: measurable achievement লেখা</h1>
+    <p class="subtitle">শক্ত, সৎ resume (Series 10, Episode 01)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 10 — AI/ML Engineer হিসেবে চাকরি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 01 / 10</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর প্রথম CV reject</li>
+        <li>২. আসল সমস্যা: recruiter ৬ সেকেন্ডে কী খোঁজে</li>
+        <li>৩. কেন AI/ML resume আলাদা করে ভাবতে হয়</li>
+        <li>৪. একটা ভালো AI/ML resume-এর কাঠামো</li>
+        <li>৫. Measurable achievement লেখার সূত্র</li>
+        <li>৬. দুর্বল বনাম শক্তিশালী bullet — পাশাপাশি</li>
+        <li>৭. Skills section: honest এবং tiered</li>
+        <li>৮. Project description কীভাবে লিখবেন</li>
+        <li>৯. বাস্তব উদাহরণ: বাংলাদেশের JD-র সাথে মিলিয়ে</li>
+        <li>১০. Job Requirement Decoder: "strong communication + portfolio"</li>
+        <li>১১. সাধারণ ভুল</li>
+        <li>১২. Interview Prep</li>
+        <li>১৩. হাতে-কলমে</li>
+        <li>১৪. Project Connection</li>
+        <li>১৫. সারসংক্ষেপ</li>
+        <li>১৬. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর প্রথম CV reject</h2>
+    <p>
+        Rahim শেষমেশ ৯টা সিরিজ শেষ করেছে। Python জানে, data নিয়ে কাজ করতে পারে, দুটো ML model বানিয়েছে,
+        একটা RAG system দাঁড় করিয়েছে, এমনকি সেটা Docker-এ deploy করেছে। আত্মবিশ্বাসে ভরপুর হয়ে সে ২০টা
+        AI/ML Engineer পজিশনে apply করল। এক সপ্তাহ পর — একটাও interview call নেই।
+    </p>
+    <div class="story-box">
+        হতাশ হয়ে Rahim সিনিয়র <strong>Maya</strong>-কে তার CV পাঠাল। Maya ৩০ সেকেন্ড দেখে বলল:<br><br>
+        <em>"তোমার skill তো ঠিকই আছে। কিন্তু তোমার CV পড়ে আমি বুঝতেই পারছি না তুমি আসলে কী বানিয়েছ, আর
+        সেটা দিয়ে কী লাভ হয়েছে। তুমি লিখেছ 'Worked on machine learning project'। এটা তো সবাই লেখে। recruiter
+        দিনে ২০০টা CV দেখে, প্রতিটাতে গড়ে ৬-৭ সেকেন্ড দেয়। তোমার CV সেই ৬ সেকেন্ডে কিছুই বলছে না।"</em><br><br>
+        Rahim: <em>"কিন্তু আমি তো সত্যিই কাজগুলো করেছি!"</em><br>
+        Maya: <em>"করা আর সেটা প্রমাণ করা — দুইটা আলাদা skill. দ্বিতীয়টাই তোমাকে চাকরি এনে দেবে।"</em>
+    </div>
+    <p>
+        এই পর্বে আমরা শিখব — একজন AI/ML Engineer-এর resume কীভাবে এমনভাবে লিখতে হয় যাতে সেই ৬ সেকেন্ডেই
+        recruiter বুঝে ফেলে: এই মানুষটা কাজ জানে, প্রমাণ আছে, এবং interview-তে ডাকা উচিত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👁️</span> ২. আসল সমস্যা: recruiter ৬ সেকেন্ডে কী খোঁজে</h2>
+    <p>
+        একটা কঠিন সত্য দিয়ে শুরু করি — বেশিরভাগ resume প্রথমে <strong>মানুষ পড়েই না</strong>। প্রথমে হয় একটা
+        ATS (Applicant Tracking System) keyword scan করে, নয়তো একজন recruiter দ্রুত চোখ বুলায়। দুই ক্ষেত্রেই
+        সময় খুব কম। তারা খোঁজে তিনটা জিনিস:
+    </p>
+    <ul>
+        <li><strong>Relevance:</strong> JD-র keyword (Python, PyTorch, RAG, FastAPI) resume-তে আছে কি?</li>
+        <li><strong>Proof:</strong> শুধু "জানি" নয় — কী বানিয়েছ, কোন tech দিয়ে, কী ফল?</li>
+        <li><strong>Signal:</strong> GitHub link, deployed demo, measurable number — যা প্রমাণ করে তুমি সত্যিই করেছ।</li>
+    </ul>
+    <div class="key-point">
+        মূল কথা: resume একটা <strong>marketing document</strong>, autobiography নয়। লক্ষ্য একটাই — interview call
+        পাওয়া। তাই প্রতিটা লাইন এই প্রশ্নের উত্তর দেওয়া উচিত: "এই লাইনটা কি আমাকে interview-এর এক ধাপ কাছে নিচ্ছে?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🤔</span> ৩. কেন AI/ML resume আলাদা করে ভাবতে হয়</h2>
+    <p>
+        একজন সাধারণ software developer-এর resume আর একজন AI/ML Engineer-এর resume-এর মধ্যে গুরুত্বপূর্ণ পার্থক্য
+        আছে। AI/ML role-এ recruiter/hiring manager অতিরিক্ত কিছু signal খোঁজে:
+    </p>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Software Dev Resume</strong><br>
+            "কোন framework জানে, কয়টা feature বানিয়েছে, কোন stack।" মূলত <em>building</em> নিয়ে।
+        </div>
+        <div class="comparison-item">
+            <strong>AI/ML Resume</strong><br>
+            "কোন problem solve করেছে, কোন data নিয়ে, কোন metric-এ কত improvement, model production-এ গেছে কি না।"
+            <em>building + measurable impact + data</em> নিয়ে।
+        </div>
+    </div>
+    <p>
+        অর্থাৎ AI/ML resume-এ শুধু "আমি PyTorch জানি" যথেষ্ট নয়। বলতে হবে "PyTorch দিয়ে একটা image classifier
+        বানিয়ে ৯১% accuracy পেয়েছি এবং সেটা FastAPI দিয়ে serve করেছি।" এই <strong>number + outcome</strong>-ই
+        তোমাকে আলাদা করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏗️</span> ৪. একটা ভালো AI/ML resume-এর কাঠামো</h2>
+    <p>এই তিন-স্তরে বুঝি — সবচেয়ে সহজ থেকে engineer-এর দৃষ্টিভঙ্গি পর্যন্ত।</p>
+    <div class="technical-box">
+        <strong>Level 1 — সহজ intuition:</strong> resume হলো একটা "trailer"। পুরো সিনেমা (তুমি) দেখানোর আগে
+        সবচেয়ে interesting অংশগুলো দেখিয়ে দর্শককে (recruiter) হলে (interview-তে) আনতে হবে।<br><br>
+        <strong>Level 2 — technical কাঠামো:</strong> একটা junior AI/ML resume সাধারণত এই ক্রমে সাজানো হয় —<br>
+        (১) Header (নাম, role headline, contact, GitHub, LinkedIn),<br>
+        (২) Summary (২-৩ লাইন),<br>
+        (৩) Skills (tiered),<br>
+        (৪) Projects (সবচেয়ে গুরুত্বপূর্ণ অংশ, junior-দের জন্য),<br>
+        (৫) Experience/Education।<br><br>
+        <strong>Level 3 — engineer perspective:</strong> junior হিসেবে তোমার <em>experience</em> কম, তাই
+        <strong>Projects</strong> section-কে উপরে এনে সবচেয়ে বেশি জায়গা দাও। এটাই তোমার আসল প্রমাণ।
+    </div>
+    <div class="diagram">
++---------------------------------------------------------+
+|  Rahim Uddin                                            |
+|  Junior AI/ML Engineer                                  |
+|  email . phone . github.com/rahim . linkedin.com/in/... |
++---------------------------------------------------------+
+|  SUMMARY (2-3 lines)                                    |
++---------------------------------------------------------+
+|  SKILLS                                                 |
+|   Languages: Python, SQL                                |
+|   ML/DL: scikit-learn, PyTorch, XGBoost                 |
+|   GenAI: RAG, embeddings, pgvector, prompt engineering  |
+|   MLOps: FastAPI, Docker, Git, basic cloud              |
++---------------------------------------------------------+
+|  PROJECTS  (biggest section for a junior)               |
+|   * Project name - one line - metrics - [GitHub][Demo]  |
++---------------------------------------------------------+
+|  EXPERIENCE / EDUCATION                                 |
++---------------------------------------------------------+
+    </div>
+    <div class="info-box">
+        <strong>এক পৃষ্ঠা নাকি দুই?</strong> junior/intermediate হলে <strong>এক পৃষ্ঠা</strong>-ই যথেষ্ট এবং
+        recommended। দুই পৃষ্ঠা তখনই, যখন সত্যিকারের ৫+ বছরের প্রাসঙ্গিক অভিজ্ঞতা আছে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📐</span> ৫. Measurable achievement লেখার সূত্র</h2>
+    <p>
+        একটা সহজ কিন্তু শক্তিশালী সূত্র মনে রাখুন — <strong>XYZ formula</strong> (Google-এর recruiter-দের
+        জনপ্রিয় করা):
+    </p>
+    <div class="key-point">
+        <strong>"Accomplished [X] as measured by [Y], by doing [Z]."</strong><br><br>
+        অর্থাৎ: <strong>কী অর্জন করেছ (X)</strong>, সেটা <strong>কোন সংখ্যায় মাপা যায় (Y)</strong>, এবং সেটা
+        <strong>কীভাবে করেছ (Z)</strong>।
+    </div>
+    <p>প্রতিটা project bullet এই তিনটা প্রশ্নের উত্তর দিলে সেটা automatically শক্তিশালী হয়ে যায়।</p>
+    <div class="code-box">
+দুর্বল:  "Built a churn prediction model."
+
+XYZ প্রয়োগ করে:
+X (কী)      -> customer churn prediction
+Y (মাপ)     -> recall 0.62 -> 0.79
+Z (কীভাবে)  -> feature engineering + XGBoost + threshold tuning
+
+শক্তিশালী:
+"Built a customer churn model that improved recall from 0.62 to
+ 0.79 using feature engineering, XGBoost, and threshold tuning."
+    </div>
+    <div class="info-box">
+        <strong>Number না থাকলে?</strong> junior project-এ সবসময় business number থাকে না — সমস্যা নেই।
+        তখন <em>technical metric</em> ব্যবহার করুন: accuracy, F1, RMSE, latency, dataset size, retrieval
+        precision। "processed 50k job postings", "reduced inference latency from 800ms to 120ms" —
+        এগুলোও measurable এবং বিশ্বাসযোগ্য।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚖️</span> ৬. দুর্বল বনাম শক্তিশালী bullet — পাশাপাশি</h2>
+    <table>
+        <tr><th>দুর্বল (সবাই লেখে)</th><th>শক্তিশালী (আলাদা করে)</th></tr>
+        <tr>
+            <td>Worked on a machine learning project.</td>
+            <td>Trained a house-price regression model (RMSE ৳4.2L) on 8k listings; served via FastAPI.</td>
+        </tr>
+        <tr>
+            <td>Used PyTorch for deep learning.</td>
+            <td>Built a CNN image classifier (91% test accuracy) with transfer learning on ResNet18.</td>
+        </tr>
+        <tr>
+            <td>Made a chatbot using LLM.</td>
+            <td>Built a RAG assistant over 5k Bangla docs; cut hallucinated answers via reranking + metadata filter.</td>
+        </tr>
+        <tr>
+            <td>Knows Docker and deployment.</td>
+            <td>Dockerized the ML API and deployed to cloud; added health checks + basic monitoring.</td>
+        </tr>
+    </table>
+    <p>
+        খেয়াল করুন — ডান দিকের প্রতিটা লাইনে আছে: <strong>কী বানিয়েছ + কোন tech + একটা number/outcome</strong>।
+        এটাই ৬-সেকেন্ডের যুদ্ধ জেতার সূত্র।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧰</span> ৭. Skills section: honest এবং tiered</h2>
+    <p>
+        সবচেয়ে বড় ভুল — skills section-এ ৪০টা technology একসাথে ঢেলে দেওয়া। এতে recruiter বুঝতে পারে না
+        তুমি আসলে কোনটায় ভালো। সমাধান: <strong>tier করে সাজানো</strong> এবং শুধু সেগুলোই লেখা যা তুমি
+        interview-তে defend করতে পারবে।
+    </p>
+    <div class="code-box">
+SKILLS
+  Languages       : Python, SQL
+  Data            : NumPy, Pandas, Matplotlib
+  Machine Learning: scikit-learn, XGBoost, model evaluation
+  Deep Learning   : PyTorch, CNN, transfer learning
+  Generative AI   : RAG, embeddings, pgvector, prompt engineering
+  Serving/MLOps   : FastAPI, Docker, Git, experiment tracking (basics)
+    </div>
+    <div class="technical-box">
+        <strong>নিয়ম:</strong> resume-তে একটা skill লেখার আগে নিজেকে জিজ্ঞেস করো — "এটা নিয়ে ১০ মিনিট
+        interview-তে কথা বলতে পারব? একটা follow-up প্রশ্নের উত্তর দিতে পারব?" না পারলে সেটা লিখো না, বা
+        "(familiar)" / "(basics)" লিখে honest থাকো। CV-তে TensorFlow লিখে interview-তে চুপ থাকা — সবচেয়ে খারাপ signal।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📦</span> ৮. Project description কীভাবে লিখবেন</h2>
+    <p>junior-দের জন্য এটাই সবচেয়ে গুরুত্বপূর্ণ। প্রতিটা project ৩-৪ লাইনে এই format-এ লিখুন:</p>
+    <div class="code-box">
+Bangla AI Knowledge Assistant (RAG)          [GitHub] [Live Demo]
+- Problem : answer questions over 5k Bangla PDF docs
+- Built   : chunking + embeddings + pgvector retrieval + LLM
+- Result  : ~40% fewer irrelevant answers after adding a reranker
+- Stack   : Python, sentence-transformers, PostgreSQL/pgvector,
+            FastAPI, Docker
+    </div>
+    <p>
+        চার লাইন: <strong>Problem</strong> (কী সমস্যা), <strong>Built</strong> (কীভাবে), <strong>Result</strong>
+        (কী ফল/number), <strong>Stack</strong> (কোন tech)। GitHub আর Demo link অবশ্যই দিন — এটাই তোমার proof।
+        একটা deployed demo link ১০টা bullet-এর চেয়ে বেশি বিশ্বাসযোগ্য।
+    </p>
+    <div class="info-box">
+        <strong>Must Know / Learn Later:</strong><br>
+        চাকরির <em>আগে</em> লাগবে — ২-৩টা শক্তিশালী project, প্রতিটার GitHub + README + একটা number।<br>
+        চাকরির <em>পরে</em> শিখলেও চলবে — fancy portfolio website, blog, conference talk। এগুলো bonus, বাধ্যতামূলক নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ৯. বাস্তব উদাহরণ: বাংলাদেশের JD-র সাথে মিলিয়ে</h2>
+    <p>
+        ধরুন একটা লোকাল কোম্পানির (যেমন কোনো fintech বা software house) JD-তে লেখা: "Python, scikit-learn,
+        exposure to LLM/RAG, ability to deploy models (Docker/FastAPI), strong problem-solving."
+    </p>
+    <p>
+        এখন তোমার কাজ হলো — resume-টা <strong>এই JD-র আয়নায় সাজানো</strong> (tailoring)। প্রতিটা company-র
+        জন্য summary আর project ordering সামান্য বদলাও যাতে JD-র keyword গুলো উপরে চোখে পড়ে।
+    </p>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"একটা CV-ই তো, এত tailoring করার কী দরকার? একটা বানিয়ে সব জায়গায় পাঠালেই হয় না?"</em><br><br>
+        <strong>উত্তর:</strong> একই CV সব জায়গায় পাঠানো মানে গড় CV — কোথাও নিখুঁত ফিট না। যে কোম্পানি RAG চায়,
+        তার জন্য RAG project উপরে; যে কোম্পানি tabular ML চায়, তার জন্য churn/house-price উপরে। ২ মিনিটের
+        tailoring interview-call rate অনেকটা বাড়ায়, কারণ ATS keyword match বাড়ে আর recruiter দ্রুত relevance পায়।
+        Business-এ এটাই ROI — সামান্য effort, বড় return।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১০. Job Requirement Decoder</h2>
+    <p>JD-তে প্রায়ই থাকে: <strong>"Strong communication skills and a portfolio of relevant projects."</strong></p>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>কী বোঝায়?</td><td>তুমি কাজ করতে পারো <em>এবং</em> সেটা লিখে/বলে বোঝাতে পারো, আর তার প্রমাণ (portfolio) আছে।</td></tr>
+        <tr><td>কেন চায়?</td><td>AI/ML Engineer-কে ব্যবসায়িক stakeholder ও team-এর সাথে কাজ বোঝাতে হয়; নীরব প্রতিভা কম কাজে লাগে।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>hiring risk কমায় — proof থাকলে কোম্পানির অনুমান করতে হয় না।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>পরিষ্কার resume, ২-৩টা documented GitHub project, নিজের কাজ ২ মিনিটে ব্যাখ্যা করার ক্ষমতা।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>দামি personal website, ভিডিও কোর্স, বিশাল blog — এগুলো optional।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>প্রতিটা project-এ পরিষ্কার README, demo GIF/link, requirements ফাইল — পরের পর্বে বিস্তারিত।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"তোমার সবচেয়ে প্রিয় project-টা ২ মিনিটে বলো", "এখানে সবচেয়ে কঠিন সমস্যা কী ছিল?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১১. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "Responsible for..." দিয়ে শুরু। → <strong>ঠিক:</strong> action verb দিয়ে শুরু —
+        Built, Trained, Deployed, Improved, Reduced।<br><br>
+        <strong>ভুল ২:</strong> সব skill এক লাইনে ঢেলে দেওয়া (skill dump)। → <strong>ঠিক:</strong> tier করে, শুধু defendable skill।<br><br>
+        <strong>ভুল ৩:</strong> কোনো number নেই, শুধু "worked on"। → <strong>ঠিক:</strong> অন্তত একটা metric প্রতি project-এ।<br><br>
+        <strong>ভুল ৪:</strong> GitHub/demo link নেই। → <strong>ঠিক:</strong> proof-ই আসল পার্থক্য; link দিন।<br><br>
+        <strong>ভুল ৫:</strong> মিথ্যা/অতিরঞ্জন ("expert in everything")। → <strong>ঠিক:</strong> honest থাকুন; interview-তে ধরা পড়লে সব বিশ্বাস নষ্ট।<br><br>
+        <strong>ভুল ৬:</strong> ৩ পৃষ্ঠার CV, typo ভরা। → <strong>ঠিক:</strong> এক পৃষ্ঠা, proofread করা, PDF format।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১২. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> তোমার CV-র এই project-টা একটু বলো তো।<br>
+        <em>উত্তর কাঠামো:</em> Problem → approach → একটা metric → সবচেয়ে কঠিন অংশ → এখন হলে কী আলাদা করতে। (এটাই E09-এ বিস্তারিত আসবে।)<br><br>
+        <strong>প্রশ্ন ২:</strong> এই metric (যেমন recall 0.79) কীভাবে পেলে, আর কেন এটা গুরুত্বপূর্ণ?<br>
+        <em>উত্তর:</em> সৎভাবে পদ্ধতি বলো; কেন এই metric (imbalanced churn-এ recall > accuracy) সেটা যুক্তি দিয়ে বলো।<br><br>
+        <strong>প্রশ্ন ৩:</strong> তোমার resume-তে PyTorch লেখা — একটা training loop-এ কী কী ধাপ থাকে?<br>
+        <em>উত্তর:</em> forward → loss → backward → optimizer.step → zero_grad। (লিখলে জানতে হবে।)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৩. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        তোমার যেকোনো একটা project নিয়ে নিচের কাজটা করো:<br><br>
+        ১. একটা দুর্বল লাইনে লেখো (যেমন "Made an ML model")।<br>
+        ২. XYZ formula প্রয়োগ করো: কী অর্জন করেছ (X), কোন number-এ (Y), কীভাবে (Z)।<br>
+        ৩. চার লাইনের project block বানাও: Problem / Built / Result / Stack।<br>
+        ৪. GitHub আর (সম্ভব হলে) demo link যোগ করো।<br><br>
+        তারপর নিজেকে জিজ্ঞেস করো — এই ৪ লাইন পড়ে একজন recruiter কি ৬ সেকেন্ডে বুঝবে তুমি কী পারো?
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৪. Project Connection</h2>
+    <p>
+        এই সিরিজ জুড়ে বানানো flagship <strong>"Bangladesh Tech Career Assistant"</strong> তোমার resume-এর
+        <em>প্রধান</em> project হতে পারে — কারণ এটাই একমাত্র project যা পুরো পথ দেখায়: data (V2) → ML (V3) →
+        NLP/LLM (V5-V6) → RAG (V7) → FastAPI (V8) → Docker/cloud (V9-V10)। একটা project-এই তুমি প্রায় পুরো
+        JD-র skill demonstrate করতে পারছ।
+    </p>
+    <div class="info-box">
+        Resume-তে এভাবে লিখতে পারো:<br>
+        "Bangladesh Tech Career Assistant — an end-to-end system that analyzes job descriptions and answers
+        career questions via RAG; evolved from a CLI to a Dockerized FastAPI service with monitoring.
+        Stack: Python, Pandas, scikit-learn, sentence-transformers, pgvector, FastAPI, Docker."
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৫. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ Resume একটা marketing document — লক্ষ্য interview call, autobiography নয়<br>
+        ✓ Recruiter ৬ সেকেন্ডে খোঁজে: relevance, proof, signal<br>
+        ✓ AI/ML resume-এ measurable impact + data + production signal আলাদা করে<br>
+        ✓ XYZ formula: "Accomplished X as measured by Y by doing Z"<br>
+        ✓ Skills হবে tiered ও honest; junior-এর জন্য Projects section সবচেয়ে বড়<br>
+        ✓ প্রতিটা project: Problem / Built / Result / Stack + GitHub ও demo link<br>
+        ✓ প্রতিটা JD-র জন্য সামান্য tailoring interview-call rate বাড়ায়
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৬. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S10E02):</strong> "GitHub Portfolio: README, docs, demo, tests, architecture diagram"।<br><br>
+        Resume-তে GitHub link দিলাম, কিন্তু recruiter সেই link-এ ক্লিক করে কী দেখবে? একটা এলোমেলো notebook, নাকি
+        একটা পরিষ্কার, professional repository? পরের পর্বে শিখব কীভাবে GitHub repo সাজালে সেটা তোমার সবচেয়ে বড় proof হয়ে ওঠে।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="../series-09/episode-09-flagship-notebook-to-production.html">⬅ পূর্ববর্তী: Full Production</a>
+            <a href="episode-02-github-portfolio.html">পরবর্তী: GitHub Portfolio ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 10, Episode 01)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s10e01.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

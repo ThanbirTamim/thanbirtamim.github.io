@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Neural network কখন classical ML-কে হারায় আর কখন overkill — perceptron থেকে neuron পর্যন্ত বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Neural Network কেন দরকার, যখন Random Forest আছেই? | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Neural network কখন classical ML-কে হারায় আর কখন overkill — perceptron থেকে neuron পর্যন্ত বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Neural Network কেন দরকার, যখন Random Forest আছেই? | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 06 &raquo; Episode 01
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Neural Network কেন দরকার, যখন Random Forest আছেই?</h1>
+    <p class="subtitle">কখন Deep Learning, কখন নয় (Series 06, Episode 01)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 06 — Deep Learning with PyTorch</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 01 / 08</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Random Forest দিয়ে সব হচ্ছে, তাহলে নতুন কী দরকার?</li>
+        <li>২. আসল সমস্যা: কিছু data-তে classical ML হার মানে</li>
+        <li>৩. Neural Network কেন জন্ম নিলো?</li>
+        <li>৪. তিন স্তরে বুঝি: intuition → technical → engineer</li>
+        <li>৫. Perceptron থেকে Neuron — একদম শুরু</li>
+        <li>৬. Visual: classical ML বনাম Deep Learning</li>
+        <li>৭. কখন Deep Learning, কখন Random Forest?</li>
+        <li>৮. ছোট experiment: নিজে যাচাই করুন</li>
+        <li>৯. বাংলাদেশের বাস্তব উদাহরণ</li>
+        <li>১০. AI Engineer-এর দৃষ্টিভঙ্গি</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল ধারণা</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection</li>
+        <li>১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Random Forest দিয়ে সব হচ্ছে, তাহলে নতুন কী দরকার?</h2>
+    <p>
+        Series 05 শেষ করে Rahim বেশ আত্মবিশ্বাসী। House price predict করেছে Linear Regression দিয়ে,
+        customer churn ধরেছে Logistic Regression আর Random Forest দিয়ে, XGBoost দিয়ে accuracy বাড়িয়েছে।
+        তার মনে হচ্ছে — "classical ML দিয়েই তো সব হয়ে যাচ্ছে, তাহলে Deep Learning শেখার দরকার কী?"
+    </p>
+    <div class="story-box">
+        Rahim: <em>"আপা, XGBoost তো Kaggle-এ এত ভালো করে। তাহলে সবাই Deep Learning, PyTorch নিয়ে
+        এত মাতামাতি করে কেন? আমার Random Forest দিয়েই তো সমস্যাগুলো solve হচ্ছে।"</em><br><br>
+        Maya: <em>"ঠিক ধরেছ — tabular data-তে, মানে row-column-এর টেবিল data-তে, XGBoost/Random Forest
+        প্রায়ই Deep Learning-কে হারিয়ে দেয়। কিন্তু আমাকে একটা কাজ করে দাও তো — এই ১০ হাজার X-ray ছবি
+        দেখে বলো কোনটায় নিউমোনিয়া আছে। Random Forest দিয়ে করো।"</em><br><br>
+        Rahim: <em>"ছবি? ছবিকে তো... হুম, ছবির প্রতিটা pixel কি feature হবে? একটা 224×224 রঙিন ছবিতে
+        তো দেড় লাখেরও বেশি number! আর pixel-গুলো তো একটার সাথে আরেকটা সম্পর্কিত..."</em><br><br>
+        Maya: <em>"এইখানেই তোমার Random Forest হাঁপিয়ে যাবে। স্বাগতম Deep Learning-এ।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: কিছু data-তে classical ML হার মানে</h2>
+    <p>
+        Classical ML (Linear/Logistic Regression, Decision Tree, Random Forest, XGBoost) দুর্দান্ত কাজ করে যখন
+        আপনার data হলো <strong>structured / tabular</strong> — যেখানে প্রতিটা column একটা অর্থপূর্ণ feature
+        (বয়স, আয়, এলাকা, order সংখ্যা)। কিন্তু সমস্যা শুরু হয় <strong>unstructured data</strong>-তে:
+    </p>
+    <ul>
+        <li><strong>ছবি (image):</strong> লাখ লাখ pixel, যাদের অবস্থান (কোন pixel কার পাশে) গুরুত্বপূর্ণ।</li>
+        <li><strong>টেক্সট (text):</strong> শব্দের ক্রম আর context অর্থ বদলে দেয়।</li>
+        <li><strong>অডিও (audio):</strong> সময়ের সাথে বদলাতে থাকা signal।</li>
+    </ul>
+    <p>
+        এই data-তে <strong>feature engineering</strong> হাতে করা প্রায় অসম্ভব। একটা বিড়ালের ছবি চেনার জন্য
+        আপনি হাতে হাতে কি লিখবেন — "যদি কান ত্রিভুজাকার এবং গোঁফ আছে তবে..."? সম্ভব না। এখানেই দরকার এমন model
+        যে <strong>নিজে নিজে feature শিখে নেয়</strong> raw data থেকে।
+    </p>
+    <div class="key-point">
+        মূল কথা: classical ML-এ <em>আপনি</em> feature ঠিক করে দেন; Deep Learning-এ <em>model নিজে</em>
+        raw data থেকে দরকারি feature শিখে নেয় (representation learning)। এটাই সবচেয়ে বড় পার্থক্য।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🌱</span> ৩. Neural Network কেন জন্ম নিলো?</h2>
+    <p>
+        ধারণাটা এসেছে মানুষের মস্তিষ্ক থেকে অনুপ্রাণিত হয়ে — যদিও এখন আমরা জানি একটা artificial neural network
+        আসলে জীববিজ্ঞানের brain নয়, বরং একটা <strong>গণিতের function</strong> যা অনেকগুলো ছোট ছোট গণনা
+        (neuron) দিয়ে তৈরি। মূল লক্ষ্য একটাই: এমন একটা নমনীয় (flexible) function বানানো যা যথেষ্ট data পেলে
+        <strong>যেকোনো জটিল pattern</strong> approximate করতে পারে।
+    </p>
+    <p>
+        এই ধারণাকে বলে <strong>Universal Approximation</strong> — পর্যাপ্ত neuron আর data থাকলে একটা neural
+        network প্রায় যেকোনো সম্পর্ক (input → output) শিখতে পারে। Random Forest-ও শক্তিশালী, কিন্তু image/text-এর
+        মতো high-dimensional, spatial/sequential data-তে neural network-এর মতো efficiently pattern ধরতে পারে না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৪. তিন স্তরে বুঝি: intuition → technical → engineer</h2>
+    <div class="technical-box">
+        <strong>Level 1 — সহজ intuition:</strong><br>
+        একজন নতুন কর্মচারীকে ভাবুন যাকে আপনি হাজারটা উদাহরণ দেখিয়ে শেখাচ্ছেন "এটা ভালো product, এটা খারাপ"।
+        সে প্রথমে ভুল করে, আপনি শুধরে দেন, সে একটু একটু করে নিজের "মাথার ভেতরের নিয়ম" ঠিক করে নেয়। Neural
+        network ঠিক তাই — অনেক উদাহরণ থেকে ভুল করতে করতে নিজের ভেতরের সংখ্যাগুলো (weights) ঠিক করে শেখে।<br><br>
+
+        <strong>Level 2 — technically কী হচ্ছে:</strong><br>
+        Neural network হলো স্তরে স্তরে (layers) সাজানো অনেকগুলো <code>neuron</code>। প্রতিটা neuron তার
+        input-গুলোকে weight দিয়ে গুণ করে, যোগ করে, একটা <code>activation function</code>-এর মধ্য দিয়ে পাঠায়।
+        প্রথম layer সরল feature শেখে (যেমন ছবির edge), পরের layer সেগুলো জুড়ে জটিল feature (চোখ, কান), শেষ
+        layer সিদ্ধান্ত নেয় (বিড়াল/কুকুর)।<br><br>
+
+        <strong>Level 3 — engineer হিসেবে:</strong><br>
+        একজন AI Engineer প্রথমেই জিজ্ঞেস করে — "data কি tabular নাকি unstructured? কত data আছে? latency আর
+        cost budget কত?" ছোট tabular data হলে সে XGBoost-এ যায় (দ্রুত, সস্তা, ব্যাখ্যাযোগ্য)। বড় image/text
+        data হলে neural network। Deep Learning "cool" বলে নয়, <strong>সমস্যা দাবি করে</strong> বলে সে বাছে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔬</span> ৫. Perceptron থেকে Neuron — একদম শুরু</h2>
+    <p>
+        সবচেয়ে সরল neural unit হলো <strong>Perceptron</strong> (১৯৫৮ সাল)। এটা একটা neuron: কয়েকটা input নেয়,
+        প্রতিটাকে একটা weight দিয়ে গুণ করে, সব যোগ করে একটা bias যোগ করে, তারপর সিদ্ধান্ত দেয়। গণিতে:
+    </p>
+    <div class="diagram">
+   x1 ──(w1)──┐
+   x2 ──(w2)──┤
+   x3 ──(w3)──┤──&gt; [ Σ (w·x) + b ] ──&gt; activation ──&gt; output
+   ...        │
+   xn ──(wn)──┘
+
+   z = w1·x1 + w2·x2 + ... + wn·xn + b
+   output = activation(z)
+    </div>
+    <p>একটা perceptron NumPy দিয়ে লিখলে এমন দেখায় (আমরা এখানে PyTorch নয়, বরং raw NumPy ব্যবহার করছি
+       যাতে "ভেতরে আসলে কী হচ্ছে" সেটা পরিষ্কার হয়):</p>
+    <div class="code-box">
+import numpy as np
+
+def perceptron(x, w, b):
+    """একটা neuron: weighted sum + activation (এখানে step function)."""
+    z = np.dot(w, x) + b        # w·x + b
+    return 1 if z &gt; 0 else 0    # সরল step activation
+
+# উদাহরণ: AND gate শেখানো (দুটো input দুটোই 1 হলে output 1)
+w = np.array([1.0, 1.0])   # weights
+b = -1.5                   # bias
+
+for x1 in [0, 1]:
+    for x2 in [0, 1]:
+        x = np.array([x1, x2])
+        print(f"{x1} AND {x2} = {perceptron(x, w, b)}")
+    </div>
+    <p>
+        একটা single perceptron শুধু সরল (linearly separable) সমস্যা solve করতে পারে। কিন্তু অনেকগুলো
+        perceptron স্তরে স্তরে জুড়লে (multi-layer) তখন সেটা জটিল, non-linear pattern শিখতে পারে — সেটাই
+        <strong>Neural Network</strong>। পরের পর্বে আমরা এই layer-এর ভেতরটা খুলে দেখব।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৬. Visual: classical ML বনাম Deep Learning</h2>
+    <div class="diagram">
+CLASSICAL ML (আপনি feature বানান)
+  Raw data ─&gt; [মানুষ হাতে feature engineering] ─&gt; XGBoost ─&gt; উত্তর
+
+DEEP LEARNING (model নিজে feature শেখে)
+  Raw data ─&gt; [Layer 1: edge] ─&gt; [Layer 2: আকৃতি]
+            ─&gt; [Layer 3: বস্তু] ─&gt; [Output layer] ─&gt; উত্তর
+    </div>
+    <p>
+        খেয়াল করুন: classical ML-এ সবচেয়ে কঠিন ও সময়সাপেক্ষ কাজটা (feature engineering) মানুষের কাঁধে।
+        Deep Learning সেই কাজটা model-এর ভেতরে নিয়ে নেয় — বিনিময়ে চায় অনেক data আর computing power।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚖️</span> ৭. কখন Deep Learning, কখন Random Forest?</h2>
+    <table>
+        <tr><th>পরিস্থিতি</th><th>ভালো বাছাই</th><th>কেন</th></tr>
+        <tr><td>Tabular data, কয়েক হাজার row</td><td>XGBoost / Random Forest</td><td>দ্রুত, সস্তা, প্রায়ই বেশি accurate, ব্যাখ্যাযোগ্য</td></tr>
+        <tr><td>Image, audio, video</td><td>Deep Learning (CNN)</td><td>spatial pattern classical ML ধরতে পারে না</td></tr>
+        <tr><td>Text, ভাষা, sequence</td><td>Deep Learning (Transformer/RNN)</td><td>শব্দের ক্রম ও context দরকার</td></tr>
+        <tr><td>খুব কম data (শত row)</td><td>Classical ML</td><td>Deep Learning কম data-তে overfit করে</td></tr>
+        <tr><td>ব্যাখ্যা (interpretability) জরুরি</td><td>Classical ML</td><td>tree-based model ব্যাখ্যা করা সহজ</td></tr>
+        <tr><td>বিশাল data + GPU আছে</td><td>Deep Learning</td><td>data বাড়ার সাথে DL-এর performance বাড়ে</td></tr>
+    </table>
+    <div class="info-box">
+        <strong>Must Know / Good to Know / Learn Later:</strong><br>
+        <strong>Must Know (চাকরির আগে):</strong> কখন DL লাগে কখন না, perceptron/neuron-এর ধারণা।<br>
+        <strong>Good to Know:</strong> universal approximation-এর intuition।<br>
+        <strong>Learn Later (চাকরির পরেও চলবে):</strong> custom architecture, distributed training।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৮. ছোট experiment: নিজে যাচাই করুন</h2>
+    <p>
+        উপরের perceptron কোডটা চালান। তারপর <code>b = -1.5</code> বদলে <code>b = -0.5</code> করুন আর দেখুন
+        কীভাবে এটা এখন OR-এর মতো আচরণ শুরু করে। এই ছোট পরীক্ষা থেকেই বুঝবেন — একই structure, শুধু
+        weight/bias বদলালেই আচরণ বদলে যায়। Training মানে আসলে <strong>সঠিক weight/bias খুঁজে বের করা</strong>।
+    </p>
+    <div class="success-box">
+        যদি বুঝে থাকেন যে "শেখা = সঠিক সংখ্যা (weights) খুঁজে বের করা", তাহলে পুরো Deep Learning-এর ভিত্তি
+        আপনার হাতে চলে এসেছে। পরের পর্বগুলোতে আমরা দেখব সেই সংখ্যাগুলো কীভাবে নিজে নিজে ঠিক হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ৯. বাংলাদেশের বাস্তব উদাহরণ</h2>
+    <ul>
+        <li><strong>Health-tech startup:</strong> X-ray/chest CT থেকে রোগ শনাক্ত — এখানে CNN (Deep Learning), Random Forest নয়।</li>
+        <li><strong>কৃষি-tech:</strong> পাতার ছবি থেকে ফসলের রোগ চেনা — CNN।</li>
+        <li><strong>bKash/Nagad fraud detection:</strong> transaction হলো tabular data — এখানে প্রায়ই XGBoost-ই যথেষ্ট, DL লাগে না।</li>
+        <li><strong>Bangla NLP (customer support):</strong> টেক্সট বোঝা — এখানে Deep Learning / Transformer।</li>
+    </ul>
+    <p>
+        মানে বাংলাদেশের বাজারেও দুটোই দরকার। একজন ভালো engineer জানে কোন সমস্যায় কোনটা — এটাই তাকে আলাদা করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১০. AI Engineer-এর দৃষ্টিভঙ্গি</h2>
+    <p>
+        নতুনরা ভাবে "Deep Learning মানেই উন্নত, তাই সবখানে DL লাগাই"। অভিজ্ঞ engineer উল্টো ভাবে — সে
+        <strong>সবচেয়ে সরল model দিয়ে শুরু করে</strong> (baseline), তারপর দরকার হলে জটিল করে। কারণ DL মানে
+        বেশি GPU খরচ, বেশি training সময়, কম interpretability, আর বেশি maintenance। "সমস্যা যদি XGBoost-এ
+        solve হয়, তবে DL ব্যবহার করা প্রকৌশলগত ভুল।"
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"এই Deep Learning জিনিসটা তো GPU খায়, খরচ বেশি। আমাকে বলো — এটা আমার business-এ কোথায় লাগবে,
+        আর কোথায় লাগবে না?"</em><br><br>
+        <strong>উত্তর:</strong> "স্যার, আমাদের transaction/customer data (tabular) নিয়ে prediction করতে হলে
+        সস্তা XGBoost-ই যথেষ্ট — GPU লাগবে না। কিন্তু যদি আমরা ছবি (product image auto-tagging, document scan
+        থেকে তথ্য বের করা) বা বাংলা টেক্সট (support ticket auto-routing) নিয়ে কাজ করি, তখন Deep Learning ছাড়া
+        উপায় নেই — কারণ classical ML সেই pattern ধরতেই পারবে না। মানে খরচটা তখনই করব যখন এটা সরাসরি নতুন
+        capability এনে দেয়।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <p>Job description-এ প্রায়ই থাকে:</p>
+    <div class="key-point">"Experience with Deep Learning / Neural Networks (PyTorch/TensorFlow)."</div>
+    <div class="info-box">
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr><td>কী বোঝায়?</td><td>আপনি neural network দিয়ে unstructured data (image/text) নিয়ে কাজ করতে পারেন।</td></tr>
+            <tr><td>কেন চায়?</td><td>এই কাজগুলো classical ML দিয়ে হয় না; কোম্পানির নতুন product feature এখানে নির্ভর করে।</td></tr>
+            <tr><td>কোন সমস্যা সমাধান করে?</td><td>manual feature engineering-এর সীমাবদ্ধতা; high-dimensional data।</td></tr>
+            <tr><td>junior-এর কী জানা লাগে?</td><td>DL কখন লাগে/লাগে না, neuron/layer-এর ধারণা, একটা ছোট network train করার অভিজ্ঞতা।</td></tr>
+            <tr><td>এখনই কী master লাগে না?</td><td>নতুন architecture design, distributed/multi-GPU training, research paper implement।</td></tr>
+            <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>একটা image classifier (P4) project — README-তে "কেন DL, কেন classical ML নয়" ব্যাখ্যা সহ।</td></tr>
+            <tr><td>interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"কখন Deep Learning ব্যবহার করবেন classical ML-এর বদলে?"</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "Deep Learning সবসময় Random Forest-এর চেয়ে ভালো।" →
+        <strong>ঠিক:</strong> tabular data-তে প্রায়ই উল্টো; XGBoost জেতে।<br><br>
+        <strong>ভুল ২:</strong> "Neural network মানুষের মস্তিষ্কের মতো ভাবে।" →
+        <strong>ঠিক:</strong> এটা অনুপ্রেরণা মাত্র; বাস্তবে এটা একটা গণিতের function, weight optimize করা।<br><br>
+        <strong>ভুল ৩:</strong> "কম data থাকলেও DL ব্যবহার করি।" →
+        <strong>ঠিক:</strong> কম data-তে DL overfit করে; classical ML বা transfer learning ভালো।<br><br>
+        <strong>ভুল ৪:</strong> "Deep Learning = AI।" →
+        <strong>ঠিক:</strong> DL হলো ML-এর subset, ML হলো AI-এর subset (Series 01 মনে করুন)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> কখন Deep Learning ব্যবহার করবেন classical ML-এর বদলে?<br>
+        <em>উত্তর:</em> unstructured data (image/text/audio), প্রচুর data ও compute আছে, এবং manual feature
+        engineering কঠিন — এমন হলে DL। ছোট tabular data-তে classical ML।<br><br>
+        <strong>প্রশ্ন ২:</strong> Perceptron কী?<br>
+        <em>উত্তর:</em> সবচেয়ে সরল neuron — weighted sum + bias, তারপর activation। শুধু linearly separable সমস্যা solve করে।<br><br>
+        <strong>প্রশ্ন ৩:</strong> "Representation learning" মানে কী?<br>
+        <em>উত্তর:</em> model নিজে raw data থেকে দরকারি feature শিখে নেয়, মানুষকে feature বানাতে হয় না — এটাই DL-এর মূল শক্তি।<br><br>
+        <strong>প্রশ্ন ৪:</strong> Deep network-এ একাধিক layer কেন দরকার?<br>
+        <em>উত্তর:</em> প্রতিটা layer আগেরটার feature জুড়ে আরও জটিল, উচ্চ-স্তরের feature বানায় (edge → shape → object)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. উপরের perceptron কোড চালিয়ে AND, OR (b বদলে) বানান।<br>
+        ২. নিচের ৫টা সমস্যার প্রতিটার জন্য লিখুন — classical ML নাকি Deep Learning, আর কেন:<br>
+        &nbsp;&nbsp;(ক) দোকানের মাসিক বিক্রি prediction (tabular)<br>
+        &nbsp;&nbsp;(খ) হাতে লেখা বাংলা সংখ্যা চেনা (image)<br>
+        &nbsp;&nbsp;(গ) loan default হবে কিনা (tabular)<br>
+        &nbsp;&nbsp;(ঘ) support ticket-এর ভাষা বোঝা (text)<br>
+        &nbsp;&nbsp;(ঙ) ৩০০ row-এর ছোট survey data (tabular, কম data)<br>
+        <em>(ইঙ্গিত: খ, ঘ → DL; ক, গ, ঙ → classical ML)</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ এখন পর্যন্ত (V1–V3) সব ছিল
+        tabular/CLI/classical ML। এই Series-এ আমরা <strong>V4 (Deep Learning module)</strong> যোগ করব — যেমন
+        job post-এর সাথে দেওয়া company logo বা screenshot চেনা, কিংবা পরে NLP-র জন্য ভিত্তি তৈরি করা।
+        পাশাপাশি এই Series-এর নিজস্ব standalone project <strong>P4: Image Classifier</strong> (E06-এ) আমরা
+        শূন্য থেকে বানাব। আজকের শেখা — "কখন DL দরকার" — সেই সিদ্ধান্তের ভিত্তি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        এই পর্বে শিখলাম:<br>
+        ✓ Classical ML tabular data-তে দুর্দান্ত; unstructured data-তে (image/text) হার মানে<br>
+        ✓ Deep Learning-এর আসল শক্তি — নিজে নিজে feature শেখা (representation learning)<br>
+        ✓ Perceptron = সরলতম neuron; multi-layer জুড়লেই neural network<br>
+        ✓ "শেখা = সঠিক weight/bias খুঁজে বের করা"<br>
+        ✓ DL "cool" বলে নয়, সমস্যা দাবি করলে ব্যবহার করতে হয়
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী পর্ব (S06E02):</strong> "Neuron, Activation, Forward Propagation" — একটা layer-এর ভেতরটা
+        খুলে দেখব: weight, bias, activation function কীভাবে কাজ করে, আর NumPy দিয়ে হাতে একটা forward pass চালাব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="../series-05/episode-11-end-to-end-ml-api.html">⬅ পূর্ববর্তী: End-to-End ML</a>
+            <a href="episode-02-neuron-activation-forward.html">পরবর্তী: Neuron ও Activation ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 06, Episode 01)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s06e01.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Probability basics, conditional probability, Bayes theorem, random variable ও expected value — বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Probability ও Bayes: &#x27;কতটা নিশ্চিত&#x27; — AI-এর হৃদয় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Probability basics, conditional probability, Bayes theorem, random variable ও expected value — বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Probability ও Bayes: &#x27;কতটা নিশ্চিত&#x27; — AI-এর হৃদয় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 04 &raquo; Episode 06
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Probability ও Bayes: 'কতটা নিশ্চিত' — AI-এর হৃদয়</h1>
+    <p class="subtitle">conditional probability ও Bayes theorem (Series 04, Episode 06)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 04 — Math, Statistics ও Probability</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 06 / 07</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: ডাক্তারের রিপোর্ট আর একটা ভয়</li>
+        <li>২. আসল সমস্যা: AI নিশ্চিত নয়, সম্ভাবনা বলে</li>
+        <li>৩. Probability basics — ০ থেকে ১</li>
+        <li>৪. Level 1 — conditional probability ("যদি জানি...")</li>
+        <li>৫. Level 2 — Bayes theorem (belief update)</li>
+        <li>৬. রোগ-পরীক্ষার ধাঁধা (Bayes হাতে-কলমে)</li>
+        <li>৭. Level 3 — Naive Bayes ও spam filter</li>
+        <li>৮. Random variable ও expected value</li>
+        <li>৯. Visual: Bayes-এর box</li>
+        <li>১০. Code: spam probability</li>
+        <li>১১. বাংলাদেশের context</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🩺</span> ১. গল্প: ডাক্তারের রিপোর্ট আর একটা ভয়</h2>
+    <p>
+        Rahim-এর এক আত্মীয় একটা বিরল রোগের পরীক্ষা করালেন, রিপোর্ট "positive" এল। পরীক্ষাটা নাকি ৯৯%
+        নির্ভুল। সবাই ভয় পেয়ে গেল। Rahim Nila-কে জিজ্ঞেস করল — "৯৯% নির্ভুল মানে তো উনি প্রায় নিশ্চিত অসুস্থ, তাই না?"
+    </p>
+    <div class="story-box">
+        Nila বলল: <em>"এখানেই বেশিরভাগ মানুষ — এমনকি অনেক ডাক্তারও — ভুল করে। রোগটা যদি খুব বিরল হয় (ধরো
+        ১০,০০০ জনে ১ জন), তাহলে '৯৯% নির্ভুল test'-এও positive রিপোর্ট আসলে সত্যিকারের অসুস্থ হওয়ার
+        সম্ভাবনা হয়তো মাত্র ১%! এই উল্টো-স্বজ্ঞাত (counter-intuitive) ফলটাই <strong>Bayes theorem</strong>
+        হিসাব করে দেয়।"</em><br><br>
+        Rahim অবাক: <em>"৯৯% test, কিন্তু মাত্র ১% আসলে অসুস্থ? কীভাবে?"</em><br><br>
+        Nila: <em>"কারণ prior probability (আগে থেকেই কত বিরল) সবকিছু বদলে দেয়। এই একটা ধারণা — 'নতুন তথ্য
+        দিয়ে belief update করা' — আধুনিক AI-এর হৃদয়। চলো দেখি।"</em>
+    </div>
+    <p>
+        এই পর্বে Series 04-এর শেষ স্তম্ভ Probability — যেটা classifier, spam filter, এমনকি LLM-এর
+        next-token prediction-এর গভীরে বসে আছে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ২. আসল সমস্যা: AI নিশ্চিত নয়, সম্ভাবনা বলে</h2>
+    <p>
+        একটা গুরুত্বপূর্ণ সত্য: বেশিরভাগ ML model "হ্যাঁ/না" বলে না — বলে "৮৭% সম্ভাবনা হ্যাঁ"। একটা spam
+        filter বলে "এই email ৯৩% সম্ভাবনায় spam"। একটা LLM বলে "পরের শব্দ 'ভাত' হওয়ার সম্ভাবনা সবচেয়ে
+        বেশি"। এই "কতটা সম্ভাবনা / কতটা নিশ্চিত" — পুরোটাই Probability। তাই একজন junior-কে এটা বুঝতেই হবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎲</span> ৩. Probability basics — ০ থেকে ১</h2>
+    <p>
+        Probability হলো কোনো ঘটনার সম্ভাবনা, ০ (কখনো হবে না) থেকে ১ (নিশ্চিত হবে)-এর মধ্যে। একটা মুদ্রায়
+        head আসার probability ০.৫; একটা ছক্কায় ৬ আসার probability ১/৬ ≈ ০.১৭। ML-এ probability প্রায়ই
+        ০-১০০% হিসেবে দেখানো হয় (০.৯৩ = ৯৩%)।
+    </p>
+    <div class="info-box">
+        <strong>মূল নিয়ম:</strong> সব সম্ভাব্য ফলাফলের probability যোগ করলে ১ হয়। যেমন একটা binary
+        classifier যদি বলে "spam = ০.৯৩", তাহলে "not spam = ০.০৭" — যোগফল ১।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔑</span> ৪. Level 1 — conditional probability ("যদি জানি...")</h2>
+    <div class="technical-box">
+        Conditional probability = "একটা তথ্য জানা থাকলে, আরেকটার সম্ভাবনা কত"। লেখা হয় <code>P(A | B)</code>
+        — "B ঘটেছে জানা থাকলে A-এর সম্ভাবনা"।<br><br>
+        <strong>উদাহরণ:</strong> রাস্তায় এলোমেলো একজনের লম্বা হওয়ার সম্ভাবনা একরকম। কিন্তু "যদি জানি সে
+        একজন basketball খেলোয়াড়" — তাহলে লম্বা হওয়ার সম্ভাবনা অনেক বেড়ে যায়। নতুন তথ্য (basketball
+        খেলোয়াড়) সম্ভাবনা বদলে দিল। এটাই conditional probability।
+    </div>
+    <p>
+        ML-এ প্রায় সব prediction আসলে conditional: "এই feature-গুলো দেখা গেলে, target=হ্যাঁ হওয়ার
+        সম্ভাবনা কত" — অর্থাৎ <code>P(target | features)</code>।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚙️</span> ৫. Level 2 — Bayes theorem (belief update)</h2>
+    <p>
+        Bayes theorem একটা সূত্র যা conditional probability উল্টে দেয়। intuition-টা এমন: <strong>আগের
+        বিশ্বাস (prior) + নতুন প্রমাণ (evidence) = হালনাগাদ বিশ্বাস (posterior)।</strong>
+    </p>
+    <div class="diagram">
+   P(A | B)  =   P(B | A) × P(A)
+                 ─────────────────
+                       P(B)
+
+   A = অনুমান (যেমন: রোগ আছে)
+   B = প্রমাণ (যেমন: test positive)
+
+   P(A)      = prior     → আগে থেকে কতটা সম্ভাব্য (রোগ কত বিরল)
+   P(B | A)  = likelihood → রোগ থাকলে test positive হওয়ার হার
+   P(A | B)  = posterior  → test positive দেখে রোগ থাকার হালনাগাদ সম্ভাবনা
+    </div>
+    <div class="key-point">
+        junior-দের সূত্র মুখস্থ করার দরকার নেই — বোঝা দরকার এই intuition: <strong>বিরল জিনিসের ক্ষেত্রে
+        একটা "positive" প্রমাণও তাকে হঠাৎ খুব সম্ভাব্য বানায় না</strong>, কারণ prior ছোট।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧮</span> ৬. রোগ-পরীক্ষার ধাঁধা (Bayes হাতে-কলমে)</h2>
+    <p>ধরা যাক ১০,০০০ জনের একটা দল, যেখানে:</p>
+    <ul>
+        <li>রোগটা বিরল: ১০,০০০ জনে মাত্র ১ জনের আছে (prior = 0.0001)।</li>
+        <li>test ৯৯% নির্ভুল: রোগ থাকলে ৯৯% positive; রোগ না থাকলেও ১% ভুল positive (false positive)।</li>
+    </ul>
+    <div class="diagram">
+   ১০,০০০ জন
+     │
+     ├─ ১ জন আসলে অসুস্থ  →  test positive ≈ 1 জন (99%)
+     │
+     └─ ৯,৯৯৯ জন সুস্থ    →  ভুল positive ≈ 100 জন (1% of 9999)
+
+   মোট positive ≈ 1 + 100 = 101 জন
+   এদের মধ্যে সত্যিই অসুস্থ = 1 জন
+
+   P(অসুস্থ | positive) ≈ 1 / 101 ≈ 1%  (!)
+    </div>
+    <div class="info-box">
+        দেখুন — "৯৯% নির্ভুল test"-এ positive এলেও, রোগটা এত বিরল যে সত্যিই অসুস্থ হওয়ার সম্ভাবনা মাত্র
+        ~১%। এজন্যই বিরল রোগে দ্বিতীয়বার test করা হয়। এই intuition জানা থাকলে আপনি data ও model-এর
+        ফলাফল অনেক বেশি সঠিকভাবে ব্যাখ্যা করবেন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ৭. Level 3 — Naive Bayes ও spam filter</h2>
+    <p>
+        Bayes theorem-এর সরাসরি প্রয়োগ হলো <strong>Naive Bayes</strong> classifier — যা বহু বছর ধরে
+        spam filter-এ ব্যবহৃত। ধারণা: একটা email-এ কিছু শব্দ (যেমন "লটারি", "free", "জিতেছেন") দেখা গেলে,
+        সেটা spam হওয়ার posterior probability হিসাব করা।
+    </p>
+    <ul>
+        <li><strong>Prior:</strong> সাধারণভাবে কত shতাংশ email spam।</li>
+        <li><strong>Likelihood:</strong> spam email-এ "free" শব্দটা কতবার আসে বনাম normal email-এ।</li>
+        <li><strong>Posterior:</strong> এই শব্দগুলো দেখে email-টা spam হওয়ার হালনাগাদ সম্ভাবনা।</li>
+    </ul>
+    <p>
+        "Naive" বলা হয় কারণ এটা ধরে নেয় শব্দগুলো একে অপরের থেকে স্বাধীন (যা পুরোপুরি সত্য নয়), তবু বাস্তবে
+        চমৎকার কাজ করে ও দ্রুত। এটাই concept বোঝার সুন্দর উদাহরণ — সরল ধারণা, বাস্তব প্রয়োগ।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৮. Random variable ও expected value</h2>
+    <p>
+        <strong>Random variable</strong> হলো এমন একটা পরিমাণ যার মান সম্ভাবনার উপর নির্ভর করে — যেমন একটা
+        ছক্কার ফল, বা কাল বৃষ্টি হবে কিনা। <strong>Expected value</strong> হলো এর "গড় প্রত্যাশিত ফল" —
+        প্রতিটা সম্ভাব্য মানকে তার probability দিয়ে গুণ করে যোগ।
+    </p>
+    <div class="info-box">
+        <strong>ব্যবহারিক উদাহরণ:</strong> একটা lottery-তে ১% সম্ভাবনায় ১০০০ টাকা জেতা, ৯৯% সম্ভাবনায় ০।
+        expected value = 0.01×1000 + 0.99×0 = ১০ টাকা। টিকিটের দাম ৫০ টাকা হলে গড়ে লোকসান — এই হিসাবই
+        expected value। ML-এ risk/reward, এবং reinforcement learning-এ এটা কেন্দ্রীয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📦</span> ৯. Visual: Bayes-এর box</h2>
+    <div class="diagram">
+              test POSITIVE      test NEGATIVE
+            ┌────────────────┬──────────────────┐
+  অসুস্থ (1)  │  ✅ 1 (true +)  │  ❌ ~0 (মিস)      │
+            ├────────────────┼──────────────────┤
+  সুস্থ(9999)│  ⚠️ ~100 (false+)│  ✅ ~9899 (true -) │
+            └────────────────┴──────────────────┘
+
+  positive box-এ মোট 101, তার মধ্যে সত্যি অসুস্থ মাত্র 1
+  →  P(অসুস্থ | positive) ছোট, কারণ prior ছোট
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ১০. Code: spam probability</h2>
+    <p>
+        scikit-learn-এর Naive Bayes দিয়ে খুব অল্প কোডে একটা spam-ধাঁচের classifier। আমরা এটা ব্যবহার
+        করছি কারণ probability-based classifier-এর সবচেয়ে পরিষ্কার বাস্তব উদাহরণ এটাই।
+    </p>
+    <div class="code-box">
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+
+texts = ["free lottery jiten টাকা", "meeting kal office e",
+         "free free offer এখনি", "project deadline kal"]
+labels = [1, 0, 1, 0]        # 1 = spam, 0 = normal
+
+vec = CountVectorizer()
+X = vec.fit_transform(texts)
+
+model = MultinomialNB()
+model.fit(X, labels)
+
+test = vec.transform(["free টাকা offer"])
+print("spam probability:", model.predict_proba(test)[0][1].round(3))
+    </div>
+    <p>
+        <strong>কী observe করবেন:</strong> <code>predict_proba</code> "হ্যাঁ/না" নয়, একটা probability
+        (যেমন ০.৯) দেয় — ঠিক যেভাবে বাস্তব spam filter কাজ করে। ভেতরে পুরোটাই Bayes theorem।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের context</h2>
+    <p>
+        bKash/Nagad-এর fraud detection ঠিক এই "কতটা সম্ভাবনা fraud" হিসাব করে — একটা transaction ১০০%
+        fraud বলে না, বলে "এই আচরণে fraud-এর probability উঁচু"। আবার রোগ-পরীক্ষার Bayes-intuition
+        স্বাস্থ্য-tech startup-এ সরাসরি লাগে — একটা AI screening tool positive দিলেও prior বিবেচনা না করলে
+        অকারণ আতঙ্ক তৈরি হয়। junior হিসেবে এই probability-thinking আপনাকে দায়িত্বশীল সিদ্ধান্ত নিতে সাহায্য করবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"আমাদের fraud model বলছে এই transaction 'fraud'। ব্লক করে দিই?"</em><br><br>
+        <strong>উত্তর:</strong> একটু দাঁড়ান — model আসলে "fraud" বলে না, বলে "fraud-এর probability = ৮২%"।
+        এখন সিদ্ধান্তটা business-এর: fraud আটকানোর লাভ বনাম একজন সৎ customer-কে ভুল করে ব্লক করার ক্ষতি।
+        যেহেতু সত্যিকারের fraud বিরল (prior ছোট), আমরা হয়তো ৮২%-এ সরাসরি ব্লক না করে extra যাচাই (OTP/manual
+        review) চাইব। এই probability + prior + খরচ/লাভ মিলিয়ে সিদ্ধান্ত নেওয়াই সঠিক engineering — এটাই
+        Bayes-thinking-এর business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Understanding of probability, conditional probability, and Bayesian thinking."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>model-এর probability output ও "কতটা নিশ্চিত" ব্যাখ্যা করতে ও ব্যবহার করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>classifier threshold, fraud/spam সিদ্ধান্ত, uncertainty handling — সবই probability।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>positive test/prediction-কে ভুলভাবে "নিশ্চিত" ধরার ভুল এড়ানো।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>probability 0-1, conditional probability, Bayes-এর intuition (prior-এর প্রভাব), expected value।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>Bayesian inference-এর গভীর গণিত, MCMC, প্রতিটা distribution-এর সূত্র।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা Naive Bayes spam/sentiment classifier, <code>predict_proba</code> ব্যাখ্যা করে।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"Bayes theorem বোঝান", "conditional probability কী?", "৯৯% test positive মানেই কি রোগ আছে?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "test ৯৯% নির্ভুল হলে positive = প্রায় নিশ্চিত অসুস্থ।" →
+        <strong>ঠিক:</strong> বিরল রোগে prior ছোট, তাই posterior অনেক কম হতে পারে (base rate fallacy)।<br><br>
+        <strong>ভুল ২:</strong> "P(A|B) আর P(B|A) একই।" →
+        <strong>ঠিক:</strong> এরা ভিন্ন; Bayes theorem একটাকে আরেকটায় রূপান্তর করে।<br><br>
+        <strong>ভুল ৩:</strong> "model 'fraud' বলছে মানে এটা নিশ্চিত fraud।" →
+        <strong>ঠিক:</strong> model probability দেয়; threshold ও খরচ/লাভ দেখে সিদ্ধান্ত নিতে হয়।<br><br>
+        <strong>ভুল ৪:</strong> "Bayes theorem master করতে হবে।" →
+        <strong>ঠিক:</strong> junior-দের intuition (prior-এর প্রভাব) যথেষ্ট; হাতে proof লাগে না।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> conditional probability কী?<br>
+        <em>উত্তর:</em> একটা তথ্য জানা থাকলে অন্য ঘটনার সম্ভাবনা — <code>P(A|B)</code>।<br><br>
+        <strong>প্রশ্ন ২:</strong> Bayes theorem কী কাজে লাগে?<br>
+        <em>উত্তর:</em> prior belief-কে নতুন প্রমাণ দিয়ে update করে posterior বের করতে; spam/fraud/diagnosis-এ।<br><br>
+        <strong>প্রশ্ন ৩:</strong> ৯৯% নির্ভুল test-এ positive এলে কি রোগ নিশ্চিত?<br>
+        <em>উত্তর:</em> না; রোগ বিরল হলে (prior ছোট) posterior কম হতে পারে — base rate গুরুত্বপূর্ণ।<br><br>
+        <strong>প্রশ্ন ৪:</strong> Naive Bayes-এ "naive" কেন?<br>
+        <em>উত্তর:</em> ধরে নেয় feature-রা পরস্পর স্বাধীন — সরল অনুমান, তবু বাস্তবে কার্যকর।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        ১. রোগ-পরীক্ষার হিসাবে prior বদলে ১০০ জনে ১ জন করুন — এবার <code>P(অসুস্থ | positive)</code> মোটামুটি কত হবে?<br>
+        ২. উপরের Naive Bayes কোডে আরও কয়েকটা spam/normal উদাহরণ যোগ করে <code>predict_proba</code> কেমন বদলায় দেখুন।<br>
+        ৩. এক লাইনে লিখুন: কেন একটা model-এর output "৭০% হ্যাঁ" "নিশ্চিত হ্যাঁ"-এর চেয়ে বেশি সৎ?
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ যখন (Series 05-এ) আমরা একটা
+        classifier বানাব — যেমন "এই JD junior নাকি senior role" — model একটা probability দেবে। আজকের
+        probability-thinking আমাদের শেখাবে কীভাবে সেই confidence ব্যাখ্যা করতে হয় ও threshold ঠিক করতে হয়।
+        আর Series 07/08-এ LLM যখন "পরের শব্দের probability" হিসাব করবে, তখনও এই ভিত্তিই কাজে লাগবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ probability ০-১; সব ফলাফলের যোগফল ১<br>
+        ✓ conditional probability <code>P(A|B)</code> — তথ্য জানা থাকলে সম্ভাবনা বদলায়<br>
+        ✓ Bayes theorem = prior + evidence → posterior; বিরল ঘটনায় prior সব বদলে দেয়<br>
+        ✓ base rate fallacy — "৯৯% test positive" মানেই নিশ্চিত নয়<br>
+        ✓ Naive Bayes দিয়ে spam/text classification; model probability দেয়, হ্যাঁ/না নয়<br>
+        ✓ random variable ও expected value — গড় প্রত্যাশিত ফল, risk/reward সিদ্ধান্তে
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S04E07):</strong> "Machine Learning কীভাবে ভুল থেকে শেখে? Gradient
+        Descent-এর সহজ গল্প"। Series 04-এর সমাপ্তি — চারটা স্তম্ভ (vector, gradient, statistics,
+        probability) একসাথে জুড়ে দেখব loss function, gradient descent ও bias-variance trade-off, যা
+        Series 05-এর Classical ML-এর সরাসরি প্রবেশদ্বার।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-05-covariance-correlation-distribution.html">⬅ পূর্ববর্তী: Correlation</a>
+            <a href="episode-07-loss-gradient-descent-bias-variance.html">পরবর্তী: Gradient Descent ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 04, Episode 06)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s04e06.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

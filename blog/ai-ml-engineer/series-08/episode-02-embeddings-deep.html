@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Embeddings গভীরভাবে — embedding model, cosine similarity, vector space ও semantic search, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Embeddings গভীরভাবে: text কেন vector হয়, semantic similarity কীভাবে কাজ করে | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Embeddings গভীরভাবে — embedding model, cosine similarity, vector space ও semantic search, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Embeddings গভীরভাবে: text কেন vector হয়, semantic similarity কীভাবে কাজ করে | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 08 &raquo; Episode 02
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Embeddings গভীরভাবে: text কেন vector হয়, semantic similarity কীভাবে কাজ করে</h1>
+    <p class="subtitle">cosine similarity; embedding ≠ LLM (Series 08, Episode 02)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 08 — Generative AI Engineering</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: keyword search কেন ব্যর্থ হলো</li>
+        <li>২. সমস্যা: computer "অর্থ" বোঝে না</li>
+        <li>৩. Embedding আসলে কী</li>
+        <li>৪. তিন স্তরে বোঝা</li>
+        <li>৫. Vector space: কাছাকাছি মানে একই অর্থ</li>
+        <li>৬. Cosine similarity — দূরত্ব নয়, দিক</li>
+        <li>৭. embedding ≠ LLM (গুরুত্বপূর্ণ পার্থক্য)</li>
+        <li>৮. Code: semantic search হাতে-কলমে</li>
+        <li>৯. Experiment: keyword বনাম semantic</li>
+        <li>১০. বাস্তব উদাহরণ: বাংলাদেশের context</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection</li>
+        <li>১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: keyword search কেন ব্যর্থ হলো</h2>
+    <p>
+        Rahim তার job assistant-এ একটা search বসাল — user লিখবে skill, সে matching JD দেখাবে। সে
+        <code>WHERE description LIKE '%Python%'</code> দিয়ে শুরু করল। কিন্তু একজন user লিখল
+        <em>"machine learning developer"</em> — অথচ অনেক relevant JD-তে লেখা ছিল <em>"ML engineer"</em>,
+        <em>"data scientist"</em>, <em>"deep learning"</em>। keyword মেলেনি বলে ভালো ভালো ফল বাদ পড়ে গেল।
+    </p>
+    <div class="story-box">
+        <strong>Nila</strong> (data scientist) বলল: <em>"তোমার search শব্দ মেলাচ্ছে, <strong>অর্থ</strong>
+        মেলাচ্ছে না। 'ML engineer' আর 'machine learning developer' প্রায় একই জিনিস — কিন্তু computer সেটা
+        জানবে কীভাবে? এখানেই আসে <strong>embeddings</strong> — text-কে এমন সংখ্যায় বদলানো যেখানে কাছাকাছি
+        অর্থের জিনিস কাছাকাছি বসে।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: computer "অর্থ" বোঝে না</h2>
+    <p>
+        Computer-এর কাছে "Python" আর "পাইথন" আর "python programming" — সব আলাদা string। keyword search
+        exact character মেলায়, semantics নয়। কিন্তু মানুষ জানে এগুলো সম্পর্কিত। আমাদের দরকার এমন একটা
+        উপায় যাতে computer <strong>meaning-এর কাছাকাছি হওয়া</strong> মাপতে পারে।
+    </p>
+    <div class="key-point">
+        সমাধান: প্রতিটা text-কে একটা <strong>vector</strong> (সংখ্যার তালিকা) দিয়ে উপস্থাপন করা, যেখানে
+        <strong>একই অর্থের text-এর vector একে অপরের কাছাকাছি</strong> থাকে। এই vector-ই embedding।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. Embedding আসলে কী</h2>
+    <p>
+        Embedding হলো একটা text (শব্দ, বাক্য বা paragraph)-এর সংখ্যাগত উপস্থাপন — একটা fixed-length
+        <strong>dense vector</strong> (যেমন ৩৮৪ বা ১৫৩৬টা float সংখ্যা)। একটা embedding model text নেয়,
+        vector দেয়।
+    </p>
+    <div class="diagram">
+"ML engineer"          → [0.12, -0.44, 0.98, ... ]  (384-dim)
+"machine learning dev" → [0.14, -0.41, 0.95, ... ]  ← কাছাকাছি!
+"রান্নার রেসিপি"        → [-0.88, 0.23, -0.10, ... ] ← অনেক দূরে
+    </div>
+    <p>
+        লক্ষ্য করুন — প্রথম দুটোর সংখ্যা প্রায় মিলে গেছে (কাছাকাছি অর্থ), তৃতীয়টা একদম আলাদা (ভিন্ন অর্থ)।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন স্তরে বোঝা</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        একটা বিশাল library ভাবুন যেখানে প্রতিটা বই তার <strong>বিষয় অনুযায়ী</strong> সাজানো — রান্নার বই এক
+        কোণে, programming-এর বই আরেক কোণে। কোনো বই খুঁজতে হলে তার নাম না জেনেও, বিষয় দিয়ে কাছের তাকে যেতে
+        পারবেন। Embedding space ঠিক এই "বিষয় অনুযায়ী সাজানো" জগৎ।
+    </p>
+    <h3>Level 2 — technical ভাবে কী হচ্ছে</h3>
+    <p>
+        Embedding model (যেমন <code>sentence-transformers</code>) একটা neural network যা বিশাল text-এ train
+        করা হয়েছে যাতে semantically similar text-এর output vector কাছাকাছি হয়। প্রতিটা dimension কোনো নির্দিষ্ট
+        মানবীয় অর্থ ধরে না, কিন্তু সম্মিলিতভাবে vector-টা meaning ধরে রাখে।
+    </p>
+    <h3>Level 3 — engineer perspective</h3>
+    <p>
+        একজন AI Engineer document একবার embed করে vector হিসেবে store করে (offline)। search-এর সময় শুধু
+        query embed করে nearest vector খোঁজে। এটাই RAG, semantic search, recommendation-এর ভিত্তি —
+        দ্রুত ও scalable, কারণ ভারী কাজটা আগেই হয়ে গেছে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📐</span> ৫. Vector space: কাছাকাছি মানে একই অর্থ</h2>
+    <p>
+        দুটো vector কতটা "কাছাকাছি" — সেটা মাপার সবচেয়ে প্রচলিত উপায় <strong>cosine similarity</strong>।
+        এটা দুটো vector-এর মধ্যেকার <em>কোণ</em> মাপে, দৈর্ঘ্য নয়। মান -১ থেকে +১:
+    </p>
+    <table>
+        <tr><th>Cosine similarity</th><th>অর্থ</th></tr>
+        <tr><td>≈ 1.0</td><td>প্রায় একই অর্থ</td></tr>
+        <tr><td>≈ 0.0</td><td>সম্পর্কহীন</td></tr>
+        <tr><td>&lt; 0</td><td>বিপরীতমুখী (text-এ বিরল)</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧮</span> ৬. Cosine similarity — দূরত্ব নয়, দিক</h2>
+    <p>কেন দৈর্ঘ্যের বদলে দিক (কোণ)? কারণ একটা লম্বা document আর ছোট বাক্য একই অর্থের হতে পারে; তাদের vector-এর দৈর্ঘ্য আলাদা হলেও দিক কাছাকাছি হবে। সূত্রটা সহজ:</p>
+    <div class="code-box">
+cosine_sim(a, b) = dot(a, b) / (norm(a) * norm(b))
+
+# যদি vector গুলো আগে থেকে normalize করা থাকে
+# (norm = 1), তাহলে cosine_sim = dot(a, b) — খুব দ্রুত।
+    </div>
+    <div class="info-box">
+        এজন্যই vector database-এ প্রায়ই vector normalize করে রাখা হয় — তখন similarity মানে শুধু একটা
+        dot product, যা হাজারো vector-এ অত্যন্ত দ্রুত হিসাব হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚫</span> ৭. embedding ≠ LLM (গুরুত্বপূর্ণ পার্থক্য)</h2>
+    <p>Interview-তে এটা প্রায়ই আটকে দেয়। দুটোই neural model, দুটোই text নেয় — কিন্তু কাজ ভিন্ন:</p>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Embedding model</strong><br>
+            input: text<br>
+            output: একটা fixed vector (সংখ্যা)<br>
+            কাজ: meaning capture, similarity, search<br>
+            উদাহরণ: text-embedding-3, bge, e5
+        </div>
+        <div class="comparison-item">
+            <strong>LLM (generative)</strong><br>
+            input: text (prompt)<br>
+            output: নতুন text (token by token)<br>
+            কাজ: উত্তর/লেখা generate করা<br>
+            উদাহরণ: GPT-4o, Llama, Claude
+        </div>
+    </div>
+    <div class="key-point">
+        মনে রাখুন: embedding "বোঝে ও পরিমাপ করে", LLM "লেখে ও generate করে"। RAG-এ দুটোই লাগে — embedding দিয়ে
+        relevant অংশ খুঁজি, তারপর LLM দিয়ে উত্তর লিখি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৮. Code: semantic search হাতে-কলমে</h2>
+    <p>
+        কেন <code>sentence-transformers</code>? — এটা free, locally চলে (কোনো API খরচ নেই), Bangla সহ
+        multilingual model দেয়, আর junior-দের জন্য শেখা সহজ।
+    </p>
+    <div class="code-box">
+from sentence_transformers import SentenceTransformer
+import numpy as np
+
+# multilingual model — Bangla + English দুটোই বোঝে
+model = SentenceTransformer(
+    "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+)
+
+docs = [
+    "Python ও Pandas জানা ML engineer দরকার",
+    "React frontend developer, 2 years experience",
+    "Deep learning ও PyTorch expert খুঁজছি",
+    "Restaurant-এর জন্য experienced cook",
+]
+
+# একবার document embed করি (offline কাজ)
+doc_vecs = model.encode(docs, normalize_embeddings=True)
+
+def search(query: str, top_k: int = 2):
+    q_vec = model.encode([query], normalize_embeddings=True)[0]
+    # normalize করা থাকায় dot product = cosine similarity
+    scores = doc_vecs @ q_vec
+    ranked = np.argsort(scores)[::-1][:top_k]
+    return [(docs[i], round(float(scores[i]), 3)) for i in ranked]
+
+print(search("machine learning job"))
+# [('Deep learning ও PyTorch expert...', 0.62),
+#  ('Python ও Pandas জানা ML engineer...', 0.58)]
+    </div>
+    <p>
+        খেয়াল করুন: query-তে "machine learning" লেখা, কিন্তু কোনো document-এ ঠিক সেই শব্দ নেই — তবু
+        অর্থগতভাবে কাছের JD গুলো উপরে এসেছে। keyword search এটা কখনো পারত না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৯. Experiment: keyword বনাম semantic</h2>
+    <div class="code-box">
+query = "AI বিশেষজ্ঞ"   # কোনো doc-এ এই শব্দ নেই
+
+# keyword: 0 match (কোনো doc-এ "AI বিশেষজ্ঞ" নেই)
+# semantic: "Deep learning ও PyTorch expert" উপরে আসবে
+print(search("AI বিশেষজ্ঞ"))
+    </div>
+    <div class="success-box">
+        যা শিখলেন: embedding-based search Bangla ও English মিশ্র query-তেও অর্থ ধরে ফেলে। এই কারণেই
+        আধুনিক search/RAG সব embedding-এর উপর দাঁড়িয়ে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাস্তব উদাহরণ: বাংলাদেশের context</h2>
+    <ul>
+        <li>একটা Bangla news portal-এ "সম্পর্কিত খবর" সাজেস্ট করা — article embed করে nearest খোঁজা।</li>
+        <li>Daraz-এ "এই পণ্যের মতো আরও" — product embedding দিয়ে similar item।</li>
+        <li>একটা legal-tech startup হাজারো বাংলা document-এ semantic search দেয় — keyword-এ যা অসম্ভব।</li>
+        <li>আমাদের job assistant-এ candidate CV আর JD embed করে matching score বের করা।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"আমাদের তো search আছেই (LIKE query)। embedding-এর পিছনে আলাদা খরচ কেন?"</em><br><br>
+        <strong>উত্তর:</strong> keyword search শুধু হুবহু শব্দ মেলায় — মানে অর্ধেক relevant ফলাফল হারিয়ে
+        যায়, user "কিছু পেলাম না" বলে চলে যায়। semantic search অর্থ বোঝে, তাই relevant conversion বাড়ে।
+        Document একবার embed করে রাখলে search প্রায় free ও instant। মানে — বেশি relevant ফল, বেশি
+        engagement, বেশি বিক্রি — একই data-তে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="info-box">
+        JD: <strong>"Experience with embeddings / semantic search"</strong>।<br><br>
+        <strong>১. কী বোঝায়?</strong> text-কে vector-এ রূপান্তর করে similarity দিয়ে search/matching করতে পারা।<br>
+        <strong>২. কেন চায়?</strong> RAG, recommendation, search — সব এর উপর দাঁড়ায়; আধুনিক AI-এর ভিত্তি।<br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> keyword-এর সীমাবদ্ধতা; অর্থভিত্তিক খোঁজা।<br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> embedding মানে কী, cosine similarity, একটা embedding model দিয়ে search করা, embedding ≠ LLM।<br>
+        <strong>৫. এখনই কী master লাগে না?</strong> নিজের embedding model train করা, quantization, ANN index tuning।<br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> একটা semantic search demo repo — sentence-transformers + একটা corpus + keyword বনাম semantic তুলনা।<br>
+        <strong>৭. interview প্রশ্ন?</strong> "cosine similarity কী?", "embedding আর LLM-এর পার্থক্য?", "keyword search-এর সমস্যা কী?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> query আর document আলাদা model দিয়ে embed করা। → একই model ব্যবহার করুন, নাহলে vector একই space-এ থাকে না।<br><br>
+        <strong>ভুল ২:</strong> normalize না করে dot product-কে cosine ভাবা। → normalize করুন অথবা সঠিক cosine সূত্র ব্যবহার করুন।<br><br>
+        <strong>ভুল ৩:</strong> English-only model দিয়ে Bangla embed করা। → multilingual model বেছে নিন।<br><br>
+        <strong>ভুল ৪:</strong> embedding-কে LLM ভাবা বা উল্টো। → দুটো ভিন্ন কাজ।<br><br>
+        <strong>ভুল ৫:</strong> খুব বড় text এক embedding-এ চাপা। → বড় document chunk করুন (পরের episode-এ)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্র:</strong> Embedding কী?<br>
+        <strong>উ:</strong> Text-এর একটা fixed-length dense vector উপস্থাপন, যেখানে similar meaning-এর text কাছাকাছি বসে।<br><br>
+        <strong>প্র:</strong> Cosine similarity কেন, Euclidean নয়?<br>
+        <strong>উ:</strong> Cosine দিক (কোণ) মাপে, দৈর্ঘ্য নয় — তাই আলাদা দৈর্ঘ্যের text-এর অর্থগত মিল ভালো ধরে।<br><br>
+        <strong>প্র:</strong> Embedding আর LLM কি একই?<br>
+        <strong>উ:</strong> না — embedding vector দেয় (measure/search), LLM নতুন text generate করে।<br><br>
+        <strong>প্র:</strong> semantic search keyword search-এর চেয়ে ভালো কেন?<br>
+        <strong>উ:</strong> এটা synonym/অর্থ ধরে; hুবহু শব্দ না মিললেও relevant ফল দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ৫টা বাংলা ও ইংরেজি মিশ্র বাক্য নিন (কিছু programming, কিছু রান্না নিয়ে)। সব embed করুন।
+        "software job" query দিয়ে cosine similarity বের করে ranking দেখুন। তারপর একই query keyword
+        (<code>in</code> operator) দিয়ে চালিয়ে দেখুন কতগুলো relevant ফল keyword মিস করল।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection</h2>
+    <p>
+        আমাদের flagship assistant এখন JD আর user query দুটোই embed করে semantic matching করতে পারবে।
+        এই episode-এর <code>doc_vecs</code> আর <code>search()</code> হলো V6-এর retrieval-এর বীজ। কিন্তু
+        হাজার হাজার vector মেমরিতে রাখা যায় না — সেগুলো efficiently store ও খোঁজার জন্য দরকার একটা
+        <strong>vector database</strong>, যেটা পরের episode।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        ✓ Embedding = text-এর dense vector, যেখানে similar meaning কাছাকাছি<br>
+        ✓ cosine similarity দিক (কোণ) মাপে; normalize করলে dot product = cosine<br>
+        ✓ embedding ≠ LLM — একটা measure করে, অন্যটা generate করে<br>
+        ✓ document একবার embed করে store (offline), query embed করে search (online)<br>
+        ✓ multilingual model Bangla-English মিশ্র text-এ কাজ করে
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode:</strong> "Vector Database" — এত vector কোথায় রাখব আর লক্ষ কোটির মধ্যে
+        nearest কীভাবে মিলিসেকেন্ডে খুঁজব? pgvector হাতে-কলমে দেখব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-01-prompt-engineering.html">⬅ পূর্ববর্তী: Prompt Engineering</a>
+            <a href="episode-03-vector-databases.html">পরবর্তী: Vector Database ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 08, Episode 02)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s08e02.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

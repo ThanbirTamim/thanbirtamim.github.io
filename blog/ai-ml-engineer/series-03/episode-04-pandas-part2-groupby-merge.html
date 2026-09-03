@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pandas groupby, merge/join, missing value ও duplicate handling — সম্পূর্ণ data wrangling বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Pandas Part 2: groupby, merge, missing values, duplicates | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Pandas groupby, merge/join, missing value ও duplicate handling — সম্পূর্ণ data wrangling বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Pandas Part 2: groupby, merge, missing values, duplicates | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 04
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Pandas Part 2: groupby, merge, missing values, duplicates</h1>
+    <p class="subtitle">সম্পূর্ণ data wrangling workflow (Series 03, Episode 04)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 04 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর "গড় salary" প্রশ্ন</li>
+        <li>২. সমস্যা: filter দিয়ে সব প্রশ্নের উত্তর হয় না</li>
+        <li>৩. তিন Level-এ groupby বোঝা</li>
+        <li>৪. groupby: split → apply → combine</li>
+        <li>৫. একাধিক aggregation একসাথে</li>
+        <li>৬. Missing value: চেনা ও সামলানো</li>
+        <li>৭. Duplicate: চেনা ও সরানো</li>
+        <li>৮. Merge/Join: দুটো table জোড়া</li>
+        <li>৯. Transformation ও apply</li>
+        <li>১০. বাস্তব উদাহরণ: সম্পূর্ণ wrangling flow</li>
+        <li>১১. একজন AI Engineer-এর দৃষ্টিতে</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ</li>
+        <li>১৯. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর "গড় salary" প্রশ্ন</h2>
+    <p>
+        Rahim এখন Pandas দিয়ে filter করতে পারে। কিন্তু Boss একটা প্রশ্ন করলেন যা filter দিয়ে হচ্ছে না —
+        "<em>প্রতিটা শহরে গড় salary কত, আর প্রতিটা role-এ কতজন কাজ করে?</em>"
+    </p>
+    <div class="story-box">
+        <strong>Rahim:</strong> <em>"আপা, আমি তো Dhaka-র job আলাদা করে গড় বের করতে পারি, তারপর Chattogram,
+        তারপর Sylhet... কিন্তু ৩০টা শহর হলে তো ৩০ বার লিখতে হবে!"</em><br><br>
+        <strong>Nila:</strong> <em>"একদম না। এই 'প্রতিটা group-এর জন্য একই হিসাব' — এটাই data analysis-এর সবচেয়ে
+        দরকারি জিনিস, আর Pandas এটাকে এক লাইনে করে দেয়: <code>groupby</code>। আর real data নিয়ে কাজ করতে গেলে
+        তোমার আরও দুটো জিনিস লাগবেই — missing value আর duplicate সামলানো। আজ সবই শিখবে।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: filter দিয়ে সব প্রশ্নের উত্তর হয় না</h2>
+    <p>Part 1-এ আমরা শিখেছি single condition-এ row বাছাই। কিন্তু বাস্তবে প্রশ্নগুলো আরও জটিল:</p>
+    <ul>
+        <li>"প্রতিটা group-এ (শহর/role) গড় কত?" → <strong>groupby</strong></li>
+        <li>"salary নেই এমন row নিয়ে কী করব?" → <strong>missing value handling</strong></li>
+        <li>"একই job দুবার আছে কি?" → <strong>duplicate handling</strong></li>
+        <li>"job data-র সাথে company data মেলাতে হবে" → <strong>merge/join</strong></li>
+    </ul>
+    <p>এই episode এই চারটা core wrangling skill শেখায় — যেগুলো ছাড়া কোনো real project এগোয় না।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৩. তিন Level-এ groupby বোঝা</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        ভাবুন একগাদা job post-এর কাগজ টেবিলে ছড়ানো। আপনি সেগুলো শহর অনুযায়ী আলাদা স্তূপে ভাগ করলেন (Dhaka-র
+        স্তূপ, Chattogram-এর স্তূপ)। তারপর প্রতিটা স্তূপের গড় salary হিসাব করলেন। groupby ঠিক এই কাজটাই করে —
+        ভাগ করো, হিসাব করো, ফল একসাথে সাজাও।
+    </p>
+    <h3>Level 2 — technical ভাবে (split-apply-combine)</h3>
+    <p>
+        Pandas <code>groupby</code>-এর তিনটা ধাপ: <strong>split</strong> (একটা column-এর value অনুযায়ী data ভাগ),
+        <strong>apply</strong> (প্রতিটা group-এ একটা function চালানো, যেমন mean/count), <strong>combine</strong>
+        (ফলগুলো একটা নতুন DataFrame-এ জোড়া)। এটাই "split-apply-combine" pattern।
+    </p>
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        engineer রা groupby-কে aggregation ও feature engineering-এর মূল হাতিয়ার হিসেবে দেখে। যেমন "প্রতিটা
+        customer-এর গড় transaction" একটা শক্তিশালী feature হতে পারে ML model-এর জন্য (Series 05-এ দেখব)।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔀</span> ৪. groupby: split → apply → combine</h2>
+    <div class="code-box">
+import pandas as pd
+
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Data Analyst",
+               "Backend Dev", "ML Engineer", "Python Dev"],
+    "salary": [40000, 90000, 45000, 70000, 110000, 50000],
+    "city":   ["Dhaka", "Dhaka", "Chattogram",
+               "Sylhet", "Dhaka", "Chattogram"],
+})
+
+# প্রতিটা শহরে গড় salary
+print(df.groupby("city")["salary"].mean())
+# city
+# Chattogram    47500.0
+# Dhaka         80000.0
+# Sylhet        70000.0
+
+# প্রতিটা role-এ কতজন
+print(df.groupby("title").size())
+
+# প্রতিটা শহরে সর্বোচ্চ salary
+print(df.groupby("city")["salary"].max())
+    </div>
+
+    <div class="diagram">
+groupby("city")["salary"].mean() যেভাবে কাজ করে:
+
+SPLIT (শহর অনুযায়ী)        APPLY (mean)      COMBINE
+Dhaka:  40000,90000,110000  -> 80000     ┐
+Chatto: 45000,50000         -> 47500      ├─> একটা ফলাফল table
+Sylhet: 70000               -> 70000     ┘
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৫. একাধিক aggregation একসাথে</h2>
+    <div class="code-box">
+# প্রতিটা শহরে একসাথে গড়, সর্বোচ্চ, গণনা
+result = df.groupby("city")["salary"].agg(["mean", "max", "count"])
+print(result)
+
+# ভিন্ন column-এ ভিন্ন হিসাব
+df2 = df.assign(experience=[1, 3, 2, 4, 5, 2])
+summary = df2.groupby("city").agg(
+    avg_salary=("salary", "mean"),
+    max_salary=("salary", "max"),
+    avg_exp=("experience", "mean"),
+    job_count=("title", "count"),
+)
+print(summary)
+    </div>
+    <div class="info-box">
+        উপরের <code>agg(avg_salary=("salary", "mean"), ...)</code> ধরনটা (named aggregation) পড়তে সবচেয়ে সহজ ও
+        modern। ফলে column-এর নাম পরিষ্কার থাকে — report বানানোর জন্য আদর্শ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🕳️</span> ৬. Missing value: চেনা ও সামলানো</h2>
+    <p>Real data-তে missing value (NaN) থাকবেই। প্রথমে চেনা, তারপর সিদ্ধান্ত:</p>
+    <div class="code-box">
+import numpy as np
+import pandas as pd
+
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Data Analyst", "Backend Dev"],
+    "salary": [40000, np.nan, 45000, np.nan],
+    "city":   ["Dhaka", "Dhaka", None, "Sylhet"],
+})
+
+# কোথায় কত missing?
+print(df.isnull().sum())
+# salary  2
+# city    1
+
+# উপায় ১ — missing row বাদ (কম missing হলে)
+df.dropna(subset=["salary"])
+
+# উপায় ২ — একটা value দিয়ে পূরণ (fill)
+df["salary"] = df["salary"].fillna(df["salary"].median())  # median দিয়ে
+df["city"] = df["city"].fillna("Unknown")                   # category-তে
+    </div>
+
+    <div class="technical-box">
+        <strong>কোন উপায় কখন?</strong><br>
+        • খুব কম missing (কয়েক %) → <code>dropna</code> চলে।<br>
+        • সংখ্যার column → সাধারণত <strong>median</strong> দিয়ে fill (mean outlier-এ প্রভাবিত হয়)।<br>
+        • category column → "Unknown" বা সবচেয়ে common value।<br>
+        <strong>সতর্কতা:</strong> কোন value দিয়ে fill করবেন তা ঠিক করতে হবে <em>শুধু training data</em> দেখে —
+        নাহলে <strong>data leakage</strong> হয় (E08-এ বিস্তারিত)। এই একটা ভুল অনেক junior করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👯</span> ৭. Duplicate: চেনা ও সরানো</h2>
+    <div class="code-box">
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Python Dev", "ML Engineer"],
+    "salary": [40000, 90000, 40000, 90000],
+    "city":   ["Dhaka", "Dhaka", "Dhaka", "Dhaka"],
+})
+
+# কতগুলো পুরো-row duplicate?
+print(df.duplicated().sum())    # 2
+
+# duplicate সরানো (প্রথমটা রেখে)
+df_clean = df.drop_duplicates()
+
+# শুধু নির্দিষ্ট column-এর ভিত্তিতে duplicate
+df.drop_duplicates(subset=["title", "city"], keep="first")
+    </div>
+    <div class="key-point">
+        সব duplicate খারাপ নয়! দুটো ভিন্ন কোম্পানি একই title ও salary দিতে পারে — সেটা বৈধ। তাই অন্ধভাবে
+        <code>drop_duplicates()</code> নয়; আগে ভাবুন "কোন column-গুলো মিললে এটা <em>সত্যিই</em> একই job?"
+        (যেমন একটা unique job_id থাকলে সেটার ভিত্তিতে)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔗</span> ৮. Merge/Join: দুটো table জোড়া</h2>
+    <p>প্রায়ই data একাধিক table-এ ছড়ানো থাকে। যেমন এক table-এ job, আরেকটায় company তথ্য — একটা common key দিয়ে জোড়া লাগাতে হয়:</p>
+    <div class="code-box">
+jobs = pd.DataFrame({
+    "job_id":     [1, 2, 3],
+    "title":      ["Python Dev", "ML Engineer", "Data Analyst"],
+    "company_id": [10, 10, 20],
+})
+companies = pd.DataFrame({
+    "company_id": [10, 20],
+    "company":    ["bKash", "Daraz"],
+    "city":       ["Dhaka", "Dhaka"],
+})
+
+# common key "company_id" দিয়ে জোড়া
+merged = jobs.merge(companies, on="company_id", how="left")
+print(merged[["title", "company", "city"]])
+    </div>
+    <table>
+        <tr><th>how=</th><th>মানে</th><th>কখন</th></tr>
+        <tr><td><code>inner</code></td><td>দুই table-এ যেগুলো মেলে শুধু সেগুলো</td><td>শুধু মেলানো data চাই</td></tr>
+        <tr><td><code>left</code></td><td>বাঁ table-এর সব, ডানেরটা যেখানে মেলে</td><td>মূল table পুরো রাখতে চাই (সবচেয়ে common)</td></tr>
+        <tr><td><code>right</code></td><td>ডান table-এর সব</td><td>উল্টো ক্ষেত্রে</td></tr>
+        <tr><td><code>outer</code></td><td>দুই table-এর সব (না মিললে NaN)</td><td>কিছুই বাদ দিতে চাই না</td></tr>
+    </table>
+    <div class="info-box">
+        এই <code>merge</code>-এর <code>how</code> ধারণাটা SQL-এর JOIN-এর সাথে হুবহু মেলে — E06 (SQL)-এ আবার দেখব।
+        একই ধারণা, দুই জায়গায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔧</span> ৯. Transformation ও apply</h2>
+    <div class="code-box">
+# string পরিষ্কার — casing ঠিক করা (Part 1-এর messy data মনে আছে?)
+df["city"] = df["city"].str.strip().str.title()   # " dhaka " -> "Dhaka"
+
+# comma সরিয়ে salary-কে সংখ্যায়
+df["salary"] = (df["salary"].astype(str)
+                .str.replace(",", "", regex=False)
+                .astype(float))
+
+# map — category-কে সংখ্যায় (সরল mapping)
+df["city_code"] = df["city"].map({"Dhaka": 1, "Chattogram": 2, "Sylhet": 3})
+
+# apply — জটিল custom logic (সম্ভব হলে vectorized-কে অগ্রাধিকার)
+df["salary_band"] = df["salary"].apply(
+    lambda s: "high" if s &gt; 80000 else ("mid" if s &gt; 45000 else "low")
+)
+    </div>
+    <p>
+        লক্ষ করুন <code>.str</code> accessor — এটা পুরো column-এর প্রতিটা string-এ একসাথে কাজ করে (vectorized)।
+        Part 1-এ দেখা messy data ("Python"/"python", "40,000") এখন এসব দিয়েই পরিষ্কার করা যায়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাস্তব উদাহরণ: সম্পূর্ণ wrangling flow</h2>
+    <div class="code-box">
+import numpy as np
+import pandas as pd
+
+# messy raw data (Part 1-এর সেই সমস্যাগুলো সহ)
+raw = pd.DataFrame({
+    "title":  ["Python Dev", "python dev", "ML Engineer",
+               "Data Analyst", "Data Analyst"],
+    "salary": ["40000", "40,000", "", "4000000", "45000"],
+    "city":   ["Dhaka", "dhaka", "Chattogram", "Dhaka", "Dhaka"],
+})
+
+# 1) salary পরিষ্কার -> সংখ্যা
+raw["salary"] = (raw["salary"].str.replace(",", "", regex=False)
+                 .replace("", np.nan).astype(float))
+
+# 2) city consistent করা
+raw["city"] = raw["city"].str.strip().str.title()
+
+# 3) title consistent (ছোট হাতের অক্ষরে তুলনার জন্য)
+raw["title"] = raw["title"].str.strip().str.title()
+
+# 4) outlier ধরা — অস্বাভাবিক salary NaN করি (40 লাখ ভুল)
+raw.loc[raw["salary"] &gt; 1_000_000, "salary"] = np.nan
+
+# 5) missing salary -> median দিয়ে fill
+raw["salary"] = raw["salary"].fillna(raw["salary"].median())
+
+# 6) duplicate সরানো
+raw = raw.drop_duplicates()
+
+# এখন প্রশ্নের উত্তর নির্ভরযোগ্য:
+print(raw.groupby("city")["salary"].mean())
+    </div>
+    <p>
+        দেখুন — Part 1-এর সেই "garbage" data এখন পরিষ্কার। এই পুরো flow-টাই একজন junior AI Engineer-এর
+        দৈনন্দিন কাজের নমুনা।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ১১. একজন AI Engineer-এর দৃষ্টিতে</h2>
+    <ul>
+        <li><strong>Cleaning পুনরাবৃত্তিযোগ্য রাখা:</strong> প্রতিটা ধাপ script/notebook-এ, যাতে নতুন data এলে আবার চালানো যায়।</li>
+        <li><strong>Leakage-সচেতন:</strong> fill/scale-এর মান শুধু training data থেকে (E08)।</li>
+        <li><strong>Merge-এর পর যাচাই:</strong> merge-এর পর <code>shape</code> দেখে নিশ্চিত হওয়া row অপ্রত্যাশিতভাবে বাড়েনি (many-to-many ভুল)।</li>
+        <li><strong>groupby দিয়ে feature:</strong> aggregate value (গড়, count) প্রায়ই শক্তিশালী ML feature।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        <strong>Boss:</strong> <em>"এই groupby-merge দিয়ে আমার business-এ আসলে কী লাভ?"</em><br><br>
+        <strong>উত্তর:</strong> এগুলোই decision-এর ভিত্তি। groupby দিয়ে আমরা বলতে পারি "কোন শহরে/role-এ salary বেশি"
+        — যা hiring ও budget সিদ্ধান্তে লাগে। merge দিয়ে বিচ্ছিন্ন data (job + company + location) একসাথে এনে
+        সম্পূর্ণ ছবি পাই। আর missing/duplicate পরিষ্কার না করলে সব রিপোর্ট ভুল হবে — ভুল রিপোর্ট মানে ভুল
+        সিদ্ধান্ত, যার খরচ অনেক বেশি। মানে: নির্ভরযোগ্য insight = ভালো সিদ্ধান্ত = business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Experience with data cleaning, aggregation, and joining datasets (Pandas)."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি messy data পরিষ্কার করতে, groupby দিয়ে summarize করতে ও একাধিক table জোড়া দিতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>real data সবসময় messy ও বিভিন্ন উৎসে ছড়ানো; এগুলো একত্র ও পরিষ্কার করা মূল কাজ।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>অসম্পূর্ণ/ভুল/বিচ্ছিন্ন data থেকে ভুল সিদ্ধান্ত এড়ায়।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>groupby+agg, isnull/fillna/dropna, drop_duplicates, merge (how types), str cleaning।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>জটিল MultiIndex, বিশাল merge-এর performance tuning, big-data join — পরে।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>"raw → cleaned" notebook যেখানে প্রতিটা cleaning সিদ্ধান্ত ব্যাখ্যা করা।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"missing value কীভাবে handle করো?", "inner vs left join?", "split-apply-combine কী?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "সব missing value drop করে দাও।" →
+        <strong>ঠিক:</strong> অনেক data হারালে model দুর্বল হয়; পরিস্থিতি বুঝে fill নাকি drop ঠিক করুন।<br><br>
+
+        <strong>ভুল ২:</strong> missing সংখ্যা mean দিয়ে fill করা (সবসময়)। →
+        <strong>ঠিক:</strong> outlier থাকলে mean বিভ্রান্ত করে; median প্রায়ই নিরাপদ।<br><br>
+
+        <strong>ভুল ৩:</strong> পুরো data (train+test) দেখে fill/scale করা। →
+        <strong>ঠিক:</strong> এটা data leakage; মান শুধু training থেকে নিন (E08)।<br><br>
+
+        <strong>ভুল ৪:</strong> merge-এর পর row বেড়ে গেলেও খেয়াল না করা। →
+        <strong>ঠিক:</strong> many-to-many merge অজান্তে row বাড়ায়; merge-এর পর shape যাচাই করুন।<br><br>
+
+        <strong>ভুল ৫:</strong> অন্ধভাবে <code>drop_duplicates()</code>। →
+        <strong>ঠিক:</strong> আগে ঠিক করুন কোন column মিললে সেটা "সত্যিই" duplicate।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> groupby-এর split-apply-combine ব্যাখ্যা করো।<br>
+        <em>উত্তর:</em> data একটা key-তে ভাগ (split), প্রতিটা group-এ function চালানো (apply), ফল একসাথে জোড়া (combine)।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> missing value কীভাবে handle করো?<br>
+        <em>উত্তর:</em> আগে isnull().sum() দিয়ে পরিমাণ দেখি; কম হলে drop, নাহলে সংখ্যায় median/ category-তে mode বা "Unknown" দিয়ে fill — মান শুধু training থেকে (leakage এড়াতে)।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> inner আর left join-এর পার্থক্য?<br>
+        <em>উত্তর:</em> inner শুধু মেলানো row রাখে; left বাঁ table-এর সব row রাখে, ডানে না মিললে NaN।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> mean বনাম median দিয়ে fill — কোনটা কখন?<br>
+        <em>উত্তর:</em> outlier/ skewed data-তে median নিরাপদ; symmetric distribution-এ mean-ও চলে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        <strong>🧪 হাতে-কলমে:</strong> section ১০-এর messy DataFrame নিয়ে:<br><br>
+        ১. cleaning-এর আগে ও পরে <code>isnull().sum()</code> print করে পার্থক্য দেখুন।<br>
+        ২. প্রতিটা <code>title</code>-এ গড় salary বের করুন (<code>groupby</code>)।<br>
+        ৩. একটা <code>companies</code> table বানিয়ে <code>city</code>-র ভিত্তিতে region column merge করুন।<br>
+        ৪. <code>drop_duplicates()</code> চালানোর আগে ও পরে <code>shape</code> তুলনা করুন।<br>
+        ৫. একটা <code>salary_band</code> column বানান (low/mid/high)।<br><br>
+        <em>প্রতিটা ধাপে নিজেকে জিজ্ঞেস করুন: "এই সিদ্ধান্তটা কেন নিলাম?"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        flagship <strong>V2 (Data Analyzer)</strong>-এ এই episode-ই আসল কাজের কেন্দ্র। আমরা raw bangladesh job
+        data পরিষ্কার করব (skill নাম standardize, salary সংখ্যায়, duplicate সরানো), তারপর <code>groupby</code>
+        দিয়ে "কোন skill-এ salary বেশি", "কোন শহরে কত job" — এমন প্রশ্নের উত্তর বের করব। প্রয়োজনে company/location
+        data merge করব।
+    </p>
+    <div class="info-box">
+        এই পরিষ্কার-করা data পরে Series 05-এ ML model-এর input হবে। তাই এখানে করা cleaning-এর মান পুরো
+        project-এর মান নির্ধারণ করবে — মনে রাখুন GIGO (E01)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ <strong>groupby</strong> — split-apply-combine দিয়ে প্রতিটা group-এ aggregate (mean/count/max)<br>
+        ✓ <strong>agg</strong> দিয়ে একসাথে একাধিক হিসাব (named aggregation পড়তে সহজ)<br>
+        ✓ <strong>missing value</strong>: isnull → dropna বা fillna (median/mode/Unknown), leakage-সচেতনভাবে<br>
+        ✓ <strong>duplicate</strong>: duplicated/drop_duplicates — তবে অন্ধভাবে নয়<br>
+        ✓ <strong>merge</strong>: common key-তে join (inner/left/right/outer) — SQL JOIN-এর মতো<br>
+        ✓ <strong>str/apply/map</strong> দিয়ে transformation ও পরিষ্কার
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৯. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E05):</strong> "Matplotlib দিয়ে data-কে চোখে দেখা: distribution, correlation,
+        outlier।"<br><br>
+        সংখ্যায় হিসাব তো করলাম, কিন্তু মানুষ সংখ্যার চেয়ে ছবিতে pattern ভালো ধরে। পরের পর্বে আমরা
+        <strong>visualization</strong> শিখব — histogram দিয়ে distribution, scatter দিয়ে সম্পর্ক, box plot দিয়ে
+        outlier — যাতে data-কে শুধু হিসাব নয়, "চোখে দেখে" বুঝতে পারি।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-03-pandas-part1-dataframe.html">⬅ পূর্ববর্তী: Pandas ১</a>
+            <a href="episode-05-matplotlib-eda.html">পরবর্তী: Visualization ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 04)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e04.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

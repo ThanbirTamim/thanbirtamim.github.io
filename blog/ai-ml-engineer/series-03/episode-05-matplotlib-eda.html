@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Matplotlib দিয়ে distribution, correlation ও outlier visualization — EDA-র বাংলা গাইড।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Matplotlib দিয়ে data-কে চোখে দেখা: distribution, correlation, outlier | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Matplotlib দিয়ে distribution, correlation ও outlier visualization — EDA-র বাংলা গাইড।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Matplotlib দিয়ে data-কে চোখে দেখা: distribution, correlation, outlier | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 05
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Matplotlib দিয়ে data-কে চোখে দেখা: distribution, correlation, outlier</h1>
+    <p class="subtitle">EDA — চোখে দেখে data বোঝা (Series 03, Episode 05)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 05 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: সংখ্যা মিথ্যা বলছিল না, কিন্তু সব বলছিলও না</li>
+        <li>২. সমস্যা: শুধু describe() যথেষ্ট নয়</li>
+        <li>৩. EDA কী এবং কেন visualization</li>
+        <li>৪. তিন Level-এ visualization বোঝা</li>
+        <li>৫. Histogram: distribution দেখা</li>
+        <li>৬. Box plot: outlier ধরা</li>
+        <li>৭. Scatter plot: দুই variable-এর সম্পর্ক</li>
+        <li>৮. Bar chart: category তুলনা</li>
+        <li>৯. Correlation heatmap: কে কার সাথে সম্পর্কিত</li>
+        <li>১০. Anscombe-এর সতর্কবার্তা: কেন চোখে দেখা জরুরি</li>
+        <li>১১. একজন AI Engineer-এর দৃষ্টিতে EDA</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ</li>
+        <li>১৯. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: সংখ্যা মিথ্যা বলছিল না, কিন্তু সব বলছিলও না</h2>
+    <p>
+        Rahim <code>df["salary"].mean()</code> চালিয়ে পেল ৬৫,০০০ টাকা। সে Boss-কে বলল "গড় salary ৬৫ হাজার"।
+        কিন্তু Nila একটা histogram এঁকে দেখাল — আসলে বেশিরভাগ salary ৩৫-৪৫ হাজারের মধ্যে, আর গুটিকয়েক ২ লাখের
+        salary পুরো গড়কে টেনে ওপরে তুলেছে।
+    </p>
+    <div class="story-box">
+        <strong>Nila:</strong> <em>"তোমার সংখ্যা ভুল ছিল না, Rahim। কিন্তু 'গড় ৬৫ হাজার' বললে Boss ভাববে অধিকাংশ
+        মানুষ ৬৫ পায় — যা মিথ্যা। একটা ছবি এঁকে দেখাও, সত্যটা এক নজরে বেরিয়ে আসবে। মনে রেখো — data-কে
+        প্রশ্ন করার আগে data-কে <strong>চোখে দেখতে</strong> হয়। এটাই EDA।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: শুধু describe() যথেষ্ট নয়</h2>
+    <p>
+        <code>describe()</code> দারুণ summary দেয় (mean, std, min, max)। কিন্তু সংখ্যা কিছু জিনিস লুকিয়ে রাখে:
+    </p>
+    <ul>
+        <li>distribution-এর আকার (একদিকে ঝোঁকা? দুটো চূড়া?)</li>
+        <li>outlier — কয়টা, কতটা দূরে</li>
+        <li>দুই variable-এর সম্পর্ক (experience বাড়লে salary বাড়ে কি?)</li>
+        <li>ভুল data (যেমন salary = 0 বা negative)</li>
+    </ul>
+    <p>এই সব "চোখে দেখলে" সাথে সাথে ধরা পড়ে — তাই visualization একজন AI Engineer-এর প্রথম হাতিয়ার।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📚</span> ৩. EDA কী এবং কেন visualization</h2>
+    <p>
+        <strong>EDA (Exploratory Data Analysis)</strong> মানে model বানানোর আগে data-কে ভালোভাবে চেনা ও প্রশ্ন করা।
+        <strong>Matplotlib</strong> হলো Python-এর মূল plotting library (প্রায় সব chart-এর ভিত্তি)। Pandas ভেতরে
+        Matplotlib ব্যবহার করে সরাসরি <code>df.plot()</code> দেয়। Seaborn নামে একটা library আছে যা Matplotlib-এর
+        উপর সুন্দর chart সহজ করে — কিন্তু ভিত্তি বোঝার জন্য আমরা Matplotlib দিয়েই শুরু করব।
+    </p>
+    <div class="key-point">
+        <strong>কেন এই tech?</strong> Matplotlib প্রায় সর্বত্র চলে, notebook-এ default, আর নিচু-স্তরের control দেয়।
+        একবার এটা বুঝলে Seaborn/Plotly যেকোনো tool সহজ লাগবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ visualization বোঝা</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        হাজারটা সংখ্যার একটা তালিকা মানুষের মাথা ধরে যায়। কিন্তু সেই সংখ্যাগুলো একটা chart-এ বসালে চোখ সাথে
+        সাথে pattern ধরে — কোথায় ভিড়, কোথায় ফাঁকা, কোথায় অদ্ভুত বিন্দু। ছবি হলো data-র ভাষা।
+    </p>
+    <h3>Level 2 — technical ভাবে</h3>
+    <p>
+        প্রতিটা chart type একটা নির্দিষ্ট প্রশ্নের উত্তর দেয়: histogram → "একটা variable কীভাবে ছড়ানো?",
+        scatter → "দুটো variable কি একসাথে বদলায়?", box plot → "outlier আছে কি?", bar → "category-দের তুলনা?"।
+        সঠিক প্রশ্নে সঠিক chart বাছাই EDA-র মূল দক্ষতা।
+    </p>
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        engineer রা EDA-কে model-এর "রোগ নির্ণয়" ধাপ হিসেবে দেখে। outlier, skew, correlation — এগুলো আগে দেখে
+        নিলে পরে model কেন খারাপ করছে তা বোঝা সহজ হয়। EDA বাদ দিয়ে সরাসরি model-এ ঝাঁপ দেওয়া মানে অন্ধকারে গুলি ছোড়া।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৫. Histogram: distribution দেখা</h2>
+    <div class="code-box">
+import matplotlib.pyplot as plt
+import pandas as pd
+
+df = pd.DataFrame({
+    "salary": [30000, 35000, 40000, 42000, 45000, 38000,
+               41000, 39000, 200000, 220000],   # শেষ দুটো outlier
+})
+
+plt.figure(figsize=(8, 5))
+plt.hist(df["salary"], bins=10, color="#667eea", edgecolor="white")
+plt.title("Salary Distribution")
+plt.xlabel("Salary (টাকা)")
+plt.ylabel("কতজন")
+plt.tight_layout()
+plt.savefig("salary_hist.png", dpi=120)   # ছবি হিসেবে সেভ
+plt.show()
+    </div>
+    <div class="diagram">
+Salary Histogram (কল্পিত):
+
+কতজন
+  6 |        ████
+  4 |     ██ ████ ██
+  2 |     ██ ████ ██              ██  ██
+  0 +------------------------------------
+     30k  40k  50k ...          200k 220k
+              ↑ বেশিরভাগ এখানে      ↑ outlier (গড়কে টানে)
+    </div>
+    <p>
+        এক নজরেই বোঝা যায় — বেশিরভাগ salary ৩০-৪৫ হাজারে, আর দুটো বিশাল value আলাদা দাঁড়িয়ে আছে। এই ছবিটাই
+        Rahim-কে Boss-এর কাছে সঠিক গল্প বলতে সাহায্য করত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📦</span> ৬. Box plot: outlier ধরা</h2>
+    <div class="code-box">
+plt.figure(figsize=(6, 5))
+plt.boxplot(df["salary"], vert=True)
+plt.title("Salary Box Plot")
+plt.ylabel("Salary (টাকা)")
+plt.tight_layout()
+plt.show()
+    </div>
+    <div class="technical-box">
+        <strong>Box plot কীভাবে পড়বেন:</strong> বাক্সটা মাঝের ৫০% data (Q1 থেকে Q3), মাঝের লাইন median।
+        বাক্সের বাইরে "whisker", আর whisker-এর বাইরের বিন্দুগুলো সম্ভাব্য <strong>outlier</strong>। outlier চেনার
+        একটা সাধারণ নিয়ম: IQR = Q3 − Q1; Q1 − 1.5×IQR-এর নিচে বা Q3 + 1.5×IQR-এর ওপরে হলে সন্দেহজনক।
+    </div>
+    <div class="code-box">
+# IQR পদ্ধতিতে outlier গোনা
+q1 = df["salary"].quantile(0.25)
+q3 = df["salary"].quantile(0.75)
+iqr = q3 - q1
+low, high = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+outliers = df[(df["salary"] &lt; low) | (df["salary"] &gt; high)]
+print(outliers)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📈</span> ৭. Scatter plot: দুই variable-এর সম্পর্ক</h2>
+    <div class="code-box">
+df2 = pd.DataFrame({
+    "experience": [0, 1, 2, 3, 4, 5, 6, 7],
+    "salary":     [25000, 32000, 40000, 55000,
+                   62000, 78000, 85000, 95000],
+})
+
+plt.figure(figsize=(8, 5))
+plt.scatter(df2["experience"], df2["salary"], color="#764ba2", s=60)
+plt.title("Experience বনাম Salary")
+plt.xlabel("Experience (বছর)")
+plt.ylabel("Salary (টাকা)")
+plt.tight_layout()
+plt.show()
+    </div>
+    <p>
+        এখানে বিন্দুগুলো মোটামুটি একটা ওপরমুখী রেখা তৈরি করছে — মানে experience বাড়লে salary বাড়ে (ইতিবাচক
+        সম্পর্ক)। এই "একসাথে বদলানো"-ই <strong>correlation</strong>-এর দৃশ্যরূপ, যা Series 04-এ সংখ্যায় মাপব।
+    </p>
+    <div class="info-box">
+        <strong>মনে রাখুন:</strong> scatter-এ সম্পর্ক দেখা মানেই "একটা আরেকটার কারণ" নয়। correlation ≠ causation।
+        experience আর salary একসাথে বাড়ে, কিন্তু আরও অনেক কারণ (skill, কোম্পানি) থাকতে পারে। এই পার্থক্য Series 04-এ বিস্তারিত।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৮. Bar chart: category তুলনা</h2>
+    <div class="code-box">
+# groupby (আগের episode) + bar chart — শক্তিশালী জুটি
+city_avg = pd.DataFrame({
+    "city":   ["Dhaka", "Chattogram", "Sylhet", "Khulna"],
+    "salary": [72000, 58000, 61000, 49000],
+})
+
+plt.figure(figsize=(8, 5))
+plt.bar(city_avg["city"], city_avg["salary"], color="#667eea")
+plt.title("প্রতি শহরে গড় Salary")
+plt.xlabel("শহর")
+plt.ylabel("গড় Salary (টাকা)")
+plt.tight_layout()
+plt.show()
+    </div>
+    <p>
+        Bar chart category তুলনার জন্য আদর্শ। groupby দিয়ে aggregate করে (E04) সেই ফল bar chart-এ দেখানো — এটা
+        report ও presentation-এ সবচেয়ে বেশি ব্যবহৃত জুটি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔥</span> ৯. Correlation heatmap: কে কার সাথে সম্পর্কিত</h2>
+    <div class="code-box">
+import numpy as np
+
+df3 = pd.DataFrame({
+    "experience": [0, 1, 2, 3, 4, 5, 6, 7],
+    "salary":     [25000, 32000, 40000, 55000, 62000, 78000, 85000, 95000],
+    "age":        [22, 24, 25, 27, 29, 31, 33, 35],
+})
+
+corr = df3.corr()          # সব সংখ্যার column-এর correlation matrix
+print(corr)
+
+plt.figure(figsize=(6, 5))
+plt.imshow(corr, cmap="coolwarm", vmin=-1, vmax=1)
+plt.colorbar(label="correlation")
+plt.xticks(range(len(corr)), corr.columns, rotation=45)
+plt.yticks(range(len(corr)), corr.columns)
+plt.title("Correlation Heatmap")
+plt.tight_layout()
+plt.show()
+    </div>
+    <p>
+        <code>df.corr()</code> -1 থেকে +1 এর মধ্যে সংখ্যা দেয়: +1 = একসাথে বাড়ে, -1 = একটা বাড়লে অন্যটা কমে,
+        0 = সম্পর্ক নেই। heatmap সেই matrix-কে রঙে দেখায় — এক নজরে বোঝা যায় কোন feature-রা সম্পর্কিত (যা ML
+        model-এ feature বাছাইয়ে সাহায্য করে)।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১০. Anscombe-এর সতর্কবার্তা: কেন চোখে দেখা জরুরি</h2>
+    <p>
+        একটা বিখ্যাত উদাহরণ — <strong>Anscombe's Quartet</strong>। চারটা আলাদা dataset-এর mean, variance আর
+        correlation প্রায় হুবহু এক। কিন্তু plot করলে দেখা যায় — একটা সরল রেখা, একটা বাঁকা, একটাতে একটা বিশাল
+        outlier, একটা প্রায় উল্লম্ব! সংখ্যা একই, কিন্তু গল্প সম্পূর্ণ আলাদা।
+    </p>
+    <div class="key-point">
+        শিক্ষা: শুধু <code>mean</code>, <code>std</code>, <code>corr</code> দেখে সিদ্ধান্ত নেবেন না। সবসময়
+        <strong>plot করে চোখে দেখুন</strong> — নাহলে ভুল সিদ্ধান্তে পৌঁছাবেন। এটাই EDA-র সবচেয়ে বড় শিক্ষা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ১১. একজন AI Engineer-এর দৃষ্টিতে EDA</h2>
+    <ul>
+        <li><strong>প্রতিটা column plot:</strong> নতুন data পেলে প্রতিটা গুরুত্বপূর্ণ column-এর distribution দেখা।</li>
+        <li><strong>Target বনাম feature:</strong> যা predict করব (salary) তার সাথে প্রতিটা feature-এর সম্পর্ক দেখা।</li>
+        <li><strong>Outlier সিদ্ধান্ত:</strong> outlier কি ভুল data নাকি বাস্তব? সেই অনুযায়ী রাখা/সরানো।</li>
+        <li><strong>ছবি সেভ:</strong> <code>savefig</code> দিয়ে chart সেভ করে report/README-তে দেওয়া (portfolio-তে দারুণ দেখায়)।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        <strong>Boss:</strong> <em>"তুমি সংখ্যা দিয়েছ, আবার chart কেন? আমার তো সময় নেই।"</em><br><br>
+        <strong>উত্তর:</strong> ঠিক এই কারণেই chart — আপনার সময় বাঁচাতে। একটা ভালো chart ১০ সেকেন্ডে যা বলে,
+        সংখ্যার টেবিল তা বলতে ১০ মিনিট নেয়। আর chart ভুল সিদ্ধান্ত ঠেকায় — যেমন "গড় ৬৫ হাজার" শুনে ভুল বাজেট
+        না বানিয়ে, histogram দেখে বুঝবেন বেশিরভাগ ৪০ হাজারে। দ্রুত, সঠিক সিদ্ধান্ত = সরাসরি business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Ability to perform Exploratory Data Analysis (EDA) and data visualization (Matplotlib/Seaborn)."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি data-কে chart দিয়ে explore করে insight ও সমস্যা (outlier, skew) বের করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>model বানানোর আগে data বোঝা ও stakeholder-কে insight দেখানো — দুটোই লাগে।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>না-দেখা data-র লুকানো সমস্যা থেকে ভুল model/সিদ্ধান্ত এড়ায়।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>histogram, box plot, scatter, bar, correlation — কোন প্রশ্নে কোন chart, আর সেগুলো পড়তে পারা।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>interactive dashboard (Plotly/Dash), উন্নত styling — পরে।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>EDA notebook-এ chart + প্রতিটা chart থেকে ১-২ লাইন insight লেখা।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"outlier কীভাবে ধরো?", "distribution দেখতে কোন chart?", "correlation ≠ causation ব্যাখ্যা করো।"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "describe() যথেষ্ট, plot দরকার নেই।" →
+        <strong>ঠিক:</strong> Anscombe দেখায় একই সংখ্যায় ভিন্ন গল্প; সবসময় plot করুন।<br><br>
+
+        <strong>ভুল ২:</strong> "correlation বেশি মানেই একটা আরেকটার কারণ।" →
+        <strong>ঠিক:</strong> correlation ≠ causation।<br><br>
+
+        <strong>ভুল ৩:</strong> "সব outlier সরিয়ে দাও।" →
+        <strong>ঠিক:</strong> কিছু outlier বাস্তব ও গুরুত্বপূর্ণ (যেমন ধনী গ্রাহক/জালিয়াতি); আগে বুঝুন।<br><br>
+
+        <strong>ভুল ৪:</strong> pie chart-এ ১০+ category। →
+        <strong>ঠিক:</strong> অনেক category তুলনায় bar chart পড়া সহজ; pie কম category-তে সীমিত রাখুন।<br><br>
+
+        <strong>ভুল ৫:</strong> chart-এ label/title না দেওয়া। →
+        <strong>ঠিক:</strong> axis label ও title ছাড়া chart অর্থহীন; সবসময় দিন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> একটা variable-এর distribution দেখতে কোন chart?<br>
+        <em>উত্তর:</em> histogram (আকার/skew) বা box plot (median ও outlier)।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> outlier কীভাবে ধরো?<br>
+        <em>উত্তর:</em> box plot দেখে, বা IQR নিয়ম (Q1−1.5·IQR, Q3+1.5·IQR-এর বাইরে), অথবা z-score।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> দুই variable-এর সম্পর্ক দেখতে?<br>
+        <em>উত্তর:</em> scatter plot; সংখ্যায় correlation (df.corr) ও heatmap।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> mean বনাম median — কখন কোনটা রিপোর্ট করবে?<br>
+        <em>উত্তর:</em> skewed data/outlier থাকলে median বেশি প্রতিনিধিত্বমূলক; symmetric হলে mean।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        <strong>🧪 হাতে-কলমে:</strong> section ৫ ও ৭-এর data নিয়ে:<br><br>
+        ১. salary-র একটা histogram আঁকুন, bins বদলে দেখুন আকার কেমন বদলায়।<br>
+        ২. IQR পদ্ধতিতে salary-র outlier গুনুন, তারপর box plot-এ মিলিয়ে দেখুন।<br>
+        ৩. experience বনাম salary-র scatter আঁকুন — সম্পর্ক ইতিবাচক না নেতিবাচক?<br>
+        ৪. <code>df.corr()</code> চালিয়ে heatmap আঁকুন।<br>
+        ৫. যেকোনো একটা chart <code>savefig("chart.png")</code> দিয়ে সেভ করুন।<br><br>
+        <em>প্রতিটা chart-এর নিচে ১ লাইনে লিখুন: "এই ছবি আমাকে কী বলছে?"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        flagship <strong>V2 (Data Analyzer)</strong>-এ visualization হলো "গল্প বলার" ধাপ। পরিষ্কার-করা job data
+        (E03-E04) থেকে আমরা আঁকব: salary distribution (histogram), শহরভিত্তিক গড় salary (bar), experience বনাম
+        salary (scatter), আর skill-দের correlation (heatmap)।
+    </p>
+    <div class="info-box">
+        এই chart-গুলোই P1 (Job Market Analyzer, E09)-এর README/report-এ যাবে। একটা ভালো EDA report সহ notebook
+        portfolio-তে recruiter-দের চোখে আলাদাভাবে ধরা দেয় — "এই লোকটা শুধু model চালায় না, data বোঝে।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ <strong>EDA</strong> = model-এর আগে data চোখে দেখে চেনা; Matplotlib তার মূল হাতিয়ার<br>
+        ✓ <strong>histogram</strong> → distribution; <strong>box plot</strong> → outlier (IQR নিয়ম)<br>
+        ✓ <strong>scatter</strong> → দুই variable-এর সম্পর্ক (কিন্তু correlation ≠ causation)<br>
+        ✓ <strong>bar</strong> → category তুলনা (groupby-এর সাথে জুটি); <strong>heatmap</strong> → correlation matrix<br>
+        ✓ <strong>Anscombe's Quartet</strong> — একই সংখ্যায় ভিন্ন গল্প; তাই সবসময় plot করুন<br>
+        ✓ chart-এ সবসময় title ও axis label দিন; insight ১ লাইনে লিখুন
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৯. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E06):</strong> "SQL Part 1: SELECT, WHERE, JOIN, GROUP BY — data কোথায়
+        থাকে।"<br><br>
+        এতক্ষণ ধরে নিলাম data একটা CSV file-এ আছে। কিন্তু বাস্তবে বেশিরভাগ কোম্পানির data থাকে
+        <strong>database</strong>-এ। সেখান থেকে data টেনে আনতে জানতে হয় <strong>SQL</strong> — যা প্রায় প্রতিটা
+        data/ML job-এ চাওয়া হয়। মজার ব্যাপার: SQL-এর SELECT/WHERE/GROUP BY/JOIN হুবহু Pandas-এর মতো — পরের পর্বে সেটাই দেখব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-04-pandas-part2-groupby-merge.html">⬅ পূর্ববর্তী: Pandas ২</a>
+            <a href="episode-06-sql-part1-select-join.html">পরবর্তী: SQL ১ ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 05)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e05.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SQL subquery, window function ও index — analytical query লেখার বাংলা গাইড, junior-দের common আটকে যাওয়া জায়গা।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SQL Part 2: subquery, window function, index — যেখানে junior আটকায় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="SQL subquery, window function ও index — analytical query লেখার বাংলা গাইড, junior-দের common আটকে যাওয়া জায়গা।">
+    <meta property="og:locale" content="bn_BD">
+    <title>SQL Part 2: subquery, window function, index — যেখানে junior আটকায় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 07
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> SQL Part 2: subquery, window function, index — যেখানে junior আটকায়</h1>
+    <p class="subtitle">analytical SQL (Series 03, Episode 07)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 07 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "প্রতিটা শহরের top salary" — Rahim আটকে গেল</li>
+        <li>২. সমস্যা: GROUP BY দিয়ে যা করা যায় না</li>
+        <li>৩. তিন Level-এ window function বোঝা</li>
+        <li>৪. Subquery: query-র ভেতরে query</li>
+        <li>৫. CTE: subquery-কে পরিষ্কার করা (WITH)</li>
+        <li>৬. Window function কী — GROUP BY থেকে পার্থক্য</li>
+        <li>৭. ROW_NUMBER, RANK, DENSE_RANK</li>
+        <li>৮. PARTITION BY: group-ভিত্তিক ranking</li>
+        <li>৯. Running total ও moving average</li>
+        <li>১০. LAG ও LEAD: আগের/পরের row</li>
+        <li>১১. Index: query কেন দ্রুত/ধীর হয়</li>
+        <li>১২. বাস্তব উদাহরণ: BD job data-তে analytical query</li>
+        <li>১৩. একজন AI Engineer-এর দৃষ্টিতে</li>
+        <li>১৪. Boss Question</li>
+        <li>১৫. Job Requirement Decoder</li>
+        <li>১৬. সাধারণ ভুল ধারণা</li>
+        <li>১৭. Interview Prep</li>
+        <li>১৮. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৯. Project Connection</li>
+        <li>২০. সারসংক্ষেপ</li>
+        <li>২১. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: "প্রতিটা শহরের top salary" — Rahim আটকে গেল</h2>
+    <p>
+        Rahim এখন SELECT, WHERE, GROUP BY, JOIN পারে। Boss নতুন প্রশ্ন দিলেন —
+        "<em>প্রতিটা শহরের সবচেয়ে বেশি salary-র job কোনটা, তার title সহ দেখাও।</em>"
+    </p>
+    <div class="story-box">
+        <strong>Rahim:</strong> <em>"আপা, <code>GROUP BY city</code> করে <code>MAX(salary)</code> তো বের করলাম।
+        কিন্তু Boss তো title-ও চান! আর GROUP BY করলে তো title হারিয়ে যায়, শুধু max সংখ্যাটা থাকে..."</em><br><br>
+        <strong>Nila:</strong> <em>"একদম ঠিক আটকেছ — আর এই জায়গাতেই বেশিরভাগ junior আটকায়। GROUP BY row গুলো
+        গুটিয়ে ফেলে, তাই detail (title) হারায়। এর সমাধান দুটো: <strong>subquery</strong> আর সবচেয়ে সুন্দর অস্ত্র
+        <strong>window function</strong>। আজ এই দুটোই শিখবে, সাথে index — কেন query দ্রুত বা ধীর হয়।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: GROUP BY দিয়ে যা করা যায় না</h2>
+    <p>GROUP BY অনেক row-কে একটা row-এ গুটিয়ে ফেলে। কিন্তু অনেক প্রশ্নে আমরা <strong>detail row ধরে রেখেও</strong> group-ভিত্তিক হিসাব চাই:</p>
+    <ul>
+        <li>"প্রতিটা শহরের top ৩ salary-র job" — row হারালে চলবে না।</li>
+        <li>"প্রতিটা row-তে, ওই শহরের গড় salary-ও পাশে দেখাও।"</li>
+        <li>"salary অনুযায়ী প্রত্যেকের rank কত।"</li>
+        <li>"running total — ক্রমযোগফল।"</li>
+    </ul>
+    <p>এই ধরনের প্রশ্নের জন্যই window function তৈরি — যা group-এর হিসাব করে কিন্তু কোনো row হারায় না।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৩. তিন Level-এ window function বোঝা</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        ভাবুন একটা class-এর marksheet। GROUP BY হলো — "প্রতিটা section-এর গড় মার্ক" (একটা সংখ্যা, ছাত্র হারিয়ে গেল)।
+        Window function হলো — "প্রতিটা ছাত্রের নামের পাশে তার section-এর গড় মার্ক ও তার rank লিখে দাও" (সব ছাত্র থাকে,
+        শুধু পাশে extra তথ্য যোগ হয়)।
+    </p>
+    <h3>Level 2 — technical ভাবে</h3>
+    <p>
+        Window function প্রতিটা row-এর জন্য একটা "window" (সম্পর্কিত row-এর সেট) নিয়ে হিসাব করে, কিন্তু row-গুলো
+        গুটিয়ে ফেলে না। মূল সিনট্যাক্স: <code>FUNCTION() OVER (PARTITION BY ... ORDER BY ...)</code>। এখানে
+        <code>PARTITION BY</code> = কোন group ধরে হিসাব, <code>ORDER BY</code> = window-এর ভেতরে সাজানোর ক্রম।
+    </p>
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        Engineer রা window function-কে feature engineering-এর শক্তিশালী হাতিয়ার হিসেবে দেখে — "গত ৭ দিনের moving
+        average", "আগের transaction থেকে পার্থক্য (LAG)", "customer-এর মধ্যে rank"। এসব feature ML model-এ সরাসরি কাজে লাগে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📦</span> ৪. Subquery: query-র ভেতরে query</h2>
+    <p>Subquery হলো একটা query-র ভেতরে বসানো আরেকটা query। "গড়ের চেয়ে বেশি salary-র job" — একটা ক্লাসিক উদাহরণ:</p>
+    <div class="code-box">
+-- সব job-এর গড় salary-র চেয়ে বেশি পায় এমন job
+SELECT title, salary
+FROM jobs
+WHERE salary &gt; (SELECT AVG(salary) FROM jobs);
+
+-- IN দিয়ে subquery: AI/ML industry-র company-র job
+SELECT title, salary
+FROM jobs
+WHERE company_id IN (
+    SELECT id FROM companies WHERE industry = 'AI/ML'
+);
+    </div>
+    <p>
+        ভেতরের query (<code>SELECT AVG(salary)...</code>) আগে চলে একটা মান বের করে, তারপর বাইরের query সেটা ব্যবহার করে।
+        কিন্তু subquery জটিল হলে পড়তে কষ্ট হয় — তার সমাধান CTE।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧾</span> ৫. CTE: subquery-কে পরিষ্কার করা (WITH)</h2>
+    <p>
+        <strong>CTE (Common Table Expression)</strong> — <code>WITH</code> দিয়ে একটা অস্থায়ী নাম দেওয়া result তৈরি করা,
+        যা পরে সাধারণ table-এর মতো ব্যবহার করা যায়। জটিল query অনেক পড়ার-যোগ্য হয়:
+    </p>
+    <div class="code-box">
+-- প্রতিটা industry-র গড় salary আগে বের করি,
+-- তারপর যাদের গড় 80000-এর বেশি তাদের দেখাই
+WITH industry_avg AS (
+    SELECT c.industry, AVG(j.salary) AS avg_salary
+    FROM jobs j
+    JOIN companies c ON j.company_id = c.id
+    GROUP BY c.industry
+)
+SELECT industry, avg_salary
+FROM industry_avg
+WHERE avg_salary &gt; 80000
+ORDER BY avg_salary DESC;
+    </div>
+    <div class="info-box">
+        <strong>কখন CTE, কখন subquery?</strong> ছোট, একবার ব্যবহারের subquery inline রাখা ঠিক আছে। কিন্তু query
+        জটিল বা একই subquery বারবার লাগলে CTE ব্যবহার করুন — পড়তে ও debug করতে সহজ হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪟</span> ৬. Window function কী — GROUP BY থেকে পার্থক্য</h2>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>GROUP BY</strong><br>
+            অনেক row → একটা row (গুটিয়ে ফেলে)।<br>
+            detail হারায়।<br>
+            "প্রতিটা শহরের গড়" = ৩টা row।
+        </div>
+        <div class="comparison-item">
+            <strong>Window function</strong><br>
+            row সংখ্যা একই থাকে।<br>
+            প্রতিটা row-এর পাশে group-এর হিসাব বসে।<br>
+            ৬টা job → ৬টা row, পাশে গড়।
+        </div>
+    </div>
+    <div class="code-box">
+-- প্রতিটা job-এর পাশে ওই শহরের গড় salary
+SELECT title, city, salary,
+       AVG(salary) OVER (PARTITION BY city) AS city_avg
+FROM jobs;
+
+-- ফল: প্রতিটা row থাকে, পাশে city_avg যোগ হয়
+-- title            city    salary  city_avg
+-- Python Developer Dhaka   45000   82500
+-- ML Engineer      Dhaka   95000   82500
+-- Data Analyst     Chatto  40000   62500
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🥇</span> ৭. ROW_NUMBER, RANK, DENSE_RANK</h2>
+    <p>তিনটাই ranking দেয়, কিন্তু tie (সমান মান) হলে আচরণ ভিন্ন:</p>
+    <div class="code-box">
+SELECT title, salary,
+       ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_num,
+       RANK()       OVER (ORDER BY salary DESC) AS rnk,
+       DENSE_RANK() OVER (ORDER BY salary DESC) AS dense_rnk
+FROM jobs;
+    </div>
+    <div class="diagram">
+salary  ROW_NUMBER  RANK  DENSE_RANK
+120000     1         1        1
+95000      2         2        2
+95000      3         2        2   &lt;- tie
+70000      4         4        3   &lt;- RANK লাফ দেয়, DENSE_RANK দেয় না
+45000      5         5        4
+
+ROW_NUMBER : সবসময় ইউনিক ১,২,৩... (tie ভাঙে ইচ্ছেমতো)
+RANK       : tie-তে একই rank, পরেরটা লাফ দেয় (3 বাদ)
+DENSE_RANK : tie-তে একই rank, পরেরটা লাফ দেয় না
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗂️</span> ৮. PARTITION BY: group-ভিত্তিক ranking</h2>
+    <p>এবার Rahim-এর মূল সমস্যা — "প্রতিটা শহরের top salary-র job" — সমাধান করি:</p>
+    <div class="code-box">
+-- প্রতিটা শহরের ভেতরে salary অনুযায়ী rank
+WITH ranked AS (
+    SELECT title, city, salary,
+           ROW_NUMBER() OVER (
+               PARTITION BY city
+               ORDER BY salary DESC
+           ) AS rn
+    FROM jobs
+)
+SELECT title, city, salary
+FROM ranked
+WHERE rn = 1;   -- প্রতিটা শহরের top ১
+
+-- top ৩ চাইলে: WHERE rn &lt;= 3
+    </div>
+    <div class="key-point">
+        <strong>এটাই সেই "top-N per group" প্যাটার্ন</strong> — interview-এর সবচেয়ে জনপ্রিয় SQL প্রশ্নগুলোর একটা।
+        <code>PARTITION BY</code> group তৈরি করে, <code>ORDER BY</code> সাজায়, <code>ROW_NUMBER()</code> rank দেয়,
+        তারপর বাইরে থেকে rank দিয়ে filter — মনে রাখলে অনেক প্রশ্ন সমাধান হয়ে যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📈</span> ৯. Running total ও moving average</h2>
+    <p>
+        Window-এর সাথে <code>ORDER BY</code> দিলে ক্রমযোগফল (running total) বা moving average করা যায়। ধরুন একটা
+        <code>sales(day, amount)</code> table:
+    </p>
+    <div class="code-box">
+-- ক্রমযোগফল (running total)
+SELECT day, amount,
+       SUM(amount) OVER (
+           ORDER BY day
+           ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+       ) AS running_total
+FROM sales;
+
+-- ৩ দিনের moving average
+SELECT day, amount,
+       AVG(amount) OVER (
+           ORDER BY day
+           ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+       ) AS moving_avg_3d
+FROM sales;
+    </div>
+    <p>
+        <code>ROWS BETWEEN ... AND CURRENT ROW</code> দিয়ে window-এর সীমা ঠিক করা হয় — কোন row থেকে কোন row পর্যন্ত
+        হিসাবে ধরা হবে। এটা time-series feature engineering-এর মূল ভিত্তি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">↔️</span> ১০. LAG ও LEAD: আগের/পরের row</h2>
+    <p><code>LAG</code> আগের row-এর মান আনে, <code>LEAD</code> পরের row-এর — পরিবর্তন (change) হিসাব করতে দারুণ:</p>
+    <div class="code-box">
+-- আগের দিনের বিক্রি ও আজকের সাথে পার্থক্য
+SELECT day, amount,
+       LAG(amount) OVER (ORDER BY day) AS prev_day,
+       amount - LAG(amount) OVER (ORDER BY day) AS change
+FROM sales;
+    </div>
+    <div class="info-box">
+        ML-এ এটা সোনার খনি: "গত মাসের সাথে এ মাসের পার্থক্য", "আগের transaction থেকে কত দিন পর" — এসব শক্তিশালী
+        feature সরাসরি <code>LAG</code>/<code>LEAD</code> দিয়ে তৈরি হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚡</span> ১১. Index: query কেন দ্রুত/ধীর হয়</h2>
+    <p>
+        একটা বইয়ের শেষে index থাকে যাতে পুরো বই না পড়ে দ্রুত একটা শব্দ খুঁজে পাওয়া যায়। Database index ঠিক তাই —
+        একটা column-এর জন্য আলাদা সাজানো কাঠামো, যাতে খোঁজা দ্রুত হয়।
+    </p>
+    <div class="code-box">
+-- index ছাড়া: WHERE city = 'Dhaka' মানে পুরো table স্ক্যান
+--            (লাখ row হলে ধীর)
+
+-- index দিলে: শুধু Dhaka-র অংশে সরাসরি লাফ
+CREATE INDEX idx_jobs_city ON jobs (city);
+
+-- একাধিক column-এ যৌথ index
+CREATE INDEX idx_jobs_city_salary ON jobs (city, salary);
+    </div>
+    <div class="diagram">
+Index ছাড়া (Full Table Scan):
+  [row1][row2][row3]...[row 1,000,000]  -- সব দেখতে হয়
+
+Index সহ:
+  city index -&gt; Dhaka শুরু কোথায় জানা -&gt; সরাসরি লাফ
+  (অনেক দ্রুত, বিশেষ করে বড় table-এ)
+    </div>
+    <div class="technical-box">
+        <strong>Trade-off:</strong> index পড়া দ্রুত করে, কিন্তু লেখা (INSERT/UPDATE) একটু ধীর করে ও storage নেয়।
+        তাই যে column-এ ঘন ঘন <code>WHERE</code>/<code>JOIN</code> হয়, শুধু সেখানেই index দিন — সব column-এ না।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১২. বাস্তব উদাহরণ: BD job data-তে analytical query</h2>
+    <div class="code-box">
+-- প্রতিটা শহরের top ২ highest-paying job,
+-- সাথে ওই শহরের গড় salary পাশে
+WITH ranked AS (
+    SELECT title, city, salary,
+           ROW_NUMBER() OVER (
+               PARTITION BY city ORDER BY salary DESC
+           ) AS rn,
+           AVG(salary) OVER (PARTITION BY city) AS city_avg
+    FROM jobs
+)
+SELECT city, title, salary, ROUND(city_avg) AS city_avg
+FROM ranked
+WHERE rn &lt;= 2
+ORDER BY city, salary DESC;
+    </div>
+    <p>
+        একটা salary-benchmark dashboard (যেমন "Dhaka-তে ML Engineer গড়ে কত পায়") — বাংলাদেশে এমন product-এর
+        পেছনে ঠিক এই ধরনের window query চলে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১৩. একজন AI Engineer-এর দৃষ্টিতে</h2>
+    <p>
+        AI Engineer রা window function দিয়ে feature table বানায়, তারপর সেটা Pandas/ML-এ নেয়। উদাহরণ — একটা
+        churn model-এর জন্য "প্রতিটা customer-এর আগের transaction থেকে পার্থক্য" feature:
+    </p>
+    <div class="code-box">
+query = """
+    SELECT customer_id, txn_date, amount,
+           amount - LAG(amount) OVER (
+               PARTITION BY customer_id ORDER BY txn_date
+           ) AS amount_change
+    FROM transactions
+"""
+import pandas as pd
+df = pd.read_sql(query, engine)   # ready-made feature সরাসরি DataFrame-এ
+    </div>
+    <div class="key-point">
+        অনেক সময় "যা Pandas-এ ১০ লাইন লাগে" তা SQL window function-এ ১ লাইনে হয় — আর database-এ হওয়ায় বড় data-তে
+        অনেক দ্রুত। কোনটা কোথায় করবেন সেই সিদ্ধান্তই engineer-এর দক্ষতা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৪. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"Basic SQL তো শিখেছ, এই window-টুইন্ডো আবার কেন? চাকরিতে সত্যিই লাগে?"</em><br><br>
+        <strong>উত্তর:</strong> লাগে, আর junior-দের ঠিক এখানেই আলাদা করা যায়। "প্রতিটা group-এর top-N",
+        "running total", "আগের মাসের সাথে তুলনা" — এসব business report ও ML feature প্রায় প্রতিদিন লাগে। যে
+        subquery/window function পারে না, তাকে হয় ভুল উত্তর দিতে হয়, নয়তো Python-এ ধীর ও জটিল কোড লিখতে হয়।
+        তাই intermediate SQL মানে দ্রুত, নির্ভরযোগ্য answer — সরাসরি business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৫. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Strong SQL skills including window functions and query optimization."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি শুধু basic query না, ranking/aggregation-window ও index-সচেতন query লিখতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>বড় data-তে analytical report ও feature তৈরিতে window function ও index অপরিহার্য।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>ধীর query, ভুল top-N হিসাব ও অকারণে Python-এ ভারী কাজ এড়ায়।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>subquery, CTE, ROW_NUMBER/RANK, PARTITION BY, LAG/LEAD, index-এর মূল ধারণা।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>execution plan গভীর বিশ্লেষণ, partitioning strategy, DB internals।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা analytics project-এ window query দিয়ে report/feature বানিয়ে README-তে ব্যাখ্যা দিন।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"প্রতিটা group-এর top ৩ বের করুন", "RANK vs DENSE_RANK", "index কীভাবে query দ্রুত করে?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৬. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> window function-এ <code>WHERE rn = 1</code> সরাসরি লেখা। →
+        <strong>ঠিক:</strong> window function <code>WHERE</code>-এ কাজ করে না; আগে subquery/CTE-তে rank বের করে বাইরে থেকে filter করুন।<br><br>
+
+        <strong>ভুল ২:</strong> ROW_NUMBER আর RANK একই ভাবা। →
+        <strong>ঠিক:</strong> tie-তে ROW_NUMBER ইউনিক থাকে, RANK একই rank দেয় ও পরে লাফায়।<br><br>
+
+        <strong>ভুল ৩:</strong> PARTITION BY আর GROUP BY গুলিয়ে ফেলা। →
+        <strong>ঠিক:</strong> GROUP BY row গুটায়; PARTITION BY row রেখে group-ভিত্তিক হিসাব পাশে বসায়।<br><br>
+
+        <strong>ভুল ৪:</strong> "index দিলেই সব দ্রুত"। →
+        <strong>ঠিক:</strong> অকারণ index লেখা ধীর করে ও storage নেয়; শুধু ঘন ঘন query হওয়া column-এ দিন।<br><br>
+
+        <strong>ভুল ৫:</strong> subquery বারবার লিখে query অপাঠযোগ্য করা। →
+        <strong>ঠিক:</strong> CTE (<code>WITH</code>) দিয়ে ভাগ করে পরিষ্কার রাখুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৭. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> প্রতিটা department-এর top ৩ বেতনভোগী কর্মী কীভাবে বের করবেন?<br>
+        <em>উত্তর:</em> CTE-তে <code>ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC)</code>, তারপর বাইরে <code>WHERE rn &lt;= 3</code>।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> RANK আর DENSE_RANK-এর পার্থক্য?<br>
+        <em>উত্তর:</em> দুটোই tie-তে একই rank দেয়; RANK পরের rank লাফিয়ে যায়, DENSE_RANK ধারাবাহিক থাকে।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> GROUP BY আর window function-এর মূল পার্থক্য?<br>
+        <em>উত্তর:</em> GROUP BY row গুটিয়ে কম row দেয়; window function row সংখ্যা রেখে প্রতিটা row-এর পাশে হিসাব বসায়।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> Index কীভাবে query দ্রুত করে, আর trade-off কী?<br>
+        <em>উত্তর:</em> index সাজানো কাঠামো দিয়ে full table scan এড়ায়; বিনিময়ে write ধীর হয় ও storage বাড়ে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৮. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        <code>jobs</code> table (আগের পর্বের) নিয়ে চেষ্টা করুন:<br><br>
+        ১. প্রতিটা row-এর পাশে সেই শহরের গড় salary দেখান (window)।<br>
+        ২. সব job-কে salary অনুযায়ী rank দিন (RANK ও DENSE_RANK — পার্থক্য দেখুন)।<br>
+        ৩. প্রতিটা শহরের সবচেয়ে বেশি salary-র job-এর title বের করুন।<br>
+        ৪. একটা CTE দিয়ে "গড়ের চেয়ে বেশি salary পায়" এমন job বের করুন।<br>
+        ৫. <code>city</code> column-এ একটা index বানান এবং বলুন কখন এটা কাজে লাগবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৯. Project Connection</h2>
+    <p>
+        flagship <strong>"Bangladesh Tech Career Assistant"</strong> (V2, data)-এ আমরা এখন window function দিয়ে
+        সত্যিকারের analytical প্রশ্নের উত্তর দিতে পারব — "প্রতিটা শহরে top ৫ চাওয়া skill", "গত ৩ মাসে salary-র trend"।
+    </p>
+    <div class="info-box">
+        Project P1 (Bangladesh Job Market Data Analyzer)-এ এই analytical query গুলো হবে core analysis। পরের পর্বে
+        আমরা এই পরিষ্কার data-কে ML-এর জন্য প্রস্তুত করব — encoding, scaling, আর ভয়ংকর data leakage এড়ানো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ২০. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ <strong>Subquery</strong> ও <strong>CTE (WITH)</strong> দিয়ে জটিল query পরিষ্কারভাবে লেখা<br>
+        ✓ <strong>Window function</strong> কী — GROUP BY-এর মতো হিসাব করে কিন্তু row হারায় না<br>
+        ✓ <strong>ROW_NUMBER, RANK, DENSE_RANK</strong> — tie-তে এদের পার্থক্য<br>
+        ✓ <strong>PARTITION BY</strong> দিয়ে "top-N per group" প্যাটার্ন<br>
+        ✓ <strong>Running total, moving average, LAG/LEAD</strong> — time-series feature<br>
+        ✓ <strong>Index</strong> কীভাবে query দ্রুত করে ও এর trade-off<br>
+        ✓ Engineer দৃষ্টিতে — window function শক্তিশালী feature engineering-এর হাতিয়ার
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ২১. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E08):</strong> "Data Preprocessing — encoding, scaling, আর 'data leakage'-এর ফাঁদ"।<br><br>
+        SQL/Pandas দিয়ে পরিষ্কার data তো পেলাম, কিন্তু ML model কাঁচা data নেয় না। পরের পর্বে শিখব কীভাবে
+        categorical variable encode করব, number scale করব, outlier সামলাব — আর সবচেয়ে বিপজ্জনক ভুল
+        <strong>data leakage</strong> কীভাবে এড়াব, যা অনেক junior-এর model-কে "কাগজে দুর্দান্ত, বাস্তবে ফেল" করে দেয়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-06-sql-part1-select-join.html">⬅ পূর্ববর্তী: SQL ১</a>
+            <a href="episode-08-data-preprocessing-leakage.html">পরবর্তী: Preprocessing ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 07)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e07.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

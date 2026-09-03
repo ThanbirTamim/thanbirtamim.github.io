@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="NumPy array, shape, indexing, vectorization ও broadcasting — ML-এর ভিত্তি বাংলায় হাতে-কলমে।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="NumPy: array, shape, vectorization — ML-এর নিচে যে গণিত চলে | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="NumPy array, shape, indexing, vectorization ও broadcasting — ML-এর ভিত্তি বাংলায় হাতে-কলমে।">
+    <meta property="og:locale" content="bn_BD">
+    <title>NumPy: array, shape, vectorization — ML-এর নিচে যে গণিত চলে | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 02
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> NumPy: array, shape, vectorization — ML-এর নিচে যে গণিত চলে</h1>
+    <p class="subtitle">loop ভুলে যান, array-তে চিন্তা করুন (Series 03, Episode 02)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর "ধীরগতি" code</li>
+        <li>২. সমস্যা: Python list দিয়ে বড় data-তে কেন আটকায়</li>
+        <li>৩. NumPy কী এবং কেন এটা ML-এর ভিত্তি</li>
+        <li>৪. তিন Level-এ array বোঝা</li>
+        <li>৫. Array, dimension আর shape — মূল ধারণা</li>
+        <li>৬. Indexing ও slicing</li>
+        <li>৭. Vectorization: loop ছাড়াই হিসাব</li>
+        <li>৮. Broadcasting: ভিন্ন shape-এর array একসাথে</li>
+        <li>৯. Experiment: loop বনাম vectorization-এর গতি</li>
+        <li>১০. বাস্তব উদাহরণ: salary data নিয়ে হিসাব</li>
+        <li>১১. একজন AI Engineer-এর দৃষ্টিতে NumPy</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ</li>
+        <li>১৯. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর "ধীরগতি" code</h2>
+
+    <p>
+        Rahim ঠিক করল ১০ লাখ job post-এর salary-তে ৫% বৃদ্ধি হলে নতুন salary কত হবে সেটা হিসাব করবে। সে
+        যেভাবে সবসময় করে, সেভাবেই একটা Python <code>for</code> loop লিখল। code চলল, কিন্তু... অনেকক্ষণ।
+    </p>
+
+    <div class="story-box">
+        <strong>Rahim:</strong> <em>"Nila আপা, আমার loop তো ঠিকই কাজ করছে, কিন্তু এত slow কেন? আর data
+        Analyst-রা দেখি সবাই <code>numpy</code> import করে। এটা না করলে হয় না?"</em><br><br>
+        <strong>Nila:</strong> <em>"হয়, কিন্তু তুমি data-র জগতে সবচেয়ে গুরুত্বপূর্ণ চিন্তার ধরনটা মিস করছ।
+        বড় data-তে আমরা 'একটা একটা করে' চিন্তা করি না — আমরা 'পুরো array একসাথে' চিন্তা করি। এই একটা mindset
+        বদল তোমার code-কে ১০০ গুণ দ্রুত করে দেবে। এর নাম vectorization।"</em>
+    </div>
+
+    <p>
+        আজ আমরা শিখব NumPy — যেটা Pandas, scikit-learn, PyTorch — সব ML tool-এর নিচে চুপচাপ কাজ করে। NumPy
+        না বুঝলে ওপরের সব tool শুধু "magic" মনে হবে; বুঝলে সব পরিষ্কার হয়ে যাবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: Python list দিয়ে বড় data-তে কেন আটকায়</h2>
+
+    <p>Python-এর সাধারণ list দুর্দান্ত, কিন্তু সংখ্যার বড় হিসাবের জন্য দুটো বড় সমস্যা আছে:</p>
+
+    <ul>
+        <li><strong>ধীর:</strong> list-এর প্রতিটা element আলাদা Python object; loop-এ প্রতিবার Python interpreter কাজ করে — তাই লাখ লাখ সংখ্যায় ধীর।</li>
+        <li><strong>অসুবিধাজনক:</strong> দুটো list যোগ করতে গেলে (<code>[1,2] + [3,4]</code>) সেটা যোগ না করে জোড়া লাগিয়ে দেয় (<code>[1,2,3,4]</code>) — গাণিতিক যোগ করতে loop লাগে।</li>
+    </ul>
+
+    <p>NumPy এই দুটো সমস্যাই সমাধান করে, কারণ এটা সংখ্যাগুলো একটানা memory-তে (contiguous) রাখে এবং হিসাব C-এর গতিতে করে।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📚</span> ৩. NumPy কী এবং কেন এটা ML-এর ভিত্তি</h2>
+
+    <p>
+        <strong>NumPy</strong> (Numerical Python) হলো সংখ্যাভিত্তিক হিসাবের core library। এর মূল জিনিস হলো
+        <code>ndarray</code> — একটা n-dimensional array। প্রায় সব ML data শেষ পর্যন্ত সংখ্যার array-তে
+        পরিণত হয়: একটা ছবি = pixel-এর array, একটা table = সংখ্যার 2D array, একটা model-এর weight = array।
+    </p>
+
+    <div class="key-point">
+        <strong>কেন এই tech?</strong> Pandas, scikit-learn, PyTorch, TensorFlow — সবাই ভেতরে NumPy (বা তার
+        মতো array) ব্যবহার করে। তাই NumPy শেখা মানে পুরো ML stack-এর ভিত্তি শেখা। এটা optional নয়, foundational।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ array বোঝা</h2>
+
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        একটা array হলো একটা <strong>বাক্সের সারি</strong>, যেখানে প্রতিটা বাক্সে একটা করে সংখ্যা। একটা list-ও তো
+        তাই — কিন্তু পার্থক্য হলো, NumPy array-তে সব বাক্স একই ধরনের (সব সংখ্যা) আর পাশাপাশি সাজানো, যাতে
+        computer একসাথে দ্রুত সব বাক্স নিয়ে কাজ করতে পারে।
+    </p>
+
+    <h3>Level 2 — technical ভাবে</h3>
+    <p>
+        NumPy array একটা fixed data type (<code>dtype</code>, যেমন <code>int64</code>, <code>float64</code>)
+        মেনে চলে এবং একটানা memory block-এ থাকে। এই কারণে NumPy পুরো array-র উপর একটাই optimized C-loop চালাতে
+        পারে — Python-এর ধীর loop এড়িয়ে। এটাকেই বলে vectorized operation।
+    </p>
+
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        একজন AI Engineer array-তে চিন্তা করে "shape" দিয়ে। একটা image batch হয়তো shape
+        <code>(32, 3, 224, 224)</code> — মানে ৩২টা ছবি, ৩ channel (RGB), 224x224 pixel। shape না বুঝলে
+        Deep Learning-এ প্রতি পদে "shape mismatch" error খেতে হবে। তাই engineer সবসময় জিজ্ঞেস করে: "এই array-র shape কী?"
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📐</span> ৫. Array, dimension আর shape — মূল ধারণা</h2>
+
+    <div class="code-box">
+import numpy as np
+
+# 1D array (vector) — একটা সংখ্যার সারি
+a = np.array([10, 20, 30, 40])
+print(a.ndim)    # 1   -> dimension সংখ্যা
+print(a.shape)   # (4,) -> ৪টা element
+print(a.dtype)   # int64
+
+# 2D array (matrix) — row ও column
+b = np.array([[1, 2, 3],
+              [4, 5, 6]])
+print(b.ndim)    # 2
+print(b.shape)   # (2, 3) -> ২ row, ৩ column
+print(b.size)    # 6      -> মোট element
+
+# সুবিধাজনক array তৈরি
+zeros = np.zeros((2, 3))       # সব 0
+ones  = np.ones((3,))          # সব 1
+rng   = np.arange(0, 10, 2)    # [0 2 4 6 8]
+lin   = np.linspace(0, 1, 5)   # 0 থেকে 1 এর মধ্যে সমান ব্যবধানে ৫টা
+    </div>
+
+    <p>এই ছবিটা shape ও dimension-এর ধারণা পরিষ্কার করবে:</p>
+
+    <div class="diagram">
+0D (scalar)   1D (vector)     2D (matrix)          3D (tensor)
+    7         [7 8 9]         [[1 2 3]             অনেকগুলো matrix
+                              [4 5 6]]             একসাথে (যেমন ছবির batch)
+shape ()      shape (3,)      shape (2, 3)         shape (n, r, c)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৬. Indexing ও slicing</h2>
+
+    <div class="code-box">
+import numpy as np
+
+a = np.array([10, 20, 30, 40, 50])
+print(a[0])       # 10   -> প্রথম element
+print(a[-1])      # 50   -> শেষ element
+print(a[1:4])     # [20 30 40] -> index 1 থেকে 3
+
+b = np.array([[1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]])
+print(b[0, 2])    # 3    -> row 0, column 2
+print(b[:, 1])    # [2 5 8] -> সব row-এর column 1
+print(b[1, :])    # [4 5 6] -> row 1 এর সব column
+
+# Boolean indexing — খুব শক্তিশালী (filtering-এর ভিত্তি)
+salaries = np.array([25000, 60000, 40000, 90000])
+high = salaries[salaries &gt; 50000]
+print(high)       # [60000 90000]
+    </div>
+
+    <div class="info-box">
+        <strong>মনে রাখুন:</strong> ওপরের <code>salaries[salaries &gt; 50000]</code> লাইনটাই হলো Pandas-এর
+        filtering-এর মূল ভিত্তি। Pandas আসলে এই NumPy boolean indexing-কেই সুন্দরভাবে wrap করে। তাই এটা বুঝলে
+        পরের episode-এ Pandas filtering সহজ লাগবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚡</span> ৭. Vectorization: loop ছাড়াই হিসাব</h2>
+
+    <p>Rahim-এর সমস্যায় ফিরি — সব salary-তে ৫% বৃদ্ধি। loop দিয়ে বনাম NumPy দিয়ে:</p>
+
+    <div class="code-box">
+import numpy as np
+
+salaries = np.array([25000, 40000, 60000, 90000])
+
+# ❌ পুরোনো ধরন (loop) — ধীর, বেশি code
+new_list = []
+for s in salaries:
+    new_list.append(s * 1.05)
+
+# ✅ vectorized ধরন — একটা লাইন, অনেক দ্রুত
+new_salaries = salaries * 1.05
+print(new_salaries)   # [26250. 42000. 63000. 94500.]
+
+# আরও উদাহরণ — পুরো array-তে একসাথে হিসাব
+print(salaries.mean())    # গড়
+print(salaries.max())     # সর্বোচ্চ
+print(salaries.sum())     # মোট
+print((salaries &gt; 50000).sum())  # কতজনের salary 50k-এর বেশি
+    </div>
+
+    <p>
+        খেয়াল করুন — <code>salaries * 1.05</code> লেখায় কোনো loop নেই, তবু প্রতিটা element-এ হিসাব হয়েছে।
+        এটাই vectorization: "একটা একটা" নয়, "পুরো array একসাথে"।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📡</span> ৮. Broadcasting: ভিন্ন shape-এর array একসাথে</h2>
+
+    <p>
+        Broadcasting হলো NumPy-র একটা চতুর নিয়ম — এটা ছোট array-কে "প্রসারিত" (stretch) করে বড় array-র সাথে
+        মেলায়, আসলে data কপি না করেই। উদাহরণ দিয়ে দেখি:
+    </p>
+
+    <div class="code-box">
+import numpy as np
+
+# scalar broadcasting — 1.05 প্রতিটা element-এ ছড়িয়ে গেল
+salaries = np.array([25000, 40000, 60000])
+print(salaries * 1.05)
+
+# 2D + 1D broadcasting
+# প্রতিটা কর্মীর ৩ মাসের salary (row = কর্মী, column = মাস)
+monthly = np.array([[25000, 25000, 27000],
+                    [40000, 42000, 42000]])
+
+bonus = np.array([1000, 1000, 2000])   # প্রতি মাসের bonus (shape 3,)
+total = monthly + bonus                # bonus প্রতিটা row-তে যোগ হলো
+print(total)
+# [[26000 26000 29000]
+#  [41000 43000 44000]]
+    </div>
+
+    <div class="diagram">
+Broadcasting যেভাবে কাজ করে (2D + 1D):
+
+monthly (2,3)        bonus (3,)  -> প্রতিটা row-তে ছড়িয়ে যায়
+[[25000 25000 27000]   [1000 1000 2000]
+ [40000 42000 42000]]  [1000 1000 2000]  (মনে মনে কপি)
+                       ---------------------
+ফল: প্রতিটা মাসের bonus সব কর্মীর সাথে যোগ
+    </div>
+
+    <div class="technical-box">
+        <strong>নিয়ম (সরলভাবে):</strong> দুটো array-র shape ডান দিক থেকে মেলানো হয়। প্রতিটা dimension হয় সমান
+        হতে হবে, নয়তো একটা 1 হতে হবে (তখন সেটা প্রসারিত হয়)। shape <code>(2,3)</code> আর <code>(3,)</code>
+        মেলে, কিন্তু <code>(2,3)</code> আর <code>(2,)</code> মেলে না — shape mismatch error দেবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔬</span> ৯. Experiment: loop বনাম vectorization-এর গতি</h2>
+
+    <p>নিজে চালিয়ে দেখুন — এই পার্থক্যটা চোখে দেখলে vectorization-এর গুরুত্ব গেঁথে যাবে:</p>
+
+    <div class="code-box">
+import numpy as np
+import time
+
+n = 1_000_000
+data = np.arange(n)
+
+# পদ্ধতি ১ — Python loop
+start = time.time()
+result = [x * 2 for x in data]
+print("Loop:", round(time.time() - start, 4), "সেকেন্ড")
+
+# পদ্ধতি ২ — NumPy vectorization
+start = time.time()
+result = data * 2
+print("NumPy:", round(time.time() - start, 4), "সেকেন্ড")
+
+# সাধারণত NumPy ১০x থেকে ১০০x পর্যন্ত দ্রুত হয়
+    </div>
+
+    <p>
+        <strong>কী লক্ষ করবেন:</strong> NumPy version নাটকীয়ভাবে দ্রুত। ১০ লাখ সংখ্যায় পার্থক্য চোখে পড়ে,
+        আর real ML data-তে (লাখ-কোটি row) এই পার্থক্যই "চলে না" আর "চলে"-র মধ্যে ব্যবধান তৈরি করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাস্তব উদাহরণ: salary data নিয়ে হিসাব</h2>
+
+    <p>ধরুন আমাদের job market data থেকে কিছু salary নিয়ে দ্রুত কিছু প্রশ্নের উত্তর বের করব:</p>
+
+    <div class="code-box">
+import numpy as np
+
+# বাংলাদেশের কিছু tech job-এর মাসিক salary (টাকায়)
+salaries = np.array([25000, 35000, 45000, 60000,
+                     80000, 120000, 30000, 55000])
+
+print("গড় salary:", salaries.mean())            # 56250.0
+print("মধ্যম (median):", np.median(salaries))    # 50000.0
+print("সর্বোচ্চ:", salaries.max())               # 120000
+print("সবচেয়ে কম:", salaries.min())              # 25000
+
+# কতজনের salary গড়ের চেয়ে বেশি?
+above_avg = (salaries &gt; salaries.mean()).sum()
+print("গড়ের বেশি:", above_avg, "জন")            # 3 জন
+
+# সবাইকে 8% increment দিলে
+print("increment পরে:", salaries * 1.08)
+    </div>
+
+    <div class="key-point">
+        লক্ষ করুন — <code>mean()</code> আর <code>median()</code> আলাদা (56250 বনাম 50000)। কারণ একটা বড় salary
+        (120000) গড়কে টেনে ওপরে তুলছে। এই "গড় বনাম মধ্যম" পার্থক্য outlier বোঝার জন্য গুরুত্বপূর্ণ — Series 04
+        (statistics)-এ আরও বিস্তারিত আসবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ১১. একজন AI Engineer-এর দৃষ্টিতে NumPy</h2>
+
+    <p>engineer রা NumPy নিয়ে যেভাবে ভাবে:</p>
+
+    <ul>
+        <li><strong>Shape-first চিন্তা:</strong> নতুন array পেলে প্রথমে <code>.shape</code> দেখে — বেশিরভাগ bug এখানেই ধরা পড়ে।</li>
+        <li><strong>Loop এড়ানো:</strong> কোথাও data-র উপর Python loop দেখলে ভাবে "এটা কি vectorize করা যায়?"</li>
+        <li><strong>Memory সচেতনতা:</strong> <code>float64</code> বনাম <code>float32</code> — বড় data-তে dtype মেমরি ও গতিতে পার্থক্য আনে।</li>
+        <li><strong>Reproducibility:</strong> random কাজে <code>np.random.seed()</code> বা <code>default_rng(seed)</code> ব্যবহার করে, যাতে ফল বারবার একই আসে।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+
+    <div class="story-box">
+        <strong>Boss:</strong> <em>"আমরা তো data analyst, আমাদের কাজ report বানানো। এই array-shape-vectorization
+        নিয়ে মাথা ঘামানোর দরকার কী? Excel দিয়েই তো হয়!"</em><br><br>
+        <strong>উত্তর:</strong> Excel কয়েক হাজার row পর্যন্ত ঠিক আছে। কিন্তু আমাদের job market data যখন লাখ লাখ
+        row হবে, Excel hang করবে, আর প্রতিটা report হাতে বানাতে ঘণ্টা লাগবে। NumPy (এবং তার উপর Pandas) দিয়ে
+        সেই একই হিসাব সেকেন্ডে হয়, বারবার automate করা যায়, ভুলও কম হয়। মানে দ্রুত সিদ্ধান্ত, কম মানুষ-ঘণ্টা,
+        আর scalability — এটাই business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+
+    <div class="key-point">
+        "Proficiency in Python and NumPy for numerical computing and array operations."
+    </div>
+
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি NumPy array দিয়ে সংখ্যার হিসাব করতে পারেন — loop ছাড়াই, vectorized উপায়ে।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>বড় data-তে দ্রুত, নির্ভরযোগ্য হিসাব দরকার; Pandas ও ML tool-ও ভেতরে NumPy চালায়।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>ধীর, ভুলপ্রবণ manual/loop-ভিত্তিক হিসাবের সমস্যা।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>array তৈরি, shape/dimension, indexing/slicing, boolean indexing, vectorized হিসাব, broadcasting-এর মূল ধারণা।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>উন্নত linear algebra internals, GPU array (CuPy), memory-view কারিগরি — পরে।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা notebook যেখানে loop বনাম vectorization-এর গতি তুলনা, আর real data-তে NumPy দিয়ে হিসাব।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"vectorization কেন দ্রুত?", "broadcasting কী?", "list বনাম NumPy array-র পার্থক্য?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "NumPy array আর Python list একই জিনিস।" →
+        <strong>ঠিক:</strong> array-র fixed dtype ও contiguous memory থাকে; এটাই গতি ও vectorization সম্ভব করে।<br><br>
+
+        <strong>ভুল ২:</strong> "<code>list1 + list2</code> যোগফল দেয়।" →
+        <strong>ঠিক:</strong> Python list-এ এটা concatenate করে; NumPy array-তে এটা element-wise যোগ করে।<br><br>
+
+        <strong>ভুল ৩:</strong> "সব সময় loop লিখতে হবে।" →
+        <strong>ঠিক:</strong> data-র হিসাবে loop প্রায়ই vectorize করা যায় — দ্রুত ও পরিষ্কার।<br><br>
+
+        <strong>ভুল ৪:</strong> "broadcasting যেকোনো shape মেলায়।" →
+        <strong>ঠিক:</strong> নির্দিষ্ট নিয়ম আছে; নাহলে shape mismatch error — shape সবসময় খেয়াল রাখুন।<br><br>
+
+        <strong>ভুল ৫:</strong> "shape (4,) আর (4,1) একই।" →
+        <strong>ঠিক:</strong> একটা 1D vector, অন্যটা 2D column — broadcasting-এ ভিন্ন আচরণ করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> Vectorization কেন Python loop-এর চেয়ে দ্রুত?<br>
+        <em>উত্তর:</em> NumPy পুরো array-তে একটাই optimized C-loop চালায়, প্রতি element-এ ধীর Python interpreter overhead এড়ায়; data contiguous memory-তে থাকে।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> Broadcasting কী?<br>
+        <em>উত্তর:</em> ভিন্ন shape-এর array-কে নিয়মমাফিক "প্রসারিত" করে element-wise operation চালানো, আসল data কপি না করেই।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> <code>a.shape</code> আর <code>a.ndim</code>-এর পার্থক্য?<br>
+        <em>উত্তর:</em> <code>shape</code> প্রতিটা dimension-এ কতগুলো element তা বলে (যেমন (2,3)); <code>ndim</code> মোট dimension সংখ্যা (যেমন 2)।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> boolean indexing কী কাজে লাগে?<br>
+        <em>উত্তর:</em> শর্ত অনুযায়ী element বেছে নিতে (যেমন <code>a[a &gt; 50000]</code>) — এটাই Pandas filtering-এর ভিত্তি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+
+    <div class="key-point">
+        <strong>🧪 হাতে-কলমে:</strong> একটা Python file-এ নিচের কাজগুলো করুন (কোনো <code>for</code> loop ছাড়া):<br><br>
+        ১. <code>experience = np.array([1, 3, 5, 2, 8, 0, 4])</code> তৈরি করুন (বছরে অভিজ্ঞতা)।<br>
+        ২. গড় ও median অভিজ্ঞতা বের করুন।<br>
+        ৩. কতজনের অভিজ্ঞতা ৩ বছরের বেশি — boolean indexing দিয়ে গুনুন।<br>
+        ৪. সবার অভিজ্ঞতায় ১ যোগ করুন (এক বছর পরে) — vectorized ভাবে।<br>
+        ৫. একটা 2D array <code>[[1,2],[3,4]]</code>-এ প্রতিটা row-তে <code>[10, 20]</code> যোগ করুন (broadcasting)।<br><br>
+        <em>প্রতিটার shape print করে যাচাই করুন আপনি যা ভাবছেন সেটাই আসছে কিনা।</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant" (V2 — Data Analyzer)</strong>-এ NumPy কাজে
+        লাগবে যখন আমরা salary-র উপর দ্রুত হিসাব করব — গড়, median, percentile, increment simulation। যদিও আমরা
+        বেশিরভাগ কাজ Pandas দিয়ে করব, Pandas ভেতরে NumPy-ই চালায়, তাই এই ভিত্তিটা এখন গেঁথে নেওয়া জরুরি।
+    </p>
+    <div class="info-box">
+        বিশেষভাবে boolean indexing (<code>salaries &gt; X</code>) আর vectorized হিসাব — এই দুটো ধারণা পরের episode-এ
+        Pandas filtering আর column হিসাবে সরাসরি ব্যবহার হবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ</h2>
+
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ <strong>NumPy array</strong> — fixed dtype, contiguous memory — তাই দ্রুত ও ML-এর ভিত্তি<br>
+        ✓ <strong>shape, dimension, ndim</strong> — array বোঝার মূল ভাষা; engineer রা shape-first চিন্তা করে<br>
+        ✓ <strong>indexing/slicing</strong> ও <strong>boolean indexing</strong> — data বেছে নেওয়ার হাতিয়ার (Pandas filtering-এর ভিত্তি)<br>
+        ✓ <strong>vectorization</strong> — loop ছাড়াই পুরো array-তে হিসাব, ১০x-১০০x দ্রুত<br>
+        ✓ <strong>broadcasting</strong> — ভিন্ন shape-এর array নিয়মমাফিক একসাথে হিসাব<br>
+        ✓ mean বনাম median-এ পার্থক্য outlier-এর ইঙ্গিত দেয়
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৯. পরবর্তী পর্বে কী শিখব</h2>
+
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E03):</strong> "Pandas Part 1: DataFrame, filtering, selection — data-র
+        Excel-on-steroids।"<br><br>
+        NumPy দিয়ে সংখ্যার array তো বুঝলাম, কিন্তু real data-তে column-এর নাম থাকে ("salary", "city"), আর মিশ্র
+        ধরনের value থাকে। এখানেই আসে <strong>Pandas</strong> — NumPy-র উপর তৈরি, কিন্তু label ও mixed data সামলাতে পারে।
+        পরের পর্বে আমরা প্রথমবার একটা real job dataset load করে slice করা শুরু করব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-01-why-data-first.html">⬅ পূর্ববর্তী: Data First</a>
+            <a href="episode-03-pandas-part1-dataframe.html">পরবর্তী: Pandas ১ ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 02)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e02.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

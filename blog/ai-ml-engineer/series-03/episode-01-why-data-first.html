@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="কেন AI/ML-এর বেশিরভাগ কাজ data নিয়ে — garbage in garbage out ও data-centric mindset বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="কেন AI-এর ৮০% কাজ আসলে data নিয়ে? Nila-র প্রথম পাঠ | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="কেন AI/ML-এর বেশিরভাগ কাজ data নিয়ে — garbage in garbage out ও data-centric mindset বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>কেন AI-এর ৮০% কাজ আসলে data নিয়ে? Nila-র প্রথম পাঠ | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 01
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> কেন AI-এর ৮০% কাজ আসলে data নিয়ে? Nila-র প্রথম পাঠ</h1>
+    <p class="subtitle">Garbage in, garbage out — data-centric mindset (Series 03, Episode 01)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 01 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর প্রথম "AI project"</li>
+        <li>২. আসল সমস্যা: model না, data-ই আসল বাধা</li>
+        <li>৩. কেন এই mindset-টা এত জরুরি</li>
+        <li>৪. তিন Level-এ বুঝি: data কেন ৮০% কাজ</li>
+        <li>৫. Visual: একটা ML project-এর আসল time breakdown</li>
+        <li>৬. Garbage In, Garbage Out — একটা বাস্তব উদাহরণ</li>
+        <li>৭. Data-র রকমফের: structured, unstructured, semi-structured</li>
+        <li>৮. একজন AI Engineer-এর চোখে "ভালো data"</li>
+        <li>৯. বাংলাদেশের context-এ data-র বাস্তবতা</li>
+        <li>১০. Boss Question</li>
+        <li>১১. Job Requirement Decoder</li>
+        <li>১২. সাধারণ ভুল ধারণা</li>
+        <li>১৩. Interview Prep</li>
+        <li>১৪. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৫. Project Connection: flagship-এর V2</li>
+        <li>১৬. সারসংক্ষেপ</li>
+        <li>১৭. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর প্রথম "AI project"</h2>
+
+    <p>
+        Rahim কয়েক সপ্তাহ ধরে YouTube-এ tutorial দেখে ঠিক করল — এবার একটা real ML project বানাবে। সে ভাবল,
+        "আমি এমন একটা model বানাব যেটা বলে দেবে বাংলাদেশে কোন skill শিখলে বেশি বেতনের চাকরি পাওয়া যায়।"
+        Idea শুনতে দারুণ। কিন্তু বসতেই সে আবিষ্কার করল — model লেখার code তো tutorial-এ ৫ লাইন, কিন্তু...
+    </p>
+
+    <div class="story-box">
+        Rahim তার সিনিয়র <strong>Nila</strong> (একজন data scientist)-কে বলল:<br><br>
+        <em>"আপা, algorithm তো পারি — <code>model.fit()</code> লিখলেই হয়। কিন্তু আমার কাছে তো কোনো data-ই নেই!
+        job post-গুলো তো ওয়েবসাইটে ছড়ানো, কোনটায় salary লেখা, কোনটায় নেই, skill-গুলোও একেক জায়গায় একেকভাবে
+        লেখা — কোথাও 'Python', কোথাও 'python3', কোথাও 'PY'। এই অবস্থায় model কীভাবে শিখবে?"</em><br><br>
+        Nila হেসে বলল: <em>"স্বাগতম বাস্তব জগতে, Rahim! তুমি এইমাত্র AI-এর সবচেয়ে বড় সত্যটা আবিষ্কার করলে —
+        model লেখা সবচেয়ে ছোট অংশ। আসল কাজ হলো data জোগাড় করা, পরিষ্কার করা আর বোঝা। এটাই তোমার সময়ের ৮০% খাবে।"</em>
+    </div>
+
+    <p>
+        এই episode-এ আমরা ঠিক সেই সত্যটাই বুঝব — কেন একজন AI/ML Engineer-এর জীবনে model নয়, <strong>data</strong>-ই
+        মূল চরিত্র। এই mindset-টা না থাকলে পরের সব series (Pandas, ML, Deep Learning) শুধু tutorial থেকে যাবে,
+        real project-এ কাজে দেবে না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: model না, data-ই আসল বাধা</h2>
+
+    <p>
+        নতুনরা AI শেখা শুরু করে model দিয়ে — "কোন algorithm best?", "Random Forest নাকি XGBoost?"। কিন্তু
+        real world-এ প্রথম বাধা কখনোই algorithm না। প্রথম বাধাগুলো হলো:
+    </p>
+
+    <ul>
+        <li>data <strong>কোথায় আছে</strong>? (database, CSV, API, ওয়েবসাইট, Excel — সব ছড়ানো)</li>
+        <li>data কি <strong>নির্ভরযোগ্য</strong>? (missing value, ভুল entry, duplicate)</li>
+        <li>data কি <strong>একই format-এ</strong>? ("Dhaka" বনাম "dhaka" বনাম "ঢাকা")</li>
+        <li>data কি <strong>যথেষ্ট</strong>? (১০টা row দিয়ে model শেখে না)</li>
+        <li>data-টা কি আসলেই <strong>সেই প্রশ্নের উত্তর দিতে পারে</strong> যা আমরা করছি?</li>
+    </ul>
+
+    <div class="key-point">
+        একটা কথা মাথায় গেঁথে নিন — <strong>"সবচেয়ে ভালো algorithm + খারাপ data = খারাপ result"</strong>।
+        কিন্তু <strong>"সাধারণ algorithm + ভালো data = ভালো result"</strong>। তাই data-তে সময় দেওয়া মানে সময় নষ্ট না,
+        বরং এটাই আসল কাজ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. কেন এই mindset-টা এত জরুরি</h2>
+
+    <p>
+        "AI starts with data" — এই একটা বাক্য যদি বিশ্বাস করেন, আপনার শেখার path পুরো বদলে যাবে। কারণ:
+    </p>
+
+    <ul>
+        <li><strong>Interview-তে</strong>: senior রা প্রায়ই জিজ্ঞেস করে "একটা messy dataset পেলে প্রথমে কী করবে?" —
+            যে শুধু algorithm জানে সে আটকে যায়।</li>
+        <li><strong>চাকরিতে</strong>: junior AI Engineer-দের বেশিরভাগ সময়ই data cleaning, EDA আর feature তৈরিতে যায়।</li>
+        <li><strong>Project-এ</strong>: portfolio-তে "আমি ৫টা algorithm চালিয়েছি" থেকে "আমি একটা messy real dataset
+            পরিষ্কার করে একটা প্রশ্নের উত্তর বের করেছি" — দ্বিতীয়টা অনেক শক্তিশালী।</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>Must Know / Good to Know / Learn Later (এই পুরো Series 03-এর জন্য):</strong><br><br>
+        <strong>✅ Must Know (চাকরির আগে):</strong> NumPy array, Pandas দিয়ে data wrangling, basic SQL, missing value
+        handling, encoding, scaling, এবং data leakage কী।<br>
+        <strong>👍 Good to Know:</strong> SQL window function, correlation/outlier analysis, বিভিন্ন chart type।<br>
+        <strong>🕓 Learn Later (চাকরির পরে):</strong> big-data tooling (Spark, big warehouse), advanced data engineering pipeline।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ বুঝি: data কেন ৮০% কাজ</h2>
+
+    <h3>Level 1 — সহজ intuition (রান্নার গল্প)</h3>
+    <p>
+        ভাবুন আপনি একজন দারুণ শেফ (এটাই আপনার "algorithm")। কিন্তু বাজার থেকে পচা মাছ, নষ্ট সবজি আর ভেজাল তেল
+        এনে দিলাম। আপনি যত বড় শেফ-ই হোন, রান্না ভালো হবে না। ভালো রান্নার আসল রহস্য হলো <strong>ভালো, তাজা,
+        পরিষ্কার উপকরণ</strong> — সেটাই আপনার "data"। AI-তেও ঠিক তাই: model যত ভালোই হোক, data খারাপ হলে result খারাপ।
+    </p>
+
+    <h3>Level 2 — technical ভাবে কী হচ্ছে</h3>
+    <p>
+        একটা ML model আসলে data-র ভেতরের <strong>pattern</strong> শেখে। যদি data-তে ভুল থাকে (যেমন কিছু salary
+        ভুল করে ১০ গুণ বেশি লেখা), model সেই ভুল pattern-ও শিখে ফেলে। যদি data অসম্পূর্ণ হয় (missing value),
+        অনেক algorithm crash করে বা ভুল ধরে নেয়। আর যদি একই জিনিস বিভিন্নভাবে লেখা থাকে ("Python"/"python"/"PY"),
+        model এগুলোকে <strong>আলাদা জিনিস</strong> ভাবে — অর্থাৎ pattern ভেঙে যায়।
+    </p>
+
+    <h3>Level 3 — একজন AI Engineer-এর দৃষ্টিতে</h3>
+    <p>
+        একজন engineer জানে যে একটা project-এ কাজের ধাপগুলো মোটামুটি এরকম: data সংগ্রহ → পরিষ্কার করা →
+        বোঝা (EDA) → feature তৈরি → তারপর model। এর মধ্যে শেষ ধাপটা (model) সবচেয়ে কম সময় নেয়। তাই engineer
+        data-র কাজকে "boring" মনে করে না — বরং জানে এটাই যেখানে আসল value তৈরি হয়। একজন junior থেকে engineer
+        হওয়ার লক্ষণ: সে আগে data দেখে, তারপর model নিয়ে ভাবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৫. Visual: একটা ML project-এর আসল time breakdown</h2>
+
+    <p>বাস্তব একটা ML project-এ সময় কীভাবে ভাগ হয়, একটা সরল ছবিতে দেখুন:</p>
+
+    <div class="diagram">
+একটি সাধারণ ML Project-এর সময় বণ্টন
+====================================
+
+Data সংগ্রহ + পরিষ্কার করা  ████████████████████  ~45%
+Data বোঝা / EDA            ████████████          ~25%
+Feature তৈরি করা           ██████                ~15%
+Model training + tuning    ████                  ~10%
+Evaluation + report        ██                    ~5%
+
+"model.fit()" এখানেই ↑ (সবচেয়ে ছোট অংশ)
+    </div>
+
+    <p>
+        সংখ্যাগুলো project-ভেদে বদলায়, কিন্তু গল্পটা একই — data নিয়ে কাজই সবচেয়ে বড় অংশ। এই কারণেই এই সিরিজে
+        আমরা model-এ ঝাঁপ দেওয়ার আগে পুরো একটা series data-তেই খরচ করছি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗑️</span> ৬. Garbage In, Garbage Out — একটা বাস্তব উদাহরণ</h2>
+
+    <p>
+        "Garbage In, Garbage Out" (GIGO) — computer science-এর সবচেয়ে পুরোনো সত্যগুলোর একটা। মানে: input
+        খারাপ হলে output খারাপ হবেই, model যত ভালোই হোক। একটা ছোট উদাহরণ দিয়ে দেখাই। ধরুন আমরা job post
+        থেকে salary predict করতে চাই, কিন্তু data-টা messy:
+    </p>
+
+    <div class="code-box">
+# raw data — বাস্তবে এমনই এলোমেলো আসে
+job_posts = [
+    {"title": "Python Developer",  "salary": "40000",    "city": "Dhaka"},
+    {"title": "python dev",        "salary": "40,000",   "city": "dhaka"},
+    {"title": "ML Engineer",       "salary": "",         "city": "Chattogram"},
+    {"title": "Data Analyst",      "salary": "4000000",  "city": "Dhaka"},  # ভুল! বাড়তি শূন্য
+    {"title": "Data Analyst",      "salary": "40000",    "city": "Dhaka"},  # duplicate-ঘেঁষা
+]
+
+# এখানে ৫টা সমস্যা লুকিয়ে আছে:
+# 1. "Python Developer" vs "python dev"  -> একই জিনিস, ভিন্ন লেখা
+# 2. "40000" vs "40,000"                 -> একটায় comma, string বনাম number
+# 3. salary = ""                          -> missing value
+# 4. salary = "4000000"                   -> outlier / data entry error
+# 5. "Dhaka" vs "dhaka"                    -> inconsistent casing
+    </div>
+
+    <p>
+        এখন যদি এই data সরাসরি একটা model-এ দিয়ে দিই, model শিখবে যে "Data Analyst"-এর গড় salary আকাশছোঁয়া
+        (কারণ ওই একটা ভুল ৪০ লাখের entry)। এটাই garbage out। Nila-র ভাষায়:
+    </p>
+
+    <div class="technical-box">
+        <strong>Nila:</strong> "মনে রাখবে — model কখনো তোমাকে বলবে না 'তোমার data-তে ভুল আছে'। সে চুপচাপ ভুল
+        data থেকে ভুল pattern শিখে ফেলবে, আর তোমাকে confident একটা ভুল উত্তর দেবে। তাই data যাচাই করা তোমারই দায়িত্ব।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗂️</span> ৭. Data-র রকমফের: structured, unstructured, semi-structured</h2>
+
+    <p>একজন AI Engineer হিসেবে আপনাকে চিনতে হবে data-টা কোন ধরনের, কারণ ধরন অনুযায়ী tool আর approach বদলায়:</p>
+
+    <table>
+        <tr>
+            <th>ধরন</th>
+            <th>মানে</th>
+            <th>উদাহরণ</th>
+            <th>সাধারণ tool</th>
+        </tr>
+        <tr>
+            <td><strong>Structured</strong></td>
+            <td>সুন্দর table — row ও column</td>
+            <td>Job post-এর salary, city, experience</td>
+            <td>Pandas, SQL</td>
+        </tr>
+        <tr>
+            <td><strong>Semi-structured</strong></td>
+            <td>কিছুটা গঠন আছে, কিন্তু fixed table নয়</td>
+            <td>JSON API response, XML</td>
+            <td>Python (json), Pandas</td>
+        </tr>
+        <tr>
+            <td><strong>Unstructured</strong></td>
+            <td>কোনো নির্দিষ্ট গঠন নেই</td>
+            <td>Job description-এর পুরো লেখা, ছবি, audio</td>
+            <td>NLP, Deep Learning (পরের series)</td>
+        </tr>
+    </table>
+
+    <p>
+        Series 03-এ আমরা মূলত <strong>structured</strong> ও <strong>semi-structured</strong> data নিয়ে কাজ করব
+        (Pandas, SQL)। Unstructured data (যেমন পুরো job description text) নিয়ে কাজ শুরু হবে Series 07 (NLP)-এ।
+        এই পার্থক্যটা জানা জরুরি — অনেকে সব data-কে একইভাবে treat করতে গিয়ে আটকে যায়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৮. একজন AI Engineer-এর চোখে "ভালো data"</h2>
+
+    <p>"ভালো data" মানে শুধু বেশি data নয়। engineer রা কয়েকটা জিনিস দেখে:</p>
+
+    <ul>
+        <li><strong>Relevance:</strong> data-টা কি আসলেই আমার প্রশ্নের সাথে সম্পর্কিত? (salary predict করতে চাইলে "office-এর রঙ" অপ্রাসঙ্গিক)</li>
+        <li><strong>Completeness:</strong> কত % value missing?</li>
+        <li><strong>Consistency:</strong> একই জিনিস কি সবসময় একইভাবে লেখা?</li>
+        <li><strong>Accuracy:</strong> value গুলো কি সঠিক, নাকি ভুল entry আছে?</li>
+        <li><strong>Enough volume:</strong> pattern শেখার মতো যথেষ্ট data আছে কি?</li>
+        <li><strong>Representative:</strong> data কি পুরো বাস্তবতাকে তুলে ধরে, নাকি একটা অংশ মাত্র? (শুধু Dhaka-র data দিয়ে সারা দেশের prediction করা যায় না)</li>
+    </ul>
+
+    <div class="key-point">
+        Representative না হওয়া data একটা লুকানো বিপদ — একে <strong>bias</strong> বলে। যেমন, শুধু বড় কোম্পানির
+        job post দিয়ে model বানালে সেটা ছোট কোম্পানির জন্য ভুল prediction দেবে। এই bias-এর ধারণা Series 04
+        (statistics) আর Series 05 (ML)-এ আরও গভীরভাবে আসবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ৯. বাংলাদেশের context-এ data-র বাস্তবতা</h2>
+
+    <p>
+        বাংলাদেশে কাজ করতে গেলে data-র কিছু বাস্তবতা মেনে নিতে হয়, যেগুলো foreign tutorial-এ পাবেন না:
+    </p>
+
+    <ul>
+        <li><strong>বাংলা-ইংরেজি মেশানো:</strong> অনেক data-তে বাংলা আর ইংরেজি একসাথে (যেমন ঠিকানা, নাম) — encoding সমস্যা হয়।</li>
+        <li><strong>Inconsistent format:</strong> তারিখ কোথাও "01/02/2024", কোথাও "২ জানুয়ারি" — একটা standard-এ আনতে হয়।</li>
+        <li><strong>ছড়ানো data:</strong> bKash/Nagad-এর মতো fintech-এ transaction data বিশাল ও structured, কিন্তু একটা ছোট
+            e-commerce startup-এ হয়তো data Excel sheet-এ, হাতে টাইপ করা, ভুলে ভরা।</li>
+        <li><strong>Public dataset কম:</strong> বাংলাদেশ-নির্দিষ্ট clean public dataset কম, তাই নিজেকেই data সংগ্রহ ও পরিষ্কার করতে জানতে হয় — এটা একটা বড় skill।</li>
+    </ul>
+
+    <p>
+        এই কারণেই আমাদের flagship project (Bangladesh job market data) নিয়ে কাজ করা এত মূল্যবান — এটা আপনাকে
+        real, messy, বাংলাদেশি data নিয়ে কাজের অভিজ্ঞতা দেবে, যা interview-তে আলাদা করে চোখে পড়ে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১০. Boss Question</h2>
+
+    <div class="story-box">
+        <strong>Boss:</strong> <em>"তুমি বলছ data cleaning-এ ২ সপ্তাহ লাগবে। কিন্তু আমি তো একটা কাজের model চাই,
+        data ঘষামাজায় এত সময় কেন? এটা business-এ কী value দেবে?"</em><br><br>
+        <strong>উত্তর:</strong> ঠিক এখানেই সবচেয়ে বড় business value। যদি আমরা নোংরা data দিয়ে model বানাই, সেটা
+        confident একটা <em>ভুল</em> সিদ্ধান্ত দেবে — যেমন ভুল salary prediction দেখে কোম্পানি ভুল hiring budget
+        ঠিক করবে। সেই ভুলের খরচ data cleaning-এর খরচের চেয়ে অনেক বেশি। পরিষ্কার data মানে বিশ্বাসযোগ্য সিদ্ধান্ত,
+        কম খরচ, আর কম "কেন model ভুল করল" ধরনের সংকট। Data-তে সময় দেওয়া মানে ভবিষ্যতের অনেক টাকা ও সময় বাঁচানো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১১. Job Requirement Decoder</h2>
+
+    <p>Job description-এ আপনি প্রায়ই দেখবেন এই লাইনটা:</p>
+
+    <div class="key-point">
+        "Strong data manipulation and data wrangling skills; experience working with real-world, messy datasets."
+    </div>
+
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr>
+            <td>এর মানে কী?</td>
+            <td>কোম্পানি চায় আপনি নোংরা, অসম্পূর্ণ real data নিয়ে বসে সেটাকে বিশ্লেষণযোগ্য করতে পারেন — শুধু clean tutorial data নয়।</td>
+        </tr>
+        <tr>
+            <td>কোম্পানি কেন চায়?</td>
+            <td>কারণ তাদের real data সবসময় messy। যে data সামলাতে পারে না, সে কোনো model-ই বানাতে পারবে না।</td>
+        </tr>
+        <tr>
+            <td>কোন সমস্যা সমাধান করে?</td>
+            <td>ভুল data থেকে ভুল সিদ্ধান্ত — এই ব্যয়বহুল সমস্যা এড়ায়।</td>
+        </tr>
+        <tr>
+            <td>Junior-এর কী জানা লাগে?</td>
+            <td>data-centric mindset, GIGO বোঝা, data-র ধরন চেনা, আর Pandas/SQL দিয়ে হাতে-কলমে কাজ (পরের episode-গুলো)।</td>
+        </tr>
+        <tr>
+            <td>এখনই কী master লাগে না?</td>
+            <td>বড় data engineering pipeline, Spark, distributed system — এগুলো পরে।</td>
+        </tr>
+        <tr>
+            <td>GitHub-এ কীভাবে দেখাবেন?</td>
+            <td>একটা messy dataset নিয়ে "before → after" cleaning দেখানো একটা notebook, যেখানে প্রতিটা সিদ্ধান্ত ব্যাখ্যা করা।</td>
+        </tr>
+        <tr>
+            <td>Interview-তে কী জিজ্ঞেস করতে পারে?</td>
+            <td>"একটা নতুন messy dataset পেলে প্রথম কী করবে?", "GIGO মানে কী?", "missing value দেখলে কী করো?"</td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১২. সাধারণ ভুল ধারণা</h2>
+
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "AI মানেই fancy algorithm; data তো শুধু জোগাড় করলেই হলো।" →
+        <strong>ঠিক:</strong> data জোগাড়, পরিষ্কার আর বোঝাই মূল কাজ; algorithm সবচেয়ে ছোট অংশ।<br><br>
+
+        <strong>ভুল ২:</strong> "বেশি data মানেই ভালো data।" →
+        <strong>ঠিক:</strong> নোংরা বা অপ্রাসঙ্গিক বেশি data ক্ষতিকর; relevance ও quality আগে, তারপর volume।<br><br>
+
+        <strong>ভুল ৩:</strong> "Model ভুল করলে algorithm বদলাব।" →
+        <strong>ঠিক:</strong> অনেক সময় আসল সমস্যা data-তে; আগে data দেখুন, তারপর algorithm।<br><br>
+
+        <strong>ভুল ৪:</strong> "Data cleaning সময়ের অপচয়।" →
+        <strong>ঠিক:</strong> এটাই সবচেয়ে বেশি value তৈরির জায়গা; skip করলে পুরো project অবিশ্বাস্য হয়ে যায়।<br><br>
+
+        <strong>ভুল ৫:</strong> "Data science আর data engineering এক জিনিস।" →
+        <strong>ঠিক:</strong> data engineer data-র pipeline/infrastructure বানায়; data scientist/AI engineer সেই data বিশ্লেষণ করে model বানায়। (মনে করুন Series 01-এর role আলোচনা।)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৩. Interview Prep</h2>
+
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> একটা ML project-এ সবচেয়ে বেশি সময় কোথায় যায়?<br>
+        <em>উত্তর:</em> data সংগ্রহ, cleaning ও EDA-তে (প্রায় ৭০-৮০%)। Model training তুলনামূলকভাবে ছোট অংশ।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> "Garbage In, Garbage Out" বলতে কী বোঝায়?<br>
+        <em>উত্তর:</em> input data খারাপ হলে model যত ভালোই হোক, output খারাপ হবে। model নীরবে ভুল data থেকে ভুল pattern শেখে।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> একটা নতুন dataset হাতে পেলে প্রথম তিনটা কাজ কী করবে?<br>
+        <em>উত্তর:</em> (১) shape/size ও column দেখা, (২) missing value ও data type পরীক্ষা, (৩) কয়েকটা row চোখে দেখে data-র consistency যাচাই। তারপর basic EDA।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> structured আর unstructured data-র পার্থক্য?<br>
+        <em>উত্তর:</em> structured = সুন্দর row/column table (Pandas/SQL); unstructured = text, image, audio-র মতো fixed গঠনহীন data (NLP/Deep Learning লাগে)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৪. হাতে-কলমে (Mini Exercise)</h2>
+
+    <div class="key-point">
+        <strong>🧪 হাতে-কলমে:</strong> নিচের ৫টা কাজের জন্য বলুন — এটা কোন ধরনের data (structured / semi-structured /
+        unstructured), আর এখানে সম্ভাব্য একটা data-সমস্যা কী হতে পারে?<br><br>
+        ১. একটা Excel sheet-এ ১০০০ কর্মীর নাম, বেতন, বিভাগ<br>
+        ২. একটা weather API থেকে আসা JSON response<br>
+        ৩. Facebook-এ গ্রাহকদের কমেন্টের লেখা<br>
+        ৪. CCTV ক্যামেরার ভিডিও footage<br>
+        ৫. একটা online form থেকে জমা হওয়া ফোন নম্বর (মানুষ নিজে টাইপ করেছে)<br><br>
+        <em>(ইঙ্গিত: ১→structured, duplicate/typo; ২→semi-structured, missing field; ৩→unstructured, বানান/emoji; 
+        ৪→unstructured, বিশাল size; ৫→structured কিন্তু inconsistent format যেমন "01712...", "+8801712...", "1712...")</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৫. Project Connection: flagship-এর V2</h2>
+
+    <p>
+        মনে আছে আমাদের flagship project <strong>"Bangladesh Tech Career Assistant"</strong>? Series 02-এ এটা ছিল
+        একটা সাধারণ Python CLI (V1)। এই Series 03-এ আমরা এটাকে <strong>V2 — একটা Data Analyzer</strong>-এ রূপান্তর করব।
+    </p>
+
+    <div class="info-box">
+        এই episode-এর mindset-টাই V2-এর ভিত্তি। আমরা বাংলাদেশের job market data নিয়ে কাজ করব — যেটা ঠিক আজকের
+        উদাহরণের মতোই messy (inconsistent skill নাম, missing salary, duplicate post)। পরের episode-গুলোতে ধাপে
+        ধাপে শিখব: NumPy (E02) → Pandas দিয়ে load ও clean (E03-E04) → visualize (E05) → SQL (E06-E07) →
+        preprocessing (E08), আর সব একসাথে জুড়ে E09-এ সম্পূর্ণ <strong>P1: Job Market Data Analyzer</strong> বানাব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৬. সারসংক্ষেপ</h2>
+
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ একটা ML project-এ সময়ের ~৮০% যায় data সংগ্রহ, cleaning ও বোঝায় — model training সবচেয়ে ছোট অংশ<br>
+        ✓ <strong>Garbage In, Garbage Out</strong> — খারাপ data দিলে সেরা model-ও খারাপ result দেবে<br>
+        ✓ data-র তিন ধরন: structured, semi-structured, unstructured — প্রতিটার জন্য আলাদা tool/approach<br>
+        ✓ "ভালো data" মানে শুধু বেশি না — relevance, completeness, consistency, accuracy ও representative হওয়া<br>
+        ✓ বাংলাদেশের real data প্রায়ই messy — messy data সামলানোই একটা মূল্যবান, চাহিদাসম্পন্ন skill<br>
+        ✓ একজন engineer আগে data দেখে, তারপর model নিয়ে ভাবে — এটাই data-centric mindset
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৭. পরবর্তী পর্বে কী শিখব</h2>
+
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E02):</strong> "NumPy: array, shape, vectorization — ML-এর নিচে যে গণিত চলে।"<br><br>
+        Data-র গুরুত্ব তো বুঝলাম, এবার হাতে-কলমে শুরু। কিন্তু Pandas-এ যাওয়ার আগে বুঝতে হবে তার নিচে যে জিনিসটা
+        চলে — <strong>NumPy</strong>। কেন Python-এর সাধারণ loop দিয়ে বড় data নিয়ে কাজ করা যায় না, আর কীভাবে
+        array-তে চিন্তা করলে code দ্রুত ও সহজ হয় — পরের পর্বে সেটাই শিখব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="../series-02/episode-09-git-github.html">⬅ পূর্ববর্তী: Git ও GitHub</a>
+            <a href="episode-02-numpy-arrays-vectorization.html">পরবর্তী: NumPy ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 01)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e01.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

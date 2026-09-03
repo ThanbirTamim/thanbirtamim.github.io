@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MLOps — experiment tracking, model ও data versioning, model registry (MLflow/DVC concept) — বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MLOps Part 1: experiment tracking, model ও data versioning, model registry | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="MLOps — experiment tracking, model ও data versioning, model registry (MLflow/DVC concept) — বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>MLOps Part 1: experiment tracking, model ও data versioning, model registry | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 09 &raquo; Episode 07
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> MLOps Part 1: experiment tracking, model ও data versioning, model registry</h1>
+    <p class="subtitle">reproducible ML lifecycle (Series 09, Episode 07)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-advanced">🔴 ADVANCED</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 09 — Notebook থেকে Production AI</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 07 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "গত সপ্তাহের ভালো model-টা কই?"</li>
+        <li>২. সমস্যা: reproducibility-র দুঃস্বপ্ন</li>
+        <li>৩. MLOps আসলে কী (DevOps + ML)</li>
+        <li>৪. তিন স্তরে: কেন tracking ও versioning</li>
+        <li>৫. Experiment Tracking: প্রতিটা run-এর ডায়েরি</li>
+        <li>৬. MLflow দিয়ে হাতে-কলমে tracking</li>
+        <li>৭. Model Versioning ও Model Registry</li>
+        <li>৮. Data Versioning: কোন data দিয়ে model শেখানো হলো?</li>
+        <li>৯. Visual: reproducible ML lifecycle</li>
+        <li>১০. Experiment: দুইটা run তুলনা করা</li>
+        <li>১১. বাংলাদেশের বাস্তব প্রসঙ্গ</li>
+        <li>১২. AI Engineer perspective</li>
+        <li>১৩. Boss Question</li>
+        <li>১৪. Job Requirement Decoder: "MLOps / experiment tracking"</li>
+        <li>১৫. সাধারণ ভুল</li>
+        <li>১৬. Interview Prep</li>
+        <li>১৭. হাতে-কলমে</li>
+        <li>১৮. Project Connection ও পরের পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎬</span> ১. গল্প: "গত সপ্তাহের ভালো model-টা কই?"</h2>
+    <p>
+        Rahim তিন সপ্তাহ ধরে churn model-এর নানা version চেষ্টা করছিল — কখনো RandomForest, কখনো XGBoost, ভিন্ন
+        feature, ভিন্ন hyperparameter। একদিন Boss বলল: "গত সপ্তাহে তো ৮৯% accuracy বলেছিলে, ওটাই deploy করো।"
+        Rahim ঘামতে শুরু করল —
+    </p>
+    <div class="story-box">
+        <em>Rahim ভাবল: "কোন version ছিল সেটা? কোন feature দিয়ে? কোন hyperparameter? কোন data দিয়ে train
+        করেছিলাম? আমি তো সব overwrite করে ফেলেছি!"</em><br><br>
+        Maya শুনে বলল: <em>"এটাই তো MLOps-এর মূল সমস্যা — <strong>reproducibility</strong>। প্রতিটা experiment-এর
+        code, data, parameter আর result track না করলে তুমি নিজের ভালো ফলটাও আর ফিরে পাবে না। DevOps যেমন software-কে
+        reproducible করে, MLOps তেমন ML-কে reproducible করে।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: reproducibility-র দুঃস্বপ্ন</h2>
+    <p>একটা ML result পুরোপুরি reproduce করতে চাইলে চারটা জিনিস লাগে:</p>
+    <div class="diagram">
+  Reproducible Model = Code + Data + Config + Environment
+        |         |        |       |          |
+     result   কোন কোড   কোন data  কোন param  কোন library version
+    </div>
+    <p>
+        software-এ শুধু কোড version করলেই (Git) চলে। কিন্তু ML-এ result নির্ভর করে <strong>data</strong> আর
+        <strong>hyperparameter</strong>-এর উপরও। এই সবগুলো track না করলে "৮৯% accuracy"-র model আর কখনো ফিরে
+        পাওয়া যায় না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔧</span> ৩. MLOps আসলে কী (DevOps + ML)</h2>
+    <div class="key-point">
+        <strong>MLOps</strong> = ML system-কে নির্ভরযোগ্যভাবে build, deploy ও maintain করার practice ও tooling।
+        এটা DevOps-এর ধারণা ML-এ প্রয়োগ করে, কিন্তু একটা বাড়তি চ্যালেঞ্জ যোগ করে: <strong>software-এ শুধু code
+        বদলায়, ML-এ code + data + model — তিনটাই বদলায়</strong>।
+    </div>
+    <table>
+        <tr><th>DevOps</th><th>MLOps (বাড়তি)</th></tr>
+        <tr><td>code version (Git)</td><td>code + <strong>data</strong> + <strong>model</strong> version</td></tr>
+        <tr><td>build → test → deploy</td><td>+ train → evaluate → track → register</td></tr>
+        <tr><td>app monitoring</td><td>+ <strong>model</strong> monitoring (drift — পরের episode)</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧠</span> ৪. তিন স্তরে: কেন tracking ও versioning</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> একজন বিজ্ঞানী প্রতিটা experiment-এর ল্যাব-ডায়েরি রাখেন — কী উপকরণ,
+        কী পরিমাণ, কী ফল। পরে কোনটা কাজ করেছিল দেখতে ডায়েরি খোলেন। Experiment tracking হলো ML-এর সেই ডায়েরি।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> প্রতিটা training run-এ আমরা log করি — parameters (model type,
+        hyperparameters), metrics (accuracy, F1), artifacts (trained model file), আর কোন code/data version।
+        একটা tool (MLflow) এগুলো সংরক্ষণ করে ও তুলনা করার UI দেয়।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — engineer perspective:</strong> engineer একটা <strong>model registry</strong>-তে "best"
+        model-কে stage করে (Staging → Production), version tag দেয়, আর deploy pipeline সেই registry থেকে model
+        টেনে নেয়। ফলে "কোন model production-এ চলছে ও কেন" সবসময় জানা থাকে — audit ও rollback সহজ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📔</span> ৫. Experiment Tracking: প্রতিটা run-এর ডায়েরি</h2>
+    <p>
+        <strong>কেন MLflow?</strong> এটা open-source, সহজ, Python-friendly, আর industry-তে ব্যাপকভাবে ব্যবহৃত
+        (বিকল্প: Weights &amp; Biases)। এটা প্রতিটা run-এর param, metric, model — সব এক জায়গায় রাখে ও তুলনা করতে দেয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৬. MLflow দিয়ে হাতে-কলমে tracking</h2>
+    <div class="code-box">
+# pip install mlflow scikit-learn
+import mlflow
+import mlflow.sklearn
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, f1_score
+
+mlflow.set_experiment("churn-prediction")
+
+def train_and_log(n_estimators, max_depth, X_tr, y_tr, X_te, y_te):
+    with mlflow.start_run():
+        # 1) parameters log করি (কী দিয়ে train করলাম)
+        mlflow.log_param("n_estimators", n_estimators)
+        mlflow.log_param("max_depth", max_depth)
+
+        model = RandomForestClassifier(
+            n_estimators=n_estimators, max_depth=max_depth
+        )
+        model.fit(X_tr, y_tr)
+
+        # 2) metrics log করি (কেমন করল)
+        preds = model.predict(X_te)
+        mlflow.log_metric("accuracy", accuracy_score(y_te, preds))
+        mlflow.log_metric("f1", f1_score(y_te, preds))
+
+        # 3) model artifact save করি (এই run-এর model)
+        mlflow.sklearn.log_model(model, "model")
+    </div>
+    <p>এবার নানা config-এ চালাও, তারপর <code>mlflow ui</code> command দিয়ে browser-এ সব run পাশাপাশি তুলনা করো —
+    "কোন run-এ ৮৯% ছিল" এক ক্লিকে খুঁজে পাবে। Rahim-এর দুঃস্বপ্ন শেষ।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏷️</span> ৭. Model Versioning ও Model Registry</h2>
+    <p>
+        Tracking-এ সব run জমা হলো। কিন্তু কোনটা "official production model"? এখানেই <strong>Model Registry</strong>।
+        এটা model-এর একটা central catalog — version সহ, stage সহ।
+    </p>
+    <div class="diagram">
+  Model Registry: churn-model
+  ┌──────────────────────────────────────────┐
+  │ version 1  -&gt; Archived                    │
+  │ version 2  -&gt; Staging   (test চলছে)        │
+  │ version 3  -&gt; Production (এটাই live)       │
+  └──────────────────────────────────────────┘
+        |
+   deploy pipeline "Production" tag-এর model টেনে নেয়
+    </div>
+    <div class="info-box">
+        সুবিধা: (১) কোন model live তা সবসময় জানা; (২) খারাপ হলে আগের version-এ এক ক্লিকে <strong>rollback</strong>;
+        (৩) audit trail — কে, কখন, কোন model promote করল।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗂️</span> ৮. Data Versioning: কোন data দিয়ে model শেখানো হলো?</h2>
+    <p>
+        Model reproduce করতে code যথেষ্ট নয় — কোন <strong>data</strong> দিয়ে train হয়েছিল সেটাও লাগে। কিন্তু
+        বড় dataset Git-এ রাখা যায় না (Git কোডের জন্য, GB-scale data-র জন্য নয়)। সমাধান: <strong>DVC (Data
+        Version Control)</strong>।
+    </p>
+    <div class="code-box">
+# pip install dvc
+# ধারণা: DVC data-র একটা ছোট "pointer" Git-এ রাখে,
+#        আসল বড় file থাকে আলাদা storage-এ (S3/drive)
+
+dvc init
+dvc add data/customers.csv     # data track করা শুরু
+git add data/customers.csv.dvc .gitignore
+git commit -m "track dataset v1 with DVC"
+
+# পরে data বদলালে নতুন version; git checkout করলে
+# সেই সময়ের কোড + data দুটোই ফিরে পাবে
+    </div>
+    <div class="key-point">
+        মূল ধারণা: <strong>Git for code, DVC for data</strong> — দুটো মিলে একটা ML result সম্পূর্ণভাবে reproducible হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔁</span> ৯. Visual: reproducible ML lifecycle</h2>
+    <div class="diagram">
+  [ Data (DVC versioned) ]
+            |
+            v
+  [ Train + log to MLflow ]  --&gt; params, metrics, model
+            |
+            v
+  [ Compare runs (MLflow UI) ]  --&gt; best model বাছাই
+            |
+            v
+  [ Model Registry ]  Staging -&gt; Production (version tag)
+            |
+            v
+  [ Deploy pipeline pulls "Production" model ]  (আগের episode-গুলো)
+            |
+            v
+  [ Monitoring ]  (পরের episode — loop বন্ধ করা)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ১০. Experiment: দুইটা run তুলনা করা</h2>
+    <ul>
+        <li>উপরের <code>train_and_log</code> দুইবার চালাও — একবার <code>max_depth=5</code>, একবার <code>max_depth=20</code>।</li>
+        <li><code>mlflow ui</code> খুলে দুইটা run-এর accuracy/f1 পাশাপাশি দেখো — কোনটা overfit করছে বোঝা যায় কিনা।</li>
+        <li>একটা run-এর saved model MLflow থেকে load করে একটা নতুন input-এ inference দাও।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের বাস্তব প্রসঙ্গ</h2>
+    <p>
+        বাংলাদেশের অনেক team এখনো model file-এর নাম দেয় <code>model_final.pkl</code>, <code>model_final_v2.pkl</code>,
+        <code>model_really_final.pkl</code> — আর কেউ জানে না কোনটা live! এটা বাস্তব, হাসির, কিন্তু বিপজ্জনক। যে
+        junior MLflow/registry দিয়ে এই বিশৃঙ্খলা ঠেকাতে পারে, সে দ্রুত মূল্যবান হয়ে ওঠে। fintech বা health-এর
+        মতো regulated field-এ তো "কোন model কোন data দিয়ে, কে approve করল" — এই audit trail প্রায় বাধ্যতামূলক।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১২. AI Engineer perspective</h2>
+    <div class="info-box">
+        <strong>Must Know (junior):</strong> কেন reproducibility জরুরি, experiment tracking-এর ধারণা, একটা
+        MLflow run log করা।<br>
+        <strong>Good to Know:</strong> model registry, DVC দিয়ে data versioning, run তুলনা।<br>
+        <strong>Learn Later (specialization):</strong> feature store, automated pipeline (Kubeflow/SageMaker),
+        full CI/CD for ML।
+    </div>
+    <p>
+        junior হিসেবে তোমার কাছে কেউ পুরো MLflow server চালাতে বলবে না — কিন্তু তুমি যদি experiment track করে,
+        "এই model এই data ও এই param দিয়ে, এই ফল" পরিষ্কার দেখাতে পারো, সেটাই তোমাকে পরিণত (mature) engineer হিসেবে চিহ্নিত করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৩. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss:</strong> <em>"এই tracking-ট্র্যাকিং, registry — এগুলোতে সময় দিলে আমার কী লাভ? model তো
+        এমনিতেই চলছে।"</em><br><br>
+        <strong>উত্তর:</strong> লাভ তিনটা — (১) আমাদের সবচেয়ে ভালো model কখনো হারাব না, যেকোনো সময় ফিরে পাব;
+        (২) নতুন model খারাপ করলে পুরনো ভালো version-এ মিনিটে rollback করা যাবে (downtime কম); (৩) কেউ যদি জিজ্ঞেস
+        করে "এই সিদ্ধান্ত কোন model, কোন data দিয়ে?" — আমরা প্রমাণসহ উত্তর দিতে পারব (compliance/আস্থা)। মানে কম
+        risk, দ্রুত recovery, আর বিশ্বাসযোগ্যতা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৪. Job Requirement Decoder: "MLOps / experiment tracking / model versioning"</h2>
+    <div class="info-box">
+        <ol>
+            <li><strong>কী বোঝায়?</strong> ML experiment, model ও data track/version করার practice ও tool ব্যবহার।</li>
+            <li><strong>কেন চায়?</strong> reproducibility, দ্রুত rollback, ও দলগত ML কাজ নিয়ন্ত্রণে রাখতে।</li>
+            <li><strong>কোন সমস্যা সমাধান করে?</strong> "কোন model/param/data ছিল?" ভুলে যাওয়া, বিশৃঙ্খল model file।</li>
+            <li><strong>Junior-এর কী জানা লাগে?</strong> MLflow দিয়ে run log, param/metric/model track, registry ও
+                DVC-এর <em>ধারণা</em>।</li>
+            <li><strong>এখনই কী master লাগে না?</strong> full MLOps platform, feature store, automated retraining pipeline — পরে।</li>
+            <li><strong>GitHub-এ কীভাবে দেখাবে?</strong> একটা repo-তে MLflow tracking কোড + README-তে run comparison
+                screenshot; <code>.dvc</code> file দেখানো।</li>
+            <li><strong>Interview-তে কী জিজ্ঞেস করতে পারে?</strong> "কীভাবে experiment track করো?", "model version
+                করো কীভাবে?", "একটা ML result reproduce করতে কী কী লাগে?", "Git কেন বড় data-র জন্য যথেষ্ট নয়?"</li>
+        </ol>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৫. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> model file-এর নাম <code>final_v2_really.pkl</code> দিয়ে version করা। → registry ব্যবহার করো।<br><br>
+        <strong>ভুল ২:</strong> শুধু accuracy log করা, param/data নয়। → পুরো context log করো, নাহলে reproduce হবে না।<br><br>
+        <strong>ভুল ৩:</strong> বড় dataset Git-এ push করা। → DVC (pointer) ব্যবহার করো।<br><br>
+        <strong>ভুল ৪:</strong> MLOps = tool ভাবা। → এটা মূলত practice/discipline; tool শুধু সাহায্য করে।<br><br>
+        <strong>ভুল ৫:</strong> tracking overkill মনে করে skip করা। → পরে ঠিক এখানেই সবচেয়ে বেশি সময় নষ্ট হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৬. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> "MLOps কী ও DevOps থেকে আলাদা কেন?"<br>
+        <em>উত্তর:</em> ML system reliable-ভাবে build/deploy/maintain করার practice; DevOps শুধু code, MLOps code+data+model সব।<br><br>
+        <strong>প্রশ্ন ২:</strong> "একটা ML result reproduce করতে কী লাগে?"<br>
+        <em>উত্তর:</em> code + data + config/params + environment — চারটাই version/track করা থাকতে হবে।<br><br>
+        <strong>প্রশ্ন ৩:</strong> "experiment tracking কীভাবে করো?"<br>
+        <em>উত্তর:</em> MLflow দিয়ে প্রতিটা run-এ param, metric, model artifact log; UI-তে তুলনা।<br><br>
+        <strong>প্রশ্ন ৪:</strong> "model registry-র লাভ কী?"<br>
+        <em>উত্তর:</em> কোন version কোন stage-এ জানা যায়, promote/rollback সহজ, audit trail থাকে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৭. হাতে-কলমে</h2>
+    <div class="key-point">
+        <strong>Mini exercise:</strong><br>
+        ১. Series 05-এর churn model-এ MLflow tracking যোগ করো; ৩টা ভিন্ন config-এ run করো।<br>
+        ২. <code>mlflow ui</code> খুলে ৩টা run তুলনা করো; best-টা চিহ্নিত করো।<br>
+        ৩. best model-টা MLflow থেকে load করে একটা নতুন input-এ prediction দাও।<br>
+        ৪. <code>dvc init</code> + <code>dvc add</code> দিয়ে তোমার dataset track করো; <code>.dvc</code> file দেখো।<br>
+        ৫. এক প্যারাগ্রাফে লেখো: "৩ মাস পর এই ঠিক model-টা কীভাবে ফিরে পাব?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৮. Project Connection ও পরের পর্ব</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এর ML/embedding অংশ এখন MLflow-এ
+        tracked ও registry-তে versioned। "কোন model live, কোন data দিয়ে" — সব জানা। এটা production platform
+        (V10)-এর দিকে একটা বড় ধাপ।
+    </p>
+    <div class="success-box">
+        ✓ MLOps = DevOps + (data+model), ✓ MLflow experiment tracking, ✓ model registry (stage/rollback),
+        ✓ DVC দিয়ে data versioning — ML lifecycle এখন reproducible।
+    </div>
+    <div class="key-point">
+        কিন্তু deploy হওয়া model সময়ের সাথে নীরবে খারাপ হতে পারে (data drift)। পরের episode (MLOps Part 2)-এ
+        আমরা শিখব <strong>monitoring, model drift detection, retraining, এবং CI/CD for models</strong> — মানে
+        "খারাপ prediction দিলে বুঝব কীভাবে?" — production loop বন্ধ করা।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-06-cloud-deployment-cpu-gpu.html">⬅ পূর্ববর্তী: Cloud Deploy</a>
+            <a href="episode-08-mlops-monitoring-drift-cicd.html">পরবর্তী: MLOps ২ ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 09, Episode 07)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s09e07.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MLP (Multi-Layer Perceptron) দিয়ে classification — epoch, batch ও learning rate-এর প্রভাব, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MLP দিয়ে classification: epoch, batch, learning rate টিউন করা | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="MLP (Multi-Layer Perceptron) দিয়ে classification — epoch, batch ও learning rate-এর প্রভাব, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>MLP দিয়ে classification: epoch, batch, learning rate টিউন করা | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 06 &raquo; Episode 05
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> MLP দিয়ে classification: epoch, batch, learning rate টিউন করা</h1>
+    <p class="subtitle">কার্যকর MLP (Series 06, Episode 05)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 06 — Deep Learning with PyTorch</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 05 / 08</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "কাজ তো করছে, কিন্তু কেন কাজ করছে?"</li>
+        <li>২. MLP আসলে কী?</li>
+        <li>৩. Epoch, Batch, Iteration — গুলিয়ে ফেলবেন না</li>
+        <li>৪. কেন mini-batch? (পুরো data একসাথে নয় কেন)</li>
+        <li>৫. DataLoader — PyTorch-এ data খাওয়ানোর ঠিক উপায়</li>
+        <li>৬. সম্পূর্ণ MLP training (real dataset)</li>
+        <li>৭. Learning rate, batch size টিউনিং</li>
+        <li>৮. Train vs Validation — overfitting ধরা</li>
+        <li>৯. Visual: batch, epoch, loss curve</li>
+        <li>১০. Experiment: batch size বদলে দেখুন</li>
+        <li>১১. বাংলাদেশের বাস্তব উদাহরণ</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে</li>
+        <li>১৭. Project Connection ও সারসংক্ষেপ</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: "কাজ তো করছে, কিন্তু কেন কাজ করছে?"</h2>
+    <p>
+        গত পর্বে Rahim একটা tiny network train করেছে। কিন্তু সে খেয়াল করল — code-এ কিছু সংখ্যা আছে
+        (<code>epoch=100</code>, <code>lr=0.05</code>) যেগুলো সে কেবল কপি করেছে, কেন সেই মান — জানে না।
+        আর "batch" শব্দটা এখনো ধোঁয়াশা।
+    </p>
+    <div class="story-box">
+        Rahim: <em>"আপা, epoch ১০০ কেন? ২০০ দিলে কি আরও ভালো হবে? আর batch size জিনিসটা কী?"</em><br><br>
+        Nila: <em>"এগুলোকে বলে hyperparameter — model শেখে না, তুমি ঠিক করে দাও। ভুল দিলে হয় model শেখে না,
+        নয়তো overfit করে বা অকারণে ধীর হয়। আজ আমরা একটা আসল MLP বানিয়ে এই সংখ্যাগুলোর অর্থ হাতে-কলমে বুঝব —
+        যাতে তুমি আর অন্ধভাবে কপি না করো।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏗️</span> ২. MLP আসলে কী?</h2>
+    <p>
+        <strong>MLP (Multi-Layer Perceptron)</strong> হলো সবচেয়ে মৌলিক neural network — কয়েকটা
+        <code>nn.Linear</code> layer পরপর, মাঝে activation (সাধারণত ReLU)। "fully connected" network-ও বলে,
+        কারণ প্রতিটা neuron আগের layer-এর সব neuron-এর সাথে যুক্ত। এটা tabular/vector data-তে ভালো কাজ করে।
+    </p>
+    <div class="info-box">
+        <strong>স্পষ্টীকরণ:</strong> MLP ছবির জন্য আদর্শ নয় (spatial সম্পর্ক ধরে না) — সেজন্য CNN লাগে (পরের পর্ব)।
+        MLP শেখা তবু জরুরি, কারণ এটাই সব neural network-এর ভিত্তি এবং vector/embedding data-তে খুব ব্যবহৃত।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔢</span> ৩. Epoch, Batch, Iteration — গুলিয়ে ফেলবেন না</h2>
+    <table>
+        <tr><th>শব্দ</th><th>মানে</th><th>উদাহরণ (1000 sample, batch=100)</th></tr>
+        <tr><td><strong>Epoch</strong></td><td>পুরো training data একবার model দেখল</td><td>১ epoch = ১০০০ sample একবার</td></tr>
+        <tr><td><strong>Batch</strong></td><td>data-র একটা ছোট অংশ, একসাথে process</td><td>batch size = ১০০ sample</td></tr>
+        <tr><td><strong>Iteration</strong></td><td>এক batch-এর এক weight update</td><td>১ epoch = ১০ iteration (1000/100)</td></tr>
+    </table>
+    <div class="key-point">
+        সহজ সূত্র: <strong>iteration per epoch = মোট sample ÷ batch size</strong>। ১০০০ sample, batch ১০০ হলে
+        প্রতি epoch-এ ১০ বার weight update হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ৪. কেন mini-batch? (পুরো data একসাথে নয় কেন)</h2>
+    <p>তিনটা কারণে আমরা পুরো data একসাথে না দিয়ে ছোট batch-এ ভাগ করি:</p>
+    <ul>
+        <li><strong>Memory:</strong> লাখ লাখ sample একসাথে GPU-তে ঢুকবে না।</li>
+        <li><strong>গতি:</strong> ছোট batch-এ ঘন ঘন update হয়, দ্রুত শেখে।</li>
+        <li><strong>Generalization:</strong> batch-এর সামান্য "noise" model-কে ভালো minimum খুঁজতে সাহায্য করে (কম overfit)।</li>
+    </ul>
+    <div class="technical-box">
+        <strong>পরিভাষা:</strong> পুরো data একসাথে = Batch GD; এক sample করে = Stochastic GD (SGD);
+        ছোট ছোট batch = <strong>Mini-batch GD</strong> — বাস্তবে এটাই সবচেয়ে বেশি ব্যবহৃত। সাধারণ batch size:
+        32, 64, 128।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📥</span> ৫. DataLoader — PyTorch-এ data খাওয়ানোর ঠিক উপায়</h2>
+    <p>
+        হাতে batch ভাগ না করে PyTorch-এর <code>Dataset</code> ও <code>DataLoader</code> ব্যবহার করি — এটা
+        automatically batch বানায়, shuffle করে, দরকারে parallel-এ data load করে।
+    </p>
+    <div class="code-box">
+import torch
+from torch.utils.data import TensorDataset, DataLoader
+
+# ধরা যাক X (1000, 10) feature, y (1000,) label
+X = torch.randn(1000, 10)
+y = (X.sum(dim=1) &gt; 0).long()
+
+dataset = TensorDataset(X, y)
+loader = DataLoader(dataset, batch_size=64, shuffle=True)
+
+# এক epoch-এ ঘোরা
+for xb, yb in loader:
+    print(xb.shape, yb.shape)   # প্রতি batch: (64, 10) (64,)
+    break
+    </div>
+    <p><strong>কেন shuffle=True?</strong> প্রতি epoch-এ data-র ক্রম বদলালে model ক্রম মুখস্থ করতে পারে না, ভালো generalize করে।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৬. সম্পূর্ণ MLP training (real dataset)</h2>
+    <p>
+        scikit-learn-এর একটা বাস্তব dataset (breast cancer — binary classification) দিয়ে সম্পূর্ণ MLP।
+        খেয়াল করুন Series 03/05-এর preprocessing (scaling) এখানে কীভাবে কাজে লাগছে:
+    </p>
+    <div class="code-box">
+import torch
+import torch.nn as nn
+from torch.utils.data import TensorDataset, DataLoader
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# 1) data
+data = load_breast_cancer()
+X_tr, X_te, y_tr, y_te = train_test_split(
+    data.data, data.target, test_size=0.2, random_state=0)
+
+# 2) scaling (NN-এ প্রায় সবসময় জরুরি!)
+scaler = StandardScaler().fit(X_tr)
+X_tr = torch.tensor(scaler.transform(X_tr), dtype=torch.float32)
+X_te = torch.tensor(scaler.transform(X_te), dtype=torch.float32)
+y_tr = torch.tensor(y_tr, dtype=torch.long)
+y_te = torch.tensor(y_te, dtype=torch.long)
+
+train_loader = DataLoader(TensorDataset(X_tr, y_tr),
+                          batch_size=32, shuffle=True)
+
+# 3) MLP model
+class MLP(nn.Module):
+    def __init__(self, in_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(in_dim, 32), nn.ReLU(),
+            nn.Linear(32, 16), nn.ReLU(),
+            nn.Linear(16, 2),          # 2 class
+        )
+    def forward(self, x):
+        return self.net(x)
+
+model = MLP(X_tr.shape[1])
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+
+# 4) training loop (batch সহ)
+for epoch in range(30):
+    model.train()
+    for xb, yb in train_loader:
+        optimizer.zero_grad()
+        loss = criterion(model(xb), yb)
+        loss.backward()
+        optimizer.step()
+
+    # validation প্রতি ৫ epoch
+    if epoch % 5 == 0:
+        model.eval()
+        with torch.no_grad():
+            acc = (model(X_te).argmax(1) == y_te).float().mean()
+        print(f"epoch {epoch:2d} | test acc {acc.item():.3f}")
+    </div>
+    <div class="info-box">
+        <strong>কেন StandardScaler?</strong> neural network-এ feature-এর মাপ বেমানান হলে (একটা ০–১, আরেকটা
+        ০–১০০০) training অস্থির হয়। scaling সব feature-কে একই মাপে আনে — NN-এ এটা প্রায় বাধ্যতামূলক।
+        <br><strong>কেন model.train()/model.eval()?</strong> dropout/batchnorm-এর মতো layer train ও inference-এ
+        ভিন্ন আচরণ করে; mode সেট করা জরুরি। <code>torch.no_grad()</code> inference-এ memory/গতি বাঁচায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎚️</span> ৭. Learning rate, batch size টিউনিং</h2>
+    <table>
+        <tr><th>Hyperparameter</th><th>বাড়ালে</th><th>কমালে</th></tr>
+        <tr><td>Learning rate</td><td>দ্রুত, কিন্তু বেশি হলে diverge</td><td>স্থিতিশীল, কিন্তু ধীর</td></tr>
+        <tr><td>Batch size</td><td>মসৃণ কিন্তু কম update, বেশি memory</td><td>বেশি noise, ভালো generalization হতে পারে</td></tr>
+        <tr><td>Epoch</td><td>বেশি শেখা, কিন্তু বেশি হলে overfit</td><td>underfit হতে পারে</td></tr>
+        <tr><td>Hidden size/layer</td><td>বেশি capacity, overfit ঝুঁকি</td><td>simple, underfit ঝুঁকি</td></tr>
+    </table>
+    <div class="key-point">
+        Engineer টিপ: শুরু করুন <code>Adam, lr=0.001, batch=32</code> দিয়ে — এটা নিরাপদ ডিফল্ট। তারপর একটা
+        একটা করে বদলে validation accuracy দেখুন। সব একসাথে বদলাবেন না।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৮. Train vs Validation — overfitting ধরা</h2>
+    <p>
+        Series 05-এর overfitting মনে আছে? DL-এও একই। train loss কমছে কিন্তু validation accuracy বাড়ছে না/কমছে
+        মানে model data মুখস্থ করছে (overfit)। তাই আমরা সবসময় <strong>আলাদা validation/test set</strong>-এ মাপি।
+    </p>
+    <div class="diagram">
+   loss
+    │  train ↘↘↘↘↘↘↘↘   (কমতেই থাকে)
+    │  val   ↘↘↘↗↗↗↗↗   ← এখানে থেকে val বাড়ছে = OVERFIT শুরু
+    │                     (এখানে থামানো ভালো = early stopping)
+    └──────────────────────────── epoch →
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৯. Experiment: batch size বদলে দেখুন</h2>
+    <p>
+        উপরের কোডে <code>batch_size</code> ৩২ → ৮ → ২৫৬ করে চালান। খেয়াল করুন — ছোট batch-এ প্রতি epoch ধীর
+        কিন্তু কম epoch-এ ভালো হয়; বড় batch-এ দ্রুত কিন্তু কখনো একটু কম accuracy। এই trade-off হাতে অনুভব করাই লক্ষ্য।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের বাস্তব উদাহরণ</h2>
+    <p>
+        একটা fintech-এ credit-scoring MLP train করার সময় engineer-রা ঠিক এই কাজই করে — batch size, learning
+        rate টিউন করে validation AUC সর্বোচ্চ করা, আর overfit এড়ানো। tabular data হলেও অনেক দল embedding +
+        MLP ব্যবহার করে। এই hyperparameter intuition ছাড়া model হয় শেখে না, নয়তো production-এ ভুল করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"তুমি বললে model 'train হচ্ছে, ৩০ epoch'। এই epoch বাড়ালে কি আমার model আরও ভালো হবে?"</em><br><br>
+        <strong>উত্তর:</strong> "স্যার, একটা সীমা পর্যন্ত হ্যাঁ — তারপর উল্টো খারাপ হয় (overfitting), মানে
+        training data-তে ভালো কিন্তু নতুন real customer-এ খারাপ। তাই আমরা validation set-এ নজর রাখি আর ঠিক
+        সময়ে থামাই (early stopping)। এতে সময়/GPU খরচও বাঁচে, আর production-এ model নির্ভরযোগ্য থাকে।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="key-point">"Ability to train and tune neural networks (hyperparameter tuning)."</div>
+    <div class="info-box">
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr><td>কী বোঝায়?</td><td>আপনি MLP train করতে ও epoch/batch/lr টিউন করে ভালো ফল পেতে পারেন।</td></tr>
+            <tr><td>কেন চায়?</td><td>default দিয়ে ভালো model হয় না; টিউনিং লাগে।</td></tr>
+            <tr><td>কোন সমস্যা সমাধান করে?</td><td>underfit/overfit, ধীর training, অস্থির loss।</td></tr>
+            <tr><td>junior-এর কী জানা লাগে?</td><td>epoch/batch/iteration পার্থক্য, DataLoader, scaling, train/val split, early stopping।</td></tr>
+            <tr><td>এখনই কী master লাগে না?</td><td>advanced scheduler, Bayesian hyperparameter search, mixed precision।</td></tr>
+            <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>MLP project + loss/accuracy curve + "টিউনিং কীভাবে করলাম" note।</td></tr>
+            <tr><td>interview-তে কী?</td><td>"batch size বাড়ালে কী হয়?", "overfit কীভাবে ধরবেন?"</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> NN-এ feature scaling না করা → training অস্থির, ধীর।<br><br>
+        <strong>ভুল ২:</strong> শুধু train accuracy দেখা → overfit না ধরা।<br><br>
+        <strong>ভুল ৩:</strong> "epoch যত বেশি তত ভালো" → overfit।<br><br>
+        <strong>ভুল ৪:</strong> inference-এ <code>model.eval()</code> ও <code>torch.no_grad()</code> না দেওয়া।<br><br>
+        <strong>ভুল ৫:</strong> validation set দিয়ে বারবার টিউন করে সেটাকেই "টেস্ট" ভাবা → data leakage (আলাদা test রাখুন)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> Epoch, batch, iteration-এর পার্থক্য?<br>
+        <em>উত্তর:</em> epoch = পুরো data একবার; batch = data-র অংশ; iteration = এক batch-এর এক update।<br><br>
+        <strong>প্রশ্ন ২:</strong> Batch size ছোট/বড় করলে কী হয়?<br>
+        <em>উত্তর:</em> ছোট = বেশি noise, ভালো generalize, ধীর; বড় = মসৃণ, দ্রুত, বেশি memory।<br><br>
+        <strong>প্রশ্ন ৩:</strong> Overfitting কীভাবে ধরবেন ও কমাবেন?<br>
+        <em>উত্তর:</em> train vs val gap দেখে ধরা; কমাতে — early stopping, dropout, regularization, বেশি data।<br><br>
+        <strong>প্রশ্ন ৪:</strong> NN-এ scaling কেন জরুরি?<br>
+        <em>উত্তর:</em> ভিন্ন মাপের feature training অস্থির করে; scaling gradient-কে সুস্থিত করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. উপরের breast-cancer MLP চালিয়ে test accuracy ০.৯৫+ নিতে টিউন করুন।<br>
+        ২. train loss আর val accuracy দুটোই প্রতি epoch জমিয়ে plot করুন; overfit শুরু কোথায় খুঁজুন।<br>
+        ৩. hidden layer একটা বাড়ান/কমান — ফলাফল কেমন বদলায়?<br>
+        ৪. <code>lr=0.1</code> দিয়ে দেখুন loss অস্থির হয় কিনা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৬. Project Connection ও সারসংক্ষেপ</h2>
+    <p>
+        MLP হলো সব neural network-এর ভিত্তি। আমাদের flagship-এ পরে যখন job description-এর embedding-এর উপর
+        একটা classifier বসাব, সেটা হবে এমনই একটা MLP। এখন যে training-loop ও টিউনিং শিখলাম, সেটাই সব DL project-এ
+        একই থাকবে — শুধু model আর data বদলাবে।
+    </p>
+    <div class="success-box">
+        এই পর্বে শিখলাম:<br>
+        ✓ MLP = পরপর Linear layer + ReLU; vector data-তে ভালো<br>
+        ✓ epoch / batch / iteration-এর পরিষ্কার পার্থক্য<br>
+        ✓ mini-batch কেন (memory, গতি, generalization); DataLoader ব্যবহার<br>
+        ✓ scaling, train/eval mode, no_grad — বাস্তব training-এর অপরিহার্য অংশ<br>
+        ✓ lr/batch/epoch টিউনিং আর train-vs-val দিয়ে overfit ধরা
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী পর্ব (S06E06):</strong> "CNN — computer কীভাবে ছবি দেখে" — MLP ছবিতে কেন দুর্বল, convolution
+        ও pooling কীভাবে কাজ করে, আর আমরা শূন্য থেকে P4 image classifier বানাব।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-04-pytorch-hands-on.html">⬅ পূর্ববর্তী: PyTorch</a>
+            <a href="episode-06-cnn-image-classifier.html">পরবর্তী: CNN ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 06, Episode 05)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s06e05.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

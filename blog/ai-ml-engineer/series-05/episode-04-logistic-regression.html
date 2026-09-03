@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Logistic Regression দিয়ে customer churn prediction — classification-এর প্রথম পাঠ scikit-learn-এ বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Logistic Regression: &#x27;হ্যাঁ/না&#x27; prediction (Customer Churn দিয়ে) | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Logistic Regression দিয়ে customer churn prediction — classification-এর প্রথম পাঠ scikit-learn-এ বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Logistic Regression: &#x27;হ্যাঁ/না&#x27; prediction (Customer Churn দিয়ে) | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 05 &raquo; Episode 04
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Logistic Regression: 'হ্যাঁ/না' prediction (Customer Churn দিয়ে)</h1>
+    <p class="subtitle">প্রথম classifier (Series 05, Episode 04)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 05 — Classical Machine Learning</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 04 / 11</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর সেই আসল সমস্যা ফিরে এলো</li>
+        <li>২. সমস্যা: "হ্যাঁ/না" কীভাবে predict করি?</li>
+        <li>৩. কেন Linear Regression এখানে ফেল করে</li>
+        <li>৪. Logistic Regression কী? (৩ স্তরে)</li>
+        <li>৫. Sigmoid — সংখ্যাকে probability-তে চাপা</li>
+        <li>৬. Visual: line নয়, S-curve</li>
+        <li>৭. Decision threshold — probability থেকে সিদ্ধান্ত</li>
+        <li>৮. কোড: Customer Churn model (Project P3)</li>
+        <li>৯. probability পড়া ও threshold টিউন</li>
+        <li>১০. বাংলাদেশের বাস্তব উদাহরণ</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection ও সারসংক্ষেপ</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর সেই আসল সমস্যা ফিরে এলো</h2>
+    <p>
+        মনে আছে E01-এর সেই সমস্যা? "কোন customer পরের মাসে চলে যাবে (churn করবে)?" — এটা তো সংখ্যা নয়,
+        উত্তর <strong>হ্যাঁ/না</strong>। এটাই <strong>Classification</strong>। GP/Robi-র মতো টেলকোতে এটা
+        সবচেয়ে দামি সমস্যা: কারণ একজন পুরনো customer ধরে রাখা নতুন একজন আনার চেয়ে ৫ গুণ সস্তা।
+    </p>
+    <div class="story-box">
+        Rahim: "আমি তো Linear Regression শিখলাম। এটাই লাগিয়ে দিই — churn=1, no-churn=0 predict করব?"<br><br>
+        Arif: "থাম! Linear Regression সংখ্যা দেয় — সেটা ১.৮ বা −০.৩ও হতে পারে। কিন্তু 'churn করবে কিনা'
+        তো probability, ০ থেকে ১-এর মধ্যে থাকা উচিত। এখানেই <strong>Logistic Regression</strong> —
+        নাম regression হলেও কাজ classification।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: "হ্যাঁ/না" কীভাবে predict করি?</h2>
+    <p>
+        Classification-এ output একটা <strong>category</strong>। সবচেয়ে সাধারণ — <strong>binary classification</strong>
+        (দুইটা class): churn/no-churn, spam/not-spam, fraud/legit, রোগ আছে/নেই। আমরা চাই model শুধু
+        "হ্যাঁ" না বলে বলুক <em>"৮৭% সম্ভাবনায় হ্যাঁ"</em> — কারণ probability দিলে আমরা সিদ্ধান্তের
+        threshold নিজেরা ঠিক করতে পারি।
+    </p>
+    <div class="key-point">
+        দুই ধরনের supervised সমস্যা মনে রাখুন: Regression → সংখ্যা (E02–E03); Classification → class/probability
+        (এই episode থেকে)। Logistic Regression হলো classification-এর সবচেয়ে সহজ, ভিত্তিমূলক model।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚫</span> ৩. কেন Linear Regression এখানে ফেল করে</h2>
+    <ul>
+        <li><strong>সীমার বাইরে যায়:</strong> Linear output −∞ থেকে +∞; কিন্তু probability ০–১-এর মধ্যে থাকতে হবে। ১.৮ বা −০.৩ probability অর্থহীন।</li>
+        <li><strong>outlier-এ line হেলে যায়:</strong> একটা চরম মান পুরো decision boundary টেনে নষ্ট করে।</li>
+        <li><strong>ভুল loss:</strong> classification-এ MSE নয়, log-loss (cross-entropy) সঠিক।</li>
+    </ul>
+    <div class="info-box">
+        Logistic Regression এই সমস্যাগুলো সমাধান করে — একটা <strong>sigmoid function</strong> দিয়ে
+        যেকোনো সংখ্যাকে ০–১ probability-তে চেপে দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧠</span> ৪. Logistic Regression কী? (৩ স্তরে)</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> Linear Regression একটা সংখ্যা বের করে (score)। Logistic Regression
+        সেই score-টাকে একটা "চাপ দেওয়া" function দিয়ে ০ থেকে ১-এর মধ্যে probability-তে রূপান্তর করে।
+        ৮৭% হলে বলি "খুব সম্ভবত churn করবে"।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> প্রথমে linear score <code>z = w1·x1 + ... + b</code> বের করে,
+        তারপর <code>probability = sigmoid(z) = 1 / (1 + e^(-z))</code>। Training-এ log-loss (cross-entropy)
+        minimize করা হয়, যাতে model সঠিক class-কে বেশি probability দেয়।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — Engineer perspective:</strong> Logistic Regression দ্রুত, interpretable, আর অসাধারণ
+        baseline classifier। বাস্তব fraud/churn system-এ প্রায়ই প্রথম model এটাই। সবচেয়ে বড় সুবিধা —
+        এটা <em>probability</em> দেয়, তাই business ঠিক করতে পারে "কত% ঝুঁকির উপরে action নেব"। আর
+        coefficient দেখে বলা যায় কোন feature ঝুঁকি বাড়ায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">〰️</span> ৫. Sigmoid — সংখ্যাকে probability-তে চাপা</h2>
+    <div class="diagram">
+ sigmoid(z) = 1 / (1 + e^(-z))
+
+  z = -5  → 0.007   (প্রায় "না")
+  z =  0  → 0.500   (ঠিক মাঝখানে)
+  z = +5  → 0.993   (প্রায় "হ্যাঁ")
+
+ যত বড় positive z, তত ১-এর কাছে; যত বড় negative, তত ০-এর কাছে।
+    </div>
+    <p>
+        এই function-ই জাদু: linear score যত বড়/ছোট-ই হোক, output সবসময় ০ আর ১-এর মধ্যে —
+        একটা বৈধ probability।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৬. Visual: line নয়, S-curve</h2>
+    <div class="diagram">
+ probability
+   1.0 |                       _____•••••••
+       |                   __/
+   0.5 |- - - - - - - - -•- - - - - - - - -  ← threshold
+       |            __/
+   0.0 |••••••_____/
+       +-----------------------------------  feature (z)
+             "না" এলাকা  |  "হ্যাঁ" এলাকা
+    </div>
+    <p>
+        Linear Regression-এর সোজা লাইনের বদলে Logistic-এর এই মসৃণ <strong>S-curve</strong> (sigmoid)।
+        মাঝখানে (0.5) দ্রুত বদলায়, দুই প্রান্তে সমতল।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎚️</span> ৭. Decision threshold — probability থেকে সিদ্ধান্ত</h2>
+    <p>
+        Model probability দেয় (যেমন 0.72)। কিন্তু শেষ সিদ্ধান্ত "churn / no-churn" — এর জন্য একটা
+        <strong>threshold</strong> লাগে। default 0.5: probability ≥ 0.5 হলে "হ্যাঁ"। কিন্তু এটা business
+        সিদ্ধান্ত!
+    </p>
+    <div class="key-point">
+        Churn-এ retention offer সস্তা হলে threshold কমিয়ে 0.3 করুন — বেশি মানুষকে "ঝুঁকিপূর্ণ" ধরে অফার দিন
+        (recall বাড়ে)। fraud-এ ভুল ব্লক করলে গ্রাহক রাগে — threshold বাড়ান (precision বাড়ে)। এই trade-off
+        পরের episode (E05)-এর মূল বিষয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৮. কোড: Customer Churn model (Project P3)</h2>
+    <p><strong>কেন এখানে scikit-learn?</strong> <code>LogisticRegression</code> একই <code>fit</code>/<code>predict</code>
+    API, তার সাথে <code>predict_proba</code> দিয়ে probability — production-এ ঠিক যা লাগে:</p>
+    <div class="code-box">
+# pip install scikit-learn pandas
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# ১. Telco churn-এর মতো ছোট ডেটা (1 = churn, 0 = stayed)
+df = pd.DataFrame({
+    "tenure_months":   [1, 24, 3, 40, 2, 30, 5, 60, 1, 18],
+    "monthly_bill":    [70, 45, 90, 40, 85, 42, 88, 38, 95, 50],
+    "support_calls":   [4, 0, 5, 0, 6, 1, 4, 0, 7, 1],
+    "churn":           [1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+})
+
+X = df[["tenure_months", "monthly_bill", "support_calls"]]
+y = df["churn"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42, stratify=y
+)
+
+# ২. Scaling — Logistic Regression scale-sensitive; feature-দের সমান করি
+scaler = StandardScaler()
+X_train_s = scaler.fit_transform(X_train)   # fit শুধু train-এ (leakage এড়াতে)
+X_test_s  = scaler.transform(X_test)        # test শুধু transform
+
+# ৩. Training
+clf = LogisticRegression()
+clf.fit(X_train_s, y_train)
+
+# ৪. Prediction ও probability
+preds  = clf.predict(X_test_s)
+probas = clf.predict_proba(X_test_s)[:, 1]  # class=1 (churn)-এর probability
+
+print("Accuracy:", accuracy_score(y_test, preds))
+print("Churn probabilities:", probas.round(2))
+print("Confusion matrix:\n", confusion_matrix(y_test, preds))
+    </div>
+    <div class="info-box">
+        খেয়াল করুন <code>stratify=y</code> — train/test দুই ভাগেই churn-এর অনুপাত একই রাখে। আর
+        <code>scaler.fit</code> শুধু train-এ (test-এ শুধু <code>transform</code>) — এটা <strong>data leakage</strong>
+        এড়ানোর গুরুত্বপূর্ণ অভ্যাস (Series 03-এ শেখা, E08-এ আবার আসবে)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৯. probability পড়া ও threshold টিউন</h2>
+    <div class="code-box">
+import numpy as np
+
+# default threshold 0.5-এর বদলে custom threshold
+threshold = 0.3   # churn ধরার ব্যাপারে বেশি সতর্ক
+custom_preds = (probas &gt;= threshold).astype(int)
+print("threshold 0.3-এ prediction:", custom_preds)
+
+# কোন feature ঝুঁকি বাড়ায়? coefficient দেখুন
+for name, coef in zip(X.columns, clf.coef_[0]):
+    print(f"{name}: {coef:.2f}")
+# support_calls positive হলে: বেশি support call = বেশি churn ঝুঁকি
+    </div>
+    <div class="key-point">
+        একই model, ভিন্ন threshold, ভিন্ন business আচরণ — model retrain না করেই। এটাই probability output-এর
+        শক্তি। কোন threshold ভালো, সেটা E05-এর precision/recall দিয়ে বেছে নেব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের বাস্তব উদাহরণ</h2>
+    <ul>
+        <li><strong>GP / Robi / Banglalink:</strong> prepaid subscriber churn prediction → targeted recharge offer।</li>
+        <li><strong>bKash / Nagad:</strong> transaction fraud (fraud/legit) — probability দিয়ে risk score।</li>
+        <li><strong>Daraz:</strong> কোন order return/cancel হবে তার prediction।</li>
+        <li><strong>Bank/NBFI:</strong> loan default হবে কিনা (credit risk) — একটা classic logistic use-case।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: "churn 'হ্যাঁ/না' জেনে আমি কী করব?"<br><br>
+        <strong>উত্তর:</strong> শুধু হ্যাঁ/না নয় — model প্রতিটা customer-কে একটা <em>churn probability</em> দেয়।
+        আপনি top 5% ঝুঁকিপূর্ণ customer-কে retention offer পাঠাবেন, বাকিদের নয়। ফলে marketing budget সঠিক
+        জায়গায় খরচ হয়, retention বাড়ে, revenue বাঁচে। ১ লাখ subscriber-এর মধ্যে ২% churn ঠেকাতে পারলেও
+        মাসে বড় অঙ্কের টাকা — এটাই business value।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="info-box">
+        JD: <em>"Build classification models (Logistic Regression, etc.) for problems like churn/fraud prediction."</em><br><br>
+        <strong>১. কী বোঝায়?</strong> category/probability predict করার model বানানো ও ব্যাখ্যা করা।<br>
+        <strong>২. কেন চায়?</strong> churn, fraud, risk — প্রায় সব company-র core সমস্যা classification।<br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> "কে/কোনটা এই class-এ পড়বে" — সিদ্ধান্তের ভিত্তি।<br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> Logistic Regression, sigmoid, probability vs class, threshold, <code>predict_proba</code>, scaling ও leakage সতর্কতা।<br>
+        <strong>৫. এখনই master লাগবে না:</strong> log-loss-এর derivation, multinomial/softmax-এর গভীর গণিত।<br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> Churn notebook: preprocessing → logistic model → confusion matrix → threshold-এর প্রভাব।<br>
+        <strong>৭. Interview:</strong> "Classification-এ Linear Regression কেন নয়?", "Sigmoid কী করে?", "Threshold কীভাবে বাছবেন?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "Logistic Regression একটা regression algorithm" → <strong>ঠিক:</strong> নাম regression, কাজ classification।<br><br>
+        <strong>ভুল ২:</strong> scaling না করা → Logistic Regression feature scale-sensitive; বড় স্কেলের feature অন্যায় প্রাধান্য পায়।<br><br>
+        <strong>ভুল ৩:</strong> সবসময় threshold 0.5 ধরে নেওয়া → business-এ optimal threshold ভিন্ন হতে পারে।<br><br>
+        <strong>ভুল ৪:</strong> imbalanced churn data-তে শুধু accuracy দেখা → ৯৫% "no-churn" হলে সব "no" বলেও ৯৫% accuracy! (E05-এ সমাধান)।<br><br>
+        <strong>ভুল ৫:</strong> <code>scaler.fit</code> পুরো data-তে (test সহ) → data leakage; শুধু train-এ fit করুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্র: Classification-এ Linear Regression কেন ব্যবহার করি না?</strong><br>
+        উ: output সীমাহীন (০–১ নয়), outlier-এ boundary হেলে যায়, ভুল loss; probability দরকার।<br><br>
+        <strong>প্র: Sigmoid কী করে?</strong><br>
+        উ: যেকোনো real সংখ্যাকে ০–১ probability-তে map করে (S-curve)।<br><br>
+        <strong>প্র: predict আর predict_proba-র পার্থক্য?</strong><br>
+        উ: <code>predict</code> চূড়ান্ত class দেয় (threshold প্রয়োগ করে); <code>predict_proba</code> কাঁচা probability দেয়।<br><br>
+        <strong>প্র: Logistic Regression কি non-linear সম্পর্ক ধরতে পারে?</strong><br>
+        উ: মূলত linear decision boundary; feature engineering (polynomial) ছাড়া strongly non-linear ধরতে পারে না।<br><br>
+        <strong>প্র: Threshold কীভাবে বাছেন?</strong><br>
+        উ: precision/recall trade-off ও business cost দেখে (E05); default 0.5 বাধ্যতামূলক নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. উপরের churn কোড চালান। <code>predict_proba</code> দিয়ে প্রতিটা test customer-এর churn probability ছাপান।<br>
+        ২. threshold 0.5 → 0.3 → 0.7 বদলে দেখুন কতজন "churn" ধরা পড়ে — এটাই recall/precision trade-off-এর হাতেকলমে অনুভব।<br>
+        ৩. <code>clf.coef_</code> দেখে বলুন কোন feature churn ঝুঁকি সবচেয়ে বাড়ায়। এটা Boss-কে বোঝানোর মতো insight।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection ও সারসংক্ষেপ</h2>
+    <p>
+        এটা আমাদের <strong>Project P3 (Customer Churn Prediction)</strong>-এর শুরু — portfolio-র প্রথম
+        classification project। পরের episode-গুলোতে এটাকেই আমরা সঠিকভাবে evaluate (E05), তারপর Random Forest
+        (E06) ও XGBoost (E07) দিয়ে improve করব। flagship Career Assistant-এও classification লাগবে —
+        "এই job description junior না senior role?" ঠিক এই ধরনের binary/multi-class সমস্যা।
+    </p>
+    <div class="success-box">
+        এই Episode-এ শিখলাম:<br><br>
+        ✓ Classification = category/probability predict; churn হলো ক্লাসিক binary সমস্যা<br>
+        ✓ Linear Regression classification-এ কেন ফেল করে<br>
+        ✓ Logistic Regression: linear score → sigmoid → probability (নাম regression, কাজ classification)<br>
+        ✓ Sigmoid S-curve যেকোনো সংখ্যাকে ০–১-এ চাপে; threshold দিয়ে সিদ্ধান্ত<br>
+        ✓ scikit-learn-এ <code>predict_proba</code>, scaling, stratify, leakage সতর্কতা — Project P3 শুরু<br>
+        ✓ coefficient পড়ে কোন feature ঝুঁকি বাড়ায় বোঝা যায়
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode:</strong> "Accuracy কেন মিথ্যা বলে?" — Classification Evaluation। Precision, Recall,
+        F1, ROC-AUC, Confusion Matrix আর imbalanced data-র ভয়ংকর ফাঁদ।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-03-regression-evaluation.html">⬅ পূর্ববর্তী: Regression Metrics</a>
+            <a href="episode-05-classification-evaluation.html">পরবর্তী: Classification Metrics ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 05, Episode 04)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s05e04.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

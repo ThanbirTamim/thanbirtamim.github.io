@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statistics basics — mean, median, variance, standard deviation ও distribution — data-র চরিত্র বোঝা বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Statistics Basics: mean, median, variance, std — data-র চরিত্র | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Statistics basics — mean, median, variance, standard deviation ও distribution — data-র চরিত্র বোঝা বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Statistics Basics: mean, median, variance, std — data-র চরিত্র | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 04 &raquo; Episode 04
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Statistics Basics: mean, median, variance, std — data-র চরিত্র</h1>
+    <p class="subtitle">সংখ্যায় data-কে বর্ণনা করা (Series 04, Episode 04)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 04 — Math, Statistics ও Probability</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 04 / 07</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "গড় বেতন ৮০ হাজার" — কিন্তু...</li>
+        <li>২. আসল সমস্যা: এক সংখ্যায় পুরো data বোঝানো</li>
+        <li>৩. কেন Statistics junior-দের সবচেয়ে বেশি লাগে</li>
+        <li>৪. Level 1 — mean, median, mode (শ্রেণির নম্বর)</li>
+        <li>৫. mean বনাম median — কখন কোনটা</li>
+        <li>৬. Level 2 — variance ও standard deviation (ছড়ানো)</li>
+        <li>৭. Level 3 — ML-এ scaling ও outlier-এ এর ব্যবহার</li>
+        <li>৮. Distribution — data-র আকৃতি</li>
+        <li>৯. Visual: একই mean, ভিন্ন ছড়ানো</li>
+        <li>১০. Code: Pandas/NumPy দিয়ে describe</li>
+        <li>১১. বাংলাদেশের context (job market data)</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💰</span> ১. গল্প: "গড় বেতন ৮০ হাজার" — কিন্তু...</h2>
+    <p>
+        Rahim একটা রিপোর্টে পড়ল: "এই কোম্পানির কর্মীদের গড় (mean) বেতন ৮০ হাজার টাকা।" সে খুশি হয়ে
+        Nila-কে বলল, চাকরিটা নিশ্চয় দারুণ। Nila একটু হাসল।
+    </p>
+    <div class="story-box">
+        Nila বলল: <em>"একটু সাবধান। ধরো কোম্পানিতে ১০ জন — ৯ জনের বেতন ৩০ হাজার, আর CEO-র বেতন ৫ লাখ ৩০
+        হাজার। এবার গড় বের করো।"</em><br><br>
+        Rahim হিসাব করল: (৯×৩০ + ৫৩০) / ১০ = ৮০ হাজার। সে অবাক — <em>"গড় ৮০ হাজার, কিন্তু ৯ জনই তো ৩০
+        হাজার পায়!"</em><br><br>
+        Nila: <em>"এইজন্যই একটা মাত্র সংখ্যা (mean) মিথ্যা বলতে পারে। এখানে <strong>median</strong> (মাঝের মান)
+        হলো ৩০ হাজার — যেটা বাস্তব চিত্র বলে। Statistics মানেই এই — data-র চরিত্র সঠিকভাবে বোঝা। আর এটা
+        junior AI Engineer-রা প্রতিদিন ব্যবহার করে।"</em>
+    </div>
+    <p>
+        এই পর্বে আমরা Series 04-এর তৃতীয় স্তম্ভ Statistics শিখব — junior-দের প্রতিদিনের সবচেয়ে দরকারি গণিত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ২. আসল সমস্যা: এক সংখ্যায় পুরো data বোঝানো</h2>
+    <p>
+        আপনার কাছে ১০ লাখ customer-এর data। কেউ এটা এক নজরে "দেখতে" পারবে না। তাই আমরা কয়েকটা সংখ্যায়
+        (summary statistics) পুরো data-র চরিত্র প্রকাশ করি — কেন্দ্র কোথায় (mean/median), কতটা ছড়ানো
+        (variance/std), আকৃতি কেমন (distribution)। কিন্তু ভুল summary বাছলে ভুল সিদ্ধান্ত হয়, যেমন উপরের
+        বেতনের গল্প।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💡</span> ৩. কেন Statistics junior-দের সবচেয়ে বেশি লাগে</h2>
+    <p>
+        S04E01-এ বলেছিলাম junior AI Engineer-রা Calculus/Linear Algebra-র চেয়ে Statistics ও Probability
+        বেশি ব্যবহার করে। কারণ:
+    </p>
+    <ul>
+        <li>EDA (Exploratory Data Analysis) — প্রতিটা project data বোঝা দিয়ে শুরু।</li>
+        <li>Feature scaling ও outlier handling — সরাসরি mean/std/distribution নির্ভর।</li>
+        <li>Metric ব্যাখ্যা — accuracy, error সব statistics।</li>
+        <li>"data ঠিক আছে কিনা" যাচাই — model-এর আগে data-র চরিত্র বোঝা।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📝</span> ৪. Level 1 — mean, median, mode (শ্রেণির নম্বর)</h2>
+    <div class="technical-box">
+        একটা ক্লাসের পরীক্ষার নম্বর দিয়ে ভাবুন:<br><br>
+        <strong>Mean (গড়):</strong> সব নম্বর যোগ করে ছাত্রসংখ্যা দিয়ে ভাগ। "সমান ভাগ করলে প্রত্যেকে কত পেত"।<br><br>
+        <strong>Median (মধ্যক):</strong> নম্বরগুলো সাজিয়ে ঠিক মাঝের মান। "অর্ধেক এর নিচে, অর্ধেক এর উপরে"।<br><br>
+        <strong>Mode (সংখ্যাগুরু):</strong> সবচেয়ে বেশিবার আসা মান। "সবচেয়ে common নম্বর"।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚖️</span> ৫. mean বনাম median — কখন কোনটা</h2>
+    <p>
+        এটাই সবচেয়ে ব্যবহারিক Statistics সিদ্ধান্ত। মূল নিয়ম:
+    </p>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Mean ব্যবহার করুন</strong><br>
+            যখন data মোটামুটি সুষম (symmetric), বড় outlier নেই। যেমন ক্লাসের height।
+        </div>
+        <div class="comparison-item">
+            <strong>Median ব্যবহার করুন</strong><br>
+            যখন কয়েকটা extreme মান (outlier) আছে — যেমন বেতন, বাড়ির দাম। median outlier-এ কম প্রভাবিত।
+        </div>
+    </div>
+    <div class="info-box">
+        <strong>কেন median outlier-এ টলে না:</strong> CEO-র বেতন ৫ লাখ হোক বা ৫০ লাখ — মাঝের মান একই
+        থাকে। কিন্তু mean প্রতিটা extreme মানে টেনে যায়। তাই আয়/দাম নিয়ে কাজ করলে median-ই বেশি সৎ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📏</span> ৬. Level 2 — variance ও standard deviation (ছড়ানো)</h2>
+    <p>
+        Mean/median বলে "কেন্দ্র কোথায়", কিন্তু বলে না "data কতটা ছড়ানো"। দুটো ক্লাসের mean একই ৬০ হতে পারে,
+        কিন্তু একটায় সবাই ৫৮-৬২, আরেকটায় কেউ ২০ কেউ ৯৫। এই "ছড়ানো"-ই variance ও standard deviation।
+    </p>
+    <ul>
+        <li><strong>Variance:</strong> প্রতিটা মান mean থেকে কত দূরে, সেই দূরত্বের বর্গের গড়। (বর্গ করার কারণ — ঋণাত্মক দূরত্ব যেন কাটাকাটি না যায়।)</li>
+        <li><strong>Standard deviation (std):</strong> variance-এর বর্গমূল। সুবিধা — এটা মূল data-র একই এককে (যেমন টাকা, বছর) থাকে, তাই ব্যাখ্যা সহজ।</li>
+    </ul>
+    <div class="key-point">
+        সহজভাবে: <strong>std ছোট = data mean-এর কাছে জমাট; std বড় = data অনেক ছড়ানো।</strong> এটা junior-দের
+        outlier ও data quality বোঝার প্রধান হাতিয়ার।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ৭. Level 3 — ML-এ scaling ও outlier-এ এর ব্যবহার</h2>
+    <p>একজন AI Engineer এই summary statistics দিয়ে সরাসরি কাজ করে:</p>
+    <ul>
+        <li><strong>Standardization:</strong> প্রতিটা feature থেকে তার mean বিয়োগ করে std দিয়ে ভাগ — যাতে সব feature একই স্কেলে আসে (Series 03/05-এ দেখেছি/দেখব)। এটা mean ও std ছাড়া অসম্ভব।</li>
+        <li><strong>Outlier detection:</strong> mean থেকে ৩ std-এর বেশি দূরের মানকে সন্দেহজনক ধরা একটা common নিয়ম।</li>
+        <li><strong>Data sanity check:</strong> কোনো feature-এর std যদি ০ হয়, মানে সব মান একই — সেই feature model-এ অকেজো।</li>
+    </ul>
+    <p>
+        মনে রাখবেন: scaling করার সময় mean/std <strong>শুধু training data থেকে</strong> বের করতে হয়,
+        নইলে data leakage হয় (S03E08)। এটাই concept বোঝা আর tool চালানোর মধ্যে পার্থক্য।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔔</span> ৮. Distribution — data-র আকৃতি</h2>
+    <p>
+        Distribution মানে — কোন মান কতবার আসে তার আকৃতি। সবচেয়ে বিখ্যাত হলো <strong>normal distribution</strong>
+        (ঘণ্টার আকৃতি/bell curve): বেশিরভাগ মান mean-এর কাছে, দুই প্রান্তে কম। মানুষের height, পরীক্ষার
+        নম্বর প্রায়ই এমন। কিন্তু আয়/দাম প্রায়ই <strong>right-skewed</strong> — বেশিরভাগ কম, কয়েকজন অনেক বেশি
+        (লম্বা লেজ ডান দিকে)। distribution বুঝলে বোঝা যায় mean না median ব্যবহার করব, scaling লাগবে কিনা।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৯. Visual: একই mean, ভিন্ন ছড়ানো</h2>
+    <div class="diagram">
+ দুটো ক্লাস, দুটোরই mean = 60
+
+ Class A (std ছোট ≈ 2):   জমাট
+        ▁▂▅█████▅▂▁
+      55  58  60  62  65
+
+ Class B (std বড় ≈ 20):  ছড়ানো
+    ▁▂▃▄▅▆▇█▇▆▅▄▃▂▁
+   20   40   60   80  100
+
+ একই কেন্দ্র (mean), কিন্তু চরিত্র সম্পূর্ণ আলাদা —
+ তাই mean একা যথেষ্ট নয়, std-ও দেখতে হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ১০. Code: Pandas/NumPy দিয়ে describe</h2>
+    <p>
+        বাস্তবে আমরা হাতে variance বের করি না — Pandas এক লাইনে দেয়। আমরা Pandas ব্যবহার করছি কারণ এটাই
+        tabular data-র standard tool, আর <code>.describe()</code> EDA-র প্রথম ধাপ।
+    </p>
+    <div class="code-box">
+import pandas as pd
+
+# ছোট বেতন data (হাজার টাকায়)
+salaries = pd.Series([30, 30, 30, 30, 30, 30, 30, 30, 30, 530])
+
+print("mean  :", salaries.mean())     # 80.0  (outlier-এ টানা)
+print("median:", salaries.median())   # 30.0  (সৎ চিত্র)
+print("std   :", round(salaries.std(), 2))
+print()
+print(salaries.describe())            # এক নজরে পুরো summary
+    </div>
+    <p>
+        <strong>কী observe করবেন:</strong> mean (80) আর median (30)-এর বিশাল ফারাক-ই বলে দিচ্ছে data
+        skewed, outlier আছে। <code>.describe()</code>-এর <code>25%, 50%, 75%</code> (quartile) দেখলে
+        distribution-এর আকৃতিও আঁচ করা যায় — এটাই junior-দের প্রথম EDA reflex হওয়া উচিত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের context (job market data)</h2>
+    <p>
+        আমাদের Bangladesh job-market data নিয়ে কাজ করলে দেখা যায় — "গড় বেতন" প্রায়ই বিভ্রান্তিকর, কারণ
+        কয়েকটা senior/remote role গড়কে উপরে টেনে নেয়। একজন ভালো analyst তাই median বেতন, আর বিভিন্ন
+        experience-level-এ আলাদা distribution দেখায়। ঠিক এভাবেই bKash/Daraz-এর data team-ও transaction
+        বা order value নিয়ে কাজ করার সময় mean-এর ফাঁদ এড়াতে median ও distribution দেখে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"আমাদের app-এ user-রা গড়ে ১২ মিনিট সময় কাটায় — দারুণ, তাই না? এই statistics দিয়ে আমার কী?"</em><br><br>
+        <strong>উত্তর:</strong> একটু সাবধান করব। "গড় ১২ মিনিট" হতে পারে কারণ বেশিরভাগ user ২ মিনিটে চলে
+        যায়, আর কিছু user ঘণ্টাখানেক থাকে (outlier গড়কে টানছে)। median দেখলে হয়তো দেখব সত্যিকারের সাধারণ
+        user মাত্র ৩ মিনিট থাকে — মানে সমস্যা আছে। এই পার্থক্য ধরতে পারা মানে সঠিক business সিদ্ধান্ত।
+        তাই আমি সবসময় mean-এর পাশে median আর distribution দেখি — এটাই আমাকে ভুল আত্মতুষ্টি থেকে বাঁচায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Solid understanding of descriptive statistics for data analysis."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>data-কে সংখ্যায় বর্ণনা (mean, median, std, distribution) ও ব্যাখ্যা করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>model-এর আগে data বোঝা, ভুল summary থেকে ভুল সিদ্ধান্ত এড়ানো।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>skewed data, outlier, misleading average — এসব ধরা পড়ে।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>mean vs median কখন, std মানে ছড়ানো, distribution-এর আকৃতি পড়া।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>hypothesis testing-এর গভীর তত্ত্ব, সব distribution-এর সূত্র মুখস্থ।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা EDA notebook — <code>.describe()</code>, histogram, mean/median তুলনা ও ব্যাখ্যা।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"mean vs median কখন?", "std কী বোঝায়?", "salary data-তে কোন average ব্যবহার করবেন, কেন?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "mean-ই সবসময় 'average' হিসেবে যথেষ্ট।" →
+        <strong>ঠিক:</strong> skewed/outlier data-তে median বেশি সৎ।<br><br>
+        <strong>ভুল ২:</strong> "std আর variance একই জিনিস।" →
+        <strong>ঠিক:</strong> std = variance-এর বর্গমূল; std মূল এককে থাকে, তাই ব্যাখ্যা সহজ।<br><br>
+        <strong>ভুল ৩:</strong> "সব data normal distribution follow করে।" →
+        <strong>ঠিক:</strong> আয়/দাম প্রায়ই skewed; ধরে নেওয়ার আগে histogram দেখুন।<br><br>
+        <strong>ভুল ৪:</strong> "scaling-এর mean/std পুরো dataset থেকে বের করব।" →
+        <strong>ঠিক:</strong> শুধু training data থেকে — নইলে data leakage হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> mean আর median-এর মধ্যে কখন কোনটা ব্যবহার করবেন?<br>
+        <em>উত্তর:</em> outlier/skew থাকলে median (যেমন বেতন, দাম); সুষম data-তে mean।<br><br>
+        <strong>প্রশ্ন ২:</strong> standard deviation কী বোঝায়?<br>
+        <em>উত্তর:</em> data mean থেকে গড়ে কতটা ছড়ানো; ছোট = জমাট, বড় = ছড়ানো।<br><br>
+        <strong>প্রশ্ন ৩:</strong> একটা feature-এর std = 0 হলে কী বোঝায়?<br>
+        <em>উত্তর:</em> সব মান একই; feature-টি model-এর জন্য অকেজো, বাদ দেওয়া যায়।<br><br>
+        <strong>প্রশ্ন ৪:</strong> right-skewed distribution-এ mean ও median-এর সম্পর্ক?<br>
+        <em>উত্তর:</em> mean সাধারণত median-এর চেয়ে বড় হয় (লম্বা ডান লেজ mean-কে টানে)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        ১. উপরের বেতন-<code>Series</code>-এ CEO-র মান ৫৩০ থেকে ৫০০০ করুন — mean ও median কে বেশি বদলাল? কেন?<br>
+        ২. দুটো তালিকা বানান একই mean কিন্তু ভিন্ন std, তারপর <code>.std()</code> দিয়ে যাচাই করুন।<br>
+        ৩. এক লাইনে লিখুন: কেন "গড় বেতন" একটা misleading marketing number হতে পারে?
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        Series 03-এ আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এর data-analyzer
+        (V2) job-market data নিয়ে কাজ করে। আজকের mean/median/std/distribution ঠিক সেই analysis-এর কেন্দ্র —
+        "কোন skill-এর জন্য median বেতন বেশি?", "junior vs senior বেতনের ছড়ানো কেমন?" — এই প্রশ্নগুলোর
+        উত্তর দিতে গেলে আজকের statistics-ই কাজে লাগবে। পরে V3 ML model-এও feature scaling করতে এই mean/std লাগবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ mean/median/mode — data-র কেন্দ্র; outlier থাকলে median বেশি সৎ<br>
+        ✓ variance ও std — data কতটা ছড়ানো; std মূল এককে, তাই ব্যাখ্যা সহজ<br>
+        ✓ একই mean-এ ভিন্ন std মানে সম্পূর্ণ ভিন্ন চরিত্র — এক সংখ্যা যথেষ্ট নয়<br>
+        ✓ distribution (normal, skewed) data-র আকৃতি বলে; scaling ও outlier সিদ্ধান্তে লাগে<br>
+        ✓ ML-এ standardization ও outlier detection সরাসরি mean/std নির্ভর<br>
+        ✓ Statistics junior AI Engineer-দের প্রতিদিনের সবচেয়ে দরকারি গণিত
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S04E05):</strong> "Covariance, Correlation ও Distribution: feature-রা কীভাবে
+        সম্পর্কিত"। এবার দেখব দুটো feature একসাথে কীভাবে চলে, correlation কী, আর কেন "correlation ≠ causation"
+        — এই একটা ভুল বোঝা junior-দের অনেক বড় ভুল সিদ্ধান্ত থেকে বাঁচায়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-03-derivative-gradient.html">⬅ পূর্ববর্তী: Gradient</a>
+            <a href="episode-05-covariance-correlation-distribution.html">পরবর্তী: Correlation ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 04, Episode 04)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s04e04.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

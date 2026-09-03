@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Covariance, correlation ও normal distribution — feature relationship ও correlation vs causation বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Covariance, Correlation ও Distribution: feature-রা কীভাবে সম্পর্কিত | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Covariance, correlation ও normal distribution — feature relationship ও correlation vs causation বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Covariance, Correlation ও Distribution: feature-রা কীভাবে সম্পর্কিত | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 04 &raquo; Episode 05
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Covariance, Correlation ও Distribution: feature-রা কীভাবে সম্পর্কিত</h1>
+    <p class="subtitle">correlation ≠ causation (Series 04, Episode 05)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 04 — Math, Statistics ও Probability</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 05 / 07</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: আইসক্রিম বিক্রি বাড়লে ডুবে মৃত্যু বাড়ে?</li>
+        <li>২. আসল সমস্যা: দুটো জিনিস একসাথে চলে কি?</li>
+        <li>৩. Covariance — একসাথে ওঠানামা</li>
+        <li>৪. Level 1 — correlation মানে "হাত ধরাধরি"</li>
+        <li>৫. Level 2 — correlation coefficient (-1 থেকে +1)</li>
+        <li>৬. correlation ≠ causation (সবচেয়ে গুরুত্বপূর্ণ)</li>
+        <li>৭. Level 3 — ML-এ feature selection ও multicollinearity</li>
+        <li>৮. Distribution ও feature সম্পর্ক</li>
+        <li>৯. Visual: বিভিন্ন correlation</li>
+        <li>১০. Code: correlation matrix ও heatmap</li>
+        <li>১১. বাংলাদেশের context</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🍦</span> ১. গল্প: আইসক্রিম বিক্রি বাড়লে ডুবে মৃত্যু বাড়ে?</h2>
+    <p>
+        Arif (একজন ML Engineer) Rahim-কে একটা মজার data দেখাল: গরমকালে আইসক্রিম বিক্রি বাড়ে, আবার একই
+        সময়ে পানিতে ডুবে মৃত্যুও বাড়ে। data-তে দুটো প্রায় নিখুঁতভাবে একসাথে ওঠানামা করছে।
+    </p>
+    <div class="story-box">
+        Arif জিজ্ঞেস করল: <em>"তাহলে কি আমরা বলব — আইসক্রিম বিক্রি বন্ধ করলে মানুষ কম ডুববে?"</em><br><br>
+        Rahim হাসল: <em>"না না, দুটোই তো গরমের কারণে বাড়ছে! গরমে মানুষ বেশি আইসক্রিম খায়, আবার বেশি
+        সাঁতার কাটে বলে ডুবেও বেশি।"</em><br><br>
+        Arif: <em>"একদম ঠিক। এই দুটো <strong>correlated</strong> — একসাথে চলে। কিন্তু একটা আরেকটার
+        <strong>cause</strong> না। এই একটা ভুল — 'correlation মানেই causation' — junior-রা করে বসে, আর
+        model থেকে ভয়ংকর ভুল সিদ্ধান্ত বেরিয়ে আসে। আজকে এটাই শিখব।"</em>
+    </div>
+    <p>
+        এই পর্বে আমরা দেখব feature-রা কীভাবে একে অপরের সাথে সম্পর্কিত, কীভাবে সেটা মাপি, আর কোথায় সাবধান থাকি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ২. আসল সমস্যা: দুটো জিনিস একসাথে চলে কি?</h2>
+    <p>
+        S04E04-এ আমরা একটা feature-কে বর্ণনা করা শিখেছি (mean, std)। কিন্তু ML-এ আসল প্রশ্ন প্রায়ই দুটো
+        feature নিয়ে: "experience বাড়লে salary কি বাড়ে?", "বাড়ির আয়তন বাড়লে দাম কি বাড়ে?" — মানে দুটো
+        variable একসাথে কীভাবে চলে। এটা মাপার হাতিয়ার covariance ও correlation।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔗</span> ৩. Covariance — একসাথে ওঠানামা</h2>
+    <p>
+        Covariance বলে — দুটো variable একই দিকে চলে না উল্টো দিকে। একটা বাড়লে অন্যটাও বাড়লে covariance
+        ধনাত্মক; একটা বাড়লে অন্যটা কমলে ঋণাত্মক; কোনো সম্পর্ক না থাকলে প্রায় শূন্য।
+    </p>
+    <div class="info-box">
+        <strong>Covariance-এর সমস্যা:</strong> এর মান নির্ভর করে একক-এর উপর (টাকা vs বছর)। ফলে "৫০০০" মানে
+        সম্পর্ক শক্ত না দুর্বল বোঝা যায় না। এই সমস্যা সমাধান করে <strong>correlation</strong> — covariance-কে
+        দুই variable-এর std দিয়ে ভাগ করে একটা তুলনাযোগ্য সংখ্যায় (-1 থেকে +1) আনা হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🤝</span> ৪. Level 1 — correlation মানে "হাত ধরাধরি"</h2>
+    <div class="technical-box">
+        Correlation-কে ভাবুন দুই বন্ধুর হাত ধরাধরি করে হাঁটা হিসেবে:<br><br>
+        <strong>+1 (নিখুঁত positive):</strong> একজন সামনে গেলে অন্যজনও ঠিক সমানভাবে সামনে যায়। যেমন
+        আয়তন ↑ হলে দাম ↑।<br><br>
+        <strong>0 (সম্পর্কহীন):</strong> একজন যা করে অন্যজনের তার সাথে কোনো সম্পর্ক নেই। যেমন জুতোর সাইজ
+        ও IQ।<br><br>
+        <strong>-1 (নিখুঁত negative):</strong> একজন সামনে গেলে অন্যজন ঠিক সমানভাবে পেছনে যায়। যেমন
+        গাড়ির গতি ↑ হলে গন্তব্যে পৌঁছানোর সময় ↓।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚙️</span> ৫. Level 2 — correlation coefficient (-1 থেকে +1)</h2>
+    <p>
+        সবচেয়ে প্রচলিত হলো Pearson correlation coefficient (সাধারণত <code>r</code>)। এটা সবসময় -1 থেকে
+        +1-এর মধ্যে থাকে:
+    </p>
+    <table>
+        <tr><th>r-এর মান</th><th>মানে</th></tr>
+        <tr><td>+0.7 থেকে +1.0</td><td>শক্তিশালী positive সম্পর্ক</td></tr>
+        <tr><td>+0.3 থেকে +0.7</td><td>মাঝারি positive</td></tr>
+        <tr><td>-0.3 থেকে +0.3</td><td>দুর্বল / নেই বললেই চলে</td></tr>
+        <tr><td>-0.7 থেকে -1.0</td><td>শক্তিশালী negative সম্পর্ক</td></tr>
+    </table>
+    <div class="key-point">
+        <strong>জরুরি সীমাবদ্ধতা:</strong> Pearson শুধু <em>linear</em> (সরলরৈখিক) সম্পর্ক মাপে। দুটো
+        variable-এর মধ্যে শক্ত কিন্তু বাঁকা (non-linear) সম্পর্ক থাকলেও <code>r</code> প্রায় ০ দেখাতে পারে।
+        তাই সংখ্যার পাশাপাশি scatter plot দেখা জরুরি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ৬. correlation ≠ causation (সবচেয়ে গুরুত্বপূর্ণ)</h2>
+    <p>
+        এই একটা লাইন গোটা career জুড়ে মনে রাখবেন: <strong>দুটো জিনিস একসাথে চলা মানে একটা আরেকটার কারণ নয়।</strong>
+        আইসক্রিম-ডোবা গল্পটাই উদাহরণ — আসল কারণ (গরম) লুকানো ছিল, একে বলে <em>confounding variable</em>।
+    </p>
+    <div class="info-box">
+        তিনটা সম্ভাবনা যখন A ও B correlated:<br>
+        ১. A → B ঘটায় (সত্যিকারের causation)।<br>
+        ২. B → A ঘটায় (উল্টো দিক)।<br>
+        ৩. তৃতীয় কিছু C দুটোকেই ঘটায় (confounder — আইসক্রিমের গরম)।<br><br>
+        শুধু correlation দেখে বলা যায় না কোনটা সত্য। Causation প্রমাণে দরকার নিয়ন্ত্রিত experiment (যেমন A/B test)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ৭. Level 3 — ML-এ feature selection ও multicollinearity</h2>
+    <p>একজন AI Engineer correlation দুই কাজে ব্যবহার করে:</p>
+    <ul>
+        <li>
+            <strong>Feature vs target:</strong> কোন feature target-এর সাথে বেশি correlated, সেটা model-এ
+            গুরুত্বপূর্ণ হতে পারে। যেমন "বাড়ির আয়তন" দামের সাথে শক্ত correlated — ভালো feature।
+        </li>
+        <li>
+            <strong>Feature vs feature (multicollinearity):</strong> দুটো feature নিজেদের মধ্যে খুব বেশি
+            correlated (যেমন "আয়তন বর্গফুটে" ও "আয়তন বর্গমিটারে") হলে একটা প্রায় redundant। Linear model-এ
+            এটা সমস্যা করে; সাধারণত একটা বাদ দিই।
+        </li>
+    </ul>
+    <div class="technical-box">
+        <strong>সতর্কতা:</strong> correlation কম মানেই feature অকেজো নয় — non-linear model (Random Forest,
+        XGBoost) বাঁকা সম্পর্কও ধরতে পারে যা Pearson মিস করে। তাই correlation একটা ইঙ্গিত, চূড়ান্ত রায় নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔔</span> ৮. Distribution ও feature সম্পর্ক</h2>
+    <p>
+        S04E04-এর distribution এখানে আবার কাজে আসে। দুটো feature-এর যৌথ আচরণ (joint distribution) বোঝা
+        মানে শুধু correlation সংখ্যা নয়, তাদের scatter plot-এর আকৃতিও দেখা। অনেক সময় একটা outlier গুচ্ছ
+        পুরো correlation-কে বিভ্রান্ত করে — যেমন কয়েকটা বিলাসবহুল বাড়ি পুরো "আয়তন vs দাম" সম্পর্ককে ঘুরিয়ে
+        দিতে পারে। তাই সংখ্যা + ছবি, দুটোই দেখতে হয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৯. Visual: বিভিন্ন correlation</h2>
+    <div class="diagram">
+  r ≈ +1              r ≈ 0               r ≈ -1
+   y|      .           y| . .  .           y|.
+    |    .              |  . . .            | .
+    |  .                | . .  . .          |  .
+    |.                  |. . .  .           |   .
+    +--------- x        +--------- x        +--------- x
+  একসাথে বাড়ে         কোনো pattern নেই     একটা বাড়লে অন্যটা কমে
+
+
+  সাবধান: r ≈ 0 কিন্তু শক্ত non-linear সম্পর্ক (U-আকৃতি)
+   y| .           .
+    |  .         .
+    |    .     .
+    |      . .            ← Pearson এখানে ~0 দেখাবে, তবু সম্পর্ক শক্ত!
+    +--------------- x
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ১০. Code: correlation matrix ও heatmap</h2>
+    <p>
+        Pandas দিয়ে সব feature-এর জোড়ায়-জোড়ায় correlation এক লাইনে বের করা যায়। এটা EDA-র একটা প্রধান ধাপ।
+    </p>
+    <div class="code-box">
+import pandas as pd
+
+df = pd.DataFrame({
+    "experience": [1, 2, 3, 4, 5, 6, 7, 8],
+    "salary":     [25, 30, 40, 45, 55, 60, 72, 80],  # experience-এর সাথে ↑
+    "shoe_size":  [40, 42, 39, 41, 43, 40, 42, 41],  # সম্পর্কহীন
+})
+
+corr = df.corr(numeric_only=True)   # correlation matrix
+print(corr.round(2))
+
+# target (salary)-এর সাথে সবচেয়ে correlated feature কোনটা?
+print()
+print(corr["salary"].sort_values(ascending=False))
+    </div>
+    <p>
+        <strong>কী observe করবেন:</strong> <code>experience</code> ও <code>salary</code>-র correlation
+        ১-এর কাছাকাছি (শক্ত), কিন্তু <code>shoe_size</code>-এর সাথে প্রায় ০। বাস্তব project-এ এই matrix
+        seaborn-এর heatmap দিয়ে ছবিতে দেখানো হয়, যাতে redundant feature চোখে পড়ে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের context</h2>
+    <p>
+        একটা local e-commerce (যেমন Daraz-ধাঁচের) team ভাবতে পারে — "যারা বেশি review দেয়, তারাই বেশি
+        কেনে; তাহলে সবাইকে review দিতে জোরাজুরি করি।" কিন্তু হয়তো আসল কারণ — সক্রিয় (loyal) user-রাই বেশি
+        কেনে <em>এবং</em> বেশি review দেয় (confounder = loyalty)। correlation ≠ causation না বুঝলে টাকা
+        খরচ করে ভুল campaign চালানো হবে। ঠিক এভাবে fintech-এ "feature A ও default একসাথে চলে" দেখে
+        সিদ্ধান্ত নেওয়ার আগে causation যাচাই করতে হয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"data-তে দেখলাম যারা আমাদের newsletter পড়ে তারা বেশি কেনে। তাহলে সবাইকে জোর করে
+        newsletter পাঠাই — বিক্রি বাড়বে, তাই না?"</em><br><br>
+        <strong>উত্তর:</strong> সাবধান — এটা correlation, causation নাও হতে পারে। সম্ভবত যারা এমনিতেই আগ্রহী
+        (engaged) customer, তারাই newsletter পড়ে <em>এবং</em> বেশি কেনে — newsletter নিজে বিক্রি বাড়াচ্ছে
+        কিনা নিশ্চিত নয়। এটা প্রমাণ করতে একটা A/B test চালাই: এলোমেলোভাবে কিছু customer-কে newsletter দিই,
+        কিছুকে দিই না, তারপর তুলনা করি। তাহলে টাকা ঢালার আগে জানব সত্যিই কাজ করে কিনা। <strong>correlation
+        দিয়ে অনুমান, causation দিয়ে সিদ্ধান্ত।</strong>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Ability to analyze feature relationships and perform correlation analysis."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>feature-রা একে অপরের ও target-এর সাথে কীভাবে সম্পর্কিত তা মাপতে ও ব্যাখ্যা করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>ভালো feature বাছা, redundant feature বাদ, ভুল "cause" দাবি এড়ানো।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>multicollinearity, misleading conclusion, দুর্বল feature selection।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>correlation coefficient পড়া, correlation ≠ causation, scatter দেখা।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>partial correlation, causal inference-এর গভীর তত্ত্ব, structural models।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>EDA notebook-এ correlation heatmap, redundant feature বাদ দেওয়ার সিদ্ধান্ত ব্যাখ্যা।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"correlation vs causation?", "multicollinearity সমস্যা কেন?", "r=0 মানে কি সম্পর্ক নেই?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "correlation থাকলেই একটা আরেকটার কারণ।" →
+        <strong>ঠিক:</strong> correlation ≠ causation; confounder থাকতে পারে।<br><br>
+        <strong>ভুল ২:</strong> "r = 0 মানে কোনো সম্পর্ক নেই।" →
+        <strong>ঠিক:</strong> Pearson শুধু linear মাপে; non-linear সম্পর্ক থাকতে পারে।<br><br>
+        <strong>ভুল ৩:</strong> "target-এর সাথে কম correlated feature বাদ দিয়ে দেব।" →
+        <strong>ঠিক:</strong> tree-based model বাঁকা সম্পর্ক ধরতে পারে; correlation একমাত্র মাপকাঠি নয়।<br><br>
+        <strong>ভুল ৪:</strong> "covariance আর correlation একই।" →
+        <strong>ঠিক:</strong> correlation হলো normalize করা covariance (-1..+1), তুলনাযোগ্য।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> correlation ও causation-এর পার্থক্য?<br>
+        <em>উত্তর:</em> correlation = একসাথে চলা; causation = একটা আরেকটাকে ঘটায়। correlation causation প্রমাণ করে না।<br><br>
+        <strong>প্রশ্ন ২:</strong> multicollinearity কী ও কেন সমস্যা?<br>
+        <em>উত্তর:</em> feature-রা নিজেদের মধ্যে খুব correlated; linear model-এ coefficient অস্থির/অর্থহীন হয়ে যায়।<br><br>
+        <strong>প্রশ্ন ৩:</strong> Pearson correlation-এর সীমাবদ্ধতা?<br>
+        <em>উত্তর:</em> শুধু linear সম্পর্ক মাপে, outlier-এ sensitive; scatter plot-ও দেখা উচিত।<br><br>
+        <strong>প্রশ্ন ৪:</strong> correlation দেখে কি feature select করবেন?<br>
+        <em>উত্তর:</em> ইঙ্গিত হিসেবে হ্যাঁ, কিন্তু একমাত্র ভিত্তি নয় — model-based importance-ও দেখব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        ১. উপরের <code>df</code>-এ একটা নতুন column <code>years_since_school = experience + 18</code> যোগ
+        করে <code>df.corr()</code> দেখুন — <code>experience</code>-এর সাথে এর correlation কত হলো, কেন?<br>
+        ২. নিজের জীবন থেকে এমন দুটো জিনিসের উদাহরণ দিন যারা correlated কিন্তু একটা আরেকটার কারণ নয়।<br>
+        ৩. এক লাইনে লিখুন: multicollinearity থাকলে কেন একটা feature বাদ দেওয়া যায়?
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এর data analysis (V2) ও পরবর্তী
+        ML model (V3)-এ correlation সরাসরি লাগবে: কোন skill-এর সাথে বেশি বেতন correlated, কোন feature
+        redundant (যেমন "years of experience" ও "number of past jobs" হয়তো একসাথে চলে)। আজকের
+        correlation ≠ causation পাঠটা আমাদের রক্ষা করবে "এই skill শিখলেই বেতন বাড়বে" — এমন ভুল দাবি করা থেকে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ covariance দুটো variable একই/উল্টো দিকে চলে কিনা বলে; correlation সেটাকে -1..+1-এ normalize করে<br>
+        ✓ correlation coefficient r পড়া ও তার শক্তি বোঝা<br>
+        ✓ <strong>correlation ≠ causation</strong> — confounder থাকতে পারে; causation-এ experiment লাগে<br>
+        ✓ Pearson শুধু linear মাপে — scatter plot-ও দেখতে হয়<br>
+        ✓ ML-এ feature selection ও multicollinearity ধরতে correlation লাগে, তবে একমাত্র মাপকাঠি নয়<br>
+        ✓ business সিদ্ধান্তে correlation = অনুমান, causation = A/B test দিয়ে নিশ্চিত
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S04E06):</strong> "Probability ও Bayes: 'কতটা নিশ্চিত' — AI-এর হৃদয়"।
+        Series 04-এর চতুর্থ ও শেষ স্তম্ভ Probability। দেখব spam filter কীভাবে "কতটা সম্ভাবনা spam" হিসাব
+        করে, conditional probability ও Bayes theorem-এর সহজ intuition — যা classifier বোঝার ভিত্তি।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-04-statistics-basics.html">⬅ পূর্ববর্তী: Statistics</a>
+            <a href="episode-06-probability-bayes.html">পরবর্তী: Probability ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 04, Episode 05)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s04e05.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

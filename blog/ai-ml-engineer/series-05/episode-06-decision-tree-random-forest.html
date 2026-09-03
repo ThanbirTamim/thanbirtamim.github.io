@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Decision Tree ও Random Forest — ensemble, feature importance ও কেন variance কমে, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Decision Tree ও Random Forest: নিয়ম দিয়ে সিদ্ধান্ত | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Decision Tree ও Random Forest — ensemble, feature importance ও কেন variance কমে, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Decision Tree ও Random Forest: নিয়ম দিয়ে সিদ্ধান্ত | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 05 &raquo; Episode 06
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Decision Tree ও Random Forest: নিয়ম দিয়ে সিদ্ধান্ত</h1>
+    <p class="subtitle">শক্ত tabular baseline (Series 05, Episode 06)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 05 — Classical Machine Learning</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 06 / 11</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: ডাক্তারের প্রশ্ন করার ধরন</li>
+        <li>২. সমস্যা: Logistic Regression যেখানে আটকায়</li>
+        <li>৩. Decision Tree কী? (৩ স্তরে)</li>
+        <li>৪. Tree কীভাবে ভাগ (split) করে</li>
+        <li>৫. Visual: একটা churn decision tree</li>
+        <li>৬. Overfitting — একা tree-র দুর্বলতা</li>
+        <li>৭. Random Forest — অনেক tree-র ভোট</li>
+        <li>৮. কেন Forest variance কমায়</li>
+        <li>৯. কোড: Tree vs Forest (Churn P3)</li>
+        <li>১০. Feature Importance</li>
+        <li>১১. Boss Question ও Bangladesh উদাহরণ</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection ও সারসংক্ষেপ</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🩺</span> ১. গল্প: ডাক্তারের প্রশ্ন করার ধরন</h2>
+    <p>
+        Rahim অসুস্থ হয়ে ডাক্তারের কাছে গেল। ডাক্তার একটার পর একটা প্রশ্ন করলেন: "জ্বর আছে?" → হ্যাঁ →
+        "কতদিন?" → ৩ দিন → "কাশি?" → না → ... প্রতিটা উত্তর পরের প্রশ্ন ঠিক করে দিল, শেষে একটা সিদ্ধান্তে
+        পৌঁছালেন। Nila বলল — "এটাই <strong>Decision Tree</strong>। হ্যাঁ/না প্রশ্নের একটা গাছ, প্রতিটা
+        শাখায় data ভাগ হয়, পাতায় গিয়ে সিদ্ধান্ত।"
+    </p>
+    <div class="story-box">
+        Rahim: "কিন্তু Logistic Regression তো আছেই, নতুন এটা কেন?"<br><br>
+        Nila: "Logistic Regression একটা সোজা রেখা টানে (linear boundary)। কিন্তু বাস্তব সম্পর্ক প্রায়ই
+        আঁকাবাঁকা (non-linear)। Tree সেই আঁকাবাঁকা pattern ধরতে পারে, আর <em>scaling ছাড়াই</em> চলে,
+        মিশ্র feature (সংখ্যা + category) সামলায়। এজন্যই tabular data-তে এত জনপ্রিয়।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: Logistic Regression যেখানে আটকায়</h2>
+    <ul>
+        <li><strong>Non-linear সম্পর্ক:</strong> "tenure কম <em>এবং</em> bill বেশি হলে churn" — এমন শর্তযুক্ত (conditional) pattern linear model ভালো ধরে না।</li>
+        <li><strong>Feature interaction:</strong> দুটো feature একসাথে যে প্রভাব ফেলে, আলাদাভাবে নয়।</li>
+        <li><strong>Scaling নির্ভরতা:</strong> Logistic-এ scaling লাগে; tree-তে লাগে না।</li>
+    </ul>
+    <div class="info-box">
+        Decision Tree এই তিনটাই সহজে সামলায়। তবে একা tree-র নিজের একটা বড় সমস্যা আছে — overfitting।
+        সেটার সমাধানই Random Forest। চলুন ধাপে ধাপে দেখি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🌳</span> ৩. Decision Tree কী? (৩ স্তরে)</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> একগুচ্ছ হ্যাঁ/না প্রশ্নের গাছ। উপর থেকে শুরু করে প্রতিটা প্রশ্নের
+        উত্তর অনুযায়ী নিচে নামুন; পাতায় (leaf) পৌঁছালে সেটাই উত্তর (churn / no-churn)।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> প্রতিটা node-এ model এমন একটা feature ও threshold বাছে যেটা data-কে
+        সবচেয়ে "বিশুদ্ধভাবে" (pure) ভাগ করে — অর্থাৎ ভাগের পর প্রতি দলে একটা class প্রাধান্য পায়।
+        বিশুদ্ধতা মাপে <strong>Gini impurity</strong> বা <strong>entropy</strong>। এভাবে recursively ভাগ চলে।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — Engineer perspective:</strong> একক Decision Tree খুব interpretable (Boss-কে সরাসরি
+        গাছ দেখানো যায়), কিন্তু একা এটি সহজে overfit করে ও unstable। তাই production-এ আমরা প্রায় সবসময়
+        <strong>ensemble</strong> (Random Forest / Gradient Boosting) ব্যবহার করি — যেখানে অনেক tree মিলে
+        সিদ্ধান্ত নেয়। tabular data-তে এই ensemble-ই আজও বেশিরভাগ সময় সেরা baseline।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✂️</span> ৪. Tree কীভাবে ভাগ (split) করে</h2>
+    <p>
+        Impurity = একটা দলে কতটা "মিশ্রণ"। সব churn হলে impurity ০ (বিশুদ্ধ); ৫০-৫০ হলে সর্বোচ্চ।
+        Tree প্রতি split-এ সেই feature+threshold বাছে যেটা impurity সবচেয়ে বেশি কমায়।
+    </p>
+    <div class="diagram">
+ ১০০ customer (৫০ churn, ৫০ stay) — impurity বেশি
+        |
+   "tenure &lt; 6 মাস?"   &lt;- এই প্রশ্ন impurity সবচেয়ে কমায়
+       /        \
+   হ্যাঁ (৪০)     না (৬০)
+  (৩৫ churn)    (১৫ churn)   &lt;- দুই দল এখন অনেক "বিশুদ্ধ"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৫. Visual: একটা churn decision tree</h2>
+    <div class="diagram">
+             [tenure &lt; 6 মাস?]
+             /              \
+          হ্যাঁ              না
+          /                   \
+ [support_calls &gt; 3?]     [monthly_bill &gt; 80?]
+    /        \                /         \
+  CHURN    STAY            CHURN        STAY
+    </div>
+    <p>এটাই tree-র সৌন্দর্য: সিদ্ধান্তের পথ পরিষ্কার দেখা যায়, ব্যাখ্যা করা যায়।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📉</span> ৬. Overfitting — একা tree-র দুর্বলতা</h2>
+    <p>
+        Tree-কে যদি যত ইচ্ছা গভীর হতে দেন (max_depth সীমাহীন), সে প্রতিটা training row-কে আলাদা পাতায় বসিয়ে
+        দেবে — training accuracy ১০০%, কিন্তু নতুন data-তে ভয়ংকর খারাপ। এটাই <strong>overfitting</strong>
+        (E08-এ বিস্তারিত): model মুখস্থ করেছে, শেখেনি।
+    </p>
+    <div class="key-point">
+        একা tree-র দুই দুর্বলতা: (১) সহজে overfit করে, (২) unstable — data সামান্য বদলালে গাছ পুরো বদলে যায়
+        (high variance)। এই দুটোরই সমাধান — অনেক tree একসাথে: <strong>Random Forest</strong>।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🌲</span> ৭. Random Forest — অনেক tree-র ভোট</h2>
+    <p>
+        একজন ব্যক্তির মত ভুল হতে পারে, কিন্তু ১০০ জন বিশেষজ্ঞের ভোট সাধারণত ভালো — এটাই "wisdom of the crowd"।
+        Random Forest ঠিক এটা করে:
+    </p>
+    <ul>
+        <li>data-র বিভিন্ন random নমুনা (bootstrap) দিয়ে <strong>অনেকগুলো tree</strong> বানায়।</li>
+        <li>প্রতি split-এ feature-এরও একটা random subset দেখে — তাই tree-গুলো একে অপরের থেকে ভিন্ন।</li>
+        <li>Classification-এ tree-দের <strong>majority vote</strong>; regression-এ তাদের গড়।</li>
+    </ul>
+    <div class="info-box">
+        এই কৌশলের নাম <strong>Bagging</strong> (Bootstrap Aggregating)। মূল কথা: অনেক ভিন্ন tree-র ভুল
+        একে অপরকে কাটাকাটি করে, ফলে সম্মিলিত prediction অনেক স্থিতিশীল।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎲</span> ৮. কেন Forest variance কমায়</h2>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>একা Tree</strong><br>
+            high variance — data বদলালে গাছ বদলায়, নতুন data-তে অস্থির।
+        </div>
+        <div class="comparison-item">
+            <strong>Random Forest</strong><br>
+            অনেক ভিন্ন tree-র গড়/ভোট → individual ভুল একে অপরকে বাতিল করে → low variance, ভালো generalization।
+        </div>
+    </div>
+    <p>
+        Interview-তে এটা প্রায়ই আসে: "Random Forest কীভাবে variance কমায়?" — উত্তর: একাধিক
+        <em>de-correlated</em> (bootstrap + random feature দিয়ে ভিন্ন) tree-র prediction গড়/ভোট করে,
+        তাই কোনো এক tree-র random ভুল সম্মিলিত ফলাফলে চাপা পড়ে যায়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৯. কোড: Tree vs Forest (Churn P3)</h2>
+    <p><strong>কেন scikit-learn?</strong> <code>DecisionTreeClassifier</code> ও <code>RandomForestClassifier</code>
+    একই <code>fit</code>/<code>predict</code> API; scaling ছাড়াই চলে:</p>
+    <div class="code-box">
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import f1_score, roc_auc_score
+
+# E04-এর X_train, X_test, y_train, y_test ব্যবহার করছি
+# (Tree/Forest-এ scaling লাগে না, তাই raw X ঠিক আছে)
+
+# একা tree — গভীর হতে দিলে overfit
+tree = DecisionTreeClassifier(max_depth=None, random_state=42)
+tree.fit(X_train, y_train)
+tree_pred = tree.predict(X_test)
+print("Tree F1 :", f1_score(y_test, tree_pred))
+
+# Random Forest — ১০০টা tree-র ensemble
+rf = RandomForestClassifier(
+    n_estimators=100,      # কতগুলো tree
+    max_depth=5,           # প্রতিটা tree-র গভীরতা সীমিত
+    random_state=42,
+    class_weight="balanced"  # imbalanced churn সামলাতে
+)
+rf.fit(X_train, y_train)
+rf_pred  = rf.predict(X_test)
+rf_proba = rf.predict_proba(X_test)[:, 1]
+
+print("Forest F1     :", f1_score(y_test, rf_pred))
+print("Forest ROC-AUC:", roc_auc_score(y_test, rf_proba))
+    </div>
+    <div class="info-box">
+        সাধারণত Random Forest একা Tree-র চেয়ে ভালো ও স্থিতিশীল F1/AUC দেবে। <code>n_estimators</code>
+        (tree সংখ্যা) ও <code>max_depth</code> হলো মূল hyperparameter — এগুলো টিউন করা E08-এর বিষয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ১০. Feature Importance</h2>
+    <p>Random Forest-এর দারুণ bonus — কোন feature সিদ্ধান্তে সবচেয়ে গুরুত্বপূর্ণ, সেটা বলে দেয়:</p>
+    <div class="code-box">
+import pandas as pd
+
+importances = pd.Series(
+    rf.feature_importances_, index=X_train.columns
+).sort_values(ascending=False)
+print(importances)
+
+# উদাহরণ:
+# tenure_months    0.52   &lt;- churn-এ সবচেয়ে বড় factor
+# support_calls    0.31
+# monthly_bill     0.17
+    </div>
+    <div class="key-point">
+        <strong>সতর্কতা:</strong> feature importance "কোনটা predictive" বলে, "কোনটা কারণ (cause)" বলে না।
+        correlation ≠ causation। তবু Boss-কে "tenure সবচেয়ে বড় churn factor" দেখানোর জন্য এটা অসাধারণ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question ও Bangladesh উদাহরণ</h2>
+    <div class="story-box">
+        Boss: "এত tree বানিয়ে সময়/খরচ বাড়ছে — লাভ কী?"<br><br>
+        <strong>উত্তর:</strong> "একা tree দ্রুত কিন্তু অস্থির — আজ একরকম, কাল আরেকরকম সিদ্ধান্ত। Random Forest
+        একটু ভারী, কিন্তু নির্ভরযোগ্য ও বেশি সঠিক। churn-এ ২% বেশি recall মানে হাজারো customer বেঁচে যাওয়া।
+        আর feature importance আপনাকে বলবে কেন customer চলে যাচ্ছে — যেটা দিয়ে আপনি product-ই ঠিক করতে পারবেন।"
+    </div>
+    <ul>
+        <li><strong>bKash:</strong> fraud detection-এ Random Forest একটা শক্ত baseline।</li>
+        <li><strong>Daraz:</strong> return prediction, credit scoring।</li>
+        <li><strong>কৃষি/health startup:</strong> tabular sensor/patient data-তে tree-based model সবচেয়ে সহজ ও কার্যকর।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="info-box">
+        JD: <em>"Hands-on with tree-based models (Decision Trees, Random Forest) for tabular data."</em><br><br>
+        <strong>১. কী বোঝায়?</strong> tree ও ensemble model বানানো, টিউন করা, ব্যাখ্যা করা।<br>
+        <strong>২. কেন চায়?</strong> বাংলাদেশের বেশিরভাগ ML সমস্যা tabular; tree-based model সেখানে সেরা baseline।<br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> non-linear pattern, feature interaction, scaling-ঝামেলা ছাড়াই ভালো accuracy।<br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> split intuition, overfitting, Random Forest কীভাবে variance কমায়, feature_importance, মূল hyperparameter।<br>
+        <strong>৫. এখনই master লাগবে না:</strong> Gini vs entropy-র গণিত, out-of-bag error-এর গভীরতা।<br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> Churn notebook-এ Tree vs Forest তুলনা + feature importance bar chart।<br>
+        <strong>৭. Interview:</strong> "Random Forest variance কমায় কীভাবে?", "Bagging কী?", "একা tree কেন overfit করে?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> Tree/Forest-এ scaling করা → দরকার নেই (তবে ক্ষতিও নেই); Logistic/SVM-এ লাগে।<br><br>
+        <strong>ভুল ২:</strong> max_depth সীমাহীন রেখে একা tree ব্যবহার → নিশ্চিত overfit।<br><br>
+        <strong>ভুল ৩:</strong> feature importance-কে causation ভাবা → শুধু predictive গুরুত্ব, কারণ নয়।<br><br>
+        <strong>ভুল ৪:</strong> imbalanced churn-এ <code>class_weight</code> না দেওয়া → majority class-এ ঝুঁকে যায়।<br><br>
+        <strong>ভুল ৫:</strong> Random Forest-কে "সবসময় সেরা" ভাবা → খুব high-dimensional sparse (text) data-তে অন্য approach ভালো হতে পারে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্র: Decision Tree কীভাবে split বাছে?</strong><br>
+        উ: যে feature+threshold impurity (Gini/entropy) সবচেয়ে বেশি কমায়।<br><br>
+        <strong>প্র: একা tree কেন overfit করে?</strong><br>
+        উ: যথেষ্ট গভীর হলে training data মুখস্থ করে; high variance।<br><br>
+        <strong>প্র: Random Forest কীভাবে variance কমায়?</strong><br>
+        উ: bootstrap + random feature দিয়ে বহু de-correlated tree বানিয়ে তাদের ভোট/গড় নেয়।<br><br>
+        <strong>প্র: Bagging কী?</strong><br>
+        উ: Bootstrap Aggregating — random নমুনায় বহু model বানিয়ে aggregate করা; variance কমায়।<br><br>
+        <strong>প্র: Random Forest interpretable?</strong><br>
+        উ: একা tree-র মতো পুরো পথ দেখানো কঠিন, কিন্তু feature_importance দিয়ে insight দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. Churn data-তে একা Tree (max_depth=None) আর Random Forest দুটোরই train ও test F1 বের করুন।
+        Tree-র training F1 কি test F1-এর চেয়ে অনেক বেশি? — এটাই overfitting-এর চিহ্ন।<br>
+        ২. Random Forest-এ <code>n_estimators</code> 10 → 100 → 300 বদলে দেখুন AUC কীভাবে বদলায়।<br>
+        ৩. <code>feature_importances_</code> দিয়ে bar chart আঁকুন; কোন feature churn-এ সবচেয়ে গুরুত্বপূর্ণ বলুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection ও সারসংক্ষেপ</h2>
+    <p>
+        Project P3 (Churn) এখন Random Forest দিয়ে আরও শক্তিশালী ও ব্যাখ্যাযোগ্য। flagship Career Assistant-এ
+        job-role classification বা skill prediction-এ Random Forest একটা দুর্দান্ত baseline হবে — বিশেষত
+        যখন আমাদের কাছে structured feature (experience, salary, skill count) থাকবে। পরের episode-এ আমরা
+        দেখব কীভাবে Gradient Boosting/XGBoost এই tree-ideaকে আরও এক ধাপ এগিয়ে নেয়।
+    </p>
+    <div class="success-box">
+        এই Episode-এ শিখলাম:<br><br>
+        ✓ Decision Tree = হ্যাঁ/না প্রশ্নের গাছ; impurity কমিয়ে split করে<br>
+        ✓ Tree non-linear pattern ও feature interaction ধরে, scaling লাগে না<br>
+        ✓ একা tree সহজে overfit করে ও unstable (high variance)<br>
+        ✓ Random Forest = bagging দিয়ে বহু tree-র ভোট → variance কমে, stable<br>
+        ✓ feature_importance দিয়ে কোন feature গুরুত্বপূর্ণ বোঝা যায় (predictive, causal নয়)<br>
+        ✓ tabular data-তে Random Forest আজও সেরা baseline
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode:</strong> Gradient Boosting ও XGBoost — Kaggle জেতার অস্ত্র। bagging বনাম
+        boosting, আর কেন tabular data-তে এত শক্তিশালী।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-05-classification-evaluation.html">⬅ পূর্ববর্তী: Classification Metrics</a>
+            <a href="episode-07-gradient-boosting-xgboost.html">পরবর্তী: XGBoost ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 05, Episode 06)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s05e06.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

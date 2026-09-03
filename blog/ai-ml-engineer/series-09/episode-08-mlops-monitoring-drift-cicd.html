@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MLOps — monitoring, model drift detection, retraining ও CI/CD for models; production model কীভাবে মনিটর করবেন, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="MLOps Part 2: monitoring, model drift, retraining, CI/CD — &#x27;খারাপ prediction বুঝব কীভাবে?&#x27; | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="MLOps — monitoring, model drift detection, retraining ও CI/CD for models; production model কীভাবে মনিটর করবেন, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>MLOps Part 2: monitoring, model drift, retraining, CI/CD — &#x27;খারাপ prediction বুঝব কীভাবে?&#x27; | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 09 &raquo; Episode 08
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> MLOps Part 2: monitoring, model drift, retraining, CI/CD — 'খারাপ prediction বুঝব কীভাবে?'</h1>
+    <p class="subtitle">production loop বন্ধ করা (Series 09, Episode 08)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-advanced">🔴 ADVANCED</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 09 — Notebook থেকে Production AI</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 08 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "Model তো চলছে... নাকি চলছে না?"</li>
+        <li>২. সমস্যা: model নীরবে খারাপ হয়</li>
+        <li>৩. তিন স্তরে: monitoring মানে কী</li>
+        <li>৪. দুই ধরনের monitoring: system বনাম model</li>
+        <li>৫. Model Drift: data drift বনাম concept drift</li>
+        <li>৬. Visual: কীভাবে model নীরবে ভাঙে</li>
+        <li>৭. হাতে-কলমে: prediction ও input log করা</li>
+        <li>৮. Drift ধরার সহজ উপায়</li>
+        <li>৯. Retraining: কখন ও কীভাবে</li>
+        <li>১০. CI/CD for models</li>
+        <li>১১. Experiment: drift বানিয়ে দেখা</li>
+        <li>১২. বাংলাদেশের বাস্তব প্রসঙ্গ</li>
+        <li>১৩. AI Engineer perspective</li>
+        <li>১৪. Boss Question</li>
+        <li>১৫. Job Requirement Decoder: "model monitoring / drift"</li>
+        <li>১৬. সাধারণ ভুল</li>
+        <li>১৭. Interview Prep</li>
+        <li>১৮. হাতে-কলমে</li>
+        <li>১৯. Project Connection ও পরের পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎬</span> ১. গল্প: "Model তো চলছে... নাকি চলছে না?"</h2>
+    <p>
+        Rahim-এর churn model তিন মাস ধরে production-এ। সব ঠিক দেখাচ্ছে — API up, latency ভালো, কোনো error নেই।
+        হঠাৎ Boss একদিন রেগে হাজির:
+    </p>
+    <div class="story-box">
+        <strong>💼 Boss:</strong> <em>"গত দুই মাসে আমরা model-এর কথা শুনে অনেক customer-কে 'safe' ধরে ছেড়ে
+        দিয়েছিলাম — তারা সব চলে গেছে! Model তো crash করেনি, তাহলে ভুল prediction দিল কীভাবে? আর আমরা টেরই পেলাম
+        না কেন?"</em><br><br>
+        Maya শান্তভাবে বলল: <em>"এটাই production ML-এর সবচেয়ে ভয়ংকর সমস্যা — model <strong>crash করে না, নীরবে
+        খারাপ হয়</strong>। API ঠিকই ২০০ status দেয়, শুধু prediction-গুলো ভুল হতে থাকে। এটাকে বলে
+        <strong>drift</strong>। আর ধরার একমাত্র উপায় — <strong>monitoring</strong>।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: model নীরবে খারাপ হয়</h2>
+    <div class="key-point">
+        একটা সাধারণ software bug চিৎকার করে (error, crash, 500)। একটা model খারাপ হলে <strong>চুপ থাকে</strong> —
+        সে আত্মবিশ্বাসের সাথে ভুল উত্তর দেয়। কারণ পৃথিবী বদলায় (নতুন customer আচরণ, নতুন দাম, নতুন trend), কিন্তু
+        model পুরনো data-য় আটকে থাকে। তাই <strong>training ≠ চিরস্থায়ী সত্য</strong> — একবার ভালো মানে চিরকাল ভালো নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧠</span> ৩. তিন স্তরে: monitoring মানে কী</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> একটা গাড়ির dashboard — speed, জ্বালানি, engine temperature। এগুলো
+        না থাকলে গাড়ি হঠাৎ বন্ধ হওয়া পর্যন্ত কিছু বুঝতে না। Monitoring হলো তোমার model-এর dashboard।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> আমরা নিয়মিত মাপি — কতগুলো request, latency, error rate (system), আর
+        input data-র distribution ও prediction-এর distribution (model)। এগুলো সময়ের সাথে বদলালে alert দিই।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — engineer perspective:</strong> engineer একটা <strong>feedback loop</strong> বানায় —
+        prediction + (পরে পাওয়া) actual outcome মিলিয়ে model-এর live performance মাপে, drift ধরলে retraining
+        trigger করে। এটাই production ML-কে "একবার deploy" থেকে "জীবন্ত system"-এ রূপ দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৪. দুই ধরনের monitoring: system বনাম model</h2>
+    <table>
+        <tr><th>ধরন</th><th>কী মাপে</th><th>উদাহরণ</th></tr>
+        <tr><td><strong>System monitoring</strong></td><td>service ঠিক চলছে কিনা</td><td>latency, error rate, CPU/RAM, request/sec, uptime</td></tr>
+        <tr><td><strong>Model monitoring</strong></td><td>prediction ঠিক আছে কিনা</td><td>input distribution, prediction distribution, accuracy (actual পেলে), drift</td></tr>
+    </table>
+    <div class="info-box">
+        Junior-রা প্রায়ই শুধু system monitoring করে (API up আছে তো!) — কিন্তু ভুলে যায় <strong>model monitoring</strong>।
+        Rahim-এর সমস্যা ঠিক এখানেই: system সবুজ ছিল, model লাল হয়ে গিয়েছিল।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🌊</span> ৫. Model Drift: data drift বনাম concept drift</h2>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Data Drift (input বদলায়)</strong><br>
+            যে ধরনের input model দেখছে সেটাই বদলে গেছে।<br>
+            <em>উদাহরণ:</em> churn model শিখেছিল পুরনো দামের customer-দের নিয়ে; এখন সব customer নতুন প্ল্যানে —
+            input distribution আলাদা।
+        </div>
+        <div class="comparison-item">
+            <strong>Concept Drift (সম্পর্ক বদলায়)</strong><br>
+            input আর output-এর সম্পর্কটাই বদলে গেছে।<br>
+            <em>উদাহরণ:</em> আগে কম দাম = কম churn; এখন প্রতিযোগীর অফারে কম দামেও customer চলে যায় — নিয়ম বদলাল।
+        </div>
+    </div>
+    <p>দুটোই model-কে অচল করে দেয় — তাই দুটোই নজরে রাখতে হয়।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗺️</span> ৬. Visual: কীভাবে model নীরবে ভাঙে</h2>
+    <div class="diagram">
+  Month 1        Month 2        Month 3        Month 4
+  accuracy 89%   87%            81%            72%   &lt;- নীরব পতন
+     ✅             ✅ (ঠিক আছে?)   🟡              ❌
+  API status:  200  200  200  200   &lt;- system সবসময় সবুজ!
+                                    |
+                     monitoring না থাকলে এখানে টের পাই
+                     (customer হারানোর পর — অনেক দেরি)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৭. হাতে-কলমে: prediction ও input log করা</h2>
+    <p>Drift ধরার প্রথম শর্ত — <strong>প্রতিটা prediction ও তার input সংরক্ষণ করা</strong>। FastAPI-তে সহজ:</p>
+    <div class="code-box">
+# app/main.py — prediction log করা (drift analysis-এর কাঁচামাল)
+import json, time
+from app.logging_conf import logger
+
+@app.post("/predict", response_model=Prediction)
+def predict(customer: Customer):
+    risk = predict_one(model, customer)
+
+    # structured log -&gt; পরে distribution বিশ্লেষণ করা যাবে
+    logger.info(json.dumps({
+        "event": "prediction",
+        "ts": time.time(),
+        "input": customer.model_dump(),
+        "risk": round(risk, 3),
+        "model_version": "v3",
+    }))
+    return Prediction(churn_risk=risk, will_churn=risk &gt;= 0.5)
+    </div>
+    <div class="info-box">
+        এই log পরে একটা table/warehouse-এ জমিয়ে আমরা দেখতে পারি — input-এর গড়/distribution বদলাচ্ছে কিনা,
+        prediction-এ হঠাৎ সব "safe" হয়ে যাচ্ছে কিনা। (privacy খেয়াল রেখো — sensitive field mask করো।)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৮. Drift ধরার সহজ উপায়</h2>
+    <p>বড় tool-এর আগে junior-friendly পদ্ধতি — reference (training) distribution বনাম live distribution তুলনা:</p>
+    <div class="code-box">
+import numpy as np
+from scipy.stats import ks_2samp
+
+# training-এর সময়কার feature বনাম এখনকার live feature
+train_tenure = np.load("ref_tenure.npy")      # reference
+live_tenure  = np.array(recent_tenure_values)  # সাম্প্রতিক
+
+# KS test: দুই distribution আলাদা কিনা
+stat, p_value = ks_2samp(train_tenure, live_tenure)
+
+if p_value &lt; 0.05:
+    print("⚠️ DATA DRIFT detected: input distribution বদলেছে")
+    # -&gt; alert পাঠাও / retraining বিবেচনা করো
+    </div>
+    <p>
+        Production-এ এর জন্য <strong>Evidently AI</strong>-এর মতো tool আছে যা drift report ও dashboard বানিয়ে
+        দেয়। junior-এর জন্য এখন <em>ধারণা</em> বোঝাই যথেষ্ট — "reference বনাম live distribution তুলনা করে drift ধরা যায়।"
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔁</span> ৯. Retraining: কখন ও কীভাবে</h2>
+    <p>Drift ধরা পড়লে সমাধান সাধারণত <strong>নতুন data দিয়ে retrain</strong>। কখন?</p>
+    <ul>
+        <li><strong>Scheduled</strong> — নির্দিষ্ট সময় পর পর (যেমন প্রতি মাসে), যদি data নিয়মিত বদলায়।</li>
+        <li><strong>Triggered</strong> — drift বা performance drop ধরা পড়লে তখনই retrain (আরও স্মার্ট)।</li>
+    </ul>
+    <div class="key-point">
+        Retraining মানেই আবার আগের সব ধাপ — নতুন data (DVC-versioned) → train + track (MLflow) → evaluate →
+        নতুন model registry-তে register → deploy। মানে Series 09-এর পুরো চক্রটাই আবার ঘোরে। এটাই "closing the loop"।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚙️</span> ১০. CI/CD for models</h2>
+    <p>
+        সাধারণ software-এ <strong>CI/CD</strong> মানে: code push → auto test → auto deploy। ML-এ এর সাথে যোগ হয়
+        model-এর ধাপ। (এই blog-এ একটা আলাদা CI/CD সিরিজ আছে — pipeline গভীরে বুঝতে দেখো।)
+    </p>
+    <div class="diagram">
+  git push (নতুন কোড/model কোড)
+        |
+   CI: lint + unit test + model test
+        |  (নতুন model train হলে)
+   Evaluate: নতুন model কি পুরনোটার চেয়ে ভালো?
+        |  হ্যাঁ -&gt;                না -&gt; থামাও
+   Register + Docker build + deploy (staging -&gt; production)
+        |
+   Monitor -&gt; drift -&gt; (আবার শুরু)
+    </div>
+    <div class="info-box">
+        <strong>ML-এর বিশেষ CI test:</strong> শুধু কোড test নয় — "model কি একটা minimum accuracy পার করছে?",
+        "একটা known input-এ কি প্রত্যাশিত output দিচ্ছে?" — এগুলোও automated test হিসেবে রাখা হয়, যাতে খারাপ model
+        ভুলেও production-এ না যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ১১. Experiment: drift বানিয়ে দেখা</h2>
+    <ul>
+        <li>তোমার churn model-এর test data-র একটা feature কৃত্রিমভাবে বদলে দাও (যেমন সব <code>tenure</code>-এ +24 যোগ করো)।</li>
+        <li>এই বদলানো data-য় accuracy মাপো — পড়ে যাবে (এটাই drift-এর প্রভাব)।</li>
+        <li>উপরের KS test চালিয়ে দেখো drift ধরা পড়ে কিনা।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১২. বাংলাদেশের বাস্তব প্রসঙ্গ</h2>
+    <p>
+        বাংলাদেশে COVID বা হঠাৎ বাজার পরিবর্তনের সময় অনেক fintech/e-commerce-এর model রাতারাতি অচল হয়ে গিয়েছিল —
+        মানুষের কেনাকাটা, ঋণ পরিশোধের আচরণ পাল্টে গিয়েছিল (concept drift)। যাদের monitoring ছিল, তারা দ্রুত retrain
+        করে টিকে গেল; যাদের ছিল না, তারা চুপচাপ ভুল সিদ্ধান্ত নিতে থাকল আর টাকা হারাল। তাই monitoring কোনো বিলাসিতা
+        নয় — এটা model-কে বাস্তবের সাথে জীবিত রাখার শর্ত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১৩. AI Engineer perspective</h2>
+    <div class="info-box">
+        <strong>Must Know (junior):</strong> কেন model নীরবে খারাপ হয়, system বনাম model monitoring, drift-এর ধারণা।<br>
+        <strong>Good to Know:</strong> prediction logging, simple drift check, retraining strategy।<br>
+        <strong>Learn Later:</strong> Evidently/Prometheus/Grafana dashboard, automated retraining pipeline, full CI/CD for ML।
+    </div>
+    <div class="key-point">
+        সবচেয়ে গুরুত্বপূর্ণ mindset: <strong>deploy করা মানে শেষ নয়, শুরু</strong>। একটা model-এর জীবন হলো —
+        deploy → monitor → drift ধরা → retrain → আবার deploy। এই loop বোঝা junior থেকে সত্যিকারের production
+        engineer হওয়ার চিহ্ন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৪. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss:</strong> <em>"Production model খারাপ prediction দিলে আমরা বুঝব কীভাবে? আর বুঝলে করব কী?"</em><br><br>
+        <strong>উত্তর:</strong> বুঝব <strong>monitoring</strong> দিয়ে — আমরা prediction ও input নিয়মিত মাপব, আর
+        যখন live data training data থেকে সরে যাবে (drift) বা accuracy পড়বে, তখন alert পাব — customer হারানোর
+        <em>আগেই</em>। আর করব <strong>retrain</strong> — নতুন data দিয়ে model আপডেট করে আবার deploy করব। মানে
+        model আর "একবার বানিয়ে ভুলে যাওয়া" জিনিস নয়, এটা একটা জীবন্ত system যা আমরা নজরে রাখি — ঠিক যেমন আপনি
+        মাসিক sales report দেখেন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৫. Job Requirement Decoder: "Model monitoring, drift detection, retraining, CI/CD"</h2>
+    <div class="info-box">
+        <ol>
+            <li><strong>কী বোঝায়?</strong> deploy করা model-এর health/performance নজরে রাখা, drift ধরা, দরকারে
+                retrain ও automated deploy।</li>
+            <li><strong>কেন চায়?</strong> model সময়ের সাথে খারাপ হয়; না ধরলে চুপচাপ ভুল সিদ্ধান্ত → business ক্ষতি।</li>
+            <li><strong>কোন সমস্যা সমাধান করে?</strong> "silent model failure" — crash ছাড়াই ভুল হওয়া।</li>
+            <li><strong>Junior-এর কী জানা লাগে?</strong> system vs model monitoring, drift (data/concept)-এর ধারণা,
+                prediction logging, retraining কখন।</li>
+            <li><strong>এখনই কী master লাগে না?</strong> Prometheus/Grafana/Evidently dashboard বানানো, automated
+                retraining pipeline, full ML CI/CD — পরে।</li>
+            <li><strong>GitHub-এ কীভাবে দেখাবে?</strong> prediction logging কোড + একটা simple drift-check script +
+                README-তে "কীভাবে drift ধরব ও retrain করব"।</li>
+            <li><strong>Interview-তে কী জিজ্ঞেস করতে পারে?</strong> "model খারাপ হচ্ছে কীভাবে বুঝবে?", "data vs
+                concept drift?", "কখন retrain করবে?", "system vs model monitoring?"</li>
+        </ol>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৬. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> শুধু "API up আছে" দেখে সন্তুষ্ট থাকা। → model monitoring-ও চাই।<br><br>
+        <strong>ভুল ২:</strong> ধরে নেওয়া "একবার ভালো model চিরকাল ভালো"। → drift বাস্তব; পৃথিবী বদলায়।<br><br>
+        <strong>ভুল ৩:</strong> prediction/input log না করা। → drift বিশ্লেষণের কাঁচামালই থাকবে না।<br><br>
+        <strong>ভুল ৪:</strong> actual outcome না মিলিয়ে শুধু prediction দেখা। → live accuracy জানতে ground truth লাগে।<br><br>
+        <strong>ভুল ৫:</strong> drift ধরেও retrain-এর plan না থাকা। → জানা কিন্তু কিছু না করা = লাভ নেই।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৭. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> "Production model খারাপ হচ্ছে কীভাবে বুঝবে?"<br>
+        <em>উত্তর:</em> model monitoring — input/prediction distribution ও (ground truth পেলে) accuracy track; drift/drop-এ alert।<br><br>
+        <strong>প্রশ্ন ২:</strong> "data drift আর concept drift-এর পার্থক্য?"<br>
+        <em>উত্তর:</em> data drift = input distribution বদলায়; concept drift = input-output সম্পর্ক বদলায়।<br><br>
+        <strong>প্রশ্ন ৩:</strong> "কখন retrain করবে?"<br>
+        <em>উত্তর:</em> scheduled (নিয়মিত) বা triggered (drift/performance drop ধরা পড়লে); নতুন data দিয়ে।<br><br>
+        <strong>প্রশ্ন ৪:</strong> "ML-এর CI/CD সাধারণ software থেকে আলাদা কেন?"<br>
+        <em>উত্তর:</em> code test-এর সাথে model evaluation/validation test যোগ হয়; data ও model version-ও pipeline-এ থাকে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৮. হাতে-কলমে</h2>
+    <div class="key-point">
+        <strong>Mini exercise:</strong><br>
+        ১. তোমার <code>/predict</code>-এ input ও prediction structured log করো (উপরের মতো)।<br>
+        ২. test data-র একটা feature কৃত্রিমভাবে shift করে accuracy drop দেখাও (drift simulate)।<br>
+        ৩. <code>ks_2samp</code> দিয়ে reference বনাম shifted feature-এ drift ধরো।<br>
+        ৪. এক প্যারায় একটা retraining plan লেখো: কখন trigger, কোন data, কীভাবে deploy।<br>
+        ৫. তালিকা করো: তোমার service-এ কোন system metric ও কোন model metric নজরে রাখবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৯. Project Connection ও পরের পর্ব</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ এখন prediction logging + একটা
+        simple drift check যোগ হলো — যদি JD-তে নতুন ধরনের skill (নতুন framework) আসতে থাকে, আমরা টের পাব যে
+        model-এর জ্ঞান পুরনো হয়ে যাচ্ছে, আর retrain করব। Production loop বন্ধ হলো।
+    </p>
+    <div class="success-box">
+        ✓ system বনাম model monitoring, ✓ data/concept drift, ✓ prediction logging + simple drift check,
+        ✓ retraining strategy, ✓ CI/CD for models-এর ধারণা।
+    </div>
+    <div class="key-point">
+        পরের episode-এ আমরা পুরো Series 09 এক জায়গায় জোড়া লাগাব — <strong>Notebook → Package → FastAPI →
+        Docker → Cloud → Monitoring</strong> — একটা সম্পূর্ণ case study হিসেবে, যা তোমার portfolio-র কেন্দ্রবিন্দু
+        (Project P10) হবে।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-07-mlops-tracking-versioning.html">⬅ পূর্ববর্তী: MLOps ১</a>
+            <a href="episode-09-flagship-notebook-to-production.html">পরবর্তী: Full Production ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 09, Episode 08)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s09e08.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

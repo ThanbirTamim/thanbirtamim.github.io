@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Zero to Job-Ready AI/ML Engineer-এর সম্পূর্ণ roadmap, ১০টি সিরিজের মানচিত্র ও flagship project পরিচিতি বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Zero to Job-Ready: সম্পূর্ণ Roadmap ও এই সিরিজ কীভাবে পড়বেন | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Zero to Job-Ready AI/ML Engineer-এর সম্পূর্ণ roadmap, ১০টি সিরিজের মানচিত্র ও flagship project পরিচিতি বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Zero to Job-Ready: সম্পূর্ণ Roadmap ও এই সিরিজ কীভাবে পড়বেন | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 01 &raquo; Episode 06
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Zero to Job-Ready: সম্পূর্ণ Roadmap ও এই সিরিজ কীভাবে পড়বেন</h1>
+    <p class="subtitle">১০টি সিরিজের পুরো মানচিত্র, flagship project আর পড়ার কৌশল (Series 01, Episode 06)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 01 — AI/ML-এর দুনিয়া</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 06 / 06</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর কাছে এখন একটা মানচিত্র দরকার</li>
+        <li>২. আসল সমস্যা: দিকভ্রান্ত শেখা</li>
+        <li>৩. পুরো যাত্রার এক-লাইন লক্ষ্য</li>
+        <li>৪. ১০টি সিরিজের সম্পূর্ণ মানচিত্র</li>
+        <li>৫. Visual: শেখার নির্ভরতা (dependency) চিত্র</li>
+        <li>৬. Flagship Project: এক system, ১০ ধাপ</li>
+        <li>৭. Must Know / Good to Know / Learn Later (সিরিজভিত্তিক)</li>
+        <li>৮. চাকরির আগে বনাম চাকরির পরে</li>
+        <li>৯. কীভাবে এই সিরিজ পড়বেন (study plan)</li>
+        <li>১০. Career বাস্তবতা: কোনো গ্যারান্টি নেই, কিন্তু...</li>
+        <li>১১. Boss Question</li>
+        <li>১২. সাধারণ ভুল ধারণা</li>
+        <li>১৩. Interview Prep</li>
+        <li>১৪. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৫. Project Connection</li>
+        <li>১৬. সারসংক্ষেপ</li>
+        <li>১৭. এরপর কোথায়</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর কাছে এখন একটা মানচিত্র দরকার</h2>
+
+    <p>
+        পাঁচটা পর্ব শেষে Rahim অনেক পরিষ্কার। সে এখন জানে AI/ML কী, কোন role আছে, কতটা গণিত লাগে, আর একটা JD
+        কীভাবে ভাঙতে হয়। কিন্তু একটা নতুন অস্থিরতা — <em>"তাহলে এখন ঠিক কী দিয়ে শুরু করব, আর কোন ক্রমে এগোব?"</em>
+    </p>
+
+    <div class="story-box">
+        Maya বলল:<br><br>
+        <em>"পাহাড়ে ওঠার আগে মানুষ মানচিত্র দেখে নেয় — কোন পথে গেলে চূড়ায় পৌঁছাবে, কোথায় বিশ্রাম নেবে। শেখাও তাই।
+        এলোমেলো ভিডিও দেখে দেখে তুমি অনেক কিছু 'জানবে' কিন্তু কিছুই 'পারবে' না। আজ আমরা পুরো পথটা এক জায়গায় দেখব —
+        যাতে প্রতিটা পর্বে তুমি জানো, তুমি কোথায় আছ আর পরের ধাপ কী।"</em>
+    </div>
+
+    <p>এই পর্ব Series 01-এর সমাপ্তি — এবং পুরো journey-র রোডম্যাপ। এখান থেকেই আসল শেখা শুরু।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: দিকভ্রান্ত শেখা</h2>
+
+    <ul>
+        <li><strong>Tutorial hell:</strong> একটার পর একটা tutorial দেখা, কিন্তু নিজে কিছু না বানানো।</li>
+        <li><strong>ভুল ক্রম:</strong> ML basics না বুঝে সরাসরি Deep Learning বা LLM-এ ঝাঁপ দেওয়া — ভিত্তি নড়বড়ে থাকে।</li>
+        <li><strong>Portfolio-শূন্যতা:</strong> অনেক শেখা, কিন্তু GitHub-এ দেখানোর মতো একটা project নেই।</li>
+    </ul>
+
+    <div class="key-point">
+        সমাধান: একটা নির্ভরতা-ভিত্তিক (dependency-based) ক্রম মেনে চলা, আর প্রতিটা ধাপে একটা করে বাস্তব জিনিস
+        বানানো। এই সিরিজ ঠিক সেভাবেই সাজানো — প্রতিটা সিরিজ আগেরটার উপর দাঁড়ায়, আর একটা flagship project ধাপে ধাপে বড় হয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. পুরো যাত্রার এক-লাইন লক্ষ্য</h2>
+
+    <div class="diagram">
+"আমি AI শিখতে চাই"
+        ↓
+"আমি AI/ML বুঝতে পারছি"
+        ↓
+"আমি AI systems বানাতে পারি"
+        ↓
+"আমি production AI application বানাতে পারি"
+        ↓
+"আমি AI/ML Engineer job-এর জন্য প্রস্তুত"
+    </div>
+
+    <p>
+        মূল দর্শন একটাই: শুধু ১০০টা algorithm বা ৫০টা framework-এর নাম মুখস্থ করা নয়। বরং একটা পূর্ণ প্রবাহ বোঝা —
+        <strong>Data → Model → AI Application → API → Deployment → Production → Business Value</strong>।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗺️</span> ৪. ১০টি সিরিজের সম্পূর্ণ মানচিত্র</h2>
+
+    <table>
+        <tr><th>#</th><th>সিরিজ</th><th>কী শিখবেন</th></tr>
+        <tr><td>01</td><td><strong>AI/ML-এর দুনিয়া</strong></td><td>gantabya বোঝা — role, market, math, JD (এই সিরিজ)</td></tr>
+        <tr><td>02</td><td><strong>Python for AI</strong></td><td>AI দৃষ্টিকোণে Python — data structure, OOP, venv, API, Git</td></tr>
+        <tr><td>03</td><td><strong>Data — ভিত্তি</strong></td><td>NumPy, Pandas, Matplotlib, SQL, preprocessing (Project P1)</td></tr>
+        <tr><td>04</td><td><strong>Math &amp; Stats</strong></td><td>শুধু দরকারি গণিত — vector, stats, probability, gradient descent</td></tr>
+        <tr><td>05</td><td><strong>Classical ML</strong></td><td>regression, classification, trees, evaluation (P2, P3, flagship V3)</td></tr>
+        <tr><td>06</td><td><strong>Deep Learning</strong></td><td>PyTorch — neuron থেকে CNN, transfer learning (P4)</td></tr>
+        <tr><td>07</td><td><strong>NLP → Transformers → LLM</strong></td><td>tokenization থেকে attention, transformer, LLM (P5, P6)</td></tr>
+        <tr><td>08</td><td><strong>Generative AI</strong></td><td>prompt, embeddings, vector DB, RAG, agents, fine-tuning (P7, P8)</td></tr>
+        <tr><td>09</td><td><strong>Notebook → Production</strong></td><td>FastAPI, Docker, cloud, MLOps, monitoring (P9, P10)</td></tr>
+        <tr><td>10</td><td><strong>চাকরি পাওয়া</strong></td><td>resume, GitHub, portfolio, interview, system design, checklist</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৫. Visual: শেখার নির্ভরতা (dependency) চিত্র</h2>
+
+    <div class="diagram">
+S01 (দিকনির্দেশ — এই সিরিজ)
+   │
+   ▼
+S02 (Python) ──▶ S03 (Data) ──▶ S04 (Math) ──▶ S05 (Classical ML)
+                                                     │
+                                                     ├──▶ S06 (Deep Learning)
+                                                     │        │
+                                                     │        ▼
+                                                     │     S07 (NLP → LLM)
+                                                     │        │
+                                                     │        ▼
+                                                     │     S08 (Generative AI / RAG)
+                                                     │        │
+                                                     ▼        ▼
+                                              S09 (Production / MLOps)
+                                                     │
+                                                     ▼
+                                        S10 (চাকরি পাওয়া — S02-S09 লাগবে)
+    </div>
+
+    <p>
+        তীর মানে "আগেরটা বুঝলে পরেরটা সহজ"। আপনি চাইলে S06 (Deep Learning) skip করে S05 থেকে সরাসরি production-oriented
+        classical ML দিয়েও junior চাকরির জন্য প্রস্তুত হতে পারেন — কিন্তু S02-S05 বাদ দেওয়া যাবে না, ওগুলো ভিত্তি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ৬. Flagship Project: এক system, ১০ ধাপ</h2>
+
+    <p>
+        পুরো সিরিজ জুড়ে আমরা একটাই system ধাপে ধাপে বড় করব — <strong>"Bangladesh Tech Career Assistant"</strong>।
+        এটাই এই ব্লগকে বিচ্ছিন্ন tutorial-এর সংকলন না বানিয়ে একটা ধারাবাহিক গল্পে পরিণত করে:
+    </p>
+
+    <div class="diagram">
+V1  (S02) → Python CLI: JD text file পড়া
+V2  (S03) → Data analyzer: job-market data থেকে প্রশ্নের উত্তর
+V3  (S05) → Classical ML: JD থেকে role/seniority predict
+V4  (S06) → Deep Learning: ছোট neural classifier module
+V5  (S07) → NLP: embeddings দিয়ে JD similarity ও skill extraction
+V6  (S08) → LLM + RAG: JD + এই blog-এর উপর Bangla knowledge assistant
+V7  (S08) → Agent step: skill-gap analysis (tool ব্যবহার)
+V8  (S09) → FastAPI: পুরোটা একটা real service
+V9  (S09) → Docker + cloud deploy + monitoring
+V10 (S10) → Portfolio-ready production AI platform + case study
+    </div>
+
+    <div class="info-box">
+        পাশাপাশি থাকবে standalone project — P1 Job Market Analyzer, P2 House Price, P3 Churn, P4 Image classifier,
+        P5 NLP classifier, P6 Transformer app, P7 Bangla Assistant, P8 RAG, P9 API, P10 platform — যেগুলো Series 10-এ
+        আপনার portfolio-র মূল অস্ত্র হবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ৭. Must Know / Good to Know / Learn Later (সিরিজভিত্তিক)</h2>
+
+    <table>
+        <tr><th>স্তর</th><th>কোন সিরিজ</th></tr>
+        <tr><td><strong>🟢 Must Know (junior employability core)</strong></td><td>S02 Python, S03 Data, S04 (intuition), S05 Classical ML, S09-এর FastAPI ও Docker basics</td></tr>
+        <tr><td><strong>🟡 Good to Know (এগিয়ে থাকবেন)</strong></td><td>S06 Deep Learning (একটা project), S07 NLP/Transformers, S08 RAG ও embeddings</td></tr>
+        <tr><td><strong>🔴 Learn Later (পরে/দরকারে)</strong></td><td>S08 fine-tuning, S09 advanced MLOps (drift, registry, K8s), agents, CV depth</td></tr>
+    </table>
+
+    <div class="key-point">
+        অর্থাৎ junior চাকরির জন্য <strong>S02–S05 + S09-এর ভিত্তি</strong> শক্ত করলেই আপনি apply-ready। বাকি সিরিজ
+        আপনাকে আলাদা করে, প্রতিযোগিতায় এগিয়ে রাখে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⏳</span> ৮. চাকরির আগে বনাম চাকরির পরে</h2>
+
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>চাকরির আগে যা লাগবে</strong><br><br>
+            • Python + data (Pandas, SQL)<br>
+            • Classical ML + evaluation<br>
+            • একটা model → API → GitHub<br>
+            • Git, clean code, ব্যাখ্যা করার ক্ষমতা<br>
+            • ২-৩টা solid portfolio project
+        </div>
+        <div class="comparison-item">
+            <strong>চাকরির পরে শিখলেও চলবে</strong><br><br>
+            • Fine-tuning (LoRA/QLoRA)<br>
+            • Advanced MLOps, Kubernetes<br>
+            • Distributed training, GPU optimization<br>
+            • Company-specific tool ও pipeline<br>
+            • গভীর specialization (CV, agents)
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📚</span> ৯. কীভাবে এই সিরিজ পড়বেন (study plan)</h2>
+
+    <ol>
+        <li><strong>ক্রম মেনে চলুন:</strong> S01 → S02 → ... সাধারণত এই ক্রমই সেরা। ভিত্তি (S02-S05) কখনো skip করবেন না।</li>
+        <li><strong>পড়া নয়, করা:</strong> প্রতিটা পর্বের code নিজে টাইপ করে চালান; শুধু পড়ে গেলে মনে থাকবে না।</li>
+        <li><strong>Flagship-এ যোগ করুন:</strong> প্রতিটা সিরিজ শেষে flagship project-এ নতুন অংশ যোগ করুন।</li>
+        <li><strong>সপ্তাহে একটা লক্ষ্য:</strong> "এই সপ্তাহে Pandas শেষ + একটা mini analysis" — মাপা যায় এমন লক্ষ্য।</li>
+        <li><strong>Mini exercise করুন:</strong> প্রতিটা পর্বের হাতে-কলমে অংশ বাদ দেবেন না — ওখানেই শেখা পাকা হয়।</li>
+        <li><strong>GitHub-এ রাখুন:</strong> শুরু থেকেই সব কাজ GitHub-এ commit করুন; এটাই ভবিষ্যতের portfolio।</li>
+    </ol>
+
+    <div class="info-box">
+        গতি নিয়ে চিন্তা করবেন না। কেউ ৩ মাসে, কেউ ৯ মাসে শেষ করবে — নির্ভর করে আপনার সময় ও background-এর উপর।
+        ধারাবাহিকতা (consistency) গতির চেয়ে বেশি গুরুত্বপূর্ণ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ১০. Career বাস্তবতা: কোনো গ্যারান্টি নেই, কিন্তু...</h2>
+
+    <p>
+        সৎ থাকি — এই roadmap শেষ করলেই চাকরি "নিশ্চিত" — এমন প্রতিশ্রুতি কেউ দিতে পারে না, দিলে সে মিথ্যা বলছে।
+    </p>
+
+    <div class="success-box">
+        যা এই roadmap আপনাকে <em>দেবে</em>:<br><br>
+        ✓ শক্ত technical ভিত্তি (Python, data, ML, production)<br>
+        ✓ বাস্তব, দেখানোর মতো portfolio project<br>
+        ✓ engineering mindset — সমস্যাকে সমাধানে রূপান্তর করা<br>
+        ✓ interview প্রস্তুতি ও নিজের কাজ ব্যাখ্যার দক্ষতা<br>
+        ✓ JD পড়ে বুঝে সঠিক role-এ apply করার কৌশল<br><br>
+        এগুলো আপনাকে junior/intermediate AI/ML role-এর জন্য <strong>প্রতিযোগিতামূলক (competitive)</strong> করে তুলবে।
+        বাকিটা — portfolio, communication, problem solving, software fundamentals, নিয়মিত শেখা — এগুলোর উপরও সমান জোর দিন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"এত বড় roadmap! আমার কোম্পানিতে junior নিলে, এর কোন অংশটা আমার আসলে দরকার?"</em><br><br>
+        <strong>উত্তর:</strong> বেশিরভাগ কোম্পানির junior-এর কাছে চাওয়া — data থেকে একটা কাজের model বানিয়ে সেটা
+        একটা API হিসেবে চালু করা, এবং team-এর সাথে ঠিকভাবে কাজ করা। মানে S02–S05 + S09-এর ভিত্তি। বাকি সিরিজ
+        (Deep Learning, RAG, MLOps) সেই junior-কে "নিলে পরে আরও কী কী পারবে" — সেই সম্ভাবনা দেখায়। তাই roadmap-এর
+        পুরোটা শেষ করার আগেই আপনি apply শুরু করতে পারেন; ভিত্তি + কয়েকটা project থাকলেই Boss-এর দরকারি কাজটা আপনি পারবেন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১২. সাধারণ ভুল ধারণা</h2>
+
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "পুরো roadmap শেষ না করে apply করা যাবে না।" → <strong>ঠিক:</strong> ভিত্তি (S02-S05) + কয়েকটা project থাকলেই শুরু করুন।<br><br>
+        <strong>ভুল ২:</strong> "আগে সব শিখি, তারপর project।" → <strong>ঠিক:</strong> শেখা ও project একসাথে চলবে; project-ই শেখা পাকা করে।<br><br>
+        <strong>ভুল ৩:</strong> "Deep Learning/LLM না জানলে junior চাকরি হবে না।" → <strong>ঠিক:</strong> অনেক junior role classical ML + deployment দিয়েই হয়।<br><br>
+        <strong>ভুল ৪:</strong> "দ্রুত শেষ করাই সেরা।" → <strong>ঠিক:</strong> ধারাবাহিকতা ও বোঝা গতির চেয়ে জরুরি।<br><br>
+        <strong>ভুল ৫:</strong> "roadmap শেষ = চাকরি নিশ্চিত।" → <strong>ঠিক:</strong> কোনো গ্যারান্টি নেই; এটা আপনাকে competitive করে, বাকিটা প্রচেষ্টা ও প্রস্তুতি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৩. Interview Prep</h2>
+
+    <div class="info-box">
+        <strong>🎤 Interview Prep</strong><br><br>
+        <strong>প্রশ্ন ১:</strong> তুমি AI/ML কীভাবে শিখছ?<br>
+        <em>উত্তর:</em> একটা structured path — Python ও data দিয়ে ভিত্তি, তারপর classical ML, আর প্রতিটা ধাপে একটা করে project; একটা evolving project (career assistant) দিয়ে সব একসাথে যুক্ত করছি।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> junior হিসেবে কোন skill-গুলো সবচেয়ে জরুরি মনে করো?<br>
+        <em>উত্তর:</em> Python, data handling (Pandas/SQL), classical ML + evaluation, একটা model deploy করা, Git — এগুলো Must Know।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> data → business value পর্যন্ত পুরো প্রবাহটা বলো।<br>
+        <em>উত্তর:</em> Data → Model → AI Application → API → Deployment → Production → Business Value — প্রতিটা ধাপ এক লাইনে ব্যাখ্যা করুন।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> পরের ৬ মাসে কী শিখতে চাও?<br>
+        <em>উত্তর:</em> নিজের gap অনুযায়ী সৎ উত্তর — যেমন "ভিত্তি শক্ত করে RAG ও deployment গভীরে নিতে চাই"।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৪. হাতে-কলমে (Mini Exercise)</h2>
+
+    <div class="key-point">
+        <strong>✍️ হাতে-কলমে</strong><br><br>
+        নিজের জন্য একটা ব্যক্তিগত study plan লিখুন:<br><br>
+        ১. আপনার target role কী (ML Engineer / AI Engineer)?<br>
+        ২. আপনি এখন কোন সিরিজ থেকে শুরু করবেন (background অনুযায়ী)?<br>
+        ৩. সপ্তাহে কত ঘণ্টা দিতে পারবেন — বাস্তবসম্মতভাবে?<br>
+        ৪. প্রথম ৩টা project কোনগুলো বানাবেন?<br>
+        ৫. একটা GitHub repo আজই খুলুন — নাম দিন <code>ai-ml-journey</code>, একটা README-তে এই plan লিখে রাখুন।<br><br>
+        <em>লক্ষ্য:</em> আজ থেকেই "শিখতে চাই"-কে "শিখছি"-তে পরিণত করা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৫. Project Connection</h2>
+
+    <p>
+        Series 02-এ আমরা <strong>"Bangladesh Tech Career Assistant"</strong>-এর V1 বানানো শুরু করব — একটা সাধারণ
+        Python CLI যেটা job description text file পড়ে। ছোট শুরু, কিন্তু এটাই দশ ধাপ পরে একটা deploy করা production
+        AI platform-এ পরিণত হবে।
+    </p>
+    <div class="info-box">
+        আজ যে <code>ai-ml-journey</code> repo খুললেন, সেটাই হবে আপনার সঙ্গী। প্রতিটা সিরিজে এখানে নতুন কিছু যোগ হবে,
+        আর Series 10-এ এটাই হবে আপনার সবচেয়ে শক্তিশালী portfolio। মানচিত্র হাতে পেয়ে গেছেন — এবার হাঁটা শুরু।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৬. সারসংক্ষেপ</h2>
+
+    <div class="success-box">
+        এই Episode-এ (এবং পুরো Series 01-এ) আমরা শিখলাম:<br><br>
+        ✓ পুরো journey-র লক্ষ্য: Data → Model → AI Application → API → Deployment → Production → Business Value<br>
+        ✓ ১০টি সিরিজের মানচিত্র ও তাদের নির্ভরতা (কোনটা আগে, কোনটা পরে)<br>
+        ✓ Flagship "Bangladesh Tech Career Assistant" — এক system, ১০ ধাপে বড় হবে<br>
+        ✓ junior চাকরির জন্য S02–S05 + S09-এর ভিত্তিই Must Know; বাকিগুলো এগিয়ে রাখে<br>
+        ✓ "চাকরির আগে" বনাম "চাকরির পরে" শেখার স্পষ্ট বিভাজন<br>
+        ✓ কীভাবে পড়বেন — ক্রম, করা (পড়া নয়), project, GitHub, consistency<br>
+        ✓ কোনো চাকরির গ্যারান্টি নেই, কিন্তু এই path আপনাকে competitive করে তুলবে
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৭. এরপর কোথায়</h2>
+
+    <div class="key-point">
+        <strong>Series 01 সম্পূর্ণ! 🎉</strong> আপনি এখন গন্তব্য জানেন — AI/ML কী, কোন role আছে, কতটা গণিত লাগে, JD
+        কীভাবে পড়তে হয়, আর পুরো roadmap কেমন।<br><br>
+        <strong>পরবর্তী সিরিজ (Series 02): "AI Engineer-দের জন্য Python"।</strong> এবার হাতে কলমে কাজ শুরু। আমরা
+        Python-কে একজন AI Engineer-এর দৃষ্টিকোণ থেকে শিখব — প্রতিটা concept-এর সাথে প্রশ্ন থাকবে "একজন AI Engineer
+        কেন এটা লাগবে?" — এবং flagship project-এর V1 বানানো শুরু করব। চলুন, শেখা শুরু করি!
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-05-bd-job-market-jd.html">⬅ পূর্ববর্তী: BD job market</a>
+            <a href="../series-02/episode-01-python-why-how-much.html">পরবর্তী: কেন Python ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 01, Episode 06)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s01e06.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cloud-এ AI container deploy, CPU বনাম GPU, cost/latency ও inference optimization intro — বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cloud Deployment ও CPU vs GPU: AI app বাইরের দুনিয়ায় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Cloud-এ AI container deploy, CPU বনাম GPU, cost/latency ও inference optimization intro — বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Cloud Deployment ও CPU vs GPU: AI app বাইরের দুনিয়ায় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 09 &raquo; Episode 06
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Cloud Deployment ও CPU vs GPU: AI app বাইরের দুনিয়ায়</h1>
+    <p class="subtitle">publicly reachable AI service (Series 09, Episode 06)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 09 — Notebook থেকে Production AI</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 06 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "URL-টা দাও, সবাই ব্যবহার করবে"</li>
+        <li>২. সমস্যা: container আছে, কিন্তু পৃথিবী পৌঁছাবে কীভাবে?</li>
+        <li>৩. তিন স্তরে: cloud deployment মানে কী</li>
+        <li>৪. Deploy করার অপশন (Render/Fly/EC2) — কোনটা junior-এর জন্য</li>
+        <li>৫. Visual: laptop থেকে internet পর্যন্ত পথ</li>
+        <li>৬. হাতে-কলমে: container cloud-এ deploy</li>
+        <li>৭. CPU বনাম GPU — কখন কোনটা লাগে</li>
+        <li>৮. Latency ও cost — engineer-এর দুই চোখ</li>
+        <li>৯. Inference optimization — সস্তায় দ্রুত</li>
+        <li>১০. Experiment: cold start ও latency মাপা</li>
+        <li>১১. বাংলাদেশের বাস্তব প্রসঙ্গ</li>
+        <li>১২. AI Engineer perspective</li>
+        <li>১৩. Boss Question</li>
+        <li>১৪. Job Requirement Decoder: "Cloud deployment / CPU-GPU"</li>
+        <li>১৫. সাধারণ ভুল</li>
+        <li>১৬. Interview Prep</li>
+        <li>১৭. হাতে-কলমে</li>
+        <li>১৮. Project Connection ও পরের পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎬</span> ১. গল্প: "URL-টা দাও, সবাই ব্যবহার করবে"</h2>
+    <p>
+        Rahim-এর Docker container দারুণ চলছে — তার laptop-এ। Boss বলল: "চমৎকার! এখন আমাকে একটা link দাও, আমি
+        আমার phone থেকে, marketing team তাদের office থেকে দেখাব।" Rahim থমকে গেল — তার container তো শুধু
+        <code>localhost</code>-এ। Maya বলল —
+    </p>
+    <div class="story-box">
+        <em>"Container টা এখন cloud-এ তুলতে হবে — একটা এমন computer যেটা সবসময় চালু আর internet-এ যুক্ত।
+        তখন তুমি পাবে একটা public URL, যেটা যে কেউ যেকোনো জায়গা থেকে ব্যবহার করতে পারবে। এই ধাপটাই
+        <strong>deployment</strong>।"</em>
+    </div>
+    <div class="info-box">
+        এই blog-এ একটা বিস্তারিত <strong>CI/CD ও Production Deployment বাংলা সিরিজ</strong> আছে — deploy pipeline
+        গভীরে বুঝতে ওটা দেখো। এখানে আমরা AI service-এর দৃষ্টিকোণ থেকে সবচেয়ে সহজ পথটা দেখব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: container আছে, কিন্তু পৃথিবী পৌঁছাবে কীভাবে?</h2>
+    <div class="key-point">
+        তোমার laptop internet-এ সবসময় public না, সবসময় চালুও না, আর তুমি এটা বন্ধ করলে service বন্ধ। দরকার
+        একটা <strong>সবসময়-চালু, public, নির্ভরযোগ্য computer</strong> — সেটাই cloud server। Cloud provider
+        তোমার Docker image টেনে নিয়ে চালায় এবং একটা URL দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧠</span> ৩. তিন স্তরে: cloud deployment মানে কী</h2>
+    <div class="technical-box">
+        <strong>Level 1 — intuition:</strong> তোমার দোকান এতদিন তোমার বাসার ড্রয়িংরুমে ছিল (শুধু তুমি ঢুকতে পারো)।
+        Deployment মানে দোকানটা বড় রাস্তার পাশে একটা ভাড়া করা জায়গায় নিয়ে যাওয়া — যেখানে যে কেউ ঢুকতে পারে,
+        সবসময় খোলা থাকে।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical:</strong> তুমি তোমার Docker image একটা registry-তে push করো; cloud platform
+        সেটা pull করে একটা server-এ container হিসেবে run করে, একটা domain/URL map করে, HTTPS দেয়, আর health
+        check দিয়ে নজর রাখে।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — engineer perspective:</strong> engineer বেছে নেয় কত RAM/CPU (বা GPU) লাগবে, কতগুলো
+        instance চলবে (scaling), কীভাবে নতুন version deploy হবে ও rollback হবে, আর খরচ কত হবে। AI service-এ
+        এই সিদ্ধান্তগুলোর কেন্দ্রে থাকে <strong>latency ও cost</strong>।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🛠️</span> ৪. Deploy করার অপশন — কোনটা junior-এর জন্য</h2>
+    <table>
+        <tr><th>Platform</th><th>ধরন</th><th>junior-এর জন্য</th></tr>
+        <tr><td>Render / Railway / Fly.io</td><td>PaaS — Docker দিলে বাকিটা ওরা সামলায়</td><td>✅ শুরুর জন্য সেরা; free tier আছে</td></tr>
+        <tr><td>Hugging Face Spaces</td><td>ML demo hosting</td><td>✅ ML demo/portfolio-র জন্য দারুণ</td></tr>
+        <tr><td>AWS EC2 / GCP / Azure VM</td><td>IaaS — কাঁচা server, তুমি সব সামলাও</td><td>🟡 বেশি নিয়ন্ত্রণ, বেশি ঝামেলা</td></tr>
+        <tr><td>Kubernetes (EKS/GKE)</td><td>orchestration, autoscale</td><td>🔴 Learn Later — চাকরিতে/বড় scale-এ</td></tr>
+    </table>
+    <div class="info-box">
+        <strong>junior পরামর্শ:</strong> portfolio ও প্রথম চাকরির জন্য <strong>Render/Fly.io/HF Spaces</strong>-এ
+        Docker deploy শিখলেই যথেষ্ট। Kubernetes এখন <em>বোঝা</em> দরকার, <em>master</em> নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗺️</span> ৫. Visual: laptop থেকে internet পর্যন্ত পথ</h2>
+    <div class="diagram">
+  [ তোমার Docker image ]
+          |  docker push
+          v
+  [ Container Registry ]  (Docker Hub / GHCR)
+          |  cloud pull
+          v
+  [ Cloud Platform: container run ]
+          |  domain + HTTPS
+          v
+  https://career-assistant.onrender.com/analyze
+          ^
+          |  যে কেউ, যেকোনো জায়গা থেকে
+  [ Phone ] [ Dashboard ] [ অন্য service ]
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">▶️</span> ৬. হাতে-কলমে: container cloud-এ deploy</h2>
+    <p>Render-এর মতো PaaS-এ সাধারণ প্রবাহ (concept — exact UI বদলাতে পারে):</p>
+    <div class="code-box">
+# 1) কোড + Dockerfile GitHub-এ push করো
+git push origin main
+
+# 2) Render-এ: New -&gt; Web Service -&gt; তোমার GitHub repo connect করো
+#    Render নিজে Dockerfile detect করে build করবে
+
+# 3) Environment variables (secret!) Render dashboard-এ যোগ করো:
+#    API_KEY = ...     (কোডে বা image-এ নয় — মনে আছে?)
+#    LOG_LEVEL = INFO
+
+# 4) Deploy -&gt; কিছুক্ষণ পর একটা public URL পাবে:
+#    https://career-assistant.onrender.com
+
+# 5) test:
+curl https://career-assistant.onrender.com/health
+    </div>
+    <div class="key-point">
+        মূল বার্তা: Docker করার কারণে deploy প্রায় tুচ্ছ হয়ে গেল — "যেটা আমার laptop-এ চলছিল, ঠিক সেটাই cloud-এ
+        চলছে।" এটাই আগের episode-এর পরিশ্রমের পুরস্কার।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖥️</span> ৭. CPU বনাম GPU — কখন কোনটা লাগে</h2>
+    <p>Junior-দের সবচেয়ে বড় ভুল ধারণা: "AI মানেই GPU লাগবে।" — সত্য নয়।</p>
+    <table>
+        <tr><th>কাজ</th><th>CPU যথেষ্ট?</th><th>GPU লাগে?</th></tr>
+        <tr><td>sklearn model inference (churn, JD classify)</td><td>✅ হ্যাঁ</td><td>না</td></tr>
+        <tr><td>ছোট embedding model দিয়ে RAG retrieval</td><td>✅ প্রায়ই হ্যাঁ</td><td>না (বড় scale-এ সাহায্য করে)</td></tr>
+        <tr><td>একটা LLM API (OpenAI) call করা</td><td>✅ হ্যাঁ (GPU ওদের দিকে)</td><td>না — তুমি শুধু API call করছ</td></tr>
+        <tr><td>বড় LLM/DL model <em>নিজে</em> host করে চালানো</td><td>🟡 ধীর</td><td>✅ হ্যাঁ</td></tr>
+        <tr><td>Deep learning model <em>training</em></td><td>❌ খুব ধীর</td><td>✅ হ্যাঁ</td></tr>
+    </table>
+    <div class="info-box">
+        <strong>মূল distinction — training ≠ inference:</strong> GPU মূলত <strong>training</strong>-এ ও বড় model
+        নিজে host করে চালানোয় দরকার। বেশিরভাগ junior-level production inference (classical ML, বা LLM <em>API</em>
+        ব্যবহার) <strong>CPU-তেই</strong> চলে — অনেক সস্তা। GPU ভাড়া অনেক দামি, তাই "লাগবে কি লাগবে না" ভেবে নেওয়া
+        সরাসরি টাকার সিদ্ধান্ত।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚖️</span> ৮. Latency ও cost — engineer-এর দুই চোখ</h2>
+    <ul>
+        <li><strong>Latency</strong> — একটা request-এর উত্তর আসতে কত সময়? user experience ও SLA এর উপর নির্ভর করে।
+            <code>p50</code>, <code>p95</code>, <code>p99</code> (৫০/৯৫/৯৯ শতাংশ request কত সময়ে শেষ) মাপা শেখো।</li>
+        <li><strong>Cost</strong> — server-এর মাসিক ভাড়া + (LLM হলে) per-token খরচ। CPU vs GPU, instance size,
+            caching — সব এখানে প্রভাব ফেলে।</li>
+        <li><strong>Trade-off</strong> — দ্রুত চাই? বড় server/GPU লাগবে (দামি)। সস্তা চাই? হয়তো একটু ধীর, বা
+            caching দিয়ে সামলাতে হবে।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ৯. Inference optimization — সস্তায় দ্রুত</h2>
+    <p>GPU কেনার আগে এই সস্তা কৌশলগুলো চেষ্টা করো (junior-level, বেশিরভাগ ক্ষেত্রেই যথেষ্ট):</p>
+    <ul>
+        <li><strong>Caching</strong> (আগের episode) — একই input-এ আবার compute করো না।</li>
+        <li><strong>Batching</strong> — অনেক request একসাথে process করলে throughput বাড়ে।</li>
+        <li><strong>ছোট/হালকা model</strong> — একই কাজ ছোট model-এ হলে সেটাই নাও (distillation/quantization —
+            পরে শেখার জন্য)।</li>
+        <li><strong>Right-sizing</strong> — অপ্রয়োজনে বড় server নিও না; মেপে নাও কত RAM/CPU সত্যিই লাগে।</li>
+    </ul>
+    <div class="info-box">
+        <strong>Learn Later:</strong> quantization (int8), ONNX Runtime, model server (Triton/vLLM), GPU autoscaling —
+        এগুলো specialization, junior-দের জন্য এখন শুধু <em>নাম জানা</em> যথেষ্ট।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ১০. Experiment: cold start ও latency মাপা</h2>
+    <ul>
+        <li>Deploy করার পর প্রথম request-এ দেরি লক্ষ্য করো (<strong>cold start</strong> — free tier-এ container ঘুমিয়ে থাকে)।</li>
+        <li>একই endpoint ২০ বার call করে গড় latency মাপো (<code>time curl ...</code> বা একটা ছোট script)।</li>
+        <li>Caching চালু/বন্ধ করে latency-র পার্থক্য দেখো।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের বাস্তব প্রসঙ্গ</h2>
+    <p>
+        বাংলাদেশে বেশিরভাগ startup GPU server-এর দামের কারণে যতটা সম্ভব CPU-তে inference চালায়, আর ভারী কাজ
+        (বড় LLM) OpenAI/Anthropic-এর মতো API-তে পাঠিয়ে দেয় — নিজে host করে না। একজন junior হিসেবে যদি তুমি
+        বুঝিয়ে বলতে পারো "এই কাজটা CPU-তেই হবে, GPU লাগবে না, তাই মাসে এত টাকা বাঁচবে" — সেটা কোম্পানির কাছে
+        অত্যন্ত মূল্যবান। খরচের ভাষা বোঝা = engineer হিসেবে গুরুত্ব বাড়া।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১২. AI Engineer perspective</h2>
+    <div class="key-point">
+        একটা model <strong>deploy করা মানেই শেষ নয়</strong> — deploy করার পর তিনটা জিনিস চলতে থাকে: এটা কি দ্রুত?
+        (latency), এটা কি সাশ্রয়ী? (cost), এটা কি সঠিক থাকছে? (monitoring — পরের episode)। Engineer এই তিনটাই
+        নিয়মিত মাপে ও উন্নত করে।
+    </div>
+    <div class="info-box">
+        <strong>Must Know:</strong> Docker container cloud-এ deploy, public URL, env var, CPU/GPU-এর পার্থক্য।
+        <strong>Good to Know:</strong> latency মাপা, caching/batching, right-sizing। <strong>Learn Later:</strong>
+        Kubernetes autoscale, GPU serving, quantization।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৩. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss:</strong> <em>"একজন consultant বলল আমাদের AI-এর জন্য দামি GPU server ভাড়া নিতে হবে,
+        মাসে লাখ টাকা। সত্যি লাগবে?"</em><br><br>
+        <strong>উত্তর:</strong> নির্ভর করে আমরা কী চালাচ্ছি তার উপর। আমাদের বেশিরভাগ কাজ — classification, JD
+        analysis, আর OpenAI API call — এসব <strong>CPU-তেই</strong> ভালো চলে; GPU লাগবে না। GPU তখনই দরকার হতো
+        যদি আমরা নিজে একটা বড় LLM host করতাম বা model train করতাম। তাই এখন একটা সাধারণ CPU server (মাসে সামান্য
+        খরচ) + caching-ই যথেষ্ট। বড় হলে তখন GPU ভাবা যাবে — এখন না।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৪. Job Requirement Decoder: "Deploy models to cloud; understanding of CPU/GPU"</h2>
+    <div class="info-box">
+        <ol>
+            <li><strong>কী বোঝায়?</strong> containerized model cloud-এ চালিয়ে public/internal service বানানো, আর
+                কোন hardware লাগবে বোঝা।</li>
+            <li><strong>কেন চায়?</strong> model deploy না হলে business value নেই; আর ভুল hardware = বাড়তি খরচ।</li>
+            <li><strong>কোন সমস্যা সমাধান করে?</strong> "শুধু laptop-এ চলে", ও অপ্রয়োজনীয় GPU খরচ।</li>
+            <li><strong>Junior-এর কী জানা লাগে?</strong> PaaS-এ Docker deploy, env var, public URL, CPU vs GPU-এর
+                পার্থক্য, latency-র ধারণা।</li>
+            <li><strong>এখনই কী master লাগে না?</strong> Kubernetes, autoscaling, multi-region, GPU cluster,
+                quantization — পরে।</li>
+            <li><strong>GitHub-এ কীভাবে দেখাবে?</strong> README-তে live deploy link + "কীভাবে deploy করলাম" ব্যাখ্যা;
+                সম্ভব হলে HF Spaces/Render demo।</li>
+            <li><strong>Interview-তে কী জিজ্ঞেস করতে পারে?</strong> "CPU vs GPU কখন?", "latency কমাবে কীভাবে?",
+                "cold start কী?", "cost কীভাবে কমাবে?"</li>
+        </ol>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৫. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> ধরে নেওয়া "AI মানেই GPU"। → বেশিরভাগ junior inference CPU-তেই চলে।<br><br>
+        <strong>ভুল ২:</strong> secret cloud-এর env var-এ না দিয়ে কোড/image-এ রাখা। → dashboard-এর env ব্যবহার করো।<br><br>
+        <strong>ভুল ৩:</strong> latency না মেপে "মনে হয় দ্রুত" ধরে নেওয়া। → p95 মাপো।<br><br>
+        <strong>ভুল ৪:</strong> free tier-এর cold start ভুলে যাওয়া। → প্রথম request ধীর হতে পারে; ব্যাখ্যা করো/warm রাখো।<br><br>
+        <strong>ভুল ৫:</strong> অপ্রয়োজনে বড়/দামি instance নেওয়া। → মেপে right-size করো।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৬. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> "একটা model কীভাবে cloud-এ deploy করবে?"<br>
+        <em>উত্তর:</em> Docker image → registry → PaaS/cloud pull ও run → env var-এ secret → public URL + HTTPS + health check।<br><br>
+        <strong>প্রশ্ন ২:</strong> "কখন GPU লাগে, কখন CPU যথেষ্ট?"<br>
+        <em>উত্তর:</em> training ও বড় model নিজে host করলে GPU; classical ML/embedding/LLM API inference সাধারণত CPU।<br><br>
+        <strong>প্রশ্ন ৩:</strong> "inference latency কমাবে কীভাবে?"<br>
+        <em>উত্তর:</em> caching, batching, ছোট model, right-sizing; দরকারে GPU/quantization।<br><br>
+        <strong>প্রশ্ন ৪:</strong> "cold start কী?"<br>
+        <em>উত্তর:</em> ঘুমন্ত/নতুন container প্রথম request-এ চালু হতে যে দেরি; warm রাখা বা min-instance দিয়ে কমানো যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৭. হাতে-কলমে</h2>
+    <div class="key-point">
+        <strong>Mini exercise:</strong><br>
+        ১. তোমার Dockerized service একটা free PaaS (Render/Fly/HF Spaces)-এ deploy করো, public URL পাও।<br>
+        ২. secret গুলো platform-এর env var-এ দাও (কোডে নয়)।<br>
+        ৩. <code>/health</code> ও <code>/predict</code> public URL দিয়ে curl করো।<br>
+        ৪. ২০ বার call করে গড় ও p95 latency মাপো; cold start লক্ষ্য করো।<br>
+        ৫. এক লাইনে লেখো: "আমার এই service-এ GPU লাগে কি? কেন?" — যুক্তি দাও।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৮. Project Connection ও পরের পর্ব</h2>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong> এখন internet-এ live — একটা public
+        URL, HTTPS সহ, CPU-তে সাশ্রয়ীভাবে চলছে। Boss তার phone থেকে ব্যবহার করতে পারছে। এটা <strong>Project P9
+        (Production AI API)</strong>-এর প্রায় সম্পূর্ণ রূপ।
+    </p>
+    <div class="success-box">
+        ✓ cloud-এ Docker deploy, ✓ public URL + HTTPS + env secret, ✓ CPU vs GPU সিদ্ধান্ত, ✓ latency/cost ও
+        inference optimization-এর ধারণা।
+    </div>
+    <div class="key-point">
+        কিন্তু একটা গোপন বিপদ থেকে গেছে — deploy হওয়া model নীরবে খারাপ হতে পারে (data বদলে যায়), আর কেউ টের
+        পায় না। পরের episode (MLOps Part 1)-এ আমরা শিখব <strong>experiment tracking, model ও data versioning,
+        এবং model registry</strong> — যাতে ML lifecycle reproducible ও নিয়ন্ত্রিত হয়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-05-docker-ai.html">⬅ পূর্ববর্তী: Docker</a>
+            <a href="episode-07-mlops-tracking-versioning.html">পরবর্তী: MLOps ১ ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 09, Episode 06)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s09e06.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

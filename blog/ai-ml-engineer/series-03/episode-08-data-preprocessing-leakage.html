@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Data preprocessing — encoding, normalization, standardization, outlier ও ভয়ংকর data leakage — বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Data Preprocessing: encoding, scaling, আর &#x27;data leakage&#x27;-এর ফাঁদ | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Data preprocessing — encoding, normalization, standardization, outlier ও ভয়ংকর data leakage — বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Data Preprocessing: encoding, scaling, আর &#x27;data leakage&#x27;-এর ফাঁদ | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 03 &raquo; Episode 08
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Data Preprocessing: encoding, scaling, আর 'data leakage'-এর ফাঁদ</h1>
+    <p class="subtitle">model-এ ঢোকানোর আগে data প্রস্তুত করা (Series 03, Episode 08)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 03 — Data — AI-এর ভিত্তি</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 08 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর "৯৯% accuracy" model বাস্তবে ফেল</li>
+        <li>২. সমস্যা: ML model কাঁচা data নেয় না</li>
+        <li>৩. কেন preprocessing দরকার</li>
+        <li>৪. তিন Level-এ preprocessing বোঝা</li>
+        <li>৫. Missing value: চেনা ও সামলানো</li>
+        <li>৬. Categorical variable: encoding</li>
+        <li>৭. Normalization বনাম Standardization (scaling)</li>
+        <li>৮. Outlier: চেনা ও সিদ্ধান্ত</li>
+        <li>৯. Data leakage কী — সবচেয়ে বিপজ্জনক ভুল</li>
+        <li>১০. train/test split ও leakage এড়ানো</li>
+        <li>১১. scikit-learn Pipeline: leakage-proof উপায়</li>
+        <li>১২. বাস্তব উদাহরণ: BD churn data preprocessing</li>
+        <li>১৩. একজন AI Engineer-এর দৃষ্টিতে</li>
+        <li>১৪. Boss Question</li>
+        <li>১৫. Job Requirement Decoder</li>
+        <li>১৬. সাধারণ ভুল ধারণা</li>
+        <li>১৭. Interview Prep</li>
+        <li>১৮. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৯. Project Connection</li>
+        <li>২০. সারসংক্ষেপ</li>
+        <li>২১. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর "৯৯% accuracy" model বাস্তবে ফেল</h2>
+    <p>
+        Rahim প্রথম ML model বানিয়ে উচ্ছ্বসিত — training-এ ৯৯% accuracy! কিন্তু production-এ দেওয়ার পর model
+        যাচ্ছেতাই prediction দিচ্ছে। Boss বিরক্ত, Rahim হতভম্ব।
+    </p>
+    <div class="story-box">
+        <strong>Rahim:</strong> <em>"Maya আপা, আমার model তো ৯৯% accuracy দিয়েছিল! বাস্তবে এত খারাপ কেন?"</em><br><br>
+        <strong>Maya:</strong> <em>"তোমার model cheat করেছে — তুমি বুঝতে পারোনি। এটাকে বলে <strong>data leakage</strong>।
+        আর তার আগে প্রশ্ন — তুমি কি missing value, categorical column আর scaling ঠিকমতো handle করেছিলে? Model যত
+        ভালোই হোক, <strong>garbage in → garbage out</strong>। আজ আমরা preprocessing শিখব — data-কে ML-এর যোগ্য করে
+        তোলা, আর সেই ভয়ংকর leakage কীভাবে এড়ানো যায়।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: ML model কাঁচা data নেয় না</h2>
+    <p>বাস্তব data সবসময় নোংরা। একটা সাধারণ job/customer dataset-এ থাকে:</p>
+    <ul>
+        <li><strong>Missing value:</strong> কিছু cell খালি (salary নেই, age নেই)।</li>
+        <li><strong>Categorical text:</strong> "Dhaka", "Fintech" — model সংখ্যা চায়, text না।</li>
+        <li><strong>ভিন্ন scale:</strong> age (২০–৬০) আর salary (৩০০০০–২০০০০০) — একই scale-এ নেই।</li>
+        <li><strong>Outlier:</strong> কেউ ভুল করে salary লিখেছে ৫,০০,০০,০০০।</li>
+    </ul>
+    <p>Preprocessing = এই সমস্যাগুলো ঠিক করে data-কে model-এর যোগ্য, পরিষ্কার সংখ্যার টেবিলে রূপান্তর করা।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. কেন preprocessing দরকার</h2>
+    <ul>
+        <li><strong>Model শুধু সংখ্যা বোঝে:</strong> text/category সংখ্যায় রূপান্তর করতেই হবে।</li>
+        <li><strong>Scale-sensitive algorithm:</strong> অনেক algorithm (Linear/Logistic Regression, KNN, SVM, neural net) বড় সংখ্যার column-কে বেশি গুরুত্ব দিয়ে ফেলে যদি scale না করা হয়।</li>
+        <li><strong>Missing value crash করায়:</strong> বেশিরভাগ algorithm NaN নিয়ে চলতে পারে না।</li>
+        <li><strong>ভালো data = ভালো model:</strong> practice-এ model architecture-এর চেয়ে data quality বেশি ফল বদলায়।</li>
+    </ul>
+    <div class="info-box">
+        <strong>Must Know / Good to Know / Learn Later:</strong><br>
+        <strong>Must Know:</strong> missing value handling, one-hot/label encoding, standardization, train/test split, data leakage ধারণা।<br>
+        <strong>Good to Know:</strong> outlier treatment, scikit-learn Pipeline, target/frequency encoding।<br>
+        <strong>Learn Later:</strong> advanced imputation (KNN/iterative), feature store, automated preprocessing।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ preprocessing বোঝা</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        রান্নার আগে সবজি ধুয়ে, কেটে, বেছে নিতে হয় — পচা অংশ ফেলে দিতে হয়। Preprocessing হলো ML-এর সেই "সবজি
+        কাটার" ধাপ। নোংরা data সরাসরি model-এ দিলে রান্না নষ্ট হবেই।
+    </p>
+    <h3>Level 2 — technical ভাবে</h3>
+    <p>
+        Preprocessing মানে raw feature-গুলোকে এমন সংখ্যায় রূপান্তর করা যা model-friendly — missing value পূরণ
+        (imputation), category-কে সংখ্যায় (encoding), সব feature একই scale-এ (scaling), আর অস্বাভাবিক মান (outlier) নিয়ে সিদ্ধান্ত।
+    </p>
+    <h3>Level 3 — engineer দৃষ্টিতে</h3>
+    <p>
+        Engineer রা preprocessing-কে একটা <strong>reproducible pipeline</strong> হিসেবে দেখে — training-এ যা করা হয়,
+        হুবহু তাই inference/production-এ হতে হবে। আর সবচেয়ে বড় শঙ্কা — এই ধাপে যেন <strong>future/test তথ্য leak</strong>
+        না হয়। এটাই junior আর engineer-এর আসল পার্থক্য।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🕳️</span> ৫. Missing value: চেনা ও সামলানো</h2>
+    <div class="code-box">
+import pandas as pd
+import numpy as np
+
+df = pd.DataFrame({
+    "title":  ["Python Dev", "ML Engineer", "Data Analyst", "Backend"],
+    "salary": [45000, np.nan, 40000, 70000],
+    "city":   ["Dhaka", "Dhaka", np.nan, "Sylhet"],
+})
+
+# কোথায় কতগুলো missing?
+print(df.isna().sum())
+
+# কৌশল ১: বাদ দেওয়া (missing কম হলে)
+df_dropped = df.dropna()
+
+# কৌশল ২: number column পূরণ (median বেশি robust)
+df["salary"] = df["salary"].fillna(df["salary"].median())
+
+# কৌশল ৩: category column পূরণ (mode / "Unknown")
+df["city"] = df["city"].fillna("Unknown")
+    </div>
+    <div class="technical-box">
+        <strong>কখন কোনটা?</strong> missing খুব কম হলে row বাদ দেওয়া চলে। বেশি হলে পূরণ (impute) করুন — number-এ
+        median (outlier-এ কম প্রভাবিত), category-তে mode বা আলাদা "Unknown" class। <strong>সতর্কতা:</strong> median/mean
+        হিসাব করতে হবে শুধু training data থেকে (নিচে leakage অংশে বিস্তারিত)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔤</span> ৬. Categorical variable: encoding</h2>
+    <p>Model text বোঝে না — category-কে সংখ্যায় আনতে হবে। দুটো প্রধান উপায়:</p>
+    <div class="code-box">
+# One-Hot Encoding: প্রতিটা category => আলাদা 0/1 column
+# (nominal/ক্রমহীন category-র জন্য: city, industry)
+df_ohe = pd.get_dummies(df, columns=["city"])
+# city_Dhaka, city_Sylhet, city_Unknown => 0/1
+
+# Label / Ordinal Encoding: category => 0,1,2...
+# (ordinal/ক্রম-যুক্ত category-র জন্য: "Low&lt;Mid&lt;High")
+from sklearn.preprocessing import OrdinalEncoder
+levels = [["Low", "Mid", "High"]]
+enc = OrdinalEncoder(categories=levels)
+# enc.fit_transform(df[["level"]])  # Low=0, Mid=1, High=2
+    </div>
+    <div class="key-point">
+        <strong>গুরুত্বপূর্ণ নিয়ম:</strong> ক্রমহীন category-তে (city, color) label encoding (0,1,2) দেবেন না —
+        তাহলে model ভুল করে ভাববে "Sylhet(2) &gt; Dhaka(1)", যা অর্থহীন। সেখানে one-hot ব্যবহার করুন। শুধু সত্যিকারের
+        ক্রম থাকলে (Low/Mid/High) ordinal encoding ঠিক আছে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📏</span> ৭. Normalization বনাম Standardization (scaling)</h2>
+    <p>age (২০–৬০) আর salary (৩০০০০–২০০০০০) একই scale-এ না থাকলে অনেক algorithm বড় সংখ্যাকে বেশি গুরুত্ব দেয়। সমাধান scaling:</p>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Normalization (Min-Max)</strong><br>
+            মানকে ০–১ range-এ আনে।<br>
+            সূত্র: (x − min) / (max − min)<br>
+            outlier-এ সংবেদনশীল।
+        </div>
+        <div class="comparison-item">
+            <strong>Standardization (Z-score)</strong><br>
+            গড়=০, std=১ করে।<br>
+            সূত্র: (x − mean) / std<br>
+            সাধারণত বেশি ব্যবহৃত ও robust।
+        </div>
+    </div>
+    <div class="code-box">
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+scaler = StandardScaler()          # গড়=0, std=1
+X_scaled = scaler.fit_transform(X_train[["age", "salary"]])
+
+# একই scaler test-এ শুধু transform (fit নয়!) — নিচে কারণ
+X_test_scaled = scaler.transform(X_test[["age", "salary"]])
+    </div>
+    <div class="info-box">
+        Tree-based model (Decision Tree, Random Forest, XGBoost)-এ scaling সাধারণত লাগে না — এরা scale-invariant।
+        কিন্তু Linear/Logistic Regression, KNN, SVM, neural net-এ scaling প্রায় বাধ্যতামূলক।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৮. Outlier: চেনা ও সিদ্ধান্ত</h2>
+    <div class="code-box">
+# IQR পদ্ধতিতে outlier চেনা
+Q1 = df["salary"].quantile(0.25)
+Q3 = df["salary"].quantile(0.75)
+IQR = Q3 - Q1
+low  = Q1 - 1.5 * IQR
+high = Q3 + 1.5 * IQR
+
+outliers = df[(df["salary"] &lt; low) | (df["salary"] &gt; high)]
+print(outliers)
+    </div>
+    <div class="technical-box">
+        <strong>সব outlier ফেলে দেবেন না!</strong> কিছু outlier আসল, গুরুত্বপূর্ণ signal (যেমন fraud detection-এ
+        অস্বাভাবিক transaction-ই তো target)। আগে বুঝুন এটা <em>ভুল data (data entry error)</em> নাকি <em>সত্যিকারের
+        বিরল ঘটনা</em>। ভুল হলে ঠিক করুন/বাদ দিন; আসল হলে রাখুন বা আলাদাভাবে model করুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💀</span> ৯. Data leakage কী — সবচেয়ে বিপজ্জনক ভুল</h2>
+    <p>
+        <strong>Data leakage</strong> হলো — model training-এর সময় এমন তথ্য দেখে ফেলা যা বাস্তবে prediction-এর
+        মুহূর্তে পাওয়া যাবে না (future বা test তথ্য)। ফল: training/test-এ দুর্দান্ত score, কিন্তু production-এ ভয়াবহ ফেল।
+    </p>
+    <div class="diagram">
+Leakage যেভাবে ঘটে (দুটো ক্লাসিক উদাহরণ):
+
+১) পুরো data-তে scale/impute করে তারপর split
+   -&gt; test-এর mean/std training-এ "leak" হলো
+   -&gt; model আসলে test সম্পর্কে আগেই "জানে"
+
+২) target থেকে তৈরি feature model-এ ঢোকানো
+   যেমন churn predict করতে "account_closed_date"
+   -&gt; এটা তো churn হওয়ার পরেই পাওয়া যায়!
+   -&gt; model cheat করছে, বাস্তবে থাকবে না
+    </div>
+    <div class="story-box">
+        Rahim-এর "৯৯% accuracy"-র রহস্য এখানেই: সে পুরো dataset-এ scaling করেছিল <em>তারপর</em> train/test split
+        করেছিল — test-এর তথ্য training-এ leak করেছে। Model test data আগেই "চিনে ফেলেছিল"।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✂️</span> ১০. train/test split ও leakage এড়ানো</h2>
+    <p>সঠিক ক্রম সবসময়: <strong>আগে split, তারপর শুধু training data থেকে fit</strong> — তারপর test-এ শুধু transform।</p>
+    <div class="code-box">
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# ধাপ ১: আগে split (leakage-এর প্রথম প্রতিরক্ষা)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+
+# ধাপ ২: fit শুধু training data-তে (mean/std শেখা)
+X_train_scaled = scaler.fit_transform(X_train)
+
+# ধাপ ৩: test-এ শুধু transform (একই mean/std প্রয়োগ)
+X_test_scaled = scaler.transform(X_test)   # fit নয়!
+    </div>
+    <div class="key-point">
+        মন্ত্র মনে রাখুন: <strong>fit শুধু train-এ, transform সব জায়গায়।</strong> imputation, scaling, encoding —
+        সব preprocessing-এর statistic (mean, median, category তালিকা) শুধু training data থেকে শিখতে হবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔧</span> ১১. scikit-learn Pipeline: leakage-proof উপায়</h2>
+    <p>
+        হাতে হাতে fit/transform মনে রাখা কঠিন — একটা ভুলেই leakage। এর সবচেয়ে নিরাপদ সমাধান
+        <code>Pipeline</code> + <code>ColumnTransformer</code>, যা cross-validation-এও leakage আটকায়:
+    </p>
+    <div class="code-box">
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+
+num_cols = ["age", "salary"]
+cat_cols = ["city", "industry"]
+
+# number: median দিয়ে পূরণ + standardize
+num_pipe = Pipeline([
+    ("impute", SimpleImputer(strategy="median")),
+    ("scale",  StandardScaler()),
+])
+
+# category: mode দিয়ে পূরণ + one-hot
+cat_pipe = Pipeline([
+    ("impute", SimpleImputer(strategy="most_frequent")),
+    ("onehot", OneHotEncoder(handle_unknown="ignore")),
+])
+
+pre = ColumnTransformer([
+    ("num", num_pipe, num_cols),
+    ("cat", cat_pipe, cat_cols),
+])
+
+# পুরো flow এক object-এ: preprocess + model
+model = Pipeline([
+    ("pre", pre),
+    ("clf", LogisticRegression(max_iter=1000)),
+])
+
+model.fit(X_train, y_train)      # সব fit শুধু train-এ
+model.score(X_test, y_test)      # test-এ শুধু transform, নিরাপদ
+    </div>
+    <div class="info-box">
+        <strong>কেন Pipeline?</strong> এটা preprocessing ও model-কে এক করে রাখে — তাই fit শুধু train-এ হয়, আর
+        cross-validation করলেও প্রতিটা fold-এ leakage আপনাআপনি এড়ানো হয়। production-এ deploy করাও সহজ (এক object)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১২. বাস্তব উদাহরণ: BD churn data preprocessing</h2>
+    <p>
+        ধরুন একটা BD telecom (GP/Robi ধরনের) churn dataset — কে গ্রাহক ছেড়ে যাবে। column: <code>age</code>,
+        <code>monthly_bill</code>, <code>plan_type</code> (category), <code>tenure</code>, target <code>churned</code>।
+        একজন engineer যা করবে:
+    </p>
+    <div class="code-box">
+# ১. LEAKAGE ফাঁদ: এই column বাদ দিতে হবে!
+#    "disconnection_date" — churn হওয়ার পরেই জানা যায়
+df = df.drop(columns=["disconnection_date"])
+
+# ২. আগে split
+X = df.drop(columns=["churned"])
+y = df["churned"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
+
+# ৩. Pipeline দিয়ে impute+scale+encode (সব fit train-এ)
+model.fit(X_train, y_train)
+    </div>
+    <p>
+        <code>stratify=y</code> কেন? churn সাধারণত imbalanced (হয়তো ১০% churn); stratify নিশ্চিত করে train ও
+        test-এ churn-এর অনুপাত একই থাকে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১৩. একজন AI Engineer-এর দৃষ্টিতে</h2>
+    <div class="key-point">
+        Engineer রা তিনটা জিনিস কখনো ভোলে না:<br><br>
+        ১. <strong>আগে split, তারপর fit</strong> — leakage-এর এক নম্বর প্রতিরক্ষা।<br>
+        ২. <strong>Pipeline-এ সব preprocessing bundle করা</strong> — যাতে training ও production-এ হুবহু একই রূপান্তর হয়।<br>
+        ৩. <strong>প্রতিটা feature-কে প্রশ্ন করা</strong>: "prediction-এর মুহূর্তে এটা কি সত্যিই জানা থাকবে?" —
+        না হলে সেটা leakage, বাদ দিতে হবে।
+    </div>
+    <p>
+        "কাগজে দারুণ score কিন্তু বাস্তবে খারাপ" — এর ৯০% কারণ data leakage। তাই engineer সবার আগে এই ফাঁদটা খোঁজে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১৪. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"Model বানানোই তো আসল কাজ, এই data ধোয়ামোছায় এত সময় কেন? এটা business-এ কী দেয়?"</em><br><br>
+        <strong>উত্তর:</strong> কারণ ভুল preprocessing মানে ভুল model — আর ভুল model ব্যবসায় সরাসরি ক্ষতি। ধরুন
+        churn model leakage-এর কারণে test-এ ৯৯% দেখাল, আমরা ভরসা করে marketing budget সাজালাম, বাস্তবে model
+        কিছুই ধরল না — টাকা নষ্ট, আস্থা নষ্ট। ভালো preprocessing মানে model বাস্তবেও যেমন score দেখায় তেমনই কাজ করে —
+        এটাই নির্ভরযোগ্য, তাই business-value-যুক্ত AI।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৫. Job Requirement Decoder</h2>
+    <div class="key-point">
+        "Experience with data preprocessing, feature scaling, and building robust ML pipelines."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি কাঁচা data পরিষ্কার করে, encode/scale করে, leakage ছাড়া model-ready করতে পারেন।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>বাস্তবে সময়ের বড় অংশ data preprocessing-এ যায়; ভুল হলে পুরো model অকেজো।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>"training-এ ভালো, production-এ খারাপ" model-এর মূল কারণ (leakage) দূর করে।</td></tr>
+        <tr><td>Junior-এর কী জানা লাগে?</td><td>missing value, one-hot/ordinal encoding, standardization, train/test split, leakage, sklearn Pipeline।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>advanced imputation, feature store, automated feature engineering tool।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা project-এ <code>Pipeline</code> + <code>ColumnTransformer</code> ব্যবহার করে README-তে leakage-এড়ানোর কৌশল ব্যাখ্যা করুন।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"data leakage কী ও কীভাবে এড়াবেন?", "normalization vs standardization?", "কেন fit শুধু train-এ?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৬. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> পুরো data-তে scale/impute করে তারপর split। →
+        <strong>ঠিক:</strong> আগে split, তারপর শুধু train-এ fit — নাহলে leakage।<br><br>
+
+        <strong>ভুল ২:</strong> test data-তে <code>fit_transform</code> করা। →
+        <strong>ঠিক:</strong> test-এ শুধু <code>transform</code>; statistic train থেকেই আসবে।<br><br>
+
+        <strong>ভুল ৩:</strong> ক্রমহীন category-তে label encoding (0,1,2)। →
+        <strong>ঠিক:</strong> nominal-এ one-hot; ordinal encoding শুধু সত্যিকারের ক্রম থাকলে।<br><br>
+
+        <strong>ভুল ৪:</strong> সব outlier অন্ধভাবে ফেলে দেওয়া। →
+        <strong>ঠিক:</strong> আগে বুঝুন ভুল data নাকি আসল বিরল ঘটনা।<br><br>
+
+        <strong>ভুল ৫:</strong> target-নির্ভর/future column feature হিসেবে রাখা। →
+        <strong>ঠিক:</strong> prediction-মুহূর্তে পাওয়া যাবে না এমন column বাদ দিন (leakage)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৭. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> Data leakage কী এবং কীভাবে এড়াবেন?<br>
+        <em>উত্তর:</em> training-এ এমন তথ্য দেখা যা inference-এ পাওয়া যাবে না। এড়াতে — আগে split, fit শুধু train-এ,
+        target/future column বাদ, আর Pipeline ব্যবহার।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> Normalization আর standardization-এর পার্থক্য, কখন কোনটা?<br>
+        <em>উত্তর:</em> normalization ০–১ range-এ আনে (min-max); standardization গড়=০/std=১ করে (z-score)। সাধারণত
+        standardization বেশি robust; distribution-নির্দিষ্ট algorithm-এ পছন্দমতো।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> ক্রমহীন category-তে label encoding কেন খারাপ?<br>
+        <em>উত্তর:</em> এটা কৃত্রিম ক্রম/দূরত্ব তৈরি করে (Sylhet&gt;Dhaka), যা model ভুল ব্যাখ্যা করে। one-hot ভালো।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> Tree-based model-এ কি scaling লাগে?<br>
+        <em>উত্তর:</em> সাধারণত না; এরা scale-invariant। কিন্তু Linear/KNN/SVM/neural net-এ লাগে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৮. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        একটা ছোট dataset (নিজের বানানো বা Kaggle-এর Titanic) নিয়ে করুন:<br><br>
+        ১. প্রতিটা column-এ কতগুলো missing value আছে বের করুন।<br>
+        ২. number column median দিয়ে, category column mode দিয়ে পূরণ করুন।<br>
+        ৩. একটা category column one-hot encode করুন।<br>
+        ৪. <code>train_test_split</code> করে <strong>শুধু train-এ</strong> <code>StandardScaler.fit</code> করুন, test-এ শুধু transform।<br>
+        ৫. একই কাজ <code>Pipeline</code> + <code>ColumnTransformer</code> দিয়ে করুন এবং বলুন কেন এটা leakage থেকে নিরাপদ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৯. Project Connection</h2>
+    <p>
+        flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ আমরা এবার job data-কে ML-ready করব —
+        <code>city</code>/<code>industry</code> one-hot, <code>salary</code>/<code>experience</code> standardize,
+        missing value impute — সব একটা leakage-proof Pipeline-এ।
+    </p>
+    <div class="info-box">
+        Project P3 (Customer Churn Prediction)-এ এই preprocessing সরাসরি লাগবে — বিশেষ করে leakage এড়ানো ও
+        stratified split। এই পর্বের Pipeline-ই পরের সিরিজে (Series 05) model-এর সাথে জুড়ে যাবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ২০. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ কেন ML model কাঁচা data নেয় না — garbage in, garbage out<br>
+        ✓ <strong>Missing value</strong> চেনা ও impute (median/mode/Unknown)<br>
+        ✓ <strong>Encoding</strong> — nominal-এ one-hot, ordinal-এ ordinal (label encoding-এর ফাঁদ)<br>
+        ✓ <strong>Scaling</strong> — normalization vs standardization, কোথায় লাগে কোথায় লাগে না<br>
+        ✓ <strong>Outlier</strong> — অন্ধভাবে ফেলবেন না, আগে বুঝুন<br>
+        ✓ <strong>Data leakage</strong> — সবচেয়ে বিপজ্জনক ভুল, "কাগজে ভালো, বাস্তবে ফেল"-এর মূল কারণ<br>
+        ✓ <strong>আগে split, fit শুধু train-এ</strong>, আর leakage-proof <strong>scikit-learn Pipeline</strong>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ২১. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S03E09):</strong> "Project — Bangladesh Job Market Data দিয়ে প্রশ্নের উত্তর বের করা"।<br><br>
+        NumPy, Pandas, Matplotlib, SQL আর preprocessing — এই সিরিজের সব শেখা এবার এক জায়গায়। আমরা flagship-এর
+        <strong>Project P1 (Bangladesh Job Market Data Analyzer)</strong> সম্পূর্ণ করব — একটা end-to-end EDA project
+        যা data দিয়ে বাস্তব প্রশ্নের উত্তর দেয়, আর হবে আপনার প্রথম portfolio piece।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-07-sql-part2-window-index.html">⬅ পূর্ববর্তী: SQL ২</a>
+            <a href="episode-09-project-job-market-analyzer.html">পরবর্তী: Project P1 ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 03, Episode 08)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s03e08.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

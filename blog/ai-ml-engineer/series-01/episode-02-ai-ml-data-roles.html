@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Engineer, ML Engineer, Data Scientist, Data Engineer, AI Researcher — প্রতিটা role-এর দৈনন্দিন কাজ, skill ও পার্থক্য বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI Engineer, ML Engineer, Data Scientist, Data Engineer — কে আসলে কী করে? | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="AI Engineer, ML Engineer, Data Scientist, Data Engineer, AI Researcher — প্রতিটা role-এর দৈনন্দিন কাজ, skill ও পার্থক্য বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>AI Engineer, ML Engineer, Data Scientist, Data Engineer — কে আসলে কী করে? | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 01 &raquo; Episode 02
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> AI Engineer, ML Engineer, Data Scientist, Data Engineer — কে আসলে কী করে?</h1>
+    <p class="subtitle">একই field, ভিন্ন role — Rahim কোনটা target করবে? (Series 01, Episode 02)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 01 — AI/ML-এর দুনিয়া</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 06</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর দ্বিতীয় confusion — এত job title কেন?</li>
+        <li>২. আসল সমস্যা: এক কাজ ভেবে ভুল role-এ apply করা</li>
+        <li>৩. কেন এই role-গুলো আলাদা হলো (একটা কারখানার গল্প)</li>
+        <li>৪. Data Engineer — যে data-র রাস্তা বানায়</li>
+        <li>৫. Data Scientist — যে data থেকে গল্প বের করে</li>
+        <li>৬. ML Engineer — যে model-কে চলমান রাখে</li>
+        <li>৭. AI Engineer — যে LLM দিয়ে product বানায়</li>
+        <li>৮. AI Researcher — যে নতুন পদ্ধতি আবিষ্কার করে</li>
+        <li>৯. Visual: পুরো pipeline-এ কে কোথায়</li>
+        <li>১০. পাশাপাশি তুলনা টেবিল</li>
+        <li>১১. বাস্তবতা: বাংলাদেশে title-গুলো mix হয়ে যায়</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল ধারণা</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ</li>
+        <li>১৯. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর দ্বিতীয় confusion — এত job title কেন?</h2>
+
+    <p>
+        গত পর্বে Rahim শিখেছিল AI, ML, Deep Learning আর Generative AI আসলে এক জিনিস না। কিন্তু LinkedIn খুলতেই
+        নতুন এক সমস্যা এসে হাজির। সে দেখল একই রকম কাজের জন্য কতগুলো ভিন্ন নাম:
+        <strong>AI Engineer</strong>, <strong>ML Engineer</strong>, <strong>Data Scientist</strong>,
+        <strong>Data Engineer</strong>, আবার কোথাও <strong>AI Researcher</strong>।
+    </p>
+
+    <div class="story-box">
+        Rahim আবার Maya-কে ধরল:<br><br>
+        <em>"আপা, এগুলো তো সব 'AI-এর চাকরি'। আমি একটাতে apply করলেই হলো, তাই না? নাকি এগুলো আসলে আলাদা আলাদা কাজ?"</em><br><br>
+        Maya বলল: <em>"এটাই সবচেয়ে দামি প্রশ্ন। এগুলো আলাদা role, আলাদা দৈনন্দিন কাজ, আলাদা skill। তুমি যদি
+        Data Scientist-এর interview-তে গিয়ে শুধু API বানানোর কথা বলো, বা AI Engineer-এর interview-তে গিয়ে
+        শুধু statistics-এর theorem বলো — দুই জায়গাতেই reject হবে। আগে বোঝো কে কী করে, তারপর ঠিক করো তুমি কোনটা হতে চাও।"</em>
+    </div>
+
+    <p>
+        চলুন Rahim-এর সাথে এই পাঁচটা role আলাদা করে বুঝি — যাতে আপনিও নিজের জন্য সঠিক target বাছতে পারেন।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: এক কাজ ভেবে ভুল role-এ apply করা</h2>
+
+    <p>
+        Job title নিয়ে confusion থাকলে তিনটা বড় ক্ষতি হয়:
+    </p>
+    <ul>
+        <li><strong>ভুল skill শেখা:</strong> কেউ Data Scientist হতে চেয়ে ৬ মাস Docker আর Kubernetes শেখে, অথচ দরকার ছিল statistics আর experimentation।</li>
+        <li><strong>ভুল interview প্রস্তুতি:</strong> role অনুযায়ী প্রশ্ন সম্পূর্ণ আলাদা।</li>
+        <li><strong>ভুল প্রত্যাশা:</strong> কেউ "AI Engineer" হয়ে ভাবে সে model train করবে, বাস্তবে সে দিনরাত LLM API আর prompt নিয়ে কাজ করে।</li>
+    </ul>
+
+    <div class="key-point">
+        মূল কথা: এই role-গুলো একটা <strong>data-to-product pipeline</strong>-এর ভিন্ন ভিন্ন অংশ। কেউ data আনে,
+        কেউ data থেকে বোঝে, কেউ model বানায়, কেউ সেই model-কে product বানায়। কেউ কেউ একাধিক অংশ করে — বিশেষত ছোট কোম্পানিতে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏭</span> ৩. কেন এই role-গুলো আলাদা হলো (একটা কারখানার গল্প)</h2>
+
+    <p>
+        ধরুন একটা জুস কারখানা। কাঁচা ফল আসে, তারপর ধোয়া-বাছাই হয়, তারপর রস বের করা হয়, তারপর বোতলজাত হয়ে
+        দোকানে যায়। প্রথমে যখন কারখানা ছোট ছিল, তখন একজনই সব করত। কিন্তু বড় হওয়ার সাথে সাথে কাজ ভাগ হয়ে গেল —
+        একজন ফল সরবরাহ সামলায়, একজন গুণমান পরীক্ষা করে, একজন প্যাকেজিং লাইন চালায়।
+    </p>
+
+    <div class="technical-box">
+        AI-এর দুনিয়াও ঠিক তাই। শুরুতে সবাইকে "Data Scientist" বলা হতো, সে-ই সব করত। কিন্তু কাজ বড় ও জটিল হওয়ায়
+        role ভাগ হয়ে গেছে:<br><br>
+        <strong>Data Engineer</strong> = কাঁচা ফলের সরবরাহ ও ধোয়া-বাছাইয়ের লাইন (data pipeline)।<br>
+        <strong>Data Scientist</strong> = গুণমান পরীক্ষা ও রেসিপি ঠিক করা (analysis, experiment, model prototype)।<br>
+        <strong>ML Engineer</strong> = সেই রেসিপিকে বড় উৎপাদন লাইনে চালু রাখা (model production)।<br>
+        <strong>AI Engineer</strong> = তৈরি উপাদান (LLM) দিয়ে নতুন পণ্য বানানো (LLM application)।<br>
+        <strong>AI Researcher</strong> = একদম নতুন রেসিপি বা মেশিন আবিষ্কার করা (নতুন algorithm/architecture)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚚</span> ৪. Data Engineer — যে data-র রাস্তা বানায়</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> Data Engineer হলো সেই মানুষ যে নিশ্চিত করে "ঠিক data, ঠিক সময়ে, ঠিক জায়গায় পৌঁছাচ্ছে"। ML-এর সব খেলা শুরু হয় data দিয়ে, আর সেই data-কে ব্যবহারযোগ্য অবস্থায় আনা তার কাজ।</p>
+
+    <p><strong>Level 2 — technical:</strong> সে <strong>data pipeline</strong> বানায় — বিভিন্ন উৎস (database, API, log, file) থেকে data সংগ্রহ (ingestion), পরিষ্কার (cleaning), রূপান্তর (transformation) করে <strong>data warehouse</strong> বা <strong>data lake</strong>-এ জমা রাখে। ETL/ELT, scheduling, বড় data-র scalability — এসব তার রুটি-রুজি।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> Data Engineer না থাকলে Data Scientist-এর কাছে ব্যবহারযোগ্য data-ই পৌঁছায় না। বড় কোম্পানিতে এটা সবচেয়ে চাহিদাসম্পন্ন অথচ কম আলোচিত role।</p>
+
+    <table>
+        <tr><th>দিক</th><th>Data Engineer</th></tr>
+        <tr><td>মূল প্রশ্ন</td><td>"data কীভাবে নির্ভরযোগ্যভাবে এক জায়গা থেকে আরেক জায়গায় যাবে?"</td></tr>
+        <tr><td>মূল skill</td><td>SQL (গভীর), Python, data pipeline, cloud storage, Spark/Airflow</td></tr>
+        <tr><td>ML লাগে?</td><td>খুব কম; এটা মূলত software/data infrastructure-এর কাজ</td></tr>
+        <tr><td>Deliverable</td><td>নির্ভরযোগ্য, পরিষ্কার, query-ready data</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔬</span> ৫. Data Scientist — যে data থেকে গল্প বের করে</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> Data Scientist হলো data-র গোয়েন্দা। "customer কেন চলে যাচ্ছে?", "কোন product বেশি বিক্রি হবে?" — এই ধরনের প্রশ্নের উত্তর সে data ঘেঁটে বের করে।</p>
+
+    <p><strong>Level 2 — technical:</strong> সে <strong>EDA (exploratory data analysis)</strong> করে, <strong>statistics</strong> ও <strong>hypothesis testing</strong> ব্যবহার করে, <strong>ML model prototype</strong> বানায়, আর ফলাফল business-কে বোঝানোর মতো করে <strong>visualization</strong> ও report তৈরি করে। এখানে Pandas, statistics, আর communication — তিনটাই সমান গুরুত্বপূর্ণ।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> Data Scientist-এর model অনেক সময় Jupyter notebook-এই থেকে যায়। সেটাকে production-এ নেওয়ার দায়িত্ব প্রায়ই ML Engineer-এর। মনে রাখুন — <strong>model ≠ production system</strong>।</p>
+
+    <div class="info-box">
+        <strong>স্পষ্টীকরণ:</strong> Data Scientist মানেই "সবচেয়ে গণিতবিদ" নয় আবার "শুধু chart বানায়" নয়। এই role-এর
+        আসল শক্তি — একটা business প্রশ্নকে data প্রশ্নে রূপান্তর করা, এবং উত্তরটা বিশ্বাসযোগ্যভাবে প্রমাণ করা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚙️</span> ৬. ML Engineer — যে model-কে চলমান রাখে</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> ML Engineer হলো সেই মানুষ যে একটা model-কে "খেলনা" থেকে "কারখানার মেশিন"-এ পরিণত করে — যেটা দিনে লক্ষ লক্ষ prediction দিতে পারে, নির্ভরযোগ্যভাবে।</p>
+
+    <p><strong>Level 2 — technical:</strong> সে model-কে <strong>API</strong>-তে পরিণত করে (FastAPI/Flask), <strong>Docker</strong>-এ package করে, <strong>cloud</strong>-এ deploy করে, <strong>monitoring</strong> বসায়, আর <strong>model drift</strong> ধরে retraining-এর ব্যবস্থা করে। এটাই <strong>MLOps</strong>-এর মূল জায়গা। Software engineering দক্ষতা এখানে খুব জরুরি।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> ML Engineer সাধারণত নতুন algorithm আবিষ্কার করে না; সে বিদ্যমান model/technique নিয়ে reliable, scalable, maintainable system বানায়। বাংলাদেশের বাজারে এই role-এ software background খুব কাজে দেয় — Rahim-এর মতো developer-দের জন্য এটা সবচেয়ে স্বাভাবিক প্রবেশপথ।</p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✨</span> ৭. AI Engineer — যে LLM দিয়ে product বানায়</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> AI Engineer (আধুনিক অর্থে, বিশেষত GenAI Engineer) হলো সেই মানুষ যে তৈরি LLM (GPT, Claude, Llama) কে "কাঁচামাল" হিসেবে নিয়ে বাস্তব product বানায় — চ্যাটবট, document assistant, RAG system।</p>
+
+    <p><strong>Level 2 — technical:</strong> সে <strong>prompt engineering</strong>, <strong>embeddings</strong>, <strong>vector database</strong>, <strong>RAG</strong>, <strong>function calling/agents</strong>, আর LLM API নিয়ে কাজ করে। এর সাথে থাকে solid software engineering — কারণ শেষমেশ সে একটা application বানাচ্ছে।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> এখানে সবচেয়ে বড় ভুল ধারণা দূর করা দরকার — <strong>LLM application বানানো ≠ model training</strong>। বেশিরভাগ AI Engineer কখনো নিজে একটা LLM train করে না; তারা বিদ্যমান model ব্যবহার করে system বানায়। এটা কম গুরুত্বপূর্ণ কাজ নয় — বরং industry-তে এই কাজের চাহিদাই এখন সবচেয়ে দ্রুত বাড়ছে।</p>
+
+    <div class="info-box">
+        <strong>সতর্কতা — title-এর অস্পষ্টতা:</strong> "AI Engineer" title-টা কোম্পানিভেদে ভিন্ন অর্থ বহন করে।
+        কোথাও এটা ML Engineer-এর সমার্থক, কোথাও এটা বিশেষভাবে LLM/GenAI-focused। তাই JD পড়ে বুঝতে হবে তারা আসলে কী চাইছে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৮. AI Researcher — যে নতুন পদ্ধতি আবিষ্কার করে</h2>
+
+    <p><strong>Level 1 — সহজ intuition:</strong> AI Researcher হলো সেই মানুষ যে নতুন algorithm, নতুন architecture, নতুন পদ্ধতি আবিষ্কার করে — যেমন Transformer বা attention একদিন research থেকেই এসেছিল।</p>
+
+    <p><strong>Level 2 — technical:</strong> গভীর গণিত (linear algebra, calculus, probability), paper পড়া ও লেখা, experiment design, এবং প্রায়ই একটা PhD বা সমতুল্য গবেষণা অভিজ্ঞতা এখানে লাগে।</p>
+
+    <p><strong>Level 3 — engineer perspective:</strong> এটা junior developer-দের সাধারণ প্রবেশপথ নয়, এবং বাংলাদেশে এই role তুলনামূলক বিরল (বেশিরভাগ বড় গবেষণা বাইরে হয়)। তাই এই সিরিজ AI Researcher বানানোর লক্ষ্যে নয় — আমাদের focus হলো employable AI/ML Engineer।</p>
+
+    <div class="key-point">
+        <strong>Must Know / Learn Later:</strong> junior হিসেবে চাকরি পেতে আপনাকে Researcher-এর গভীর গণিত জানতে
+        <em>হবে না</em>। সেটা "Learn Later / Specialization"। এখন focus করুন ML Engineer বা AI Engineer হওয়ার পথে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৯. Visual: পুরো pipeline-এ কে কোথায়</h2>
+
+    <div class="diagram">
+        কাঁচা Data                    বিশ্লেষণ ও Model            Production Product
+┌──────────────────┐   ┌───────────────────────┐   ┌────────────────────────┐
+│  DATA ENGINEER   │──▶│  DATA SCIENTIST        │──▶│  ML ENGINEER           │
+│  data pipeline,  │   │  EDA, statistics,      │   │  API, Docker, cloud,   │
+│  cleaning, ETL,  │   │  ML model prototype,   │   │  monitoring, MLOps,    │
+│  warehouse       │   │  visualization         │   │  retraining            │
+└──────────────────┘   └───────────────────────┘   └────────────────────────┘
+                                                             │
+                              ┌──────────────────────────────┘
+                              ▼
+                    ┌────────────────────────┐        ┌────────────────────┐
+                    │  AI ENGINEER (GenAI)   │        │  AI RESEARCHER     │
+                    │  LLM, prompt, RAG,     │        │  নতুন algorithm/    │
+                    │  embeddings, agents,   │        │  architecture      │
+                    │  vector DB, app        │        │  (paper, গবেষণা)   │
+                    └────────────────────────┘        └────────────────────┘
+    </div>
+
+    <p>
+        খেয়াল করুন — বাম থেকে ডানে data একটা যাত্রা করে: আসা → বোঝা → product হওয়া। AI Engineer বিদ্যমান LLM
+        দিয়ে আলাদা ধারার product বানায়, আর Researcher পুরো field-এর জন্য নতুন হাতিয়ার তৈরি করে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📊</span> ১০. পাশাপাশি তুলনা টেবিল</h2>
+
+    <table>
+        <tr>
+            <th>Role</th>
+            <th>মূল প্রশ্ন</th>
+            <th>মূল skill</th>
+            <th>junior প্রবেশ সহজ?</th>
+        </tr>
+        <tr>
+            <td><strong>Data Engineer</strong></td>
+            <td>data নির্ভরযোগ্যভাবে কীভাবে সরবে?</td>
+            <td>SQL, Python, pipeline, cloud</td>
+            <td>হ্যাঁ (software background থাকলে)</td>
+        </tr>
+        <tr>
+            <td><strong>Data Scientist</strong></td>
+            <td>data কী গল্প বলছে?</td>
+            <td>Statistics, Pandas, ML, communication</td>
+            <td>মাঝারি (statistics দরকার)</td>
+        </tr>
+        <tr>
+            <td><strong>ML Engineer</strong></td>
+            <td>model-কে কীভাবে reliable production-এ নেব?</td>
+            <td>Python, ML, API, Docker, MLOps</td>
+            <td>হ্যাঁ (developer-দের জন্য স্বাভাবিক)</td>
+        </tr>
+        <tr>
+            <td><strong>AI Engineer (GenAI)</strong></td>
+            <td>LLM দিয়ে কী product বানাব?</td>
+            <td>LLM, prompt, RAG, embeddings, software</td>
+            <td>হ্যাঁ (দ্রুত বাড়ছে)</td>
+        </tr>
+        <tr>
+            <td><strong>AI Researcher</strong></td>
+            <td>নতুন পদ্ধতি কী আবিষ্কার করব?</td>
+            <td>গভীর গণিত, গবেষণা, paper</td>
+            <td>না (সাধারণত advanced degree লাগে)</td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. বাস্তবতা: বাংলাদেশে title-গুলো mix হয়ে যায়</h2>
+
+    <p>
+        এখন একটা জরুরি বাস্তবতা। উপরে আমরা role-গুলো পরিষ্কারভাবে আলাদা করলাম, কিন্তু বাংলাদেশের (এবং বেশিরভাগ
+        ছোট-মাঝারি কোম্পানির) বাজারে এই লাইনগুলো প্রায়ই ঝাপসা হয়ে যায়।
+    </p>
+
+    <ul>
+        <li>একটা startup-এ একজন "ML Engineer"-কে হয়তো data pipeline (Data Engineer), analysis (Data Scientist), আর deployment (ML Engineer) — তিনটাই করতে হয়।</li>
+        <li>"AI Engineer" title দিয়ে কেউ চায় RAG chatbot বানাতে, আবার কেউ চায় classical ML model deploy করতে।</li>
+        <li>বড় কোম্পানিতে (যেমন telco, বড় fintech) role-গুলো তুলনামূলক আলাদা ও স্পষ্ট।</li>
+    </ul>
+
+    <div class="success-box">
+        এর মানে দুশ্চিন্তার কিছু নেই — বরং সুবিধা। একজন software developer হিসেবে আপনি যদি Python, data, একটু ML,
+        আর deployment জানেন, তাহলে আপনি ML Engineer / AI Engineer দুই ধরনের role-এই ফিট করবেন। JD-ই বলে দেবে
+        কোন দিকটায় জোর দিতে হবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"এই role-এর নাম-টাম বাদ দাও। আমার দরকার — এমন একজন যে আমাদের data থেকে কিছু কাজের জিনিস
+        বানিয়ে দেবে। আমি কাকে hire করব?"</em><br><br>
+        <strong>উত্তর:</strong> এটাই আসল কথা — Boss role-এর নাম নিয়ে ভাবে না, সে <em>outcome</em> নিয়ে ভাবে।
+        তাই আপনার কাজ হলো নিজেকে outcome-এর ভাষায় উপস্থাপন করা: "আমি আপনার data থেকে churn prediction model
+        বানাতে পারি এবং সেটাকে একটা API হিসেবে deploy করে দিতে পারি" — এটা শুনলে Boss বোঝে আপনি Data Scientist +
+        ML Engineer-এর কাজটা করে দিতে পারবেন। ছোট কোম্পানিতে এই "একাধিক role একসাথে করতে পারা" মানুষটাই সবচেয়ে
+        মূল্যবান। title না, capability বিক্রি করুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+
+    <p>JD-তে খুব সাধারণ একটা লাইন:</p>
+
+    <div class="key-point">
+        "We are looking for an ML Engineer / AI Engineer to build and deploy machine learning solutions."
+    </div>
+
+    <div class="info-box">
+        <strong>🔎 Job Requirement Decoder</strong><br><br>
+        <strong>১. এর মানে কী?</strong> কোম্পানি এমন কাউকে চায় যে শুধু model বানাবে না, সেটাকে চলমান system-এ পরিণত করতে পারবে।<br><br>
+        <strong>২. কেন চায়?</strong> model notebook-এ পড়ে থাকলে business value শূন্য; deploy হলেই মূল্য।<br><br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> "Data Scientist model বানাল কিন্তু কেউ deploy করতে পারল না" — এই gap পূরণ করে।<br><br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> Python, একটু ML (sklearn), একটা model-কে FastAPI দিয়ে API বানানো, Git — এটুকুই শুরুর জন্য যথেষ্ট।<br><br>
+        <strong>৫. এখনই কী master লাগে না?</strong> Kubernetes autoscaling, distributed training, নতুন algorithm গবেষণা — এগুলো পরে।<br><br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> একটা repo যেখানে raw data → trained model → FastAPI endpoint → README আছে।<br><br>
+        <strong>৭. Interview-তে কী জিজ্ঞেস করতে পারে?</strong> "একটা model কীভাবে production-এ নেবে?", "Data Scientist আর ML Engineer-এর পার্থক্য কী?", "কোন role-টা তোমার background-এর সাথে যায়?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "সব AI চাকরি একই।" → <strong>ঠিক:</strong> এরা একটা pipeline-এর ভিন্ন অংশ; কাজ ও skill আলাদা।<br><br>
+        <strong>ভুল ২:</strong> "AI Engineer মানেই সে নিজে model train করে।" → <strong>ঠিক:</strong> বেশিরভাগ AI Engineer বিদ্যমান LLM/model দিয়ে application বানায়; training আলাদা কাজ।<br><br>
+        <strong>ভুল ৩:</strong> "Data Scientist হতে হলে PhD লাগে।" → <strong>ঠিক:</strong> শক্ত statistics + practical ML + communication যথেষ্ট; PhD বাধ্যতামূলক নয়।<br><br>
+        <strong>ভুল ৪:</strong> "Data Engineer-এর কাজ কম গুরুত্বপূর্ণ।" → <strong>ঠিক:</strong> এটি প্রায়ই সবচেয়ে চাহিদাসম্পন্ন ও ভালো বেতনের role, কারণ data ছাড়া বাকি সব থামে।<br><br>
+        <strong>ভুল ৫:</strong> "developer background থাকলে AI-তে আসা যাবে না।" → <strong>ঠিক:</strong> উল্টো — software background ML Engineer / AI Engineer role-এ বিশাল সুবিধা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+
+    <div class="info-box">
+        <strong>🎤 Interview Prep</strong><br><br>
+        <strong>প্রশ্ন ১:</strong> Data Scientist আর ML Engineer-এর মূল পার্থক্য কী?<br>
+        <em>উত্তর:</em> Data Scientist প্রশ্নের উত্তর ও model prototype বের করে (analysis + experiment); ML Engineer সেই model-কে reliable, scalable production system-এ পরিণত করে (deployment + MLOps)।<br><br>
+
+        <strong>প্রশ্ন ২:</strong> AI Engineer কি model train করে?<br>
+        <em>উত্তর:</em> সাধারণত না। আধুনিক AI/GenAI Engineer বিদ্যমান LLM নিয়ে prompt, RAG, embeddings দিয়ে application বানায়। LLM application ≠ model training।<br><br>
+
+        <strong>প্রশ্ন ৩:</strong> তোমার software background-এর জন্য কোন role সবচেয়ে ভালো ফিট?<br>
+        <em>উত্তর:</em> ML Engineer বা AI Engineer — কারণ deployment, API, clean code — এই দক্ষতাগুলো সরাসরি কাজে লাগে; সাথে ML fundamentals যোগ করলেই হয়।<br><br>
+
+        <strong>প্রশ্ন ৪:</strong> Data Engineer-এর deliverable কী?<br>
+        <em>উত্তর:</em> নির্ভরযোগ্য, পরিষ্কার, query-ready data pipeline — যাতে বাকি team ব্যবহারযোগ্য data পায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+
+    <div class="key-point">
+        <strong>✍️ হাতে-কলমে</strong><br><br>
+        LinkedIn বা Bdjobs-এ গিয়ে "Machine Learning" লিখে ৩টা job post খুঁজুন। প্রতিটার জন্য একটা কাগজে লিখুন:<br><br>
+        ১. Title-টা আসলে কোন role নির্দেশ করছে (Data Scientist / ML Engineer / AI Engineer / Data Engineer)?<br>
+        ২. Responsibilities দেখে বুঝুন — এরা কি model বানাতে চায়, deploy করতে চায়, নাকি LLM app চায়?<br>
+        ৩. আপনার বর্তমান skill-এর কোনটা ইতিমধ্যে মিলছে, আর কোনটা শিখতে হবে?<br><br>
+        <em>লক্ষ্য:</em> title-এর ভেতরের আসল কাজটা পড়তে শেখা — যেটা পরের পর্বগুলোতে বারবার কাজে লাগবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+
+    <p>
+        আমাদের flagship project <strong>"Bangladesh Tech Career Assistant"</strong> আসলে এই পুরো pipeline-টাই
+        ছোট আকারে ছুঁয়ে যাবে — আর সেটাই একে এত শিক্ষামূলক করে তোলে:
+    </p>
+    <div class="info-box">
+        ➜ শুরুতে (V1) আমরা <strong>Data Engineer-সুলভ</strong> কাজ করব — job description data সংগ্রহ ও পরিষ্কার।<br>
+        ➜ তারপর (V2) <strong>Data Scientist-সুলভ</strong> — সেই data বিশ্লেষণ করে প্রশ্নের উত্তর বের করা।<br>
+        ➜ তারপর (V3-V5) <strong>ML Engineer-সুলভ</strong> — model বানিয়ে API-তে পরিণত করা।<br>
+        ➜ শেষে (V6-V10) <strong>AI Engineer-সুলভ</strong> — LLM + RAG দিয়ে একটা career assistant, তারপর production deployment।<br><br>
+        অর্থাৎ এই একটা project শেষ করলে আপনি নিজের হাতে অনুভব করবেন প্রতিটা role আসলে কী করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ</h2>
+
+    <div class="success-box">
+        এই Episode-এ আমরা শিখলাম:<br><br>
+        ✓ AI/ML-এর role-গুলো একটা <strong>data-to-product pipeline</strong>-এর ভিন্ন অংশ<br>
+        ✓ <strong>Data Engineer</strong> data-র রাস্তা বানায়, <strong>Data Scientist</strong> data থেকে গল্প বের করে<br>
+        ✓ <strong>ML Engineer</strong> model-কে production-এ নেয়, <strong>AI Engineer</strong> LLM দিয়ে product বানায়<br>
+        ✓ <strong>AI Researcher</strong> নতুন পদ্ধতি আবিষ্কার করে — junior-দের সাধারণ প্রবেশপথ নয়<br>
+        ✓ AI Engineer LLM application বানায়, model train করে না — <strong>LLM app ≠ training</strong><br>
+        ✓ বাংলাদেশে title প্রায়ই mix হয়; তাই capability দেখান, title নয় — আর software background বিশাল সুবিধা<br>
+        ✓ Rahim-এর জন্য সবচেয়ে স্বাভাবিক target: <strong>ML Engineer</strong> বা <strong>AI Engineer</strong>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৯. পরবর্তী পর্বে কী শিখব</h2>
+
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S01E03):</strong> "একজন AI Engineer-এর একটা কর্মদিবস আসলে কেমন?"<br><br>
+        Role তো বুঝলাম, কিন্তু বাস্তবে দিনটা কীভাবে কাটে? সিনেমায় দেখানো "রোবট বানানো" নাকি বাস্তবে "data পরিষ্কার
+        করা আর meeting"? পরের পর্বে আমরা একজন AI Engineer-এর সকাল থেকে সন্ধ্যা পর্যন্ত বাস্তব কর্মদিবস দেখব — আর
+        বুঝব কেন বেশিরভাগ কাজ আসলে data ও engineering নিয়ে, magic math নিয়ে নয়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-01-ai-ml-dl-genai.html">⬅ পূর্ববর্তী: AI vs ML vs DL vs GenAI</a>
+            <a href="episode-03-ai-engineer-workday.html">পরবর্তী: কর্মদিবস ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 01, Episode 02)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s01e02.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

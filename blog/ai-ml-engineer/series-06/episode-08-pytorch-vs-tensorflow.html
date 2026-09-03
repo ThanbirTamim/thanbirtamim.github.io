@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PyTorch বনাম TensorFlow/Keras — সৎ তুলনা, industry কী চায় ও model save/load/inference, বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PyTorch বনাম TensorFlow/Keras: কখন কোনটা, industry কী চায় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="PyTorch বনাম TensorFlow/Keras — সৎ তুলনা, industry কী চায় ও model save/load/inference, বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>PyTorch বনাম TensorFlow/Keras: কখন কোনটা, industry কী চায় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 06 &raquo; Episode 08
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> PyTorch বনাম TensorFlow/Keras: কখন কোনটা, industry কী চায়</h1>
+    <p class="subtitle">model save/load ও inference (Series 06, Episode 08)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 06 — Deep Learning with PyTorch</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 08 / 08</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: "TensorFlow শিখব নাকি PyTorch?"</li>
+        <li>২. দুটোই কী করে — মূলত একই কাজ</li>
+        <li>৩. PyTorch বনাম TensorFlow/Keras — সৎ তুলনা</li>
+        <li>৪. Industry বাংলাদেশে কী চায়?</li>
+        <li>৫. একই MLP: PyTorch বনাম Keras (পাশাপাশি)</li>
+        <li>৬. Model save/load — সবচেয়ে জরুরি production skill</li>
+        <li>৭. Inference: training শেষ, এখন ব্যবহার</li>
+        <li>৮. Visual: train → save → load → inference</li>
+        <li>৯. ONNX — framework-এর গণ্ডি পেরোনো (আভাস)</li>
+        <li>১০. বাংলাদেশের বাস্তব উদাহরণ</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল ধারণা</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Series 06 সারসংক্ষেপ ও পরবর্তী Series</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: "TensorFlow শিখব নাকি PyTorch?"</h2>
+    <p>
+        Series 06-এর শেষ প্রান্তে Rahim একটা দুশ্চিন্তায় — LinkedIn-এ কিছু job-এ "PyTorch", কিছুতে "TensorFlow",
+        কিছুতে "Keras" লেখা। সে ভাবছে, "আমি তো PyTorch শিখলাম, TensorFlow না জানলে কি চাকরি পাব না?"
+    </p>
+    <div class="story-box">
+        Rahim: <em>"আপা, দুটোই কি আলাদা করে শিখতে হবে? সময় তো কম।"</em><br><br>
+        Maya: <em>"না। মূল ধারণাগুলো — tensor, layer, loss, gradient descent, training loop — দুটোতেই এক।
+        তুমি যেটা গভীরে শিখেছ (PyTorch), সেটার concept জানলে TensorFlow-তে সুইচ করা কয়েক দিনের ব্যাপার।
+        আজ আমরা পার্থক্যগুলো দেখব, আর সবচেয়ে জরুরি production skill শিখব — model save, load আর inference।
+        কারণ train করা model যদি সেভ করে আবার চালাতে না পারো, সেটা তো deploy-ই হবে না।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚖️</span> ২. দুটোই কী করে — মূলত একই কাজ</h2>
+    <p>
+        PyTorch আর TensorFlow — দুটোই Deep Learning framework। দুটোই দেয়: GPU-সমর্থিত tensor, automatic
+        differentiation (gradient), layer/optimizer/loss-এর tools। মানে এই সিরিজে যা শিখলেন (neuron, activation,
+        backprop, training loop, CNN, transfer learning) — সব ধারণাই দুই জায়গায় প্রযোজ্য। শুধু syntax আলাদা।
+    </p>
+    <div class="key-point">
+        মনে রাখবেন: framework একটা <strong>হাতিয়ার</strong>, ধারণা নয়। concept জানলে হাতিয়ার বদলানো সহজ।
+        Interview-তে recruiter দেখে আপনি DL <em>বোঝেন</em> কিনা, শুধু একটা library-র API মুখস্থ কিনা তা নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৩. PyTorch বনাম TensorFlow/Keras — সৎ তুলনা</h2>
+    <table>
+        <tr><th>দিক</th><th>PyTorch</th><th>TensorFlow / Keras</th></tr>
+        <tr><td>Syntax অনুভূতি</td><td>Pythonic, স্বাভাবিক</td><td>Keras খুব সংক্ষিপ্ত (high-level)</td></tr>
+        <tr><td>Debugging</td><td>সহজ (dynamic graph, সাধারণ Python debugger চলে)</td><td>আগে কঠিন ছিল; TF2-এ ভালো হয়েছে</td></tr>
+        <tr><td>Research/paper</td><td>আজ প্রায় প্রভাবশালী</td><td>আগে জনপ্রিয় ছিল</td></tr>
+        <tr><td>Mobile/edge deploy</td><td>উন্নত হচ্ছে (ExecuTorch)</td><td>পরিণত (TF Lite)</td></tr>
+        <tr><td>Ecosystem</td><td>Hugging Face এর উপর দাঁড়ানো</td><td>TF Serving, TFX পরিপক্ব</td></tr>
+        <tr><td>শেখার সহজতা (শুরুতে)</td><td>মাঝারি</td><td>Keras দিয়ে খুব সহজ শুরু</td></tr>
+    </table>
+    <div class="info-box">
+        <strong>এক লাইনের পরামর্শ:</strong> junior হিসেবে <strong>একটা</strong> (PyTorch) গভীরে শিখুন, অন্যটার
+        (Keras) সাথে পরিচিত থাকুন। "PyTorch primary, Keras জানি" — এটাই বেশিরভাগ বাংলাদেশি JD-র জন্য যথেষ্ট।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ৪. Industry বাংলাদেশে কী চায়?</h2>
+    <ul>
+        <li>বেশিরভাগ নতুন AI/research-oriented কোম্পানি ও startup — <strong>PyTorch</strong>।</li>
+        <li>কিছু established/enterprise বা mobile-focused দল — TensorFlow/Keras/TF Lite।</li>
+        <li>অনেক JD লেখে "PyTorch <em>or</em> TensorFlow" — মানে যেকোনো একটাতে দক্ষতাই যথেষ্ট।</li>
+    </ul>
+    <p>
+        তাই দুশ্চিন্তা নয়। concept শক্ত থাকলে, প্রথম চাকরিতে কোম্পানির framework-এ মানিয়ে নেওয়া দ্রুত হয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৫. একই MLP: PyTorch বনাম Keras (পাশাপাশি)</h2>
+    <p>পার্থক্যটা চোখে দেখুন — একই ২-layer classifier:</p>
+    <div class="code-box">
+# ---------- PyTorch ----------
+import torch.nn as nn
+model = nn.Sequential(
+    nn.Linear(10, 32), nn.ReLU(),
+    nn.Linear(32, 2),
+)
+# আপনি নিজে training loop লেখেন (zero_grad, forward, loss,
+# backward, step) — বেশি নিয়ন্ত্রণ, বেশি দৃশ্যমানতা।
+
+# ---------- Keras (TensorFlow) ----------
+from tensorflow import keras
+model = keras.Sequential([
+    keras.layers.Dense(32, activation="relu", input_shape=(10,)),
+    keras.layers.Dense(2, activation="softmax"),
+])
+model.compile(optimizer="adam",
+              loss="sparse_categorical_crossentropy",
+              metrics=["accuracy"])
+model.fit(X, y, epochs=30, batch_size=32)   # loop লুকানো
+    </div>
+    <div class="technical-box">
+        <strong>মূল পার্থক্য:</strong> PyTorch-এ training loop আপনি লেখেন (স্বচ্ছতা ও নিয়ন্ত্রণ বেশি);
+        Keras <code>.fit()</code>-এ loop লুকানো (দ্রুত শুরু, কম boilerplate)। এই সিরিজে আমরা loop নিজে লিখতে
+        শিখেছি ইচ্ছাকৃতভাবে — কারণ ভেতরটা বুঝলে যেকোনো framework সহজ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💾</span> ৬. Model save/load — সবচেয়ে জরুরি production skill</h2>
+    <p>
+        Train করা model মেমরিতে থাকে; program বন্ধ হলে হারিয়ে যায়। Deploy করতে হলে সেটা <strong>disk-এ save</strong>
+        করে পরে <strong>load</strong> করতে হবে। PyTorch-এ সবচেয়ে ভালো উপায় — <code>state_dict</code> (শুধু
+        weight) save করা:
+    </p>
+    <div class="code-box">
+import torch
+import torch.nn as nn
+
+model = nn.Sequential(nn.Linear(10, 32), nn.ReLU(), nn.Linear(32, 2))
+# ... train ...
+
+# ---- SAVE (শুধু weight — recommended) ----
+torch.save(model.state_dict(), "model.pt")
+
+# ---- LOAD (আলাদা program/server-এ) ----
+# 1) আগে একই architecture বানাতে হবে
+loaded = nn.Sequential(nn.Linear(10, 32), nn.ReLU(), nn.Linear(32, 2))
+# 2) weight ঢালা
+loaded.load_state_dict(torch.load("model.pt", map_location="cpu"))
+# 3) inference mode
+loaded.eval()
+    </div>
+    <div class="info-box">
+        <strong>কেন state_dict, পুরো model object নয়?</strong> শুধু weight save করা portable ও নিরাপদ —
+        পুরো object (pickle) save করলে ঠিক একই code/version লাগে, ভঙ্গুর হয়। তাই industry-তে
+        <code>state_dict</code> মানক।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ৭. Inference: training শেষ, এখন ব্যবহার</h2>
+    <p>
+        মনে রাখবেন — <strong>training ≠ inference</strong>। Training একবার (offline, ব্যয়বহুল)। Inference বারবার
+        (production-এ, প্রতিটা user request-এ, সস্তা)। Inference-এ দুটো জিনিস অপরিহার্য:
+    </p>
+    <div class="code-box">
+loaded.eval()                 # 1) eval mode (dropout/batchnorm ঠিক আচরণ)
+
+with torch.no_grad():          # 2) gradient বন্ধ (দ্রুত, কম memory)
+    x = torch.randn(1, 10)     # একটা নতুন sample
+    logits = loaded(x)
+    probs = torch.softmax(logits, dim=1)
+    pred = probs.argmax(1).item()
+    print("prediction:", pred, "| probability:", probs.max().item())
+    </div>
+    <div class="key-point">
+        <strong>দুটো ভুলে গেলে বিপদ:</strong> (১) <code>model.eval()</code> না দিলে dropout/batchnorm inference-এ
+        ভুল করবে; (২) <code>torch.no_grad()</code> না দিলে অকারণে gradient হিসাব হয়ে ধীর ও memory-খেকো হবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৮. Visual: train → save → load → inference</h2>
+    <div class="diagram">
+   [ TRAINING ]  (একবার, offline, GPU, ব্যয়বহুল)
+        │  model.state_dict()
+        ▼
+   [ SAVE ] ──&gt; model.pt (disk)
+        │  load_state_dict()
+        ▼
+   [ LOAD ]  (server চালু হলে একবার)
+        │  model.eval() + torch.no_grad()
+        ▼
+   [ INFERENCE ]  (বারবার, প্রতি request, সস্তা, দ্রুত)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔄</span> ৯. ONNX — framework-এর গণ্ডি পেরোনো (আভাস)</h2>
+    <p>
+        কখনো দরকার হয় PyTorch-এ train করা model অন্য পরিবেশে (C++, mobile, TF-based serving) চালানো। তখন model-কে
+        <strong>ONNX</strong> নামের একটা common format-এ export করা যায় — যা framework-নিরপেক্ষ।
+    </p>
+    <div class="info-box">
+        <strong>Learn Later:</strong> ONNX, TorchScript, quantization — এগুলো এখন junior হিসেবে master করতে হবে না।
+        শুধু জানুন এগুলো আছে, deployment/optimization-এ কাজে লাগে। বিস্তারিত Series 09-এ (inference optimization)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের বাস্তব উদাহরণ</h2>
+    <p>
+        একটা কোম্পানিতে data scientist model train করে <code>state_dict</code> save করে দেন; ML engineer সেটা
+        একটা FastAPI server-এ load করে <code>eval()</code> mode-এ inference চালান। user শুধু দ্রুত উত্তর পায়।
+        এই "train একজায়গায়, serve আরেক জায়গায়" workflow-ই বাস্তব। তাই save/load/inference জানা মানে আপনি
+        model-কে notebook থেকে বের করে আসল product-এ নিতে পারেন।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"আমরা PyTorch-এ model বানালাম। কিন্তু আমাদের production team তো অন্য framework/ভাষায় কাজ করে।
+        তাহলে কি আবার সব নতুন করে বানাতে হবে?"</em><br><br>
+        <strong>উত্তর:</strong> "না স্যার। model-টা একবার train করে save করে রাখলেই হয় — production team সেই
+        saved model লোড করে শুধু inference চালাবে। দরকার হলে ONNX-এ export করে অন্য framework-এও চালানো যায়।
+        মানে একবারের training, বহুবার-বহু-জায়গায় ব্যবহার — ফ্রেমওয়ার্ক নিয়ে আটকে থাকতে হয় না।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <div class="key-point">"Proficiency in PyTorch or TensorFlow; model deployment basics."</div>
+    <div class="info-box">
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr><td>কী বোঝায়?</td><td>একটা DL framework-এ দক্ষ + train করা model save/load/inference করতে পারেন।</td></tr>
+            <tr><td>কেন চায়?</td><td>model তখনই মূল্যবান যখন সেটা deploy ও ব্যবহার করা যায়, শুধু train নয়।</td></tr>
+            <tr><td>কোন সমস্যা সমাধান করে?</td><td>"notebook-এ model আছে, কিন্তু production-এ চলে না" — এই ফাঁক।</td></tr>
+            <tr><td>junior-এর কী জানা লাগে?</td><td>একটা framework গভীরে (PyTorch), অন্যটার সাথে পরিচিতি, state_dict save/load, eval()+no_grad() inference।</td></tr>
+            <tr><td>এখনই কী master লাগে না?</td><td>দুই framework সমান দক্ষতা, ONNX/TorchScript/quantization-এর গভীরতা।</td></tr>
+            <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>train script + আলাদা inference script যা saved model load করে predict করে।</td></tr>
+            <tr><td>interview-তে কী?</td><td>"PyTorch বনাম TensorFlow?", "model কীভাবে save/deploy করবেন?", "eval() কেন?"</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "দুটো framework আলাদা করে master করতে হবে।" → না, concept এক; একটা গভীরে যথেষ্ট।<br><br>
+        <strong>ভুল ২:</strong> inference-এ <code>model.eval()</code> না দেওয়া → dropout/batchnorm ভুল ফল।<br><br>
+        <strong>ভুল ৩:</strong> load করার সময় architecture আলাদা → <code>load_state_dict</code> ব্যর্থ।<br><br>
+        <strong>ভুল ৪:</strong> পুরো model pickle save করে version mismatch-এ ভাঙা → <code>state_dict</code> ভালো।<br><br>
+        <strong>ভুল ৫:</strong> "framework জানা = DL জানা।" → concept না জানলে framework মুখস্থ অর্থহীন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> PyTorch বনাম TensorFlow — কোনটা কখন?<br>
+        <em>উত্তর:</em> concept এক; PyTorch Pythonic ও research-প্রিয়, TF/Keras দ্রুত prototyping ও পরিপক্ব deployment (TF Lite/Serving)। যেকোনো একটায় দক্ষ হলেই চলে।<br><br>
+        <strong>প্রশ্ন ২:</strong> model কীভাবে save/deploy করবেন?<br>
+        <em>উত্তর:</em> <code>state_dict</code> save; load করে <code>eval()</code>+<code>no_grad()</code>-এ inference; দরকারে API/ONNX।<br><br>
+        <strong>প্রশ্ন ৩:</strong> Training আর inference-এর পার্থক্য?<br>
+        <em>উত্তর:</em> training একবার (gradient, ব্যয়বহুল); inference বারবার (শুধু forward pass, সস্তা)।<br><br>
+        <strong>প্রশ্ন ৪:</strong> <code>eval()</code> ও <code>no_grad()</code> কেন?<br>
+        <em>উত্তর:</em> eval() dropout/batchnorm ঠিক করে; no_grad() gradient বন্ধ করে দ্রুত ও কম memory।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        ১. E06-এর CNN বা E07-এর ResNet model <code>state_dict</code> দিয়ে save করুন।<br>
+        ২. একটা <em>নতুন</em> Python file বানিয়ে সেই model load করে একটা ছবিতে predict করুন (আলাদা inference script)।<br>
+        ৩. <code>model.eval()</code> বাদ দিয়ে চালিয়ে দেখুন ফল বদলায় কিনা।<br>
+        ৪. (ঐচ্ছিক) একই MLP Keras-এ লিখে <code>.fit()</code> দিয়ে চালান — syntax পার্থক্য অনুভব করুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏁</span> ১৬. Series 06 সারসংক্ষেপ ও পরবর্তী Series</h2>
+    <div class="success-box">
+        এই পর্বে শিখলাম:<br>
+        ✓ PyTorch ও TensorFlow মূলত একই কাজ করে; concept জানলে framework বদলানো সহজ<br>
+        ✓ সৎ তুলনা ও বাংলাদেশের industry-তে কী চায়<br>
+        ✓ <code>state_dict</code> দিয়ে model save/load — production-এর অপরিহার্য skill<br>
+        ✓ inference-এ <code>eval()</code> + <code>no_grad()</code>; training ≠ inference<br>
+        ✓ ONNX-এর আভাস (Learn Later)
+    </div>
+    <div class="info-box">
+        <strong>🎓 পুরো Series 06-এ আমরা যা অর্জন করলাম:</strong> neural network কেন ও কখন → neuron/activation/forward
+        → backprop/gradient descent → PyTorch hands-on → MLP → CNN (P4 image classifier) → transfer learning →
+        framework ও deployment basics। আপনি এখন একটা DL model বানাতে, train করতে, টিউন করতে, save/inference
+        করতে পারেন। <strong>এটাই junior AI engineer-এর Deep Learning-এর "Must Know" ভিত্তি।</strong>
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Series (07 — NLP, Transformers ও LLM):</strong> এবার ছবি ছেড়ে ভাষায় যাব — computer
+        কীভাবে text বোঝে, tokenization থেকে embedding, RNN থেকে attention, তারপর Transformer ও LLM-এর ভিত্তি।
+        এই DL জ্ঞানই সেখানে কাজে লাগবে।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-07-transfer-learning.html">⬅ পূর্ববর্তী: Transfer Learning</a>
+            <a href="../series-07/episode-01-text-preprocessing-tokenization.html">পরবর্তী: Tokenization ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 06, Episode 08)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s06e08.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

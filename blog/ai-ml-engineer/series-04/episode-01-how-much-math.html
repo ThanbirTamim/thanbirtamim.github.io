@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ML-এর জন্য ঠিক কতটুকু math লাগে আর কী skip করা যায় — একটা পরিষ্কার মানচিত্র বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="ML-এর জন্য ঠিক কতটুকু গণিত লাগে? (আর কতটুকু লাগে না) | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="ML-এর জন্য ঠিক কতটুকু math লাগে আর কী skip করা যায় — একটা পরিষ্কার মানচিত্র বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>ML-এর জন্য ঠিক কতটুকু গণিত লাগে? (আর কতটুকু লাগে না) | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 04 &raquo; Episode 01
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> ML-এর জন্য ঠিক কতটুকু গণিত লাগে? (আর কতটুকু লাগে না)</h1>
+    <p class="subtitle">গণিতের মানচিত্র — ভয় ভাঙা (Series 04, Episode 01)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 04 — Math, Statistics ও Probability</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 01 / 07</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর গণিত-ভয়</li>
+        <li>২. আসল সমস্যা: ভুল জায়গায় সময় নষ্ট</li>
+        <li>৩. কেন এই confusion তৈরি হয়</li>
+        <li>৪. Level 1 — গাড়ি চালানো বনাম গাড়ি বানানো</li>
+        <li>৫. Level 2 — ML-এর চার স্তম্ভ গণিত</li>
+        <li>৬. Level 3 — junior AI Engineer বাস্তবে কতটুকু গণিত ব্যবহার করে</li>
+        <li>৭. Visual: গণিতের মানচিত্র</li>
+        <li>৮. Must Know / Good to Know / Learn Later</li>
+        <li>৯. ছোট experiment: গণিত ছাড়াই একটা model</li>
+        <li>১০. বাংলাদেশের context: JD আসলে কী চায়</li>
+        <li>১১. Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল ধারণা</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৬. Project Connection</li>
+        <li>১৭. সারসংক্ষেপ</li>
+        <li>১৮. পরবর্তী পর্বে কী শিখব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">😰</span> ১. গল্প: Rahim-এর গণিত-ভয়</h2>
+    <p>
+        Rahim তিন বছর ধরে ভালো web development করছে। কিন্তু "AI/ML শিখব" ঠিক করার পর প্রথম যে জিনিসটা
+        তাকে থামিয়ে দিল, সেটা কোনো কোড না — একটা YouTube thumbnail। সেখানে লেখা: <em>"Linear Algebra +
+        Calculus + Probability না জানলে ML সম্ভব না!"</em> নিচে গাদা গাদা matrix আর integral-এর চিহ্ন।
+    </p>
+    <div class="story-box">
+        Rahim তার সিনিয়র <strong>Nila</strong>-কে (একজন data scientist) মেসেজ করল:<br><br>
+        <em>"আপা, আমি তো university-তে Calculus-এ কোনোমতে পাস করেছিলাম। এখন শুনছি ML করতে হলে আবার পুরো
+        গণিত নতুন করে শিখতে হবে। ৬ মাস কি শুধু math-ই করব? তাহলে তো আমি কোনোদিন শুরুই করতে পারব না।"</em><br><br>
+        Nila উত্তর দিল: <em>"থামো। এই একটা ভুল ধারণার কারণে ৮০% মানুষ শুরুই করে না। সত্যিটা হলো — junior
+        AI Engineer হতে তোমার যতটুকু গণিত লাগবে, সেটা তুমি ভাবছ তার এক-দশমাংশ। আর সেটাও equation মুখস্থ
+        করা না, <strong>intuition</strong> বোঝা। আজকে আমরা ঠিক করব — কোনটা লাগবে, কোনটা লাগবে না।"</em>
+    </div>
+    <p>
+        এই পুরো Series 04-এ আমরা ঠিক সেই "যতটুকু লাগে" গণিতটাই শিখব — গল্প দিয়ে, intuition দিয়ে, equation
+        পরে। কিন্তু আজকের এই প্রথম পর্বটা সবচেয়ে গুরুত্বপূর্ণ, কারণ এটা আপনার <strong>মানচিত্র</strong>।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ২. আসল সমস্যা: ভুল জায়গায় সময় নষ্ট</h2>
+    <p>
+        সমস্যাটা "গণিত কঠিন" না। আসল সমস্যা হলো — নতুনরা বুঝতে পারে না <strong>কোন গণিতটা</strong> লাগবে।
+        ফলে দুটো দলে ভাগ হয়ে যায়:
+    </p>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>দল ১ — অতিরিক্ত ভয়</strong><br>
+            "সব গণিত master না করে ML ছোঁব না।" ফলে ৬ মাস ধরে theorem prove করতে থাকে, কখনো একটা
+            model-ও train করে না। motivation শেষ, career শুরুই হয় না।
+        </div>
+        <div class="comparison-item">
+            <strong>দল ২ — সম্পূর্ণ এড়িয়ে যাওয়া</strong><br>
+            "গণিত লাগে না, শুধু <code>model.fit()</code> কল করলেই হলো।" ফলে model overfit করলে বা metric
+            খারাপ এলে কেন হচ্ছে বুঝতে পারে না। interview-তে প্রথম "why" প্রশ্নেই আটকে যায়।
+        </div>
+    </div>
+    <div class="key-point">
+        সঠিক পথ মাঝখানে: <strong>ঠিক ততটুকু গণিত যতটুকু দিয়ে আপনি বুঝতে পারবেন model ভেতরে কী করছে এবং
+        কেন করছে</strong> — কিন্তু গবেষণাগারের গভীরতায় নয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🤔</span> ৩. কেন এই confusion তৈরি হয়</h2>
+    <p>
+        Confusion-টা তৈরি হয় কারণ "AI/ML"-এর ভেতরে আসলে দুটো ভিন্ন পেশা মিশে আছে, আর তাদের গণিতের
+        চাহিদা আকাশ-পাতাল আলাদা:
+    </p>
+    <ul>
+        <li>
+            <strong>AI Researcher</strong> — যিনি নতুন algorithm, নতুন architecture আবিষ্কার করেন। এঁর
+            জন্য গভীর Linear Algebra, Calculus, Optimization theory <em>সত্যিই</em> লাগে। কিন্তু এটা PhD-স্তরের কাজ।
+        </li>
+        <li>
+            <strong>AI/ML Engineer</strong> — যিনি বিদ্যমান tool (scikit-learn, PyTorch, LLM API) দিয়ে
+            বাস্তব সমস্যা সমাধান করেন ও production-এ deploy করেন। বাংলাদেশের প্রায় সব চাকরি এই দ্বিতীয় দলের।
+        </li>
+    </ul>
+    <p>
+        Internet-এর বেশিরভাগ "you need heavy math" কনটেন্ট আসলে প্রথম দলকে লক্ষ্য করে লেখা। আপনি যদি
+        দ্বিতীয় দলের চাকরি চান — আর ৯৫% junior সেটাই চায় — তাহলে আপনার গণিতের চাহিদা সম্পূর্ণ ভিন্ন।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚗</span> ৪. Level 1 — গাড়ি চালানো বনাম গাড়ি বানানো</h2>
+    <div class="technical-box">
+        একটা সহজ analogy দিয়ে ভাবুন:<br><br>
+        <strong>🏎️ গাড়ি চালানো (AI/ML Engineer):</strong> আপনাকে জানতে হবে — accelerator কী করে, brake
+        কখন চাপবেন, engine গরম হলে কী মানে। অর্থাৎ গাড়িটা <em>কীভাবে আচরণ করে</em> তার intuition। কিন্তু
+        engine-এর thermodynamics-এর সমীকরণ derive করা লাগে না।<br><br>
+        <strong>🔧 গাড়ির engine ডিজাইন করা (AI Researcher):</strong> এখানে combustion-এর প্রতিটা
+        সমীকরণ, তাপগতিবিদ্যা, উপাদানের ধর্ম — সব গভীরভাবে জানতে হবে।
+    </div>
+    <p>
+        ML-এও ঠিক তাই। gradient descent "কীভাবে ঢালে নামে" সেই intuition আপনার লাগবে (গাড়ি চালানো),
+        কিন্তু নতুন optimizer-এর convergence proof লেখা (engine ডিজাইন) আপনার junior চাকরিতে লাগবে না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏛️</span> ৫. Level 2 — ML-এর চার স্তম্ভ গণিত</h2>
+    <p>
+        ML-এর জন্য প্রাসঙ্গিক গণিত মূলত চারটা ভাগে পড়ে। এই পুরো Series 04 এই চারটাই intuition-ভিত্তিকভাবে কভার করবে:
+    </p>
+    <table>
+        <tr><th>স্তম্ভ</th><th>কী কাজে লাগে</th><th>ML-এ উদাহরণ</th></tr>
+        <tr>
+            <td><strong>Linear Algebra</strong> (vector, matrix)</td>
+            <td>data-কে সংখ্যার টেবিল হিসেবে প্রকাশ ও দ্রুত হিসাব</td>
+            <td>একটা image আসলে একটা matrix; feature-রা একটা vector</td>
+        </tr>
+        <tr>
+            <td><strong>Calculus</strong> (derivative, gradient)</td>
+            <td>model কীভাবে ভুল কমায় সেই শেখার প্রক্রিয়া</td>
+            <td>gradient descent — loss-এর ঢাল ধরে নামা</td>
+        </tr>
+        <tr>
+            <td><strong>Statistics</strong> (mean, variance, distribution)</td>
+            <td>data-র চরিত্র বোঝা ও summarize করা</td>
+            <td>feature scaling, outlier চেনা, metric বোঝা</td>
+        </tr>
+        <tr>
+            <td><strong>Probability</strong> (Bayes, conditional)</td>
+            <td>"কতটা নিশ্চিত" — অনিশ্চয়তা নিয়ে সিদ্ধান্ত</td>
+            <td>classifier-এর probability output, spam filter</td>
+        </tr>
+    </table>
+    <div class="info-box">
+        <strong>খেয়াল করুন:</strong> এই চারটার মধ্যে junior-দের জন্য <strong>Statistics ও Probability
+        সবচেয়ে বেশি প্রতিদিন কাজে লাগে</strong> — Linear Algebra ও Calculus বেশিরভাগ সময় library-র
+        ভেতরে লুকানো থাকে, শুধু intuition-টুকু লাগে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ৬. Level 3 — junior AI Engineer বাস্তবে কতটুকু গণিত ব্যবহার করে</h2>
+    <p>
+        একদম সৎ কথা: একজন junior AI/ML Engineer দিনের বেশিরভাগ সময় গণিত <em>লেখে</em> না। কিন্তু গণিতের
+        intuition <em>ব্যবহার</em> করে — প্রতিটা সিদ্ধান্তে। উদাহরণ:
+    </p>
+    <ul>
+        <li><strong>Feature scaling করব কেন?</strong> — কারণ জানি বড়-স্কেলের feature gradient descent-কে বিভ্রান্ত করে (Calculus intuition)।</li>
+        <li><strong>Accuracy 95% কিন্তু model খারাপ কেন?</strong> — কারণ data imbalanced, mean/distribution বুঝি (Statistics)।</li>
+        <li><strong>Model "70% sure" বলছে মানে কী?</strong> — probability output ব্যাখ্যা করতে পারি (Probability)।</li>
+        <li><strong>Embedding দুটো কতটা কাছাকাছি?</strong> — vector-এর dot product/cosine বুঝি (Linear Algebra)।</li>
+    </ul>
+    <p>
+        অর্থাৎ গণিত আপনার হাতে কলমের মতো না, বরং <strong>চশমার মতো</strong> — এটা দিয়ে আপনি দেখেন
+        model-এর ভেতরে কী হচ্ছে। এই চশমাটা না থাকলে আপনি অন্ধভাবে <code>fit()</code> কল করবেন আর প্রার্থনা করবেন।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🗺️</span> ৭. Visual: গণিতের মানচিত্র</h2>
+    <div class="diagram">
+                ML-এর জন্য গণিত (junior-এর দৃষ্টিতে)
+
+   ┌────────────────────────────────────────────────────┐
+   │  অবশ্যই লাগবে (intuition স্তরে)                        │
+   │  • Statistics: mean, variance, distribution         │
+   │  • Probability: Bayes, conditional, "confidence"    │
+   │  • Vector/Matrix: data = সংখ্যার টেবিল                 │
+   │  • Gradient descent-এর ধারণা: ঢাল ধরে ভুল কমানো        │
+   └────────────────────────────────────────────────────┘
+                          │
+                          ▼
+   ┌────────────────────────────────────────────────────┐
+   │  ভালো হলে ভালো (গভীরে গেলে সুবিধা)                      │
+   │  • Covariance/correlation-এর সূত্র                    │
+   │  • Matrix multiplication হাতে করা                     │
+   │  • Expected value, ভিন্ন distribution                 │
+   └────────────────────────────────────────────────────┘
+                          │
+                          ▼
+   ┌────────────────────────────────────────────────────┐
+   │  পরে / Researcher-দের জন্য (junior চাকরিতে লাগে না)     │
+   │  • Eigenvalue/eigenvector proof                     │
+   │  • Multivariable calculus derivation                │
+   │  • Measure theory, convergence proof                │
+   └────────────────────────────────────────────────────┘
+    </div>
+    <p>
+        এই মানচিত্রটা মাথায় রাখলে আপনি আর কখনো "সব গণিত শেষ করে তবে ML" — এই ফাঁদে পড়বেন না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✅</span> ৮. Must Know / Good to Know / Learn Later</h2>
+    <div class="info-box">
+        <strong>🟢 Must Know (চাকরির আগে যা লাগবে):</strong> mean/median/variance/std, distribution-এর
+        ধারণা, probability ও conditional probability-র intuition, vector-matrix কী, gradient descent
+        কীভাবে ভুল কমায়।<br><br>
+        <strong>🟡 Good to Know (থাকলে এগিয়ে থাকবেন):</strong> covariance/correlation-এর সূত্র, matrix
+        multiplication হাতে করা, Bayes theorem প্রয়োগ, bias-variance-এর গভীর ব্যাখ্যা।<br><br>
+        <strong>🔴 Learn Later (চাকরির পরে শিখলেও চলবে):</strong> optimization proof, eigen-decomposition,
+        তথ্য-তত্ত্ব (information theory), heavy multivariable calculus।
+    </div>
+    <p>
+        <strong>স্পষ্ট distinction:</strong> "concept বোঝা" মানে আপনি ব্যাখ্যা করতে পারেন কী হচ্ছে ও কেন;
+        "technology master করা" মানে আপনি নিজে derive/optimize করতে পারেন। junior-দের জন্য Must Know-তে
+        <em>বোঝা</em> যথেষ্ট, <em>master</em> লাগে না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৯. ছোট experiment: গণিত ছাড়াই একটা model</h2>
+    <p>
+        প্রমাণ করি — গভীর গণিত ছাড়াও আপনি আজই একটা কাজ করা model বানাতে পারেন। এই কোডে কোথাও একটাও
+        equation লিখতে হয়নি, তবু ভেতরে পুরোটাই গণিত (library সামলাচ্ছে)। আমরা scikit-learn ব্যবহার করছি
+        কারণ এটা বাস্তবে সবচেয়ে বেশি ব্যবহৃত classical ML library।
+    </p>
+    <div class="code-box">
+# pip install scikit-learn
+from sklearn.linear_model import LinearRegression
+import numpy as np
+
+# ধরুন: experience (বছর) থেকে salary (হাজার টাকা) predict
+X = np.array([[1], [2], [3], [4], [5]])   # feature
+y = np.array([25, 30, 40, 48, 55])        # target
+
+model = LinearRegression()
+model.fit(X, y)          # ভেতরে: derivative + optimization চলছে
+
+print("6 বছরের জন্য predicted salary:", model.predict([[6]]))
+print("slope (ঢাল):", model.coef_)        # এটাই Calculus-এর ফল
+    </div>
+    <p>
+        <strong>কী observe করবেন:</strong> <code>model.coef_</code> আসলে একটা "ঢাল" — প্রতি ১ বছর
+        experience বাড়লে salary কত বাড়ে। এই ঢাল বের করতেই ভেতরে derivative-optimization হয়েছে। আপনি
+        equation লেখেননি, কিন্তু ফলটা <em>বুঝতে</em> পারছেন। এটাই junior-স্তরের গণিত।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের context: JD আসলে কী চায়</h2>
+    <p>
+        বাংলাদেশের বাস্তব AI/ML junior job description-এ আপনি প্রায় কখনোই দেখবেন না "prove the
+        convergence of Adam optimizer"। বরং দেখবেন:
+    </p>
+    <ul>
+        <li>"Solid understanding of <strong>statistics and probability</strong>" — মানে Statistics ও Probability-র intuition চাই।</li>
+        <li>"Familiarity with <strong>linear algebra concepts</strong>" — মানে vector/matrix কী বোঝেন, master না।</li>
+        <li>"Understanding of how ML models learn" — মানে gradient descent-এর গল্পটা বলতে পারেন।</li>
+    </ul>
+    <p>
+        bKash/Nagad-এর fraud-detection team হোক বা Daraz-এর recommendation team — তারা এমন junior চায়
+        যে metric ব্যাখ্যা করতে পারে ("precision কেন কম হলো"), data-র distribution বুঝে সিদ্ধান্ত নেয়।
+        এগুলো Statistics + Probability, heavy calculus না।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১১. Boss Question</h2>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: <em>"ঠিক আছে, গণিত না হয় দরকার। কিন্তু আমি তো তোমাকে model বানাতে বলছি, অঙ্ক করতে না।
+        এই গণিত শেখা আমার business-এ কোথায় কাজে লাগবে?"</em><br><br>
+        <strong>উত্তর:</strong> লাগবে যখন model ভুল করবে। ধরুন আপনার customer-churn model বলছে "৯৭%
+        accurate" — Boss খুশি। কিন্তু বাস্তবে সে সব customer-কে "থেকে যাবে" বলছে, একজন churn-ও ধরছে না
+        (কারণ মাত্র ৩% churn করে)। যে engineer Statistics বোঝে, সে সাথে সাথে বলবে — "accuracy এখানে
+        মিথ্যা বলছে, precision/recall দেখুন।" ফলে আপনি এমন model deploy করবেন না যেটা টাকা বাঁচানোর
+        বদলে ক্ষতি করে। <strong>গণিতের intuition = ব্যয়বহুল ভুল সিদ্ধান্ত এড়ানো।</strong> এটাই business value.
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <p>JD-তে প্রায়ই দেখবেন এই লাইন:</p>
+    <div class="key-point">
+        "Strong foundation in mathematics, statistics, and probability for machine learning."
+    </div>
+    <table>
+        <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+        <tr><td>এর মানে কী?</td><td>আপনি model-এর behavior গণিতের চোখে ব্যাখ্যা করতে পারেন — শুধু tool চালান না।</td></tr>
+        <tr><td>কোম্পানি কেন চায়?</td><td>যাতে model ভুল করলে আপনি "কেন" বুঝে ঠিক করতে পারেন, অন্ধভাবে না।</td></tr>
+        <tr><td>কোন সমস্যা সমাধান করে?</td><td>ভুল metric বাছাই, wrong scaling, misleading result — এসব ধরা পড়ে।</td></tr>
+        <tr><td>junior-এর কী জানা লাগে?</td><td>Statistics ও Probability-র intuition, vector/matrix কী, gradient descent-এর গল্প।</td></tr>
+        <tr><td>এখনই কী master লাগে না?</td><td>optimization proof, eigen-decomposition, measure theory।</td></tr>
+        <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা notebook-এ EDA করে distribution/correlation ব্যাখ্যা; metric কেন এই বাছাই — README-তে লিখে।</td></tr>
+        <tr><td>Interview-তে কী জিজ্ঞেস করতে পারে?</td><td>"gradient descent কী?", "accuracy কখন misleading?", "correlation vs causation?"</td></tr>
+    </table>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল ধারণা</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> "সব গণিত master করে তবে ML শুরু করব।" →
+        <strong>ঠিক:</strong> intuition যথেষ্ট; শিখতে শিখতে গণিত গভীর করুন, উল্টোটা নয়।<br><br>
+        <strong>ভুল ২:</strong> "গণিত একদমই লাগে না, tool জানলেই হলো।" →
+        <strong>ঠিক:</strong> tool চালাতে লাগে না, কিন্তু model কেন ভুল করছে বুঝতে লাগে।<br><br>
+        <strong>ভুল ৩:</strong> "AI Engineer আর AI Researcher একই গণিত জানে।" →
+        <strong>ঠিক:</strong> Researcher গণিত derive করে; Engineer গণিতের intuition ব্যবহার করে।<br><br>
+        <strong>ভুল ৪:</strong> "Calculus-ই সবচেয়ে বেশি লাগে।" →
+        <strong>ঠিক:</strong> junior-দের প্রতিদিন সবচেয়ে বেশি লাগে Statistics ও Probability।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> ML-এর জন্য কোন গণিত সবচেয়ে গুরুত্বপূর্ণ?<br>
+        <em>উত্তর:</em> junior-স্তরে Statistics ও Probability সবচেয়ে বেশি প্রতিদিন লাগে; এরপর
+        linear algebra ও calculus-এর intuition (গভীর derivation নয়)।<br><br>
+        <strong>প্রশ্ন ২:</strong> ML-এ derivative/gradient কেন লাগে?<br>
+        <em>উত্তর:</em> loss কমানোর দিক বলে দেয় gradient — model কোন দিকে weight বদলালে ভুল কমবে,
+        সেটাই gradient descent।<br><br>
+        <strong>প্রশ্ন ৩:</strong> আপনি তো heavy math জানেন না, তাহলে ML কীভাবে করবেন?<br>
+        <em>উত্তর:</em> junior AI Engineer-এর কাজ tool দিয়ে সমস্যা সমাধান; আমি গণিতের intuition দিয়ে
+        model-এর behavior ব্যাখ্যা ও debug করতে পারি — যেটা এই role-এ দরকার।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        একটা কাগজে নিচের প্রশ্নগুলোর নিজের উত্তর লিখুন (equation লাগবে না, শুধু চিন্তা):<br><br>
+        ১. আপনার university/self-study থেকে চারটা স্তম্ভের (Linear Algebra, Calculus, Statistics,
+        Probability) কোনটায় আপনি এখন সবচেয়ে দুর্বল? সেটাই Series 04-এ বেশি মনোযোগ দিন।<br>
+        ২. উপরের salary-prediction কোডটা চালান, তারপর <code>X</code>-এ একটা নতুন data point যোগ করে
+        দেখুন <code>coef_</code> বদলায় কিনা — কেন বদলাল ভাবুন।<br>
+        ৩. নিজের ভাষায় এক লাইনে লিখুন: "গণিত ML-এ চশমা, কলম নয়" — মানে কী?
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection</h2>
+    <p>
+        আমাদের flagship project <strong>"Bangladesh Tech Career Assistant"</strong> এখন Series 03-এ একটা
+        data analyzer (V2)। Series 05-এ এটা একটা ML model (V3) হবে — যেটা job description থেকে seniority
+        বা salary-band predict করবে।
+    </p>
+    <div class="info-box">
+        আজকের গণিত-মানচিত্র সেই V3-এর ভিত্তি। যখন model বানাব, তখন feature scaling করব কিনা (Calculus
+        intuition), কোন metric দেখব (Statistics), model কতটা "নিশ্চিত" (Probability) — এই সিদ্ধান্তগুলো
+        নিতে আজকের চার স্তম্ভই কাজে লাগবে। এই Series-এর বাকি ৬ পর্বে আমরা একটা একটা করে স্তম্ভ শিখব।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৭. সারসংক্ষেপ</h2>
+    <div class="success-box">
+        এই পর্বে আমরা শিখলাম:<br><br>
+        ✓ ML-এর জন্য গণিত-ভয় বেশিরভাগই অতিরঞ্জিত — junior-দের চাহিদা Researcher-দের থেকে সম্পূর্ণ আলাদা<br>
+        ✓ প্রাসঙ্গিক গণিত চার স্তম্ভে: Linear Algebra, Calculus, Statistics, Probability<br>
+        ✓ junior-দের প্রতিদিন সবচেয়ে বেশি লাগে Statistics ও Probability-র intuition<br>
+        ✓ গণিত ML-এ "চশমা" (model বোঝার) — "কলম" (নিজে derive করার) নয়<br>
+        ✓ Must Know / Good to Know / Learn Later ভাগ করে শিখলে সময় নষ্ট হয় না<br>
+        ✓ "concept বোঝা" junior-দের জন্য যথেষ্ট; "master করা" লাগে না
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">➡️</span> ১৮. পরবর্তী পর্বে কী শিখব</h2>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S04E02):</strong> "Scalar, Vector, Matrix: data আসলে সংখ্যার টেবিল"।<br><br>
+        চার স্তম্ভের প্রথমটা — Linear Algebra — দিয়ে শুরু করব। দেখব কেন একটা image, একটা customer, এমনকি
+        একটা শব্দ পর্যন্ত আসলে সংখ্যার একটা টেবিল, আর matrix multiplication-এর intuition কীভাবে পুরো ML-কে
+        দ্রুত করে তোলে — কোনো ভয় ছাড়াই।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="../series-03/episode-09-project-job-market-analyzer.html">⬅ পূর্ববর্তী: Project P1</a>
+            <a href="episode-02-scalar-vector-matrix.html">পরবর্তী: Vector ও Matrix ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 04, Episode 01)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s04e01.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

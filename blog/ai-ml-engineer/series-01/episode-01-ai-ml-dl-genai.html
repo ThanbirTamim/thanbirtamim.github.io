@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI, Machine Learning, Deep Learning আর Generative AI — এগুলো এক জিনিস না। একজন junior developer-এর গল্পের মধ্য দিয়ে সহজ বাংলায় বুঝে নিন এদের আসল পার্থক্য, সম্পর্ক এবং কে কোথায় বসে। AI/ML Engineer বাংলা সিরিজ, Series 01, Episode 01।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, Deep Learning Bangla, Generative AI, LLM, AI Career, AI vs ML vs Deep Learning">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="AI, ML, Deep Learning, Generative AI — এক জিনিস না! | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="একজন junior developer Rahim-এর গল্প দিয়ে সহজ বাংলায় বুঝে নিন AI, ML, Deep Learning আর Generative AI-এর আসল পার্থক্য ও সম্পর্ক।">
+    <meta property="og:locale" content="bn_BD">
+    <title>AI, ML, Deep Learning, Generative AI — এক জিনিস না! | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home">
+        <i class="fas fa-home"></i>
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 01 &raquo; Episode 01
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> AI, ML, Deep Learning, Generative AI — এক জিনিস না!</h1>
+    <p class="subtitle">Rahim-এর প্রথম confusion দিয়ে শুরু — এই চারটা শব্দ আসলে কীভাবে একটার ভেতর আরেকটা বসে (Series 01, Episode 01)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-beginner">🟢 BEGINNER</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 01 — AI/ML-এর দুনিয়া</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 01 / 06</span>
+        <span class="meta-pill"><i class="fas fa-clock"></i> ~১২ মিনিট পড়া</span>
+        <span class="meta-pill"><i class="fas fa-code"></i> Prerequisite: কিছুই না</span>
+    </div>
+
+    <div class="toc">
+        <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+        <ul>
+            <li>১. গল্প: Rahim-এর প্রথম দিন</li>
+            <li>২. আসল সমস্যা: সবাই সব শব্দ মিশিয়ে ফেলে</li>
+            <li>৩. এই ধারণাগুলো কেন আলাদা করে বোঝা জরুরি</li>
+            <li>৪. Level 1 — একদম সহজ intuition (রান্নাঘরের গল্প)</li>
+            <li>৫. Level 2 — technical ভাবে কী হচ্ছে</li>
+            <li>৬. Level 3 — একজন AI Engineer এগুলো কীভাবে ব্যবহার করে</li>
+            <li>৭. Visual: চারটা শব্দ একটা ছবিতে</li>
+            <li>৮. AI ≠ ML ≠ Deep Learning ≠ Generative AI — স্পষ্ট পার্থক্য</li>
+            <li>৯. LLM কোথায় বসে?</li>
+            <li>১০. ছোট experiment: নিজে নিজে যাচাই করুন</li>
+            <li>১১. বাস্তব উদাহরণ: বাংলাদেশের context</li>
+            <li>১২. Job Requirement Decoder</li>
+            <li>১৩. সাধারণ ভুল ধারণা</li>
+            <li>১৪. Interview Prep</li>
+            <li>১৫. হাতে-কলমে (Mini Exercise)</li>
+            <li>১৬. Project Connection</li>
+            <li>১৭. সারসংক্ষেপ</li>
+            <li>১৮. পরবর্তী পর্বে কী শিখব</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর প্রথম দিন</h2>
+
+        <p>
+            Rahim একজন junior software developer। তিন বছর ধরে PHP আর JavaScript দিয়ে web application বানাচ্ছে।
+            কাজ ভালোই চলছিল, কিন্তু গত কয়েক মাসে সে খেয়াল করল — প্রতিটা job post-এ একই শব্দগুলো ঘুরেফিরে আসছে:
+            <strong>AI</strong>, <strong>Machine Learning</strong>, <strong>Deep Learning</strong>,
+            <strong>Generative AI</strong>, <strong>LLM</strong>।
+        </p>
+
+        <div class="story-box">
+            একদিন office-এ Rahim তার সিনিয়র <strong>Maya</strong>-কে জিজ্ঞেস করল:<br><br>
+            <em>"আপা, আমি AI শিখতে চাই। কিন্তু একটা জিনিস বুঝি না — সবাই কখনো বলে Machine Learning, কখনো বলে
+            Deep Learning, কখনো Generative AI, আবার কখনো শুধু AI। এগুলো কি একই জিনিসের different নাম? নাকি
+            আলাদা আলাদা জিনিস?"</em><br><br>
+            Maya হেসে বলল: <em>"এই confusion-টা প্রায় সবারই হয়। আর মজার ব্যাপার — এই একটা প্রশ্নের উত্তর
+            ঠিকভাবে জানলে তুমি ৮০% মানুষের থেকে এগিয়ে থাকবে। কারণ বেশিরভাগ লোক এই শব্দগুলো না বুঝেই ব্যবহার করে।"</em>
+        </div>
+
+        <p>
+            এই পুরো সিরিজ জুড়ে আমরা Rahim-এর সাথে সাথে এগোব। ও যেখানে আটকায়, আপনিও হয়তো ঠিক সেখানেই আটকান।
+            চলুন, Rahim-এর প্রথম প্রশ্নের উত্তর দিয়েই শুরু করি।
+        </p>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="section">
+        <h2><span class="emoji">❓</span> ২. আসল সমস্যা: সবাই সব শব্দ মিশিয়ে ফেলে</h2>
+
+        <p>
+            সমস্যাটা হলো — মানুষ এই শব্দগুলোকে <strong>synonym</strong> (সমার্থক) মনে করে। একজন বলে
+            "আমরা AI use করছি", আরেকজন বলে "আমরা ML model বানিয়েছি", তৃতীয়জন বলে "ChatGPT দিয়ে কাজ করছি" —
+            আর সবাই ভাবে তারা একই জিনিসের কথা বলছে।
+        </p>
+
+        <p>বাস্তবে এগুলো একটা <strong>nested (একটার ভেতর আরেকটা)</strong> সম্পর্ক। ঠিক এভাবে:</p>
+
+        <div class="key-point">
+            <strong>Generative AI</strong> হলো <strong>Deep Learning</strong>-এর একটা অংশ →
+            <strong>Deep Learning</strong> হলো <strong>Machine Learning</strong>-এর একটা অংশ →
+            <strong>Machine Learning</strong> হলো <strong>AI</strong>-এর একটা অংশ।
+        </div>
+
+        <p>
+            অর্থাৎ সব Machine Learning-ই AI, কিন্তু সব AI মানেই Machine Learning না। ঠিক যেমন — সব আম-ই ফল,
+            কিন্তু সব ফল মানেই আম না। এই একটা বাক্য যদি মাথায় বসে যায়, বাকিটা সহজ।
+        </p>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="section">
+        <h2><span class="emoji">🎯</span> ৩. এই ধারণাগুলো কেন আলাদা করে বোঝা জরুরি</h2>
+
+        <p>আপনি হয়তো ভাবছেন — "শব্দের পার্থক্য নিয়ে এত মাথা ঘামানোর কী দরকার? কাজ শিখলেই তো হলো।" ভুল ভাবছেন। কারণ:</p>
+
+        <ul>
+            <li><strong>Interview-তে</strong> এটাই প্রথম প্রশ্নগুলোর একটা — "AI, ML আর Deep Learning-এর পার্থক্য কী?"</li>
+            <li><strong>Job description পড়তে</strong> গেলে বুঝতে হবে কোম্পানি আসলে কী চাইছে — একটা ML model, নাকি একটা LLM-based application।</li>
+            <li><strong>সঠিক জিনিস শিখতে</strong> — অনেকে "AI শিখব" বলে সরাসরি ChatGPT API নিয়ে বসে যায়, অথচ ভিত্তি (data, ML) বাদ পড়ে যায়।</li>
+            <li><strong>ভুল tool বাছাই এড়াতে</strong> — প্রতিটা সমস্যার জন্য Deep Learning লাগে না; অনেক সময় simple ML-ই যথেষ্ট।</li>
+        </ul>
+
+        <div class="info-box">
+            <strong>মনে রাখুন:</strong> একজন ভালো AI Engineer-এর প্রথম গুণ হলো — সে জানে কোন সমস্যায় কোন approach লাগবে।
+            আর সেটা জানার শুরু এই শব্দগুলোর পার্থক্য বোঝা থেকে।
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="section">
+        <h2><span class="emoji">🍳</span> ৪. Level 1 — একদম সহজ intuition (রান্নাঘরের গল্প)</h2>
+
+        <p>
+            টেকনিক্যাল শব্দ ভুলে যান। ধরুন একটা রেস্টুরেন্টের রান্নাঘর।
+        </p>
+
+        <div class="technical-box">
+            <strong>🤖 AI (Artificial Intelligence) = "স্মার্ট রান্নাঘর" — পুরো ধারণাটা।</strong><br>
+            লক্ষ্য: এমন একটা ব্যবস্থা যা মানুষের মতো "বুদ্ধিমান" সিদ্ধান্ত নিতে পারে। রান্না কীভাবে হবে সেটা যেকোনো
+            উপায়ে হতে পারে — কেউ hard-coded recipe (নিয়ম) ফলো করে, কেউ অভিজ্ঞতা থেকে শেখে। যেকোনো "বুদ্ধিমান" আচরণই AI।<br><br>
+
+            <strong>🧠 Machine Learning = "অভিজ্ঞতা থেকে শেখা রাঁধুনি।"</strong><br>
+            এই রাঁধুনিকে কেউ প্রতিটা নিয়ম বলে দেয়নি। সে হাজার হাজার রান্না দেখে <strong>নিজে নিজে pattern</strong> বের করেছে —
+            "বেশি লবণ দিলে customer complain করে।" মানে, <strong>data থেকে শেখা</strong>।<br><br>
+
+            <strong>🔬 Deep Learning = "অসম্ভব অভিজ্ঞ, বহু-স্তরে চিন্তা করা রাঁধুনি।"</strong><br>
+            এটা ML-এরই একটা বিশেষ ধরন, যে অনেক অনেক স্তরে (layers) চিন্তা করে — খুব জটিল pattern ধরতে পারে
+            (যেমন ছবি দেখে চেনা, ভাষা বোঝা)। কিন্তু এর জন্য বিশাল data আর অনেক computing power লাগে।<br><br>
+
+            <strong>✨ Generative AI = "যে রাঁধুনি একদম নতুন recipe বানিয়ে ফেলে।"</strong><br>
+            আগের রাঁধুনিরা সিদ্ধান্ত নিত ("এটা ভালো/খারাপ")। এই রাঁধুনি <strong>নতুন কিছু তৈরি (generate)</strong> করে —
+            নতুন লেখা, ছবি, কোড, রেসিপি। ChatGPT ঠিক এই দলে পড়ে।
+        </div>
+
+        <p>
+            খেয়াল করুন — চারজনই একই রান্নাঘরের ভেতরে। সবচেয়ে বড় গণ্ডি AI, তার ভেতরে ML, তার ভেতরে Deep Learning,
+            তার ভেতরে Generative AI।
+        </p>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="section">
+        <h2><span class="emoji">⚙️</span> ৫. Level 2 — technical ভাবে কী হচ্ছে</h2>
+
+        <h3>AI (Artificial Intelligence)</h3>
+        <p>
+            AI হলো একটা বিস্তৃত field — লক্ষ্য হলো এমন system বানানো যা এমন কাজ করে যেগুলোর জন্য সাধারণত মানুষের
+            বুদ্ধি লাগে (সিদ্ধান্ত নেওয়া, ভাষা বোঝা, চেনা)। মজার ব্যাপার — AI মানেই "শেখা" না।
+            পুরনো দিনের <strong>rule-based system</strong> (যেমন: "if temperature &gt; 38 then জ্বর") — যেখানে
+            মানুষ হাতে হাতে নিয়ম লিখে দেয় — সেটাও AI-এর অংশ। এখানে কোনো data থেকে শেখা নেই, শুধু নিয়ম মানা।
+        </p>
+
+        <h3>Machine Learning (ML)</h3>
+        <p>
+            ML-এ আমরা নিয়ম হাতে লিখি না। আমরা <strong>data</strong> দিই, আর algorithm নিজে নিজে data থেকে
+            pattern (নিয়ম) বের করে। এটাই মূল paradigm shift:
+        </p>
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Traditional Programming</strong><br>
+                Data + Rules → Program → Output<br><br>
+                মানুষ নিয়ম লেখে।
+            </div>
+            <div class="comparison-item">
+                <strong>Machine Learning</strong><br>
+                Data + Output → ML → Rules (Model)<br><br>
+                Machine নিজে নিয়ম বের করে।
+            </div>
+        </div>
+        <p>
+            উদাহরণ: spam email চেনা। আপনি হাজার হাজার email (data) আর তাদের label ("spam"/"not spam") দিলেন।
+            ML algorithm নিজে বের করল কোন শব্দ, কোন pattern spam-এর ইঙ্গিত দেয়।
+        </p>
+
+        <h3>Deep Learning (DL)</h3>
+        <p>
+            Deep Learning হলো ML-এরই একটা subset, যেখানে আমরা <strong>Neural Network</strong> ব্যবহার করি —
+            বিশেষ করে অনেকগুলো <strong>layer</strong> (তাই "deep")। প্রতিটা layer data থেকে ধীরে ধীরে জটিল থেকে
+            জটিলতর feature শেখে। ছবি, শব্দ, ভাষার মতো unstructured data-তে এটা অসাধারণ কাজ করে — কিন্তু বিনিময়ে
+            চাই বিশাল data আর GPU-এর মতো computing power।
+        </p>
+
+        <h3>Generative AI</h3>
+        <p>
+            Generative AI হলো Deep Learning-এর একটা প্রয়োগ যার কাজ <strong>নতুন content তৈরি করা</strong> —
+            text, image, audio, code। এটা "discriminative" model থেকে আলাদা। Discriminative model বলে "এটা কী"
+            (বিড়াল না কুকুর), আর Generative model বলে "এই রকম নতুন একটা বানিয়ে দাও" (একটা বিড়ালের ছবি এঁকে দাও)।
+        </p>
+
+        <div class="info-box">
+            <strong>স্পষ্টীকরণ:</strong> "Deep Learning মানেই Generative AI" — এটা ভুল। Deep Learning দিয়ে
+            discriminative কাজও (যেমন image classification) হয়, আবার generative কাজও হয়। Generative AI শুধু
+            "নতুন তৈরি করা" অংশটুকু।
+        </div>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="section">
+        <h2><span class="emoji">👷</span> ৬. Level 3 — একজন AI Engineer এগুলো কীভাবে ব্যবহার করে</h2>
+
+        <p>এখন সবচেয়ে গুরুত্বপূর্ণ অংশ — বাস্তব কাজে এই পার্থক্যটা কীভাবে আসে। একজন AI Engineer একটা সমস্যা পেলে প্রথমে ভাবে:</p>
+
+        <table>
+            <tr>
+                <th>সমস্যা</th>
+                <th>সঠিক approach</th>
+                <th>কেন</th>
+            </tr>
+            <tr>
+                <td>দোকানের আগামী মাসের বিক্রি predict করা (structured data, কয়েকশো row)</td>
+                <td>Classical ML (যেমন Linear Regression)</td>
+                <td>Deep Learning এখানে overkill; ছোট data-তে simple ML ভালো ও দ্রুত।</td>
+            </tr>
+            <tr>
+                <td>X-ray ছবি দেখে রোগ চেনা</td>
+                <td>Deep Learning (CNN)</td>
+                <td>ছবির জটিল pattern classical ML ভালোভাবে ধরতে পারে না।</td>
+            </tr>
+            <tr>
+                <td>Customer support-এর জন্য কোম্পানির document থেকে উত্তর দেওয়া chatbot</td>
+                <td>Generative AI (LLM + RAG)</td>
+                <td>নতুন ভাষায় উত্তর "generate" করতে হবে, নির্দিষ্ট knowledge-এর ভিত্তিতে।</td>
+            </tr>
+            <tr>
+                <td>"if order &gt; 5000 তাহলে free delivery" — এমন নিয়ম</td>
+                <td>সাধারণ rule / logic (কোনো ML লাগে না!)</td>
+                <td>এখানে শেখার কিছু নেই; ML ব্যবহার করা বোকামি।</td>
+            </tr>
+        </table>
+
+        <div class="key-point">
+            <strong>এটাই engineer আর beginner-এর পার্থক্য:</strong> beginner সব সমস্যায় সবচেয়ে "cool" জিনিস
+            (Deep Learning / LLM) লাগাতে চায়। Engineer জানে — সঠিক সমস্যায় সঠিক tool। কখনো কখনো সবচেয়ে ভালো
+            AI solution হলো "কোনো AI ব্যবহার না করা।"
+        </div>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="section">
+        <h2><span class="emoji">🖼️</span> ৭. Visual: চারটা শব্দ একটা ছবিতে</h2>
+
+        <div class="diagram">
+┌─────────────────────────────────────────────────────────┐
+│  AI  (Artificial Intelligence)                            │
+│  "বুদ্ধিমান আচরণ" — rule-based সহ সবকিছু                    │
+│                                                           │
+│   ┌─────────────────────────────────────────────────┐   │
+│   │  Machine Learning (ML)                            │   │
+│   │  "data থেকে নিজে নিজে শেখা"                          │   │
+│   │                                                   │   │
+│   │    ┌───────────────────────────────────────┐     │   │
+│   │    │  Deep Learning (DL)                    │     │   │
+│   │    │  "multi-layer neural network"          │     │   │
+│   │    │                                        │     │   │
+│   │    │    ┌──────────────────────────────┐    │     │   │
+│   │    │    │  Generative AI               │    │     │   │
+│   │    │    │  "নতুন content তৈরি"            │    │     │   │
+│   │    │    │  (LLM যেমন GPT এখানে বসে)      │    │     │   │
+│   │    │    └──────────────────────────────┘    │     │   │
+│   │    └───────────────────────────────────────┘     │   │
+│   └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+        </div>
+
+        <p>
+            এই একটা ছবি মনে রাখলেই যথেষ্ট। সবচেয়ে বাইরের বাক্স সবচেয়ে বড় ও সাধারণ (AI), ভেতরে গেলে ধারণা
+            আরও নির্দিষ্ট হতে থাকে।
+        </p>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="section">
+        <h2><span class="emoji">🔍</span> ৮. AI ≠ ML ≠ Deep Learning ≠ Generative AI — স্পষ্ট পার্থক্য</h2>
+
+        <table>
+            <tr>
+                <th>ধারণা</th>
+                <th>এক লাইনে</th>
+                <th>উদাহরণ</th>
+            </tr>
+            <tr>
+                <td><strong>AI</strong></td>
+                <td>বুদ্ধিমান আচরণের যেকোনো system (শেখা বা নিয়ম-ভিত্তিক)</td>
+                <td>দাবা খেলার rule-based program, GPS route</td>
+            </tr>
+            <tr>
+                <td><strong>Machine Learning</strong></td>
+                <td>data থেকে শিখে prediction/decision করা</td>
+                <td>Spam filter, sales prediction, churn prediction</td>
+            </tr>
+            <tr>
+                <td><strong>Deep Learning</strong></td>
+                <td>multi-layer neural network দিয়ে জটিল pattern শেখা</td>
+                <td>Image recognition, speech-to-text, translation</td>
+            </tr>
+            <tr>
+                <td><strong>Generative AI</strong></td>
+                <td>নতুন content তৈরি করা</td>
+                <td>ChatGPT, image generation, code generation</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>খুব গুরুত্বপূর্ণ distinction:</strong> ChatGPT ব্যবহার করে একটা app বানানো
+            (<em>LLM application</em>) আর একটা model নিজে train করা (<em>model training</em>) — সম্পূর্ণ ভিন্ন দুটো কাজ।
+            বেশিরভাগ AI Engineer চাকরিতে প্রথমটা করে, দ্বিতীয়টা নয়। এই পার্থক্যটা আমরা Series 07 আর 08-এ বিস্তারিত দেখব।
+        </div>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="section">
+        <h2><span class="emoji">🗣️</span> ৯. LLM কোথায় বসে?</h2>
+
+        <p>
+            <strong>LLM (Large Language Model)</strong> — যেমন GPT, Llama, Claude, Gemini — হলো Generative AI-এর
+            সবচেয়ে জনপ্রিয় রূপ, যা বিশেষভাবে <strong>ভাষা</strong> (text) নিয়ে কাজ করে। এটা Deep Learning-এর
+            একটা বিশেষ architecture (Transformer) দিয়ে তৈরি, বিশাল পরিমাণ text data-তে train করা।
+        </p>
+
+        <div class="key-point">
+            মনে রাখার chain: <strong>LLM → Generative AI → Deep Learning → Machine Learning → AI</strong>।<br>
+            প্রতিটা তার আগেরটার ভেতরে বসে।
+        </div>
+
+        <p>
+            আরেকটা distinction এখনই clear করে রাখি (পরে অনেক কাজে দেবে):
+            <strong>embedding ≠ LLM</strong>। দুটোই Deep Learning থেকে আসে, কিন্তু কাজ আলাদা — LLM text
+            generate করে, embedding text-কে সংখ্যায় (vector) রূপান্তর করে যাতে meaning তুলনা করা যায়।
+            এটা Series 07-08-এ বিস্তারিত আসবে।
+        </p>
+    </div>
+
+    <!-- PART 10 -->
+    <div class="section">
+        <h2><span class="emoji">🧪</span> ১০. ছোট experiment: নিজে নিজে যাচাই করুন</h2>
+
+        <p>
+            নিচের প্রতিটা বাস্তব উদাহরণ পড়ুন আর নিজেকে জিজ্ঞেস করুন — এটা কোন বাক্সে পড়ে? উত্তর মিলিয়ে নিন।
+        </p>
+
+        <div class="code-box">
+১. Calculator app যেটা "2 + 2 = 4" হিসাব করে
+   → কোনোটাই না (এটা শুধু programming, বুদ্ধিমত্তা নেই)
+
+২. Google Maps সবচেয়ে কম সময়ের রাস্তা খুঁজে দেয়
+   → AI (search/optimization algorithm, তবে সাধারণত ML নয়)
+
+৩. Netflix "আপনার জন্য" movie সাজেস্ট করে
+   → Machine Learning (আপনার behavior data থেকে শেখে)
+
+৪. Facebook ছবিতে আপনার বন্ধুর মুখ auto-tag করে
+   → Deep Learning (face recognition)
+
+৫. ChatGPT আপনার জন্য একটা কবিতা লিখে দেয়
+   → Generative AI / LLM (নতুন text generate করছে)
+        </div>
+
+        <div class="success-box">
+            যদি এই ৫টা আপনি নিজে বলতে পারেন, তাহলে এই episode-এর মূল লক্ষ্য অর্জিত। এটাই সেই ভিত্তি যার উপর
+            পুরো সিরিজ দাঁড়াবে।
+        </div>
+    </div>
+
+    <!-- PART 11 -->
+    <div class="section">
+        <h2><span class="emoji">🇧🇩</span> ১১. বাস্তব উদাহরণ: বাংলাদেশের context</h2>
+
+        <p>বাংলাদেশে এই চার ধরনের কাজই এখন হচ্ছে, বিভিন্ন কোম্পানিতে:</p>
+
+        <ul>
+            <li><strong>ML:</strong> bKash/Nagad-এর মতো fintech-এ fraud detection, credit scoring — structured data-র উপর classical ML।</li>
+            <li><strong>Deep Learning:</strong> healthcare startup-এ medical image analysis, কিংবা কৃষি-tech-এ পোকা/রোগ চেনা ছবি থেকে।</li>
+            <li><strong>Generative AI / LLM:</strong> customer support automation, document summarization, Bangla content generation — এই মুহূর্তে সবচেয়ে দ্রুত বাড়ছে।</li>
+            <li><strong>Data-heavy AI:</strong> telco (GP, Robi), e-commerce (Daraz)-এ recommendation ও churn prediction।</li>
+        </ul>
+
+        <div class="story-box">
+            <strong>💼 Boss Question</strong><br><br>
+            Boss: <em>"ঠিক আছে, এই শব্দগুলোর পার্থক্য না হয় বুঝলাম। কিন্তু আমার business-এ এটা কোথায় লাগবে?
+            আমি তো টাকা দিয়ে result কিনি, definition না।"</em><br><br>
+            <strong>উত্তর:</strong> লাগবে এখানে — যখন Boss একটা সমস্যা নিয়ে আসবে ("customer কমে যাচ্ছে কেন বুঝতে চাই",
+            বা "একটা chatbot চাই যেটা আমাদের product নিয়ে উত্তর দেবে"), তখন <em>আপনাকে</em> ঠিক করতে হবে এটা
+            একটা ML সমস্যা, নাকি একটা LLM সমস্যা। ভুল বাছাই করলে — হয় অকারণে ৬ মাস আর অনেক টাকা নষ্ট হবে, নয়তো
+            solution-টাই কাজ করবে না। সঠিক শব্দ জানা মানে সঠিক সমাধান, কম খরচ, দ্রুত delivery — এটাই business value.
+        </div>
+    </div>
+
+    <!-- PART 12 -->
+    <div class="section">
+        <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+
+        <p>Job description-এ আপনি প্রায়ই দেখবেন এই লাইনটা:</p>
+
+        <div class="key-point">
+            "Strong understanding of AI/ML concepts including Machine Learning, Deep Learning, and Generative AI."
+        </div>
+
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr>
+                <td>এর মানে কী?</td>
+                <td>কোম্পানি চায় আপনি এই ধারণাগুলোর পার্থক্য ও সম্পর্ক পরিষ্কারভাবে বোঝেন — শুধু buzzword নয়।</td>
+            </tr>
+            <tr>
+                <td>কোম্পানি কেন এটা চায়?</td>
+                <td>যাতে আপনি সমস্যা শুনে সঠিক approach বাছতে পারেন এবং team-এর সাথে সঠিক ভাষায় কথা বলতে পারেন।</td>
+            </tr>
+            <tr>
+                <td>এটা কোন সমস্যা সমাধান করে?</td>
+                <td>ভুল tool বাছাই, ভুল প্রত্যাশা, আর অকারণ খরচ — এসব এড়ায়।</td>
+            </tr>
+            <tr>
+                <td>একজন junior-এর আসলে কী জানা উচিত?</td>
+                <td>এই episode-এর নেস্টেড সম্পর্ক, প্রতিটার এক-লাইন সংজ্ঞা, আর কখন কোনটা লাগে তার intuition।</td>
+            </tr>
+            <tr>
+                <td>এখনই কী master করা লাগবে না?</td>
+                <td>Transformer-এর গণিত, model training internals — এগুলো এখন না, পরে (Series 06-08)।</td>
+            </tr>
+            <tr>
+                <td>GitHub-এ কীভাবে দেখাবেন?</td>
+                <td>একটা README বা blog-এ নিজের ভাষায় এই পার্থক্য ব্যাখ্যা করা; পরে বিভিন্ন ধরনের project দিয়ে প্রমাণ।</td>
+            </tr>
+            <tr>
+                <td>Interview-তে কী জিজ্ঞেস করতে পারে?</td>
+                <td>"AI, ML, DL-এর পার্থক্য বলুন", "Generative AI কেন Deep Learning-এর subset?", "একটা সমস্যা দিলাম — ML নাকি rule-based?"</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 13 -->
+    <div class="section">
+        <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল ধারণা</h2>
+
+        <div class="technical-box">
+            <strong>ভুল ১:</strong> "AI আর ML একই জিনিস।" →
+            <strong>ঠিক:</strong> ML হলো AI-এর একটা subset। সব ML-ই AI, সব AI মানেই ML না।<br><br>
+
+            <strong>ভুল ২:</strong> "Deep Learning সবসময় ML-এর চেয়ে ভালো।" →
+            <strong>ঠিক:</strong> ছোট/structured data-তে classical ML প্রায়ই DL-এর চেয়ে ভালো, দ্রুত ও সস্তা।<br><br>
+
+            <strong>ভুল ৩:</strong> "AI মানেই ChatGPT / Generative AI।" →
+            <strong>ঠিক:</strong> Generative AI হলো AI-এর একটা ছোট, নতুন অংশ। বেশিরভাগ industry AI এখনো classical ML।<br><br>
+
+            <strong>ভুল ৪:</strong> "একটা LLM app বানানো মানেই AI model train করা।" →
+            <strong>ঠিক:</strong> LLM API ব্যবহার করা (application) আর model train করা সম্পূর্ণ আলাদা কাজ।<br><br>
+
+            <strong>ভুল ৫:</strong> "সব AI কাজে শেখা (learning) থাকে।" →
+            <strong>ঠিক:</strong> Rule-based AI-তে কোনো data থেকে শেখা নেই, তবু সেটা AI।
+        </div>
+    </div>
+
+    <!-- PART 14 -->
+    <div class="section">
+        <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+
+        <div class="info-box">
+            <strong>প্রশ্ন ১:</strong> AI, ML এবং Deep Learning-এর মধ্যে পার্থক্য কী?<br>
+            <em>উত্তরের কাঠামো:</em> nested সম্পর্ক দিয়ে শুরু করুন (AI ⊃ ML ⊃ DL), প্রতিটার এক-লাইন সংজ্ঞা, একটা করে উদাহরণ।<br><br>
+
+            <strong>প্রশ্ন ২:</strong> Generative AI কি Deep Learning থেকে আলাদা?<br>
+            <em>উত্তর:</em> আলাদা নয়, বরং subset — Generative AI হলো Deep Learning-এর একটা application যা নতুন content তৈরি করে।<br><br>
+
+            <strong>প্রশ্ন ৩:</strong> একটা সমস্যা দিলাম — "order 5000 টাকার বেশি হলে discount দাও।" এটা কি ML দিয়ে করবেন?<br>
+            <em>উত্তর:</em> না। এটা simple rule; এখানে শেখার কিছু নেই। ML ব্যবহার করা অপ্রয়োজনীয় জটিলতা।<br><br>
+
+            <strong>প্রশ্ন ৪:</strong> Traditional programming আর Machine Learning-এর মূল পার্থক্য?<br>
+            <em>উত্তর:</em> Traditional-এ মানুষ নিয়ম লেখে (Data+Rules→Output); ML-এ machine data থেকে নিয়ম বের করে (Data+Output→Rules)।
+        </div>
+    </div>
+
+    <!-- PART 15 -->
+    <div class="section">
+        <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে (Mini Exercise)</h2>
+
+        <div class="key-point">
+            নিচের ৫টা কাজকে AI / ML / Deep Learning / Generative AI / "কোনোটাই না" — এই বাক্সে ফেলুন।
+            একটা কাগজে লিখুন, তারপর নিজে যুক্তি দিন কেন:<br><br>
+            ১. Email-এ auto spam detection<br>
+            ২. একটা বাংলা গল্প লিখে দেওয়া AI<br>
+            ৩. ATM মেশিনের PIN যাচাই<br>
+            ৪. CCTV footage-এ মানুষ শনাক্ত করা<br>
+            ৫. আগের ৩ বছরের বিক্রি দেখে আগামী মাসের বিক্রি অনুমান<br><br>
+            <em>(ইঙ্গিত: ২→Generative AI, ৩→কোনোটাই না, ৪→Deep Learning, ১ ও ৫→Machine Learning)</em>
+        </div>
+    </div>
+
+    <!-- PART 16 -->
+    <div class="section">
+        <h2><span class="emoji">🚀</span> ১৬. Project Connection</h2>
+
+        <p>
+            এই পুরো সিরিজ জুড়ে আমরা একটা <strong>flagship project</strong> ধাপে ধাপে বানাব —
+            <strong>"Bangladesh Tech Career Assistant"</strong>। শুরুতে এটা হবে একটা সাধারণ Python CLI, তারপর
+            data analysis, তারপর ML model, তারপর ধীরে ধীরে NLP, LLM, RAG, এবং শেষে একটা deploy করা production API।
+        </p>
+        <div class="info-box">
+            আজকের শেখা কীভাবে এই project-এ লাগবে? যখন আমরা "job description থেকে skill বের করা" feature বানাব,
+            তখন সিদ্ধান্ত নিতে হবে — এটা কি simple keyword rule (কোনো ML না), নাকি ML classification, নাকি
+            LLM দিয়ে extraction? আজকের এই মানসিক framework-টাই সেই সিদ্ধান্তের ভিত্তি।
+        </div>
+    </div>
+
+    <!-- PART 17 -->
+    <div class="section">
+        <h2><span class="emoji">📌</span> ১৭. সারসংক্ষেপ</h2>
+
+        <div class="success-box">
+            এই Episode-এ আমরা শিখলাম:<br><br>
+            ✓ AI, ML, Deep Learning, Generative AI একটা <strong>nested</strong> সম্পর্কে থাকে — একটার ভেতর আরেকটা<br>
+            ✓ AI = বুদ্ধিমান আচরণ (rule-based সহ); ML = data থেকে শেখা; DL = multi-layer neural network; GenAI = নতুন content তৈরি<br>
+            ✓ Traditional programming (মানুষ নিয়ম লেখে) বনাম ML (machine নিয়ম বের করে)-এর মূল পার্থক্য<br>
+            ✓ LLM বসে Generative AI-এর ভেতরে; embedding ≠ LLM; LLM app ≠ model training<br>
+            ✓ সব সমস্যায় Deep Learning/LLM লাগে না — সঠিক সমস্যায় সঠিক tool বাছাই-ই engineer-এর আসল দক্ষতা<br>
+            ✓ এই পার্থক্য জানা interview, JD পড়া, এবং সঠিক শেখার পথ বাছাই — সবখানে কাজে লাগে
+        </div>
+    </div>
+
+    <!-- PART 18 -->
+    <div class="section">
+        <h2><span class="emoji">➡️</span> ১৮. পরবর্তী পর্বে কী শিখব</h2>
+
+        <div class="key-point">
+            <strong>পরবর্তী Episode (S01E02):</strong> "AI Engineer, ML Engineer, Data Scientist, Data Engineer —
+            কে আসলে কী করে?"<br><br>
+            এই শব্দগুলো তো বুঝলাম, কিন্তু এই field-এ চাকরির নামগুলোও তো আলাদা আলাদা! Rahim আসলে কোন role-টা target
+            করবে? পরের পর্বে আমরা প্রতিটা role-এর দৈনন্দিন কাজ, দরকারি skill, আর একে অপরের থেকে পার্থক্য দেখব — যাতে
+            আপনি নিজের জন্য সঠিক লক্ষ্য বাছতে পারেন।
+        </div>
+
+        <div class="series-nav">
+            <span class="series-nav-item disabled" style="flex:1;min-width:220px;background:#ccc;color:#888;padding:20px 25px;border-radius:10px;font-weight:600;text-align:center;">
+                ⬅ পূর্ববর্তী Episode (এটাই প্রথম পর্ব)
+            </span>
+            <a href="episode-02-ai-ml-data-roles.html">
+                পরবর্তী Episode: কে আসলে কী করে? ➡
+            </a>
+        </div>
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০</p>
+            <p>ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 01, Episode 01)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/series-01-episode-01.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

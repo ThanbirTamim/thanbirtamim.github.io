@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Unsupervised learning — K-Means clustering ও PCA dimensionality reduction — label ছাড়া pattern খোঁজা বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Unsupervised: K-Means ও PCA — label ছাড়া pattern | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Unsupervised learning — K-Means clustering ও PCA dimensionality reduction — label ছাড়া pattern খোঁজা বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Unsupervised: K-Means ও PCA — label ছাড়া pattern | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 05 &raquo; Episode 09
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Unsupervised: K-Means ও PCA — label ছাড়া pattern</h1>
+    <p class="subtitle">clustering ও dimensionality reduction (Series 05, Episode 09)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 05 — Classical Machine Learning</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 09 / 11</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: label ছাড়া data-র স্তূপ</li>
+        <li>২. সমস্যা: Supervised বনাম Unsupervised</li>
+        <li>৩. Clustering কী? K-Means-এর গল্প (৩ স্তরে)</li>
+        <li>৪. Visual: K-Means কীভাবে ধাপে ধাপে কাজ করে</li>
+        <li>৫. কোড: K-Means দিয়ে customer/job segmentation</li>
+        <li>৬. কয়টা cluster? Elbow ও Silhouette method</li>
+        <li>৭. PCA কী? মাত্রা (dimension) কমানোর গল্প (৩ স্তরে)</li>
+        <li>৮. Visual: PCA কীভাবে তথ্য ধরে রাখে</li>
+        <li>৯. কোড: PCA দিয়ে dimensionality reduction</li>
+        <li>১০. Experiment: PCA + K-Means একসাথে</li>
+        <li>১১. Bangladesh উদাহরণ ও Boss Question</li>
+        <li>১২. Job Requirement Decoder</li>
+        <li>১৩. সাধারণ ভুল</li>
+        <li>১৪. Interview Prep</li>
+        <li>১৫. হাতে-কলমে</li>
+        <li>১৬. Project Connection ও সারসংক্ষেপ</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📝</span> ১. গল্প: label ছাড়া data-র স্তূপ</h2>
+    <p>
+        Nila একটা e-commerce কোম্পানির ১ লাখ customer-এর data নিয়ে বসল। প্রতিটা row-তে আছে — কত টাকা খরচ,
+        কতবার order, কী কিনেছে। কিন্তু কোথাও লেখা নেই "এই customer কোন type-এর"। কোনো <strong>label</strong> নেই।
+    </p>
+    <div class="story-box">
+        Rahim: "কিন্তু label ছাড়া model কীভাবে শিখবে? আগের সব episode-এ তো আমরা y (label) দিয়ে train করেছি!"<br><br>
+        Nila: "এখানেই <strong>Unsupervised Learning</strong>-এর মজা। আমরা model-কে বলি না 'এটা কোন type'।
+        বরং model নিজেই data-র মধ্যে <em>স্বাভাবিক দল (group)</em> খুঁজে বের করে — কোন কোন customer একে অপরের
+        মতো আচরণ করে। এটাই <strong>clustering</strong>।"
+    </div>
+    <p>
+        এই episode-এ দুটো সবচেয়ে দরকারি unsupervised technique শিখব — <strong>K-Means</strong> (দল খোঁজা) ও
+        <strong>PCA</strong> (মাত্রা কমানো)।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: Supervised বনাম Unsupervised</h2>
+    <div class="comparison">
+        <div class="comparison-item">
+            <strong>Supervised (আগের episode-গুলো)</strong><br><br>
+            data-তে label (y) আছে।<br>
+            লক্ষ্য: X থেকে y predict করা।<br>
+            উদাহরণ: churn (হ্যাঁ/না), house price।
+        </div>
+        <div class="comparison-item">
+            <strong>Unsupervised (আজ)</strong><br><br>
+            কোনো label নেই, শুধু X।<br>
+            লক্ষ্য: data-র লুকানো গঠন/দল খোঁজা।<br>
+            উদাহরণ: customer segmentation, topic খোঁজা।
+        </div>
+    </div>
+    <div class="key-point">
+        <strong>মনে রাখুন distinction:</strong> Classification-এ আপনি আগে থেকে জানেন কয়টা class ও কোনটা কী
+        (label আছে)। Clustering-এ আপনি জানেন না — model নিজেই দল বানায়, তারপর <em>আপনি</em> সেই দলগুলোর অর্থ
+        ব্যাখ্যা করেন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. Clustering কী? K-Means-এর গল্প (৩ স্তরে)</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        একটা পার্টিতে অচেনা মানুষ। কেউ বলে দেয়নি কে কোন দলের। কিন্তু আপনি খেয়াল করলেন — কিছু মানুষ কাছাকাছি
+        দাঁড়িয়ে গল্প করছে, আরেক দল আরেক কোণে। আপনি স্বাভাবিকভাবেই "দল" চিনে ফেললেন। K-Means ঠিক এটাই করে —
+        যারা "কাছাকাছি" (মিল বেশি) তাদের এক দলে ফেলে।
+    </p>
+    <h3>Level 2 — technical ভাবে কী হচ্ছে</h3>
+    <p>
+        আপনি বলে দেন কয়টা দল চান (k)। K-Means প্রতিটা দলের একটা কেন্দ্র (<strong>centroid</strong>) ধরে, তারপর
+        প্রতিটা point-কে তার সবচেয়ে কাছের centroid-এর দলে দেয় (সাধারণত Euclidean distance)। এরপর centroid-গুলো
+        দলের গড় অবস্থানে সরে যায়। এই দুই ধাপ বারবার চলে যতক্ষণ centroid আর নড়ে না।
+    </p>
+    <h3>Level 3 — engineer perspective</h3>
+    <p>
+        Engineer হিসেবে মনে রাখবেন — K-Means distance-নির্ভর, তাই <strong>feature scaling বাধ্যতামূলক</strong>
+        (নাহলে বড় স্কেলের feature, যেমন "টাকা", ছোট স্কেলের feature, যেমন "order সংখ্যা"-কে চাপা দেবে)। আর k
+        আপনাকে বেছে দিতে হয় — এটাই সবচেয়ে বড় practical চ্যালেঞ্জ।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৪. Visual: K-Means কীভাবে ধাপে ধাপে কাজ করে</h2>
+    <div class="diagram">
+ধাপ ০: এলোমেলো k=২ centroid (X) বসানো
+   o o        o
+  o o o   X      o o
+   o o        X   o o o
+
+ধাপ ১: প্রতিটা point কাছের centroid-এর দলে যায়
+   [A A]       [B]
+  [A A A]  X   [B B]
+   [A A]     X [B B B]
+
+ধাপ ২: centroid দলের গড়ে সরে যায় (X নতুন জায়গায়)
+   [A A]        [B]
+  [A A X A]   [B X B]
+   [A A]       [B B B]
+
+ধাপ ১-২ বারবার চলে -> centroid স্থির হলে থামে (converge)
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৫. কোড: K-Means দিয়ে segmentation</h2>
+    <p>কেন scikit-learn? classical unsupervised algorithm-এর জন্য এটাই standard, API সহজ ও সুসংগত।</p>
+    <div class="code-box">
+import numpy as np
+from sklearn.datasets import make_blobs
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# উদাহরণ data (বাস্তবে: customer/job feature বসবে)
+X, _ = make_blobs(n_samples=500, centers=3,
+                  cluster_std=1.2, random_state=42)
+
+# ধাপ ১: scaling — K-Means distance-নির্ভর, তাই আবশ্যক
+X_scaled = StandardScaler().fit_transform(X)
+
+# ধাপ ২: K-Means (k=3), n_init=10 => ভালো শুরু বেছে নেয়
+km = KMeans(n_clusters=3, n_init=10, random_state=42)
+labels = km.fit_predict(X_scaled)
+
+print("প্রতিটা point-এর cluster:", labels[:10])
+print("centroid আকার:", km.cluster_centers_.shape)
+print("inertia (কম = ভালো):", round(km.inertia_, 2))
+    </div>
+    <div class="technical-box">
+        <code>fit_predict</code> প্রতিটা point-কে একটা cluster নম্বর দেয় (0,1,2...)। এই নম্বর শুধুই label —
+        "cluster 0" মানে "সবচেয়ে ভালো" নয়। দল বানানোর পর আপনাকেই বিশ্লেষণ করতে হবে প্রতিটা দলের বৈশিষ্ট্য কী।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📐</span> ৬. কয়টা cluster? Elbow ও Silhouette method</h2>
+    <p>
+        সবচেয়ে বড় প্রশ্ন — k কত হবে? দুটো জনপ্রিয় উপায়:
+    </p>
+    <ul>
+        <li><strong>Elbow method:</strong> বিভিন্ন k-এর জন্য inertia (দলের ভেতর distance-এর যোগফল) plot করুন।
+            যেখানে curve হঠাৎ "কনুই"-এর মতো বাঁক নেয়, সেটাই ভালো k।</li>
+        <li><strong>Silhouette score:</strong> মাপে প্রতিটা point নিজের দলে কতটা মানানসই বনাম পাশের দলের চেয়ে।
+            মান -১ থেকে +১; বেশি মানে ভালো আলাদা দল।</li>
+    </ul>
+    <div class="code-box">
+from sklearn.metrics import silhouette_score
+
+for k in range(2, 7):
+    km = KMeans(n_clusters=k, n_init=10, random_state=42)
+    lab = km.fit_predict(X_scaled)
+    sil = silhouette_score(X_scaled, lab)
+    print("k=%d  inertia=%.1f  silhouette=%.3f"
+          % (k, km.inertia_, sil))
+# সবচেয়ে বেশি silhouette + elbow দেখে k বাছুন
+    </div>
+    <div class="key-point">
+        k বাছাই বিজ্ঞান আর ব্যবসায়িক বোধ দুটোরই মিশ্রণ। Elbow/Silhouette পথ দেখায়, কিন্তু শেষমেশ দলগুলো
+        <em>ব্যাখ্যা করা যায় কি না</em> সেটাই আসল — "৩টা দল হলো premium, regular, dormant customer" — এমন
+        অর্থপূর্ণ ভাগই কাজে লাগে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৭. PCA কী? মাত্রা কমানোর গল্প (৩ স্তরে)</h2>
+    <h3>Level 1 — সহজ intuition</h3>
+    <p>
+        একটা ৩D বস্তুর ছবি তুললে সেটা ২D কাগজে আসে — কিছু তথ্য হারায়, কিন্তু মূল আকৃতি বোঝা যায়। PCA ঠিক
+        তাই করে — অনেক feature (উচ্চ মাত্রা) থেকে কম feature-এ নামায়, যাতে সবচেয়ে বেশি তথ্য (variance) ধরে থাকে।
+    </p>
+    <h3>Level 2 — technical ভাবে কী হচ্ছে</h3>
+    <p>
+        PCA এমন নতুন অক্ষ (<strong>principal component</strong>) খুঁজে বের করে যেগুলোর দিকে data-র variance
+        সবচেয়ে বেশি। প্রথম component সবচেয়ে বেশি variance ধরে, দ্বিতীয়টা তার পরে, এভাবে। তারপর কম-গুরুত্বপূর্ণ
+        component বাদ দিয়ে মাত্রা কমানো হয়। এটা একটা linear transformation।
+    </p>
+    <h3>Level 3 — engineer perspective</h3>
+    <p>
+        PCA কেন লাগে? (১) অনেক feature থাকলে model ধীর হয় ও overfit করতে পারে — "curse of dimensionality";
+        (২) visualization — ৫০ feature-কে ২D-তে নামিয়ে plot করা যায়; (৩) noise কমানো। তবে সাবধান — PCA-এর পর
+        নতুন axis-গুলো আর মানুষের বোধগম্য feature থাকে না (interpretability হারায়)।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৮. Visual: PCA কীভাবে তথ্য ধরে রাখে</h2>
+    <div class="diagram">
+২টা feature (2D) -> ১টা principal component (1D)
+
+  feature2
+    |      o o
+    |    o o o          <- data একটা কোনাকুনি দিকে ছড়ানো
+    |  o o o
+    |o o o
+    +-------------- feature1
+
+PCA নতুন অক্ষ (PC1) বসায় ঠিক সেই দিকে যেখানে
+ছড়ানো (variance) সবচেয়ে বেশি:
+
+        PC1 (সবচেয়ে বেশি variance এই দিকে)
+       /
+      /  o o o o o       <- এখন শুধু PC1-এর উপর দূরত্ব দিয়েই
+     /  o o o o             বেশিরভাগ তথ্য ধরে রাখা যায়
+    /  o o o
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৯. কোড: PCA দিয়ে dimensionality reduction</h2>
+    <div class="code-box">
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# PCA-ও scale-sensitive => আগে standardize করুন
+X_scaled = StandardScaler().fit_transform(X)
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
+
+print("আগের আকার:", X_scaled.shape)
+print("PCA-এর পরে:", X_pca.shape)
+print("প্রতিটা component কত variance ধরল:",
+      pca.explained_variance_ratio_.round(3))
+print("মোট ধরা variance:",
+      round(pca.explained_variance_ratio_.sum(), 3))
+    </div>
+    <div class="info-box">
+        <code>explained_variance_ratio_</code> বলে প্রতিটা component মূল তথ্যের কত ভাগ ধরল। যদি প্রথম ২টা
+        component মিলে ০.৯৫ (৯৫%) ধরে, তাহলে বাকি feature বাদ দিয়ে সামান্য তথ্য হারিয়ে অনেক সরল model পাওয়া যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ১০. Experiment: PCA + K-Means একসাথে</h2>
+    <p>বাস্তব pipeline-এ প্রায়ই PCA দিয়ে মাত্রা কমিয়ে, তারপর K-Means clustering করা হয় (দ্রুত ও কম noise):</p>
+    <div class="code-box">
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+pipe = Pipeline([
+    ("scale", StandardScaler()),
+    ("pca", PCA(n_components=2)),
+    ("kmeans", KMeans(n_clusters=3, n_init=10, random_state=42)),
+])
+
+labels = pipe.fit_predict(X)
+# silhouette মাপতে PCA-transformed data লাগবে
+X_reduced = pipe[:-1].transform(X)   # scale + pca পর্যন্ত
+print("silhouette:", round(silhouette_score(X_reduced, labels), 3))
+    </div>
+    <p>
+        <strong>কী দেখবেন:</strong> PCA দিয়ে মাত্রা কমানোর পরও যদি silhouette ভালো থাকে, তাহলে বুঝবেন
+        কম feature-এই দল স্পষ্ট — model হালকা হলো, তথ্য প্রায় অটুট থাকল। Pipeline ব্যবহার করায় scaling/PCA
+        সবসময় সঠিক ক্রমে হয়।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১১. Bangladesh উদাহরণ ও Boss Question</h2>
+    <p>
+        Daraz-এর মতো e-commerce বা GP/Robi-এর মতো telco প্রতিদিন লক্ষ লক্ষ customer নিয়ে কাজ করে। কোনো label
+        নেই, তবু তারা জানতে চায় — কোন কোন ধরনের customer আছে? K-Means দিয়ে তারা customer segment বানায়
+        (high-value, occasional, churn-risk), তারপর প্রতিটা segment-এ আলাদা offer পাঠায়। PCA দিয়ে শত শত
+        behavioral feature-কে হালকা করে দ্রুত বিশ্লেষণ করে।
+    </p>
+    <div class="story-box">
+        <strong>💼 Boss Question</strong><br><br>
+        Boss: "আমাদের তো কোনো labeled data নেই। তাহলে এই clustering দিয়ে আমার লাভটা কোথায়?"<br><br>
+        <strong>উত্তর:</strong> "স্যার, এটাই এর সৌন্দর্য — label ছাড়াই আমরা customer-দের স্বাভাবিক দল বের করতে
+        পারি। যেমন — কারা বেশি খরচ করে, কারা চলে যাওয়ার ঝুঁকিতে। তারপর প্রতিটা দলে আলাদা marketing/offer দিলে
+        খরচ কমে, conversion বাড়ে। মানে labeled data না থাকলেও data থেকে সরাসরি business সিদ্ধান্ত — এটাই
+        unsupervised learning-এর business value।"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১২. Job Requirement Decoder</h2>
+    <p>JD-তে দেখবেন: <em>"Familiarity with clustering (K-Means) and dimensionality reduction (PCA)."</em></p>
+    <div class="info-box">
+        <strong>১. কী বোঝায়?</strong> label ছাড়া data-তে group খোঁজা ও feature কমানো আপনি পারেন।<br><br>
+        <strong>২. কেন চায়?</strong> segmentation, EDA, noise কমানো ও বড় feature space সামলাতে এগুলো লাগে।<br><br>
+        <strong>৩. কোন সমস্যা সমাধান করে?</strong> "labeled data নেই কিন্তু data থেকে insight চাই" — এই সমস্যা।<br><br>
+        <strong>৪. junior-এর কী জানা লাগে?</strong> K-Means-এর ধাপ, scaling কেন আবশ্যক, k বাছাই (elbow/silhouette),
+        PCA কী করে, <code>explained_variance_ratio_</code>।<br><br>
+        <strong>৫. এখনই কী master লাগে না?</strong> DBSCAN, hierarchical clustering, t-SNE/UMAP-এর গণিত, kernel PCA — পরে।<br><br>
+        <strong>৬. GitHub-এ কীভাবে দেখাবে?</strong> customer segmentation notebook — elbow plot, silhouette, ২D PCA scatter
+        যেখানে cluster রং করা, আর প্রতিটা segment-এর ব্যাখ্যা।<br><br>
+        <strong>৭. Interview-তে কী জিজ্ঞেস করতে পারে?</strong> "K-Means কীভাবে কাজ করে?", "k কীভাবে বাছবেন?",
+        "K-Means-এ scaling কেন জরুরি?", "PCA কী ও কখন ব্যবহার করবেন?", "Clustering vs classification পার্থক্য?"
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৩. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> scaling ছাড়া K-Means/PCA চালানো। → বড়-স্কেলের feature ফলাফল নষ্ট করে; আগে StandardScaler।<br><br>
+        <strong>ভুল ২:</strong> cluster নম্বরকে (0,1,2) অর্থপূর্ণ label ভাবা। → এগুলো শুধু id; আপনাকে ব্যাখ্যা করতে হবে।<br><br>
+        <strong>ভুল ৩:</strong> k অনুমানে বসিয়ে দেওয়া। → elbow/silhouette + business বোধ দিয়ে বাছুন।<br><br>
+        <strong>ভুল ৪:</strong> PCA-কে feature selection ভাবা। → PCA নতুন combined axis বানায়, মূল feature বাছে না।<br><br>
+        <strong>ভুল ৫:</strong> সবসময় PCA করা। → কম feature বা interpretability দরকার হলে PCA এড়িয়ে চলুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৪. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> K-Means কীভাবে কাজ করে?<br>
+        <em>উত্তর:</em> k centroid বসায় → প্রতিটা point কাছের centroid-এর দলে যায় → centroid দলের গড়ে সরে →
+        converge না হওয়া পর্যন্ত repeat।<br><br>
+        <strong>প্রশ্ন ২:</strong> Optimal k কীভাবে বাছবেন?<br>
+        <em>উত্তর:</em> Elbow method (inertia curve-এর কনুই) ও Silhouette score; সাথে business ব্যাখ্যা।<br><br>
+        <strong>প্রশ্ন ৩:</strong> PCA কী এবং কখন ব্যবহার করবেন?<br>
+        <em>উত্তর:</em> variance ধরে রেখে মাত্রা কমানোর technique; বেশি feature, visualization বা noise কমাতে দরকার।<br><br>
+        <strong>প্রশ্ন ৪:</strong> K-Means ও PCA-তে scaling কেন জরুরি?<br>
+        <em>উত্তর:</em> দুটোই distance/variance-নির্ভর; unscaled feature হলে বড়-স্কেলের feature আধিপত্য করে ফল বিকৃত করে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৫. হাতে-কলমে</h2>
+    <div class="key-point">
+        P1-এর Bangladesh Job Market data (বা যেকোনো customer data) নিন:<br><br>
+        ১. কিছু numeric feature বাছুন (যেমন salary, experience_years)।<br>
+        ২. StandardScaler দিয়ে scale করুন।<br>
+        ৩. k=2..6 এর জন্য silhouette বের করে সেরা k বাছুন।<br>
+        ৪. সেই k দিয়ে K-Means চালিয়ে cluster বের করুন।<br>
+        ৫. PCA(2) দিয়ে ২D scatter plot বানান, cluster অনুযায়ী রং দিন।<br>
+        ৬. প্রতিটা cluster-কে ২-৩ শব্দে নাম দিন (যেমন "junior-low-salary")।<br><br>
+        <em>প্রশ্ন: cluster-গুলো কি ব্যবসায়িকভাবে অর্থপূর্ণ? scaling না করলে ফল কতটা বদলায়?</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৬. Project Connection ও সারসংক্ষেপ</h2>
+    <p>
+        Flagship <strong>"Bangladesh Tech Career Assistant"</strong>-এ K-Means দিয়ে আমরা মিল-থাকা চাকরি বা
+        skill-দল আলাদা করতে পারি (যেমন "data role", "web role", "DevOps role") — কোনো label ছাড়াই। আর PCA
+        পরে (Series 07-08) embedding-এর উচ্চ মাত্রা visualize করতে কাজে দেবে। মনে রাখুন — clustering দিয়ে
+        তৈরি label পরে supervised model-এর feature হিসেবেও ব্যবহার করা যায়।
+    </p>
+    <div class="success-box">
+        এই Episode-এ শিখলাম:<br><br>
+        ✓ Supervised (label আছে) বনাম Unsupervised (label নেই) — মূল পার্থক্য<br>
+        ✓ K-Means: centroid → assign → move → repeat; দল বানায়, নম্বর শুধুই id<br>
+        ✓ k বাছাই: Elbow ও Silhouette + business বোধ<br>
+        ✓ PCA: variance ধরে রেখে মাত্রা কমানো; explained_variance_ratio_ দেখে কত ধরল বোঝা<br>
+        ✓ K-Means ও PCA দুটোতেই feature scaling আবশ্যক<br>
+        ✓ Pipeline দিয়ে scale → PCA → K-Means সঠিক ক্রমে চালানো
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode:</strong> Feature Engineering — model-এর আসল শক্তি data থেকেই আসে। দেখব কীভাবে
+        কাঁচা data থেকে ভালো feature বানালে সাধারণ model-ও চমকে দেয়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-08-overfitting-cv-tuning.html">⬅ পূর্ববর্তী: Overfitting ও CV</a>
+            <a href="episode-10-feature-engineering.html">পরবর্তী: Feature Engineering ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 05, Episode 09)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s05e09.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

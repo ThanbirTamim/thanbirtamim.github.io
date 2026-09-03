@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python OOP — class, inheritance — কেন sklearn ও PyTorch-এর API class-based, junior-দের জন্য বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="OOP for ML: Class দিয়ে কেন model, dataset, pipeline লেখা হয় | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Python OOP — class, inheritance — কেন sklearn ও PyTorch-এর API class-based, junior-দের জন্য বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>OOP for ML: Class দিয়ে কেন model, dataset, pipeline লেখা হয় | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 02 &raquo; Episode 04
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> OOP for ML: Class দিয়ে কেন model, dataset, pipeline লেখা হয়</h1>
+    <p class="subtitle">কেন scikit-learn আর PyTorch পুরোটাই OOP (Series 02, Episode 04)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-intermediate">🟡 INTERMEDIATE</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 02 — AI Engineer-দের জন্য Python</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 04 / 09</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: Rahim-এর sklearn confusion</li>
+        <li>২. আসল সমস্যা: data + behavior একসাথে</li>
+        <li>৩. class ও object কী</li>
+        <li>৪. তিন লেভেলে বোঝা: OOP-এর ৪ স্তম্ভ</li>
+        <li>৫. Code: প্রথম class — JobPost</li>
+        <li>৬. কেন scikit-learn আর PyTorch পুরোটাই OOP</li>
+        <li>৭. Visual: fit/predict pattern</li>
+        <li>৮. inheritance: base থেকে বিশেষায়িত</li>
+        <li>৯. Experiment: নিজের mini-estimator</li>
+        <li>১০. বাংলাদেশের বাস্তব context</li>
+        <li>১১. AI Engineer-এর দৃষ্টিকোণ</li>
+        <li>১২. Boss Question</li>
+        <li>১৩. Job Requirement Decoder</li>
+        <li>১৪. সাধারণ ভুল</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে (Mini Exercise)</li>
+        <li>১৭. Project Connection</li>
+        <li>১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim-এর sklearn confusion</h2>
+    <p>
+        Rahim একটা tutorial-এ দেখল: <code>model = LinearRegression()</code>, তারপর
+        <code>model.fit(X, y)</code>, তারপর <code>model.predict(X_new)</code>। সে অবাক —
+        "<code>model</code> একটা variable, তাহলে তার ভেতরে <code>.fit()</code> এলো কোথা থেকে?"
+    </p>
+    <div class="story-box">
+        <strong>Arif</strong> বলল:<br><br>
+        <em>"এটাই OOP, Rahim। <code>LinearRegression</code> একটা class, <code>model</code> তার একটা object।
+        object-এর ভেতরে data (শেখা weight) আর behavior (fit/predict) দুটোই থাকে। পুরো scikit-learn আর
+        PyTorch এই ধারণার ওপর দাঁড়িয়ে। OOP না বুঝলে তুমি এই library-গুলো ব্যবহার করবে ঠিকই, কিন্তু
+        ভেতরে কী হচ্ছে বুঝবে না।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. আসল সমস্যা: data + behavior একসাথে</h2>
+    <p>
+        একটা model-এর দুটো জিনিস থাকে: <strong>state</strong> (শেখা parameter/weight) আর
+        <strong>behavior</strong> (predict করার নিয়ম)। এগুলো আলাদা variable আর function দিয়ে সামলালে
+        জট পাকিয়ে যায়। OOP এই দুটোকে একটা "object"-এ বেঁধে ফেলে — data আর তার ওপর কাজ একসাথে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🏗️</span> ৩. class ও object কী</h2>
+    <p>
+        <strong>class</strong> হলো একটা নকশা (blueprint); <strong>object</strong> হলো সেই নকশা থেকে বানানো
+        বাস্তব জিনিস (instance)। "গাড়ির নকশা" = class; "আপনার নির্দিষ্ট গাড়িটা" = object।
+    </p>
+    <div class="key-point">
+        <code>class LinearRegression:</code> হলো নকশা। <code>model = LinearRegression()</code> হলো একটা object।
+        আপনি একই class থেকে যত খুশি object বানাতে পারেন — প্রতিটির নিজস্ব state থাকবে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৪. তিন লেভেলে বোঝা: OOP-এর ৪ স্তম্ভ</h2>
+    <div class="technical-box">
+        <strong>Level 1 — সহজ intuition:</strong><br>
+        object = একটা বাক্স, যার ভেতরে জিনিস (data) আর সেই জিনিস নিয়ে কী কী করা যায় (function) — দুটোই থাকে।
+    </div>
+    <div class="technical-box">
+        <strong>Level 2 — technical (৪ স্তম্ভ):</strong><br>
+        • <strong>Encapsulation:</strong> data + method একসাথে বাঁধা।<br>
+        • <strong>Abstraction:</strong> জটিলতা লুকিয়ে সহজ interface (<code>.fit()</code>) দেওয়া।<br>
+        • <strong>Inheritance:</strong> এক class অন্যটির বৈশিষ্ট্য পাওয়া।<br>
+        • <strong>Polymorphism:</strong> একই নাম (<code>.fit()</code>) ভিন্ন class-এ ভিন্নভাবে কাজ করা।
+    </div>
+    <div class="technical-box">
+        <strong>Level 3 — AI Engineer-এর দৃষ্টিকোণ:</strong><br>
+        polymorphism-এর কারণেই আপনি <code>LinearRegression</code> বদলে <code>RandomForest</code> বসিয়ে
+        একই <code>.fit()/.predict()</code> কোড চালাতে পারেন। এটাই scikit-learn-এর সৌন্দর্য — সব estimator
+        একই interface মানে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৫. Code: প্রথম class — JobPost</h2>
+    <div class="code-box">
+class JobPost:
+    def __init__(self, title, text, salary):
+        # __init__ = constructor; object বানানোর সময় চলে
+        self.title = title      # self = এই নির্দিষ্ট object
+        self.text = text
+        self.salary = salary
+
+    def has_skill(self, skill):
+        """behavior: এই job-এ skill আছে কিনা।"""
+        return skill.lower() in self.text.lower()
+
+    def is_senior(self):
+        return "senior" in self.title.lower()
+
+
+# object বানানো
+job = JobPost("Senior ML Engineer", "Python, PyTorch, MLOps", 150000)
+print(job.title)              # Senior ML Engineer
+print(job.has_skill("pytorch"))  # True
+print(job.is_senior())        # True
+    </div>
+    <p>
+        <strong>যা লক্ষ্য করবেন:</strong> <code>self</code> মানে "এই নির্দিষ্ট object"। <code>__init__</code>
+        object তৈরির সময় একবার চলে এবং state (title, text, salary) সেট করে। data (state) আর behavior
+        (has_skill) একই বাক্সে — এটাই encapsulation।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔍</span> ৬. কেন scikit-learn আর PyTorch পুরোটাই OOP</h2>
+    <div class="code-box">
+from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()   # object তৈরি (state: এখনো শেখেনি)
+model.fit(X_train, y_train)  # method: শেখে, weight object-এ জমা হয়
+preds = model.predict(X_test)# method: জমানো weight দিয়ে prediction
+
+# PyTorch-এও একই ধারা:
+# class Net(nn.Module):
+#     def __init__(self): ...      # layers (state) সংজ্ঞায়িত
+#     def forward(self, x): ...    # behavior: input থেকে output
+    </div>
+    <div class="info-box">
+        <strong>মূল distinction:</strong> <code>fit()</code> = <strong>training</strong> (data থেকে শেখা),
+        <code>predict()</code> = <strong>inference</strong> (শেখা model দিয়ে উত্তর)। দুটো আলাদা কাজ —
+        object-এর state (শেখা weight) দুটোকে জোড়ে। training ≠ inference, এটা সবসময় মনে রাখুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৭. Visual: fit/predict pattern</h2>
+    <div class="diagram">
+model = LinearRegression()      # object (খালি state)
+        │
+        ▼
+model.fit(X_train, y_train)     # TRAINING: state = শেখা weight
+        │  (weight object-এর ভেতরে জমা)
+        ▼
+model.predict(X_new)            # INFERENCE: জমানো weight ব্যবহার
+        │
+        ▼
+     predictions
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧬</span> ৮. inheritance: base থেকে বিশেষায়িত</h2>
+    <div class="code-box">
+class BaseAnalyzer:
+    def __init__(self, jobs):
+        self.jobs = jobs
+
+    def count(self):
+        return len(self.jobs)
+
+
+class SkillAnalyzer(BaseAnalyzer):   # BaseAnalyzer থেকে inherit
+    def skill_share(self, skill):
+        hits = sum(skill.lower() in j["text"].lower() for j in self.jobs)
+        return hits / self.count() * 100    # base-এর count() reuse
+
+
+jobs = [{"text": "Python ML"}, {"text": "SQL"}]
+sa = SkillAnalyzer(jobs)
+print(sa.count())              # 2  (base থেকে পাওয়া)
+print(sa.skill_share("python"))# 50.0
+    </div>
+    <p>
+        <code>SkillAnalyzer</code> <code>BaseAnalyzer</code>-এর <code>count()</code> বিনা কষ্টে পেল —
+        এটাই inheritance। scikit-learn-এ সব estimator একটা base class থেকে আসে, তাই সবার common আচরণ থাকে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧪</span> ৯. Experiment: নিজের mini-estimator</h2>
+    <p>
+        sklearn-এর ধাঁচে একটা খেলনা estimator বানাই — যা গড় salary "শেখে" আর সেটাই predict করে
+        (এটা baseline model-এর ধারণা)।
+    </p>
+    <div class="code-box">
+class MeanSalaryPredictor:
+    def __init__(self):
+        self.mean_ = None   # sklearn-এ শেখা জিনিসের নামে _ থাকে
+
+    def fit(self, salaries):
+        self.mean_ = sum(salaries) / len(salaries)
+        return self          # sklearn convention: fit self ফেরত দেয়
+
+    def predict(self, n):
+        if self.mean_ is None:
+            raise ValueError("আগে fit() করুন")
+        return [self.mean_] * n
+
+
+m = MeanSalaryPredictor()
+m.fit([60000, 80000, 100000])
+print(m.mean_)        # 80000.0
+print(m.predict(2))   # [80000.0, 80000.0]
+    </div>
+    <div class="key-point">
+        লক্ষ্য করুন: শেখা state <code>self.mean_</code>-এ জমা, fit না করে predict করলে error — ঠিক
+        production model-এর মতো আচরণ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🇧🇩</span> ১০. বাংলাদেশের বাস্তব context</h2>
+    <p>
+        একটা fintech (bKash/Nagad-ধাঁচের) fraud detection service-এ একটা <code>FraudModel</code> class
+        থাকে — যার ভেতরে শেখা parameter (state) আর <code>predict(transaction)</code> method। নতুন model
+        version এলে শুধু object বদলায়, বাকি সব কোড একই থাকে। এই সুবিধা OOP-এর জন্যই।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">👷</span> ১১. AI Engineer-এর দৃষ্টিকোণ</h2>
+    <ul>
+        <li>প্রতিটা model, dataset, pipeline object — state + behavior একসাথে।</li>
+        <li>একই interface (<code>fit/predict</code>) মানে model অদল-বদল সহজ।</li>
+        <li>PyTorch-এ নিজের network লিখতে হলে <code>nn.Module</code> inherit করতেই হবে — OOP আবশ্যক।</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+    <div class="story-box">
+        Boss: <em>"function দিয়েই তো কাজ হচ্ছিল, class-এর দরকার কী?"</em><br><br>
+        <strong>উত্তর:</strong> ছোট script-এ function যথেষ্ট। কিন্তু যখন একটা model-এর state (শেখা weight),
+        config আর behavior একসাথে বহন করতে হয়, তখন class সব গুছিয়ে রাখে। ফলে নতুন model version আনা,
+        A/B test করা, বা model swap করা কয়েক লাইনের কাজ হয় — মানে দ্রুত পরীক্ষা ও কম খরচে iteration।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder: "Solid understanding of OOP"</h2>
+    <div class="info-box">
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr><td>এর মানে কী?</td><td>class/object, encapsulation, inheritance বুঝে কোড লিখতে পারা।</td></tr>
+            <tr><td>কোম্পানি কেন চায়?</td><td>ML library গুলো OOP; নিজের model/pipeline class লিখতে হয়।</td></tr>
+            <tr><td>কোন সমস্যা সমাধান করে?</td><td>state ও behavior গুছিয়ে রাখা, model swap সহজ করা।</td></tr>
+            <tr><td>junior-এর কী জানা লাগে?</td><td>class, <code>__init__</code>, <code>self</code>, method, basic inheritance।</td></tr>
+            <tr><td>এখনই কী master লাগে না?</td><td>metaclass, multiple inheritance-এর MRO, abstract base class-এর গভীরে।</td></tr>
+            <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>flagship-এ একটা পরিষ্কার <code>JobPost</code>/<code>Analyzer</code> class।</td></tr>
+            <tr><td>Interview-তে কী?</td><td>"OOP-এর ৪ স্তম্ভ?", "<code>self</code> কী?", "sklearn কেন OOP?"</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> method-এ <code>self</code> ভুলে যাওয়া — <strong>ঠিক:</strong> প্রতিটা instance method-এর প্রথম parameter <code>self</code>।<br><br>
+        <strong>ভুল ২:</strong> সবকিছুতে class — <strong>ঠিক:</strong> সরল কাজে function-ই ভালো; state থাকলে class।<br><br>
+        <strong>ভুল ৩:</strong> fit না করে predict — <strong>ঠিক:</strong> state না থাকলে error দিন (আমাদের mini-estimator-এর মতো)।<br><br>
+        <strong>ভুল ৪:</strong> class variable vs instance variable গুলিয়ে ফেলা — <strong>ঠিক:</strong> instance data সবসময় <code>self.</code>-এ রাখুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> OOP-এর ৪ স্তম্ভ?<br>
+        <em>উত্তর:</em> Encapsulation, Abstraction, Inheritance, Polymorphism।<br><br>
+        <strong>প্রশ্ন ২:</strong> <code>self</code> কী?<br>
+        <em>উত্তর:</em> method-এর ভেতরে "এই নির্দিষ্ট object"-কে বোঝায়; instance state অ্যাক্সেসের রাস্তা।<br><br>
+        <strong>প্রশ্ন ৩:</strong> class আর object পার্থক্য?<br>
+        <em>উত্তর:</em> class blueprint, object সেই blueprint থেকে বানানো instance।<br><br>
+        <strong>প্রশ্ন ৪:</strong> scikit-learn কেন OOP-নির্ভর?<br>
+        <em>উত্তর:</em> সব estimator একই <code>fit/predict</code> interface মানে (polymorphism), তাই model swap সহজ।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে (Mini Exercise)</h2>
+    <div class="key-point">
+        ১. একটা <code>JobPost</code> class লিখুন <code>title, text, salary</code> সহ, আর <code>has_skill()</code> method দিন।<br>
+        ২. একটা <code>JobDataset</code> class বানান যা list-of-JobPost রাখে ও <code>average_salary()</code> দেয়।<br>
+        ৩. sklearn-ধাঁচে <code>fit()</code>/<code>predict()</code> সহ একটা <code>MedianSalaryPredictor</code> লিখুন।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🚀</span> ১৭. Project Connection</h2>
+    <p>
+        flagship-এ এখন আমরা <code>JobPost</code> ও <code>JobDataset</code> class যোগ করব — প্রতিটি job এখন
+        শুধু dict নয়, একটা object যার নিজস্ব behavior আছে। পরে (V3) যখন সত্যিকার sklearn model বসাব,
+        এই OOP অভ্যাস সরাসরি কাজে দেবে।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৮. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        ✓ class = blueprint, object = instance; <code>self</code> = এই object<br>
+        ✓ OOP-এর ৪ স্তম্ভ: encapsulation, abstraction, inheritance, polymorphism<br>
+        ✓ sklearn/PyTorch পুরোটাই OOP; <code>fit()</code>=training, <code>predict()</code>=inference<br>
+        ✓ একই interface মানে model swap সহজ — এটাই OOP-এর বড় লাভ
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী Episode (S02E05):</strong> "venv, pip, uv: 'আমার মেশিনে তো চলছিল' সমস্যার আসল সমাধান" —
+        প্রতিটা project-এর আলাদা isolated environment কীভাবে বানাবেন, আর কেন এটা Docker-এর প্রথম ধাপ।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-03-functions-modules-packages.html">⬅ পূর্ববর্তী: Functions ও Modules</a>
+            <a href="episode-05-venv-pip-uv.html">পরবর্তী: venv ও uv ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 02, Episode 04)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s02e04.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

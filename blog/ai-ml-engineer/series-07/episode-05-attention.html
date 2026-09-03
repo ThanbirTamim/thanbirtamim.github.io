@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Self-attention-এর intuition — query, key, value — কেন এটা RNN-কে হারায়, আধুনিক AI-এর মূল ধারণা বাংলায়।">
+    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="author" content="Sheikh Thanbir Alam">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Attention: &#x27;কোন শব্দে বেশি মনোযোগ&#x27; — Transformer বিপ্লবের বীজ | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description" content="Self-attention-এর intuition — query, key, value — কেন এটা RNN-কে হারায়, আধুনিক AI-এর মূল ধারণা বাংলায়।">
+    <meta property="og:locale" content="bn_BD">
+    <title>Attention: &#x27;কোন শব্দে বেশি মনোযোগ&#x27; — Transformer বিপ্লবের বীজ | AI/ML Engineer বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        .diagram-image {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            .diagram-image {
+                max-height: 300px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.9rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+
+            .series-nav a {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            .diagram-image {
+                max-height: 250px;
+                margin: 15px auto;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .toc li:before {
+                font-size: 1rem;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+
+            strong {
+                font-weight: 600;
+            }
+
+            .series-nav a {
+                padding: 15px 18px;
+                font-size: 0.95em;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+
+    <style>
+        /* AI/ML series small additions — reuse existing palette only */
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+        }
+        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
+        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
+        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog"><i class="fas fa-arrow-left"></i></a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home"><i class="fas fa-home"></i></a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI/ML Engineer সিরিজ &raquo; Series 07 &raquo; Episode 05
+    </div>
+
+    <h1><i class="fa-solid fa-diagram-project"></i> Attention: 'কোন শব্দে বেশি মনোযোগ' — Transformer বিপ্লবের বীজ</h1>
+    <p class="subtitle">self-attention-এর intuition (Series 07, Episode 05)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge level-advanced">🔴 ADVANCED</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> Series 07 — NLP, Transformers ও LLM</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 05 / 08</span>
+    </div>
+
+<div class="toc">
+    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+    <ul>
+        <li>১. গল্প: অনুবাদ করতে গিয়ে যে সমস্যা</li>
+        <li>২. সমস্যা: এক সারাংশে পুরো বাক্য চাপা</li>
+        <li>৩. Attention-এর মূল ধারণা</li>
+        <li>৪. তিন স্তরে attention</li>
+        <li>৫. Query, Key, Value — লাইব্রেরির রূপক</li>
+        <li>৬. Visual: self-attention কীভাবে কাজ করে</li>
+        <li>৭. অঙ্কের গল্প: score → softmax → weighted sum</li>
+        <li>৮. Code: NumPy-তে ছোট self-attention</li>
+        <li>৯. Experiment: "it" কাকে বোঝায়</li>
+        <li>১০. Multi-head attention (সংক্ষেপে)</li>
+        <li>১১. কেন attention RNN-কে হারায়</li>
+        <li>১২. Boss Question ও AI Engineer perspective</li>
+        <li>১৩. Job Requirement Decoder: "Attention Mechanism"</li>
+        <li>১৪. সাধারণ ভুল</li>
+        <li>১৫. Interview Prep</li>
+        <li>১৬. হাতে-কলমে ও Project Connection</li>
+        <li>১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১. গল্প: অনুবাদ করতে গিয়ে যে সমস্যা</h2>
+    <p>
+        ধরুন আমরা একটা model বানাতে চাই যা ইংরেজি থেকে বাংলা অনুবাদ করে। পুরনো (RNN) পদ্ধতিতে model প্রথমে
+        পুরো ইংরেজি বাক্য পড়ে একটা <strong>একক সারাংশ vector</strong>-এ চাপত, তারপর সেটা থেকে বাংলা লিখত।
+    </p>
+    <div class="story-box">
+        Maya: <em>"Rahim, ভাবো — 'The cat that the dog chased ran away' — এই দীর্ঘ বাক্যকে যদি একটাই ছোট
+        vector-এ চেপে ফেলি, তাহলে কি সব তথ্য টিকবে?"</em><br><br>
+        Rahim: <em>"না আপা, শুরুর 'cat'-এর কথা তো হারিয়ে যাবে, ঠিক RNN-এর সেই ভুলে যাওয়ার সমস্যা!"</em><br><br>
+        Maya: <em>"একদম। ২০১৪-১৭ সালে গবেষকরা ভাবলেন — বাংলা প্রতিটা শব্দ লেখার সময় model যদি ইংরেজি বাক্যের
+        <strong>সবচেয়ে প্রাসঙ্গিক শব্দগুলোর দিকে ফিরে তাকাতে</strong> পারত? এই 'ফিরে তাকিয়ে সঠিক শব্দে মনোযোগ দেওয়া'-ই
+        <strong>attention</strong>। আর এটাই পুরো AI দুনিয়া বদলে দিল।"</em>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">❓</span> ২. সমস্যা: এক সারাংশে পুরো বাক্য চাপা</h2>
+    <p>
+        RNN/LSTM পুরো বাক্যকে একটা fixed-size hidden state-এ চাপে। বাক্য যত দীর্ঘ, তত বেশি তথ্য এক জায়গায়
+        গাদাগাদি হয় — এটাকে বলে <strong>information bottleneck</strong>। attention এই bottleneck ভেঙে দেয়:
+        প্রতিটা শব্দ প্রয়োজনমতো <em>যেকোনো</em> শব্দের তথ্য সরাসরি টেনে নিতে পারে।
+    </p>
+    <div class="key-point">
+        মূল idea: একটা শব্দের মানে বুঝতে হলে বাক্যের কোন কোন শব্দ বেশি গুরুত্বপূর্ণ — model সেটা নিজে হিসাব করে
+        নেয় আর সেই অনুযায়ী "মনোযোগের ওজন" (attention weight) দেয়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎯</span> ৩. Attention-এর মূল ধারণা</h2>
+    <p>
+        <strong>Self-attention</strong>-এ বাক্যের প্রতিটা শব্দ বাকি প্রতিটা শব্দের সাথে নিজের সম্পর্ক মাপে, তারপর
+        সেই সম্পর্কের ওজন দিয়ে বাকি শব্দগুলোর তথ্য মিশিয়ে নিজের একটা নতুন, context-সমৃদ্ধ representation বানায়।
+    </p>
+    <div class="diagram">
+বাক্য: "কুকুরটা ক্লান্ত ছিল কারণ সেটা দৌড়েছিল"
+
+"সেটা" শব্দটার নতুন representation বানাতে গিয়ে
+self-attention হিসাব করে:
+
+  সেটা --&gt; কুকুরটা : ওজন 0.7  (সবচেয়ে প্রাসঙ্গিক!)
+  সেটা --&gt; ক্লান্ত : ওজন 0.1
+  সেটা --&gt; দৌড়েছিল: ওজন 0.2
+
+তাই "সেটা" মূলত "কুকুরটা"-র অর্থ টেনে নেয় = reference বোঝা
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🪜</span> ৪. তিন স্তরে attention</h2>
+    <div class="technical-box">
+        <strong>Level 1 — সহজ intuition:</strong><br>
+        একটা মিটিংয়ে সবাই কথা বলছে, কিন্তু আপনি নির্দিষ্ট একটা বিষয়ে সবচেয়ে প্রাসঙ্গিক মানুষের কথায় বেশি কান
+        দেন। attention ঠিক তাই — প্রতিটা শব্দ বাকি সব শব্দের কথা "শোনে", কিন্তু প্রাসঙ্গিক শব্দে বেশি "কান দেয়"।<br><br>
+
+        <strong>Level 2 — technical:</strong><br>
+        প্রতিটা শব্দের জন্য তিনটা vector বানানো হয়: <strong>Query (Q)</strong>, <strong>Key (K)</strong>,
+        <strong>Value (V)</strong>। একটা শব্দের Q বাকি সব শব্দের K-এর সাথে dot product করে similarity score
+        পায়; সেই score-এ softmax দিয়ে ওজন (০–১, যোগফল ১) বানায়; তারপর সেই ওজন দিয়ে সব V-এর weighted sum
+        নেয় = নতুন representation।<br><br>
+
+        <strong>Level 3 — AI Engineer perspective:</strong><br>
+        একজন engineer হিসেবে আপনি সাধারণত attention নিজে implement করবেন না — PyTorch/Transformers-এ এটা তৈরি।
+        কিন্তু বোঝা জরুরি: attention-ই ব্যাখ্যা করে কেন LLM দীর্ঘ context ধরতে পারে, কেন context window গুরুত্বপূর্ণ,
+        আর কেন খরচ বাক্যের দৈর্ঘ্যের সাথে দ্রুত বাড়ে (n² জটিলতা)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📚</span> ৫. Query, Key, Value — লাইব্রেরির রূপক</h2>
+    <div class="info-box">
+        ভাবুন একটা লাইব্রেরি:<br><br>
+        <strong>Query (Q):</strong> আপনি যা খুঁজছেন — "মেশিন লার্নিং বই"।<br>
+        <strong>Key (K):</strong> প্রতিটা বইয়ের তাকের লেবেল/সূচক।<br>
+        <strong>Value (V):</strong> বইয়ের আসল বিষয়বস্তু।<br><br>
+        আপনার Query প্রতিটা বইয়ের Key-র সাথে মেলে — যেটা সবচেয়ে বেশি মেলে, সেই বইয়ের Value (বিষয়বস্তু) আপনি
+        বেশি নেন। attention ঠিক এই "Query দিয়ে Key খুঁজে, মিল অনুযায়ী Value টানা" কাজটাই করে — কিন্তু সংখ্যায়।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🖼️</span> ৬. Visual: self-attention কীভাবে কাজ করে</h2>
+    <div class="diagram">
+প্রতিটা শব্দ -&gt; Q, K, V vector
+
+Step 1: score = Q · Kᵀ   (প্রতি জোড়া শব্দের similarity)
+Step 2: scale ( ÷ √d ) + softmax -&gt; attention weights (যোগফল = 1)
+Step 3: output = weights · V   (প্রাসঙ্গিক তথ্যের weighted mix)
+
+         কুকুরটা  ক্লান্ত  সেটা
+কুকুরটা [  0.6    0.1    0.3 ]
+ক্লান্ত  [  0.2    0.7    0.1 ]   &lt;- attention weight matrix
+সেটা    [  0.7    0.1    0.2 ]        (প্রতি row-এর যোগফল 1)
+
+"সেটা" row -&gt; "কুকুরটা"-তে সবচেয়ে বেশি ওজন
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔢</span> ৭. অঙ্কের গল্প: score → softmax → weighted sum</h2>
+    <p>ভয় পাবেন না — মূল সূত্র একটাই, আর প্রতিটা অংশের মানে আমরা জানি:</p>
+    <div class="diagram">
+Attention(Q, K, V) = softmax( (Q · Kᵀ) / √d_k ) · V
+
+- Q · Kᵀ : প্রতি জোড়া শব্দের মিল কত (dot product)
+- ÷ √d_k : সংখ্যা খুব বড় হয়ে softmax যেন নষ্ট না হয় (scaling)
+- softmax: score-কে ০–১ ওজনে রূপান্তর, যোগফল ১
+- · V    : সেই ওজন দিয়ে value-র weighted average
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💻</span> ৮. Code: NumPy-তে ছোট self-attention</h2>
+    <p>কেন NumPy? — attention আসলে কয়েকটা matrix গুণ ছাড়া কিছু নয়, সেটা নিজের চোখে দেখাতে NumPy-ই যথেষ্ট,
+        কোনো framework-এর জাদু ছাড়াই।</p>
+    <div class="code-box">
+import numpy as np
+
+def softmax(x):
+    e = np.exp(x - x.max(axis=-1, keepdims=True))
+    return e / e.sum(axis=-1, keepdims=True)
+
+def self_attention(X):
+    # X: (seq_len, d) -- প্রতিটা row একটা শব্দের embedding
+    d = X.shape[-1]
+    # সরলতার জন্য Q=K=V=X ধরছি (বাস্তবে আলাদা weight matrix থাকে)
+    Q, K, V = X, X, X
+    scores = Q @ K.T / np.sqrt(d)      # (seq_len, seq_len)
+    weights = softmax(scores)          # প্রতি row-এর যোগফল 1
+    output = weights @ V               # context-সমৃদ্ধ নতুন representation
+    return output, weights
+
+# 3টি শব্দ, প্রতিটা 4-মাত্রার embedding
+X = np.array([
+    [1.0, 0.0, 1.0, 0.0],   # কুকুরটা
+    [0.0, 1.0, 0.0, 1.0],   # ক্লান্ত
+    [0.9, 0.1, 0.8, 0.1],   # সেটা (কুকুরটার কাছাকাছি!)
+])
+
+out, w = self_attention(X)
+print("Attention weights:\n", w.round(2))
+# "সেটা" row -&gt; "কুকুরটা"-তে সবচেয়ে বেশি ওজন দেখা যাবে
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔬</span> ৯. Experiment: "it" কাকে বোঝায়</h2>
+    <div class="key-point">
+        উপরের কোডে "সেটা"-র embedding ইচ্ছে করে "কুকুরটা"-র কাছাকাছি রাখা হয়েছে। চালিয়ে দেখুন — weight matrix-এ
+        "সেটা" row-এ "কুকুরটা" column সবচেয়ে বড় ওজন পায়। এবার "সেটা"-র embedding বদলে "ক্লান্ত"-র কাছাকাছি করুন
+        আর দেখুন ওজন কীভাবে সরে যায়। এটাই attention-এর "reference resolution" — কোন শব্দ কাকে বোঝাচ্ছে তা ধরা।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🧩</span> ১০. Multi-head attention (সংক্ষেপে)</h2>
+    <p>
+        একটা attention "head" এক ধরনের সম্পর্ক ধরে (যেমন কর্তা-ক্রিয়া)। কিন্তু ভাষায় অনেক ধরনের সম্পর্ক থাকে।
+        তাই Transformer একসাথে <strong>একাধিক head</strong> চালায় — প্রতিটা head ভিন্ন ধরনের সম্পর্কে মনোযোগ দেয়,
+        তারপর সব মিলিয়ে নেওয়া হয়। একে বলে <strong>multi-head attention</strong>। এটাই পরের পর্বের Transformer-এর মূল component।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚡</span> ১১. কেন attention RNN-কে হারায়</h2>
+    <table>
+        <tr><th>বিষয়</th><th>RNN/LSTM</th><th>Attention</th></tr>
+        <tr><td>দীর্ঘ dependency</td><td>দুর্বল (ভুলে যায়)</td><td>যেকোনো দূরত্ব সরাসরি দেখে</td></tr>
+        <tr><td>গতি</td><td>sequential, ধীর</td><td>parallel, দ্রুত (GPU-বান্ধব)</td></tr>
+        <tr><td>ব্যাখ্যা</td><td>hidden state অস্বচ্ছ</td><td>attention weight দেখা যায়</td></tr>
+        <tr><td>খরচ</td><td>দৈর্ঘ্যে linear</td><td>দৈর্ঘ্যে n² (দীর্ঘ বাক্যে দামি)</td></tr>
+    </table>
+    <div class="info-box">
+        লক্ষ্য করুন — attention নিখুঁত নয়; দীর্ঘ input-এ n² খরচ একটা বাস্তব সমস্যা (তাই context window সীমিত)।
+        কিন্তু parallel হওয়া আর দীর্ঘ dependency ধরার ক্ষমতা এটাকে বিজয়ী করেছে।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">💼</span> ১২. Boss Question ও AI Engineer perspective</h2>
+    <div class="story-box">
+        Boss: <em>"এই attention জিনিসটা আমার business-এ সরাসরি কোথায় লাগবে?"</em><br><br>
+        <strong>উত্তর:</strong> সরাসরি হয়তো আপনি attention লিখবেন না — কিন্তু আপনার ব্যবহার করা প্রতিটা আধুনিক
+        AI (ChatGPT, translation, summarization, semantic search) এই attention-এর উপরেই দাঁড়ানো। কেন আমাদের
+        chatbot দীর্ঘ context মনে রাখে, কেন খরচ input দৈর্ঘ্যের সাথে বাড়ে, কেন context window সীমিত —
+        এসব সিদ্ধান্ত ও খরচ হিসাব attention না বুঝলে ব্যাখ্যা করা যায় না।
+    </div>
+    <div class="info-box">
+        <strong>Must Know:</strong> attention-এর intuition, Q/K/V, কেন এটা RNN-কে হারায়।<br>
+        <strong>Good to Know:</strong> softmax scaling, multi-head, self vs cross attention।<br>
+        <strong>Learn Later:</strong> attention-এর সম্পূর্ণ ম্যাট্রিক্স গণিত, efficient attention (FlashAttention ইত্যাদি)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder: "Attention Mechanism"</h2>
+    <div class="info-box">
+        JD-তে: <em>"Understanding of attention mechanisms and transformers."</em>
+        <table>
+            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
+            <tr><td>কী বোঝায়?</td><td>model কীভাবে বাক্যের প্রাসঙ্গিক শব্দে মনোযোগ দেয় সেই ধারণা।</td></tr>
+            <tr><td>কেন চায়?</td><td>সব আধুনিক NLP/LLM attention-ভিত্তিক; এটা না বুঝলে LLM ব্যবহারের গভীরতা থাকে না।</td></tr>
+            <tr><td>কোন সমস্যা সমাধান করে?</td><td>দীর্ঘ dependency + parallel training — RNN-এর দুই বড় দুর্বলতা।</td></tr>
+            <tr><td>junior-এর কী জানা লাগে?</td><td>Q/K/V intuition, self-attention কী করে, কেন RNN-এর চেয়ে ভালো।</td></tr>
+            <tr><td>এখনই কী master লাগে না?</td><td>নিজে multi-head attention scratch থেকে optimize করা।</td></tr>
+            <tr><td>GitHub-এ কীভাবে দেখাবেন?</td><td>একটা ছোট self-attention NumPy notebook + attention weight visualize।</td></tr>
+            <tr><td>Interview-তে?</td><td>"self-attention ব্যাখ্যা করুন", "Q/K/V কী?", "attention কেন RNN-কে হারায়?"</td></tr>
+        </table>
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল</h2>
+    <div class="technical-box">
+        <strong>ভুল ১:</strong> attention আর LSTM-এর memory এক ভাবা। → attention memory রাখে না; প্রতিবার সব শব্দের সম্পর্ক নতুন করে হিসাব করে।<br><br>
+        <strong>ভুল ২:</strong> softmax scaling (÷√d) বাদ দেওয়া গুরুত্বহীন ভাবা। → বড় dot product softmax-কে অতি-তীক্ষ্ণ করে ফেলে, শেখা কঠিন হয়।<br><br>
+        <strong>ভুল ৩:</strong> attention = পুরো Transformer ভাবা। → attention একটা component; Transformer-এ এর সাথে positional encoding, feed-forward ইত্যাদিও থাকে (পরের পর্ব)।<br><br>
+        <strong>ভুল ৪:</strong> attention খরচ input দৈর্ঘ্যে linear ভাবা। → আসলে n² — তাই খুব দীর্ঘ context দামি।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+    <div class="info-box">
+        <strong>প্রশ্ন ১:</strong> Self-attention কীভাবে কাজ করে?<br>
+        <em>উত্তর:</em> প্রতিটা শব্দের Q বাকি শব্দের K-এর সাথে dot product করে score পায়, softmax দিয়ে ওজন বানায়,
+        সেই ওজন দিয়ে V-এর weighted sum নিয়ে context-সমৃদ্ধ representation বানায়।<br><br>
+        <strong>প্রশ্ন ২:</strong> Q, K, V কী?<br>
+        <em>উত্তর:</em> Query (কী খুঁজছি), Key (কীসের সাথে মিলাব), Value (আসল তথ্য) — প্রতিটা শব্দের embedding থেকে
+        আলাদা weight দিয়ে তৈরি।<br><br>
+        <strong>প্রশ্ন ৩:</strong> attention কেন RNN-এর চেয়ে ভালো?<br>
+        <em>উত্তর:</em> যেকোনো দুই শব্দের সরাসরি সম্পর্ক দেখে (দীর্ঘ dependency), এবং parallelize করা যায় (দ্রুত training)।
+    </div>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে ও Project Connection</h2>
+    <div class="key-point">
+        ১. উপরের NumPy self-attention-এ ৪র্থ একটা শব্দ যোগ করুন আর weight matrix কীভাবে বদলায় দেখুন।<br>
+        ২. Q, K, V-এর জন্য আলাদা random weight matrix (W_q, W_k, W_v) যোগ করে "শেখার যোগ্য" attention বানান।<br>
+        ৩. নিজের ভাষায় লিখুন: কেন attention-এর খরচ বাক্যের দৈর্ঘ্যের বর্গের (n²) সমানুপাতিক।
+    </div>
+    <p>
+        আমাদের flagship <strong>"Bangladesh Tech Career Assistant"</strong> সরাসরি attention লিখবে না, কিন্তু
+        এই পর্ব ছাড়া আমরা বুঝতে পারতাম না কেন আমাদের ব্যবহার করা sentence-embedding ও LLM এত ভালো context ধরে।
+        এটাই আমাদের পরের বড় ধাপ — Transformer ও LLM — বোঝার চাবি।
+    </p>
+</div>
+
+<div class="section">
+    <h2><span class="emoji">📌</span> ১৭. সারসংক্ষেপ ও পরবর্তী পর্ব</h2>
+    <div class="success-box">
+        এই পর্বে শিখলাম:<br><br>
+        ✓ Attention = প্রতিটা শব্দ বাকি প্রাসঙ্গিক শব্দে "মনোযোগ" দিয়ে context টেনে নেয়<br>
+        ✓ Q (query), K (key), V (value) — লাইব্রেরির রূপকে<br>
+        ✓ সূত্র: softmax(Q·Kᵀ/√d)·V — score → ওজন → weighted sum<br>
+        ✓ NumPy-তে ছোট self-attention চালিয়ে "সেটা → কুকুরটা" reference ধরা<br>
+        ✓ Multi-head = একসাথে অনেক ধরনের সম্পর্কে মনোযোগ<br>
+        ✓ attention RNN-কে হারায় (দীর্ঘ dependency + parallel), কিন্তু খরচ n²
+    </div>
+    <div class="key-point">
+        <strong>পরবর্তী পর্ব (S07E06):</strong> attention তো বুঝলাম — এবার সেটা দিয়ে পুরো
+        <strong>Transformer architecture</strong> বানানো। positional encoding, encoder, decoder, আর "Attention
+        Is All You Need" পেপারের সম্পূর্ণ ছবি — conceptual ভাবে, সহজ বাংলায়।
+    </div>
+</div>
+
+    <div class="section">
+
+        <div class="series-nav">
+            <a href="episode-04-rnn-lstm.html">⬅ পূর্ববর্তী: RNN ও LSTM</a>
+            <a href="episode-06-transformer-architecture.html">পরবর্তী: Transformer ➡</a>
+        </div>
+
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
+            <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 07, Episode 05)</p>
+            <p>লেখক: Sheikh Thanbir Alam</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s07e05.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
