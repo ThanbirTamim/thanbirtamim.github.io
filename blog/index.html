@@ -848,6 +848,114 @@
         grid-template-columns: repeat(3, 1fr);
       }
     }
+
+    /* ===== Featured flagship series (accordion tree) ===== */
+    .featured-series {
+      border-radius: 20px; overflow: hidden; margin-bottom: 40px; background: #fff;
+      border: 2px solid rgba(102,126,234,0.15); box-shadow: 0 15px 50px rgba(102,126,234,0.12);
+      animation: fadeInUp 0.6s ease-out 0.15s both; position: relative;
+    }
+    .dark-mode .featured-series { background:#1e1e1e; border-color:rgba(13,110,253,0.2); box-shadow:0 15px 50px rgba(13,110,253,0.15); }
+    .featured-series-top {
+      position: relative; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      color:#fff; padding: clamp(24px,4vw,40px); overflow:hidden;
+    }
+    .dark-mode .featured-series-top { background: linear-gradient(135deg,#0d6efd 0%,#00d4ff 100%); }
+    .featured-series-top::before {
+      content:''; position:absolute; width:220px; height:220px; border-radius:50%;
+      background:rgba(255,255,255,0.1); top:-90px; right:-50px; pointer-events:none;
+    }
+    .featured-badge { top:16px; right:18px; }
+    .featured-series-head { display:flex; align-items:center; gap:16px; position:relative; z-index:2; }
+    .featured-series-icon {
+      flex-shrink:0; width:60px; height:60px; border-radius:16px; display:flex;
+      align-items:center; justify-content:center; font-size:1.8rem;
+      background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.3);
+    }
+    .featured-series-head .blog-category { background:rgba(255,255,255,0.2); box-shadow:none; margin-bottom:8px; }
+    .featured-series-title { font-size: clamp(1.3rem,1rem + 1.5vw,1.9rem); font-weight:700; margin:0; line-height:1.25; }
+    .featured-series-desc { position:relative; z-index:2; margin:18px 0 0; opacity:0.95; max-width:760px; font-size:clamp(0.9rem,0.85rem+0.3vw,1.05rem); line-height:1.6; }
+    .featured-series-meta { display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; position:relative; z-index:2; }
+    .featured-series-actions { display:flex; flex-wrap:wrap; gap:12px 16px; align-items:center; margin-top:22px; position:relative; z-index:2; }
+    .start-btn {
+      background:#fff; color:#5b3fa0; text-decoration:none; font-weight:700; padding:12px 22px;
+      border-radius:10px; display:inline-flex; align-items:center; gap:6px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.15); transition:all .3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .start-btn:hover { transform:translateY(-3px); box-shadow:0 10px 26px rgba(0,0,0,0.22); color:#5b3fa0; }
+    .dark-mode .start-btn { color:#0b63d6; }
+    .expand-all-btn {
+      background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.5);
+      padding:11px 20px; border-radius:10px; font-weight:600; cursor:pointer;
+      display:inline-flex; align-items:center; gap:8px; transition:all .25s ease; font-family:inherit;
+    }
+    .expand-all-btn:hover { background:rgba(255,255,255,0.28); transform:translateY(-2px); }
+    .series-tree { padding: clamp(12px,2vw,20px); display:flex; flex-direction:column; gap:10px; }
+    .series-node {
+      border:1px solid rgba(102,126,234,0.18); border-radius:12px; overflow:hidden;
+      background:rgba(102,126,234,0.03); transition:border-color .25s ease, box-shadow .25s ease;
+    }
+    .dark-mode .series-node { border-color:rgba(13,110,253,0.22); background:rgba(13,110,253,0.06); }
+    .series-node.open { border-color:rgba(102,126,234,0.45); box-shadow:0 8px 24px rgba(102,126,234,0.12); }
+    .dark-mode .series-node.open { border-color:rgba(0,212,255,0.4); box-shadow:0 8px 24px rgba(13,110,253,0.2); }
+    .series-node-head {
+      width:100%; border:none; background:transparent; cursor:pointer; display:flex; align-items:center;
+      gap:14px; padding:16px 18px; text-align:left; font-family:inherit; color:inherit;
+      font-size:1rem; transition:background .2s ease;
+    }
+    .series-node-head:hover { background:rgba(102,126,234,0.07); }
+    .dark-mode .series-node-head:hover { background:rgba(13,110,253,0.1); }
+    .series-node-icon {
+      flex-shrink:0; width:42px; height:42px; border-radius:10px; display:flex; align-items:center;
+      justify-content:center; font-size:1.1rem; color:#fff; background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+    }
+    .dark-mode .series-node-icon { background:linear-gradient(135deg,#0d6efd 0%,#00d4ff 100%); }
+    .series-node-title { flex-grow:1; display:flex; flex-direction:column; gap:2px; font-weight:600; overflow-wrap:anywhere; }
+    .series-node-num { font-size:0.72rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#667eea; }
+    .dark-mode .series-node-num { color:#00d4ff; }
+    .series-node-count { flex-shrink:0; font-size:0.75rem; font-weight:600; color:#667eea; background:rgba(102,126,234,0.12); padding:4px 10px; border-radius:12px; white-space:nowrap; }
+    .dark-mode .series-node-count { color:#00d4ff; background:rgba(0,212,255,0.12); }
+    .series-node-chevron { flex-shrink:0; color:#667eea; transition:transform .3s ease; }
+    .dark-mode .series-node-chevron { color:#00d4ff; }
+    .series-node.open .series-node-chevron { transform:rotate(180deg); }
+    .series-node-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s ease; }
+    .series-node.open .series-node-body { grid-template-rows:1fr; }
+    .episode-tree { overflow:hidden; list-style:none; margin:0; padding:0 12px 12px 12px; }
+    .episode-tree li { border-top:1px dashed rgba(102,126,234,0.2); }
+    .dark-mode .episode-tree li { border-top-color:rgba(13,110,253,0.25); }
+    .episode-tree a { display:flex; align-items:center; gap:12px; padding:11px 10px; text-decoration:none; color:#333; transition:all .2s ease; border-radius:8px; }
+    .dark-mode .episode-tree a { color:#ccc; }
+    .episode-tree a:hover { background:rgba(102,126,234,0.08); color:#764ba2; transform:translateX(3px); }
+    .dark-mode .episode-tree a:hover { background:rgba(13,110,253,0.12); color:#00d4ff; }
+    .ep-num { flex-shrink:0; width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:0.78rem; font-weight:700; background:rgba(102,126,234,0.12); color:#667eea; }
+    .dark-mode .ep-num { background:rgba(0,212,255,0.12); color:#00d4ff; }
+    .ep-title { flex-grow:1; font-size:0.92rem; line-height:1.4; overflow-wrap:anywhere; }
+    .ep-arrow { flex-shrink:0; opacity:0; color:#667eea; transition:opacity .2s ease; }
+    .episode-tree a:hover .ep-arrow { opacity:1; }
+    .dark-mode .ep-arrow { color:#00d4ff; }
+    @media (max-width:480px){
+      .series-node-head { padding:13px 12px; gap:10px; }
+      .series-node-count { display:none; }
+      .featured-series-icon { width:50px; height:50px; font-size:1.5rem; }
+    }
+
+    /* ===== Unified series collection ===== */
+    .series-collection { margin-bottom: 40px; animation: fadeInUp 0.6s ease-out 0.15s both; }
+    .collection-toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px; }
+    .collection-toolbar h2 { font-size:clamp(1.1rem,1rem+0.6vw,1.5rem); font-weight:700; margin:0; display:flex; align-items:center; gap:10px; }
+    .tree-toggle-btn { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; font-family:inherit; box-shadow:0 4px 15px rgba(102,126,234,0.3); transition:all .3s ease; }
+    .tree-toggle-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(102,126,234,0.45); color:#fff; }
+    .dark-mode .tree-toggle-btn { background:linear-gradient(135deg,#0d6efd,#00d4ff); box-shadow:0 4px 15px rgba(13,110,253,0.4); }
+    .group-label { display:flex; align-items:center; gap:10px; font-weight:700; color:#5b3fa0; margin:26px 0 12px; font-size:0.95rem; letter-spacing:0.3px; }
+    .group-label::after { content:''; flex-grow:1; height:2px; border-radius:2px; background:linear-gradient(90deg, rgba(102,126,234,0.3), transparent); }
+    .group-label .flag { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; font-size:0.7rem; padding:3px 10px; border-radius:12px; letter-spacing:0.5px; }
+    .dark-mode .group-label { color:#00d4ff; }
+    .dark-mode .group-label::after { background:linear-gradient(90deg, rgba(0,212,255,0.35), transparent); }
+    .dark-mode .group-label .flag { background:linear-gradient(135deg,#0d6efd,#00d4ff); }
+    .node-new-badge { flex-shrink:0; background:linear-gradient(135deg,#ff6b6b,#ee5253); color:#fff; font-size:0.62rem; font-weight:700; letter-spacing:0.5px; padding:2px 8px; border-radius:10px; }
+    .dark-mode .node-new-badge { background:linear-gradient(135deg,#00d4ff,#0d6efd); }
+    .coming-soon-note { margin:22px 0 0; padding:14px 18px; border:1px dashed rgba(102,126,234,0.4); border-radius:12px; color:#667eea; font-size:0.9rem; font-weight:500; display:flex; align-items:center; gap:10px; }
+    .dark-mode .coming-soon-note { border-color:rgba(0,212,255,0.4); color:#00d4ff; }
   </style>
 </head>
 
@@ -886,277 +994,299 @@
       </div>
     </div>
 
-    <div class="blog-grid">
-      <!-- Docker & Kubernetes Blog Post -->
-      <div class="card blog-card">
-        <div class="card-header">
-          <i class="fa-brands fa-docker"></i>
-          <h5>Docker &amp; Kubernetes Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">DevOps</span>
-          <h6 class="card-title mt-2">Docker &amp; Kubernetes Bangla Guide</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">Containers</span>
-            <span class="blog-tag">Orchestration</span>
+    <section class="series-collection">
+      <div class="collection-toolbar">
+        <h2><i class="fas fa-folder-tree"></i> সব সিরিজ</h2>
+        <button type="button" class="tree-toggle-btn" id="expandAllBtn">
+          <i class="fas fa-list-ul"></i> সব খুলুন
+        </button>
+      </div>
+
+      <div class="group-label"><i class="fas fa-screwdriver-wrench"></i> Engineering Guides &amp; Deep-Dives</div>
+      <div class="series-tree">
+        <div class="series-node open">
+          <button class="series-node-head" type="button" aria-expanded="true">
+            <span class="series-node-icon"><i class="fa-brands fa-docker"></i></span>
+            <span class="series-node-title"><span class="series-node-num">DevOps</span>Docker &amp; Kubernetes Series</span>
+            <span class="series-node-count">1 episode</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="docker_kubernetes/series-1/docker-kubernetes-bangla-guide.html"><span class="ep-num">01</span><span class="ep-title">Docker &amp; Kubernetes বাংলা গাইড</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
-          <p class="blog-description">
-            A comprehensive guide to Docker and Kubernetes concepts explained in Bengali. Learn containerization,
-            orchestration, and best practices for deploying scalable applications.
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1
-          </p>
-          <div class="blog-actions">
-            <a href="docker_kubernetes/series-1/docker-kubernetes-bangla-guide.html" class="read-more-btn">
-              Read Article <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-brands fa-git-alt"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Version Control</span>Git &amp; Version Control Series</span>
+            <span class="series-node-count">1 episode</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="version-control-git/series-1/git-version-control-bangla-guide.html"><span class="ep-num">01</span><span class="ep-title">Git ও Version Control বাংলা গাইড</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fas fa-rocket"></i></span>
+            <span class="series-node-title"><span class="series-node-num">DevOps</span>CI/CD &amp; Production Deployment Series</span>
+            <span class="series-node-count">1 episode</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ci-cd-and-production-deployment/series-1/index.html"><span class="ep-num">01</span><span class="ep-title">CI/CD ও Production Deployment বাংলা গাইড</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fas fa-layer-group"></i></span>
+            <span class="series-node-title"><span class="series-node-num">React / Full-stack</span>TanStack Start Series</span>
+            <span class="series-node-count">2 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="tanstack/series-1/tanstack-start-bangla-guide.html"><span class="ep-num">01</span><span class="ep-title">TanStack Start কী? — CSR, SSR, Hydration</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="tanstack/series-2/tanstack-start-project-setup-bangla-guide.html"><span class="ep-num">02</span><span class="ep-title">Project তৈরি করা — Root Route ও Server Function</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fas fa-diagram-project"></i></span>
+            <span class="series-node-title"><span class="series-node-num">AI / LLM</span>LLM + RAG Series</span>
+            <span class="series-node-count">2 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="llm-rag/series-1/rag-bangla-guide.html"><span class="ep-num">01</span><span class="ep-title">RAG কী? LLM-এর সাথে RAG কেন দরকার?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="llm-rag/series-2/how-llm-works-bangla-guide.html"><span class="ep-num">02</span><span class="ep-title">LLM কীভাবে কাজ করে? (tokenization, next-token)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-brands fa-js"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Web Architecture</span>JavaScript History Series</span>
+            <span class="node-new-badge">NEW</span><span class="series-node-count">1 episode</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="js_history/series-1/javascript-history-bangla-guide.html"><span class="ep-num">01</span><span class="ep-title">JavaScript-এর ইতিহাস — JS থেকে Micro Frontend</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
       </div>
 
-      <!-- Git & Version Control Blog Post -->
-      <div class="card blog-card">
-        <div class="card-header">
-          <i class="fa-brands fa-git-alt"></i>
-          <h5>Git &amp; Version Control Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">Version Control</span>
-          <h6 class="card-title mt-2">Git এবং Version Control Bangla Guide</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">Git</span>
-            <span class="blog-tag">GitHub</span>
-          </div>
-          <p class="blog-description">
-            A comprehensive guide to Git and Version Control Systems explained in Bengali. Learn how to track code changes,
-            manage branches, collaborate with teams, and master the complete Git workflow from basics to production.
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1
-          </p>
-          <div class="blog-actions">
-            <a href="version-control-git/series-1/git-version-control-bangla-guide.html" class="read-more-btn">
-              Read Article <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+      <div class="group-label"><span class="flag">FLAGSHIP</span> AI/ML Engineer — Zero to Job-Ready (১০ সিরিজ · বাংলা)</div>
+      <div class="series-tree">
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-compass"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 01</span>AI/ML-এর দুনিয়া</span>
+            <span class="series-node-count">6 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-01/episode-01-ai-ml-dl-genai.html"><span class="ep-num">01</span><span class="ep-title">AI, ML, Deep Learning, Generative AI — এক জিনিস না!</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-01/episode-02-ai-ml-data-roles.html"><span class="ep-num">02</span><span class="ep-title">AI Engineer, ML Engineer, Data Scientist, Data Engineer — কে আসলে কী করে?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-01/episode-03-ai-engineer-workday.html"><span class="ep-num">03</span><span class="ep-title">একজন AI Engineer-এর একটা কর্মদিবস আসলে কেমন?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-01/episode-04-math-fear-reality.html"><span class="ep-num">04</span><span class="ep-title">গণিত না পারলে AI হবে না? — ভয় বনাম বাস্তবতা</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-01/episode-05-bd-job-market-jd.html"><span class="ep-num">05</span><span class="ep-title">বাংলাদেশে AI/ML চাকরির বাজার: Job Description কীভাবে পড়তে হয়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-01/episode-06-zero-to-jobready-roadmap.html"><span class="ep-num">06</span><span class="ep-title">Zero to Job-Ready: সম্পূর্ণ Roadmap ও এই সিরিজ কীভাবে পড়বেন</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
-      </div>
-
-      <!-- CI/CD & Production Deployment Blog Post -->
-      <div class="card blog-card">
-        <div class="card-header">
-          <i class="fas fa-rocket"></i>
-          <h5>CI/CD & Production Deployment Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">DevOps</span>
-          <h6 class="card-title mt-2">CI/CD এবং Production Deployment Bangla Guide</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">CI/CD</span>
-            <span class="blog-tag">Jenkins</span>
-            <span class="blog-tag">Kubernetes</span>
-          </div>
-          <p class="blog-description">
-            Code থেকে Production পর্যন্ত সম্পূর্ণ যাত্রা — Testing, Git Workflow, Jenkins Pipeline,
-            Configuration ও Secrets Management, Docker, Kubernetes, Networking এবং Production Debugging
-            একটি বাস্তব গল্পের মাধ্যমে বাংলায় ব্যাখ্যা করা হয়েছে।
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1
-          </p>
-          <div class="blog-actions">
-            <a href="ci-cd-and-production-deployment/series-1/index.html" class="read-more-btn">
-              Read Article <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-brands fa-python"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 02</span>AI Engineer-দের জন্য Python</span>
+            <span class="series-node-count">4 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-02/episode-01-python-why-how-much.html"><span class="ep-num">01</span><span class="ep-title">Python কেন AI-এর ভাষা? আর তুমি কতটুকু Python জানলে যথেষ্ট?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-02/episode-02-variables-data-structures.html"><span class="ep-num">02</span><span class="ep-title">Variables আর Data Structures: ML data আসলে এখানেই বসে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-02/episode-03-functions-modules-packages.html"><span class="ep-num">03</span><span class="ep-title">Functions, Modules, Packages: কোড যখন notebook থেকে বড় হয়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-02/episode-04-oop-for-ml.html"><span class="ep-num">04</span><span class="ep-title">OOP for ML: Class দিয়ে কেন model, dataset, pipeline লেখা হয়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
-      </div>
-
-      <!-- TanStack Start Blog Post (New Launch) -->
-      <div class="card blog-card" style="position: relative;">
-<!--        <span class="new-badge">NEW</span>-->
-        <div class="card-header">
-          <i class="fas fa-layer-group"></i>
-          <h5>TanStack Start Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">React / Full-stack</span>
-          <h6 class="card-title mt-2">TanStack Start বাংলা গাইড — সম্পূর্ণ টেকনিক্যাল ডিপ-ডাইভ</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">React</span>
-            <span class="blog-tag">SSR</span>
-          </div>
-          <p class="blog-description">
-            React developer দের জন্য TanStack Start-এর একটি গভীর, বাংলা ভাষায় টেকনিক্যাল ডিপ-ডাইভ।
-            CSR, SSR, Hydration, Server Function থেকে শুরু করে হাতে-কলমে Project Setup, Root Route এবং
-            Server Function দিয়ে ধাপে ধাপে সবকিছু ব্যাখ্যা করা হয়েছে।
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1 • Episode 01–02
-          </p>
-          <div class="blog-actions">
-            <a href="tanstack/series-1/tanstack-start-bangla-guide.html" class="read-more-btn">
-              Episode 01 পড়ুন <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="tanstack/series-2/tanstack-start-project-setup-bangla-guide.html" class="episode-link">
-              Episode 02: Project তৈরি করা <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-database"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 03</span>Data — AI-এর ভিত্তি</span>
+            <span class="series-node-count">8 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-03/episode-01-why-data-first.html"><span class="ep-num">01</span><span class="ep-title">কেন AI-এর ৮০% কাজ আসলে data নিয়ে? Nila-র প্রথম পাঠ</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-02-numpy-arrays-vectorization.html"><span class="ep-num">02</span><span class="ep-title">NumPy: array, shape, vectorization — ML-এর নিচে যে গণিত চলে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-03-pandas-part1-dataframe.html"><span class="ep-num">03</span><span class="ep-title">Pandas Part 1: DataFrame, filtering, selection — data-র Excel-on-steroids</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-04-pandas-part2-groupby-merge.html"><span class="ep-num">04</span><span class="ep-title">Pandas Part 2: groupby, merge, missing values, duplicates</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-05-matplotlib-eda.html"><span class="ep-num">05</span><span class="ep-title">Matplotlib দিয়ে data-কে চোখে দেখা: distribution, correlation, outlier</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-06-sql-part1-select-join.html"><span class="ep-num">06</span><span class="ep-title">SQL Part 1: SELECT, WHERE, JOIN, GROUP BY — data কোথায় থাকে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-07-sql-part2-window-index.html"><span class="ep-num">07</span><span class="ep-title">SQL Part 2: subquery, window function, index — যেখানে junior আটকায়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-03/episode-08-data-preprocessing-leakage.html"><span class="ep-num">08</span><span class="ep-title">Data Preprocessing: encoding, scaling, আর 'data leakage'-এর ফাঁদ</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
-      </div>
-
-      <!-- LLM + RAG Blog Post (New Launch) -->
-      <div class="card blog-card" style="position: relative;">
-<!--        <span class="new-badge">NEW</span>-->
-        <div class="card-header">
-          <i class="fas fa-diagram-project"></i>
-          <h5>LLM + RAG Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">AI / LLM</span>
-          <h6 class="card-title mt-2">RAG কী? LLM-এর সাথে RAG কেন দরকার?</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">RAG</span>
-            <span class="blog-tag">FAISS</span>
-            <span class="blog-tag">Embeddings</span>
-          </div>
-          <p class="blog-description">
-            শূন্য থেকে Production-Grade RAG পর্যন্ত একটি গভীর বাংলা সিরিজ। LLM, Hallucination,
-            Embedding, Vector Search, FAISS এবং Retrieval-Augmented Generation-এর mental model
-            থেকে শুরু করে LLM internals (tokenization, next-token prediction) পর্যন্ত একটি বাস্তব
-            Islamic RAG project-কে case study হিসেবে ব্যবহার করে।
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1 • Episode 01–02
-          </p>
-          <div class="blog-actions">
-            <a href="llm-rag/series-1/rag-bangla-guide.html" class="read-more-btn">
-              Episode 01 পড়ুন <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="llm-rag/series-2/how-llm-works-bangla-guide.html" class="episode-link">
-              Episode 02: LLM কীভাবে কাজ করে? <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-square-root-variable"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 04</span>Math, Statistics ও Probability</span>
+            <span class="series-node-count">7 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-04/episode-01-how-much-math.html"><span class="ep-num">01</span><span class="ep-title">ML-এর জন্য ঠিক কতটুকু গণিত লাগে? (আর কতটুকু লাগে না)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-02-scalar-vector-matrix.html"><span class="ep-num">02</span><span class="ep-title">Scalar, Vector, Matrix: data আসলে সংখ্যার টেবিল</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-03-derivative-gradient.html"><span class="ep-num">03</span><span class="ep-title">Function, Derivative, Gradient: 'ঢাল' কী আর কেন model শেখে এটা দিয়ে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-04-statistics-basics.html"><span class="ep-num">04</span><span class="ep-title">Statistics Basics: mean, median, variance, std — data-র চরিত্র</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-05-covariance-correlation-distribution.html"><span class="ep-num">05</span><span class="ep-title">Covariance, Correlation ও Distribution: feature-রা কীভাবে সম্পর্কিত</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-06-probability-bayes.html"><span class="ep-num">06</span><span class="ep-title">Probability ও Bayes: 'কতটা নিশ্চিত' — AI-এর হৃদয়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-04/episode-07-loss-gradient-descent-bias-variance.html"><span class="ep-num">07</span><span class="ep-title">Machine Learning কীভাবে ভুল থেকে শেখে? Gradient Descent-এর সহজ গল্প</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
-      </div>
-
-      <!-- JavaScript History Blog Post (New Launch) -->
-      <div class="card blog-card" style="position: relative;">
-        <span class="new-badge">NEW</span>
-        <div class="card-header">
-          <i class="fa-brands fa-js"></i>
-          <h5>JavaScript History Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">Web Architecture</span>
-          <h6 class="card-title mt-2">JavaScript-এর ইতিহাস — JavaScript থেকে Micro Frontend</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">JavaScript</span>
-            <span class="blog-tag">React/Angular/Vue</span>
-            <span class="blog-tag">Micro Frontend</span>
-          </div>
-          <p class="blog-description">
-            Static HTML এবং ১৯৯৫ সালে Netscape-এ Brendan Eich-এর হাতে JavaScript-এর জন্ম থেকে শুরু করে
-            DOM, AJAX, jQuery, Node.js, npm, React/Angular/Vue, TypeScript, SSR/SSG, Monorepo, Module Federation
-            এবং Micro Frontend পর্যন্ত সম্পূর্ণ বিবর্তনের গভীর গল্প — কেন প্রতিটি প্রযুক্তি এলো এবং
-            কী সমস্যা সমাধান করল, তা বাংলায় ব্যাখ্যা করা হয়েছে।
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> Series 1, Episode 01
-          </p>
-          <div class="blog-actions">
-            <a href="js_history/series-1/javascript-history-bangla-guide.html" class="read-more-btn">
-              Read Article <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-diagram-project"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 05</span>Classical Machine Learning</span>
+            <span class="series-node-count">10 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-05/episode-01-what-is-ml.html"><span class="ep-num">01</span><span class="ep-title">Machine Learning আসলে কী? Computer কীভাবে নিজে নিজে pattern খুঁজে পায়?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-02-linear-regression.html"><span class="ep-num">02</span><span class="ep-title">Linear Regression: prediction-এর 'Hello World' (House Price দিয়ে)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-03-regression-evaluation.html"><span class="ep-num">03</span><span class="ep-title">Regression Evaluation: MAE, MSE, RMSE, R² — model 'ভালো' মানে কী?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-04-logistic-regression.html"><span class="ep-num">04</span><span class="ep-title">Logistic Regression: 'হ্যাঁ/না' prediction (Customer Churn দিয়ে)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-05-classification-evaluation.html"><span class="ep-num">05</span><span class="ep-title">Classification Evaluation: Accuracy কেন মিথ্যা বলে? Precision, Recall, F1, ROC-AUC</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-06-decision-tree-random-forest.html"><span class="ep-num">06</span><span class="ep-title">Decision Tree ও Random Forest: নিয়ম দিয়ে সিদ্ধান্ত</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-07-gradient-boosting-xgboost.html"><span class="ep-num">07</span><span class="ep-title">Gradient Boosting ও XGBoost: Kaggle জেতার অস্ত্র (কেন এত ভালো)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-08-overfitting-cv-tuning.html"><span class="ep-num">08</span><span class="ep-title">Overfitting, Underfitting, Cross-Validation ও Hyperparameter Tuning</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-09-kmeans-pca.html"><span class="ep-num">09</span><span class="ep-title">Unsupervised: K-Means ও PCA — label ছাড়া pattern</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-05/episode-10-feature-engineering.html"><span class="ep-num">10</span><span class="ep-title">Feature Engineering: model-এর আসল শক্তি data থেকেই আসে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
-      </div>
-
-      <!-- Placeholder for more blog posts -->
-      <!-- AI/ML Engineer Blog Post -->
-      <div class="card blog-card" style="position: relative;">
-        <span class="new-badge">NEW</span>
-        <div class="card-header">
-          <i class="fas fa-robot"></i>
-          <h5>AI/ML Engineer Series</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">AI / ML</span>
-          <h6 class="card-title mt-2">Zero to Job-Ready AI/ML Engineer (বাংলা)</h6>
-          <div class="blog-tags">
-            <span class="blog-tag">বাংলা</span>
-            <span class="blog-tag">Machine Learning</span>
-            <span class="blog-tag">Deep Learning</span>
-            <span class="blog-tag">LLM / RAG</span>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-brain"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 06</span>Deep Learning with PyTorch</span>
+            <span class="series-node-count">8 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-06/episode-01-why-neural-network.html"><span class="ep-num">01</span><span class="ep-title">Neural Network কেন দরকার, যখন Random Forest আছেই?</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-02-neuron-activation-forward.html"><span class="ep-num">02</span><span class="ep-title">Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-03-backpropagation.html"><span class="ep-num">03</span><span class="ep-title">Backpropagation ও Gradient Descent: network কীভাবে শেখে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-04-pytorch-hands-on.html"><span class="ep-num">04</span><span class="ep-title">PyTorch হাতে-কলমে: tensor, autograd, প্রথম training loop</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-05-mlp-classification.html"><span class="ep-num">05</span><span class="ep-title">MLP দিয়ে classification: epoch, batch, learning rate টিউন করা</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-06-cnn-image-classifier.html"><span class="ep-num">06</span><span class="ep-title">CNN: computer কীভাবে ছবি 'দেখে' (Image Classifier প্রজেক্ট)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-07-transfer-learning.html"><span class="ep-num">07</span><span class="ep-title">Transfer Learning: ছোট data দিয়ে বড় কাজ (pretrained model ব্যবহার)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-06/episode-08-pytorch-vs-tensorflow.html"><span class="ep-num">08</span><span class="ep-title">PyTorch বনাম TensorFlow/Keras: কখন কোনটা, industry কী চায়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
-          <p class="blog-description">
-            শূন্য থেকে job-ready AI/ML Engineer হওয়ার সম্পূর্ণ বাংলা roadmap — Python, Data, ML,
-            Deep Learning, NLP, LLM, RAG, Production ও MLOps। গল্প, বাস্তব project আর engineering
-            perspective দিয়ে সাজানো ১০টি সিরিজের একটি দীর্ঘ journey।
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-calendar me-1"></i> 10 Series • 74 Episodes
-          </p>
-          <div class="blog-actions">
-            <a href="ai-ml-engineer/series-01/episode-01-ai-ml-dl-genai.html" class="read-more-btn">
-              Series 01: AI/ML-এর দুনিয়া <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-02/episode-01-python-why-how-much.html" class="episode-link">
-              Series 02: AI Engineer-দের জন্য Python <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-03/episode-01-why-data-first.html" class="episode-link">
-              Series 03: Data — AI-এর ভিত্তি <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-04/episode-01-how-much-math.html" class="episode-link">
-              Series 04: Math, Statistics ও Probability <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-05/episode-01-what-is-ml.html" class="episode-link">
-              Series 05: Classical Machine Learning <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-06/episode-01-why-neural-network.html" class="episode-link">
-              Series 06: Deep Learning with PyTorch <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-07/episode-01-text-preprocessing-tokenization.html" class="episode-link">
-              Series 07: NLP, Transformers ও LLM <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-08/episode-01-prompt-engineering.html" class="episode-link">
-              Series 08: Generative AI Engineering <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-09/episode-01-notebook-not-production.html" class="episode-link">
-              Series 09: Notebook থেকে Production AI <i class="fas fa-arrow-right ms-1"></i>
-            </a>
-            <a href="ai-ml-engineer/series-10/episode-01-ai-ml-resume.html" class="episode-link">
-              Series 10: AI/ML Engineer হিসেবে চাকরি <i class="fas fa-arrow-right ms-1"></i>
-            </a>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-comment-dots"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 07</span>NLP, Transformers ও LLM</span>
+            <span class="series-node-count">8 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-07/episode-01-text-preprocessing-tokenization.html"><span class="ep-num">01</span><span class="ep-title">Computer কীভাবে ভাষা বোঝে? Text preprocessing ও Tokenization</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-02-bow-tfidf.html"><span class="ep-num">02</span><span class="ep-title">Bag of Words ও TF-IDF: প্রথম যুগের NLP (এখনও কাজের)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-03-word-embeddings.html"><span class="ep-num">03</span><span class="ep-title">Word Embeddings: শব্দ কীভাবে সংখ্যার জগতে 'অর্থ' পায়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-04-rnn-lstm.html"><span class="ep-num">04</span><span class="ep-title">RNN ও LSTM: ক্রম (sequence) মনে রাখার চেষ্টা এবং তার সীমা</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-05-attention.html"><span class="ep-num">05</span><span class="ep-title">Attention: 'কোন শব্দে বেশি মনোযোগ' — Transformer বিপ্লবের বীজ</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-06-transformer-architecture.html"><span class="ep-num">06</span><span class="ep-title">Transformer Architecture: self-attention, positional encoding, encoder-decoder</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-07-huggingface-hands-on.html"><span class="ep-num">07</span><span class="ep-title">Hugging Face হাতে-কলমে: pretrained transformer দিয়ে কাজ</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-07/episode-08-llm-fundamentals.html"><span class="ep-num">08</span><span class="ep-title">LLM কী? GPT, Llama, Mistral, Claude, Gemini — tokens, context window, inference</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 08</span>Generative AI Engineering</span>
+            <span class="series-node-count">9 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-08/episode-01-prompt-engineering.html"><span class="ep-num">01</span><span class="ep-title">Prompt Engineering: LLM-কে সঠিক প্রশ্ন করা একটা skill</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-02-embeddings-deep.html"><span class="ep-num">02</span><span class="ep-title">Embeddings গভীরভাবে: text কেন vector হয়, semantic similarity কীভাবে কাজ করে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-03-vector-databases.html"><span class="ep-num">03</span><span class="ep-title">Vector Database: pgvector, Qdrant, Pinecone — vector কোথায় থাকে আর কীভাবে খোঁজে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-04-rag-architecture.html"><span class="ep-num">04</span><span class="ep-title">ChatGPT কি আপনার কোম্পানির ৫ লাখ PDF মুখস্থ করতে পারবে? এখানেই RAG-এর গল্প</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-05-rag-quality-reranking.html"><span class="ep-num">05</span><span class="ep-title">RAG-এর মান বাড়ানো: chunking strategy, metadata filtering, reranking, hallucination কমানো</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-06-rag-evaluation.html"><span class="ep-num">06</span><span class="ep-title">RAG Evaluation: 'ভালো RAG' কীভাবে মাপব? (faithfulness, relevance)</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-07-ai-agents.html"><span class="ep-num">07</span><span class="ep-title">AI Agents: tools, function calling, memory — workflow বনাম agent</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-08-fine-tuning-lora-qlora.html"><span class="ep-num">08</span><span class="ep-title">Fine-tuning কখন করবে, কখন করবে না: LoRA, QLoRA, dataset, evaluation</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-08/episode-09-bangla-knowledge-assistant.html"><span class="ep-num">09</span><span class="ep-title">Flagship: Bangla AI Knowledge Assistant — সব একসাথে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-server"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 09</span>Notebook থেকে Production AI</span>
+            <span class="series-node-count">9 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-09/episode-01-notebook-not-production.html"><span class="ep-num">01</span><span class="ep-title">'model.fit() হলো, এখন কী?' — Notebook production না, এই ফারাকটা বোঝো</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-02-fastapi-model-serving.html"><span class="ep-num">02</span><span class="ep-title">FastAPI দিয়ে model serving: REST API, request/response, validation</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-03-packaging-config-logging.html"><span class="ep-num">03</span><span class="ep-title">Python Packaging, Config, Logging: notebook code-কে service বানানো</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-04-auth-caching.html"><span class="ep-num">04</span><span class="ep-title">Authentication ও Caching basics: API-কে সুরক্ষিত ও দ্রুত করা</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-05-docker-ai.html"><span class="ep-num">05</span><span class="ep-title">Docker: 'আমার laptop-এ চলে, server-এ চলে না কেন?' — এই সমস্যার শেষ</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-06-cloud-deployment-cpu-gpu.html"><span class="ep-num">06</span><span class="ep-title">Cloud Deployment ও CPU vs GPU: AI app বাইরের দুনিয়ায়</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-07-mlops-tracking-versioning.html"><span class="ep-num">07</span><span class="ep-title">MLOps Part 1: experiment tracking, model ও data versioning, model registry</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-08-mlops-monitoring-drift-cicd.html"><span class="ep-num">08</span><span class="ep-title">MLOps Part 2: monitoring, model drift, retraining, CI/CD — 'খারাপ prediction বুঝব কীভাবে?'</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-09/episode-09-flagship-notebook-to-production.html"><span class="ep-num">09</span><span class="ep-title">Flagship transformation: Notebook → Package → FastAPI → Docker → Cloud → Monitoring</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
+          </div>
+        </div>
+        <div class="series-node">
+          <button class="series-node-head" type="button" aria-expanded="false">
+            <span class="series-node-icon"><i class="fa-solid fa-briefcase"></i></span>
+            <span class="series-node-title"><span class="series-node-num">Series 10</span>AI/ML Engineer হিসেবে চাকরি</span>
+            <span class="series-node-count">5 episodes</span>
+            <i class="fas fa-chevron-down series-node-chevron"></i>
+          </button>
+          <div class="series-node-body">
+            <ol class="episode-tree">
+              <li><a href="ai-ml-engineer/series-10/episode-01-ai-ml-resume.html"><span class="ep-num">01</span><span class="ep-title">AI/ML Resume যেটা recruiter ৬ সেকেন্ডে পড়ে: measurable achievement লেখা</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-10/episode-02-github-portfolio.html"><span class="ep-num">02</span><span class="ep-title">GitHub Portfolio: README, docs, demo, tests, architecture diagram</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-10/episode-03-portfolio-strategy.html"><span class="ep-num">03</span><span class="ep-title">Portfolio Strategy: ৫টা project যা junior থেকে আলাদা করে</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-10/episode-04-python-coding-interview.html"><span class="ep-num">04</span><span class="ep-title">Python ও Coding Interview: data structures, OOP, practical problem</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+              <li><a href="ai-ml-engineer/series-10/episode-05-ml-stats-interview.html"><span class="ep-num">05</span><span class="ep-title">ML ও Statistics Interview: overfitting, leakage, metrics, feature engineering, probability</span><i class="fas fa-arrow-right ep-arrow"></i></a></li>
+            </ol>
           </div>
         </div>
       </div>
 
-      <div class="card blog-card coming-soon">
-        <div class="card-header">
-          <i class="fas fa-hourglass-half"></i>
-          <h5>Coming Soon</h5>
-        </div>
-        <div class="card-body">
-          <span class="blog-category">More Posts</span>
-          <h6 class="card-title mt-2">New Blog Posts</h6>
-          <p class="blog-description">
-            Stay tuned for more articles on software engineering, cloud technologies, cybersecurity,
-            and other interesting topics in the tech world.
-          </p>
-          <p class="blog-meta">
-            <i class="fas fa-clock me-1"></i> Coming Soon
-          </p>
-        </div>
-      </div>
-    </div>
+      <p class="coming-soon-note"><i class="fas fa-hourglass-half"></i> আরও সিরিজ আসছে — cybersecurity, system design এবং আরও অনেক কিছু নিয়ে।</p>
+    </section>
+
   </main>
 
   <footer class="text-center py-4 mt-5 bg-light">
@@ -1172,6 +1302,29 @@
   </a>
 
   <script>
+    function initializeSeriesTree() {
+      document.querySelectorAll('.series-node-head').forEach(function (h) {
+        h.addEventListener('click', function () {
+          var node = h.closest('.series-node');
+          var open = node.classList.toggle('open');
+          h.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+      var btn = document.getElementById('expandAllBtn');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var nodes = document.querySelectorAll('.series-node');
+          var anyClosed = Array.prototype.some.call(nodes, function (n) { return !n.classList.contains('open'); });
+          nodes.forEach(function (n) {
+            n.classList.toggle('open', anyClosed);
+            var head = n.querySelector('.series-node-head');
+            if (head) head.setAttribute('aria-expanded', anyClosed ? 'true' : 'false');
+          });
+          btn.innerHTML = anyClosed ? '<i class="fas fa-list-ul"></i> সব লুকান' : '<i class="fas fa-list-ul"></i> সব সিরিজ দেখুন';
+        });
+      }
+    }
+
     function toggleDarkMode() {
       const btn = document.querySelector('.dark-mode-toggle i');
       document.body.classList.toggle('dark-mode');
@@ -1219,6 +1372,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       initializeDarkMode();
       initializeBackToTop();
+      initializeSeriesTree();
     });
   </script>
 </body>
