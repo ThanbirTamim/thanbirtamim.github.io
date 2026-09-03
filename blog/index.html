@@ -3,6 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
+<meta name="rights" content="Proprietary — no reproduction or republishing without written permission.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Sheikh Thanbir Alam's technical blog — in-depth Bangla & English guides on Git, Docker, Kubernetes, CI/CD, and TanStack Start for developers.">
   <meta name="theme-color" content="#667eea">
@@ -874,7 +876,7 @@
     }
     .featured-series-head .blog-category { background:rgba(255,255,255,0.2); box-shadow:none; margin-bottom:8px; }
     .featured-series-title { font-size: clamp(1.3rem,1rem + 1.5vw,1.9rem); font-weight:700; margin:0; line-height:1.25; }
-    .featured-series-desc { position:relative; z-index:2; margin:18px 0 0; opacity:0.95; max-width:760px; font-size:clamp(0.9rem,0.85rem+0.3vw,1.05rem); line-height:1.6; }
+    .featured-series-desc { position:relative; z-index:2; margin:18px 0 0; opacity:0.95; max-width:760px; font-size:clamp(0.9rem,0.85rem+ 0.3vw,1.05rem); line-height:1.6; }
     .featured-series-meta { display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; position:relative; z-index:2; }
     .featured-series-actions { display:flex; flex-wrap:wrap; gap:12px 16px; align-items:center; margin-top:22px; position:relative; z-index:2; }
     .start-btn {
@@ -942,7 +944,7 @@
     /* ===== Unified series collection ===== */
     .series-collection { margin-bottom: 40px; animation: fadeInUp 0.6s ease-out 0.15s both; }
     .collection-toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:8px; }
-    .collection-toolbar h2 { font-size:clamp(1.1rem,1rem+0.6vw,1.5rem); font-weight:700; margin:0; display:flex; align-items:center; gap:10px; }
+    .collection-toolbar h2 { font-size:clamp(1.1rem,1rem+ 0.6vw,1.5rem); font-weight:700; margin:0; display:flex; align-items:center; gap:10px; }
     .tree-toggle-btn { background:linear-gradient(135deg,#667eea,#764ba2); color:#fff; border:none; padding:10px 18px; border-radius:10px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:8px; font-family:inherit; box-shadow:0 4px 15px rgba(102,126,234,0.3); transition:all .3s ease; }
     .tree-toggle-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(102,126,234,0.45); color:#fff; }
     .dark-mode .tree-toggle-btn { background:linear-gradient(135deg,#0d6efd,#00d4ff); box-shadow:0 4px 15px rgba(13,110,253,0.4); }
@@ -1375,6 +1377,23 @@
       initializeSeriesTree();
     });
   </script>
+
+<div data-copyright-guard style="text-align:center;max-width:1400px;margin:0 auto;padding:16px 18px 26px;font-size:0.78rem;line-height:1.7;color:#8a8a8a;">© 2025 <strong>Sheikh Thanbir Alam</strong>. All Rights Reserved. <a href="https://thanbirtamim.github.io" style="color:inherit;text-decoration:underline;">thanbirtamim.github.io</a><br>এই লেখা মূল লেখকের সম্পত্তি — লিখিত অনুমতি ছাড়া কপি করে অন্য কোনো ওয়েবসাইট, ব্লগ, বই বা প্ল্যাটফর্মে প্রকাশ/বিতরণ করা কঠোরভাবে নিষিদ্ধ। Content may not be copied or republished without permission.</div>
+<script data-copyright-guard>
+(function(){
+  document.addEventListener('copy', function(e){
+    try{
+      var sel = (window.getSelection && window.getSelection().toString()) || '';
+      if(sel && sel.length > 60){
+        var note = '\n\n\u2014 \u00a9 2025 Sheikh Thanbir Alam. All Rights Reserved.'
+                 + '\nSource: ' + location.href
+                 + '\n\u098f\u0987 \u09b2\u09c7\u0996\u09be \u0985\u09a8\u09c1\u09ae\u09a4\u09bf \u099b\u09be\u09dc\u09be \u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a5\u09be\u0993 \u09aa\u09cd\u09b0\u0995\u09be\u09b6 \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7 \u09a8\u09be\u0964';
+        if(e.clipboardData){ e.clipboardData.setData('text/plain', sel + note); e.preventDefault(); }
+      }
+    }catch(_){}
+  });
+})();
+</script>
 </body>
 
 </html>
