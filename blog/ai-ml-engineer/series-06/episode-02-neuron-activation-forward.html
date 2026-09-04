@@ -3,14 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Neuron, weight, activation function ও forward propagation — neural network-এর ভেতরে কী ঘটে, বাংলায়।">
-    <meta name="keywords" content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
+    <meta name="description"
+          content="Neuron, weight, activation function ও forward propagation — neural network-এর ভেতরে কী ঘটে, বাংলায়।">
+    <meta name="keywords"
+          content="AI Engineer Bangladesh, AI ML Engineer, Machine Learning Bangla, AI Engineer Roadmap, Python for AI, Deep Learning, Generative AI, LLM, RAG, AI Career">
     <meta name="author" content="Sheikh Thanbir Alam">
-  <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
-<meta name="rights" content="Proprietary — no reproduction or republishing without written permission.">
+    <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
+    <meta name="rights" content="Proprietary — no reproduction or republishing without written permission.">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে | AI/ML Engineer বাংলা সিরিজ">
-    <meta property="og:description" content="Neuron, weight, activation function ও forward propagation — neural network-এর ভেতরে কী ঘটে, বাংলায়।">
+    <meta property="og:title"
+          content="Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে | AI/ML Engineer বাংলা সিরিজ">
+    <meta property="og:description"
+          content="Neuron, weight, activation function ও forward propagation — neural network-এর ভেতরে কী ঘটে, বাংলায়।">
     <meta property="og:locale" content="bn_BD">
     <title>Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে | AI/ML Engineer বাংলা সিরিজ</title>
     <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon2.ico">
@@ -731,10 +735,24 @@
             margin: 4px 6px 4px 0;
             color: #fff;
         }
-        .level-beginner { background: linear-gradient(135deg, #00b894 0%, #55efc4 100%); }
-        .level-intermediate { background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%); }
-        .level-advanced { background: linear-gradient(135deg, #d63031 0%, #e17055 100%); }
-        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+
+        .level-beginner {
+            background: linear-gradient(135deg, #00b894 0%, #55efc4 100%);
+        }
+
+        .level-intermediate {
+            background: linear-gradient(135deg, #e17055 0%, #fdcb6e 100%);
+        }
+
+        .level-advanced {
+            background: linear-gradient(135deg, #d63031 0%, #e17055 100%);
+        }
+
+        .meta-pills {
+            text-align: center;
+            margin: 10px 0 30px 0;
+        }
+
         .meta-pill {
             display: inline-block;
             background: #f0f2ff;
@@ -764,7 +782,8 @@
         AI/ML Engineer সিরিজ &raquo; Series 06 &raquo; Episode 02
     </div>
 
-    <h1><i class="fa-solid fa-diagram-project"></i> Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে</h1>
+    <h1><i class="fa-solid fa-diagram-project"></i> Neuron, Activation, Forward Propagation: একটা network ভেতরে কী করে
+    </h1>
     <p class="subtitle">একটা layer কীভাবে কাজ করে (Series 06, Episode 02)</p>
 
     <div class="meta-pills">
@@ -773,297 +792,479 @@
         <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 08</span>
     </div>
 
-<div class="toc">
-    <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
-    <ul>
-        <li>১. গল্প: "layer-এর ভেতরে আসলে কী হয়?"</li>
-        <li>২. একটা neuron আসলে কী করে?</li>
-        <li>৩. Weight ও Bias — কেন এই দুটো সংখ্যা</li>
-        <li>৪. Activation Function কেন লাগে?</li>
-        <li>৫. জনপ্রিয় activation: Sigmoid, ReLU, Softmax</li>
-        <li>৬. Layer ও Forward Propagation</li>
-        <li>৭. তিন স্তরে বুঝি: intuition → technical → engineer</li>
-        <li>৮. NumPy দিয়ে হাতে forward pass</li>
-        <li>৯. Visual: input → hidden → output</li>
-        <li>১০. Experiment: activation বদলে দেখুন</li>
-        <li>১১. বাংলাদেশের বাস্তব উদাহরণ</li>
-        <li>১২. Boss Question</li>
-        <li>১৩. Job Requirement Decoder</li>
-        <li>১৪. সাধারণ ভুল ধারণা</li>
-        <li>১৫. Interview Prep</li>
-        <li>১৬. হাতে-কলমে</li>
-        <li>১৭. Project Connection ও সারসংক্ষেপ</li>
-    </ul>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🧩</span> ১. গল্প: "layer-এর ভেতরে আসলে কী হয়?"</h2>
-    <p>
-        গত পর্বে Rahim বুঝেছে neural network কখন লাগে। কিন্তু এখন তার মাথায় একটাই প্রশ্ন ঘুরছে — সবাই বলে
-        "layer", "neuron", "activation"; এগুলো শুনতে অনেকটা ম্যাজিকের মতো। ভেতরে আসলে কী গণনা হয়?
-    </p>
-    <div class="story-box">
-        Rahim: <em>"আপা, PyTorch-এ <code>nn.Linear(10, 5)</code> লিখলে একটা layer হয়ে যায়। কিন্তু এই layer-টা
-        ভেতরে কী করছে সেটা না বুঝলে আমার মনে হয় আমি শুধু copy-paste করছি।"</em><br><br>
-        Arif: <em>"একদম ঠিক ধরেছ। যে engineer শুধু API জানে আর যে ভেতরের গণিতটা বোঝে — দুজনের পার্থক্য
-        তখনই বোঝা যায় যখন model কাজ করে না, debug করতে হয়। চলো, আজ আমরা PyTorch ছাড়াই, শুধু NumPy দিয়ে
-        একটা layer হাতে বানাই। তারপর তুমি আর কখনো ভুলবে না ভেতরে কী হয়।"</em>
+    <div class="toc">
+        <h2><span class="emoji">📑</span> এই পর্বে যা যা আছে</h2>
+        <ul>
+            <li>১. গল্প: "layer-এর ভেতরে আসলে কী হয়?"</li>
+            <li>২. একটা neuron আসলে কী করে?</li>
+            <li>৩. Weight ও Bias — কেন এই দুটো সংখ্যা</li>
+            <li>৪. Activation Function কেন লাগে?</li>
+            <li>৫. জনপ্রিয় activation: Sigmoid, ReLU, Softmax</li>
+            <li>৬. Layer ও Forward Propagation</li>
+            <li>৭. তিন স্তরে বুঝি: intuition → technical → engineer</li>
+            <li>৮. NumPy দিয়ে হাতে forward pass</li>
+            <li>৯. Visual: input → hidden → output</li>
+            <li>১০. Experiment: activation বদলে দেখুন</li>
+            <li>১১. বাংলাদেশের বাস্তব উদাহরণ</li>
+            <li>১২. Boss Question</li>
+            <li>১৩. Job Requirement Decoder</li>
+            <li>১৪. সাধারণ ভুল ধারণা</li>
+            <li>১৫. Interview Prep</li>
+            <li>১৬. হাতে-কলমে</li>
+            <li>১৭. Project Connection ও সারসংক্ষেপ</li>
+        </ul>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">🔵</span> ২. একটা neuron আসলে কী করে?</h2>
-    <p>একটা neuron মাত্র তিনটা কাজ করে, খুব সরল:</p>
-    <ol>
-        <li><strong>গুণ:</strong> প্রতিটা input-কে তার weight দিয়ে গুণ করে।</li>
-        <li><strong>যোগ:</strong> সব গুণফল যোগ করে, একটা bias যোগ করে (এটাই <code>z</code>)।</li>
-        <li><strong>activation:</strong> সেই <code>z</code>-কে একটা activation function-এর মধ্য দিয়ে পাঠায়।</li>
-    </ol>
-    <div class="diagram">
-   input      weight
-   x1 ───────── w1 ┐
-   x2 ───────── w2 ┤   z = (w1·x1 + w2·x2 + w3·x3) + b
-   x3 ───────── w3 ┘                │
-                                    ▼
-                          a = activation(z)   ← neuron-এর output
+    <div class="section">
+        <h2><span class="emoji">🧩</span> ১. গল্প: "layer-এর ভেতরে আসলে কী হয়?"</h2>
+        <p>
+            গত পর্বে Rahim বুঝেছে neural network কখন লাগে। কিন্তু এখন তার মাথায় একটাই প্রশ্ন ঘুরছে — সবাই বলে
+            "layer", "neuron", "activation"; এগুলো শুনতে অনেকটা ম্যাজিকের মতো। ভেতরে আসলে কী গণনা হয়?
+        </p>
+        <div class="story-box">
+            Rahim: <em>"আপা, PyTorch-এ <code>nn.Linear(10, 5)</code> লিখলে একটা layer হয়ে যায়। কিন্তু এই layer-টা
+            ভেতরে কী করছে সেটা না বুঝলে আমার মনে হয় আমি শুধু copy-paste করছি।"</em><br><br>
+            Arif: <em>"একদম ঠিক ধরেছ। যে engineer শুধু API জানে আর যে ভেতরের গণিতটা বোঝে — দুজনের পার্থক্য
+            তখনই বোঝা যায় যখন model কাজ করে না, debug করতে হয়। চলো, আজ আমরা PyTorch ছাড়াই, শুধু NumPy দিয়ে
+            একটা layer হাতে বানাই। তারপর তুমি আর কখনো ভুলবে না ভেতরে কী হয়।"</em>
+        </div>
     </div>
-    <p>ব্যস, এটুকুই। একটা neural network মানে হাজার হাজার এমন ছোট গণনা একসাথে।</p>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">⚙️</span> ৩. Weight ও Bias — কেন এই দুটো সংখ্যা</h2>
-    <p>
-        <strong>Weight (w):</strong> প্রতিটা input কতটা গুরুত্বপূর্ণ সেটা ঠিক করে। বড় weight মানে সেই input-এর
-        প্রভাব বেশি। <strong>Bias (b):</strong> একটা "shift" — activation কখন চালু হবে সেই থ্রেশহোল্ড সরায়।
-    </p>
-    <div class="key-point">
-        Training-এর পুরো লক্ষ্যই হলো এই <strong>weight আর bias-এর সঠিক মান খুঁজে বের করা</strong>, যাতে model-এর
-        prediction সত্যিকারের উত্তরের কাছাকাছি হয়। শুরুতে এগুলো random থাকে, ধীরে ধীরে ঠিক হয় (পরের পর্বে দেখব কীভাবে)।
+    <div class="section">
+        <h2><span class="emoji">🔵</span> ২. একটা Neuron আসলে কী করে?</h2>
+
+        <p>
+            🌟 <strong>চলো, আজ একটা ছোট্ট গল্প বলি...</strong> 📖✨
+        </p>
+
+        <p>
+            একটা বড় বাগানে থাকত <strong>মিঠু নামে একটা ছোট্ট পিঁপড়ে</strong>। 🐜🌳
+            মিঠু ছিল খুব বুদ্ধিমান। প্রতিদিন সে খাবার খুঁজতে বের হতো। 🍪🌽
+        </p>
+
+        <p>
+            একদিন হাঁটতে হাঁটতে মিঠু একটা জায়গায় এসে থামল।
+            সামনে তিনটা রাস্তা! 🛣️🐜
+        </p>
+
+        <p>
+            মিঠুকে ঠিক করতে হবে—
+            <strong>কোন রাস্তা দিয়ে গেলে খাবার পাওয়ার সম্ভাবনা বেশি?</strong> 🤔
+        </p>
+
+        <p>
+            তাই মিঠু তিনটা বিষয় খেয়াল করল। 🔍
+        </p>
+
+        <ul>
+            <li>🌸 <code>x1</code> = রাস্তার পাশে ফুলের গন্ধ কতটা</li>
+            <li>🍪 <code>x2</code> = আগে থেকে খাবারের গন্ধ কতটা পাওয়া যাচ্ছে</li>
+            <li>🐜 <code>x3</code> = ওই পথে অন্য পিঁপড়ে কতজন যাচ্ছে</li>
+        </ul>
+
+        <p>
+            কিন্তু মিঠু জানে, সব তথ্য <strong>সমান গুরুত্বপূর্ণ নয়</strong>।
+            তাই সে প্রতিটি তথ্যের জন্য একটা করে <strong>Weight</strong> ঠিক করল। ⚖️
+        </p>
+
+        <p>
+            যেমন, খাবারের গন্ধ তার কাছে সবচেয়ে গুরুত্বপূর্ণ।
+            তাই <code>x2</code>-এর Weight বেশি। 🍪❤️
+        </p>
+
+        <ul>
+            <li>⚖️ <code>w1</code> → ফুলের গন্ধের গুরুত্ব</li>
+            <li>⚖️ <code>w2</code> → খাবারের গন্ধের গুরুত্ব</li>
+            <li>⚖️ <code>w3</code> → অন্য পিঁপড়ের সংখ্যার গুরুত্ব</li>
+        </ul>
+
+        <h3>✖️ মিঠু এবার হিসাব শুরু করল!</h3>
+
+        <p>
+            মিঠু প্রতিটি তথ্যকে তার Weight দিয়ে গুণ করল।
+            কারণ সে জানতে চায়, <strong>কোন তথ্য তার সিদ্ধান্তে কতটা প্রভাব ফেলছে</strong>।
+        </p>
+
+        <div class="diagram">
+            🌸 x1 × w1
+            <br>
+            🍪 x2 × w2
+            <br>
+            🐜 x3 × w3
+        </div>
+
+        <p>
+            এবার মিঠু সব হিসাব একসাথে যোগ করল। ➕
+        </p>
+
+        <blockquote>
+            "সবগুলো যোগ করলে বুঝতে পারব কোন রাস্তা আমার জন্য ভালো!" 🐜💭
+        </blockquote>
+
+        <h3>➕ তারপর এলো Bias!</h3>
+
+        <p>
+            কিন্তু মিঠুর কাছে আরও একটা ছোট্ট অতিরিক্ত সংখ্যা আছে—
+            <strong>Bias (b)</strong>। ✨
+        </p>
+
+        <p>
+            Bias মিঠুর সিদ্ধান্তকে একটু <strong>সামঞ্জস্য করতে</strong> সাহায্য করে।
+            তাই সব হিসাবের সাথে Bias-ও যোগ হলো।
+        </p>
+
+        <div class="diagram">
+            z = (x1 × w1 + x2 × w2 + x3 × w3) + b
+        </div>
+
+        <p>
+            পুরো হিসাব শেষ করে মিঠু একটা সংখ্যা পেল।
+            এই সংখ্যাটার নাম হলো <strong>z</strong>। 🔢
+        </p>
+
+        <h3>🚪 এবার মিঠু গেল শেষ দরজার সামনে!</h3>
+
+        <p>
+            কিন্তু <code>z</code> পাওয়ার পরও মিঠু সরাসরি সিদ্ধান্ত নিল না।
+            সে সংখ্যাটাকে একটা বিশেষ দরজার মধ্যে দিয়ে পাঠাল। 🚪✨
+        </p>
+
+        <p>
+            সেই দরজার নাম হলো <strong>Activation Function</strong>।
+        </p>
+
+        <p>
+            Activation Function <code>z</code>-কে দেখে মিঠুকে সাহায্য করল
+            <strong>শেষ সিদ্ধান্ত নিতে</strong>।
+        </p>
+
+        <blockquote>
+            🐜 "হুমম... হিসাব বলছে এই রাস্তা দিয়ে গেলে খাবার পাওয়ার সম্ভাবনা বেশি!" 🍪🎉
+        </blockquote>
+
+        <p>
+            মিঠু আনন্দে সেই রাস্তা ধরে দৌড়ে গেল। 🐜💨
+            আর কিছুদূর যেতেই সে সত্যিই একটা বিশাল খাবারের টুকরো পেয়ে গেল! 🍪😍
+        </p>
+
+        <p>
+            এই যে মিঠু সব তথ্য নিয়ে হিসাব করে একটা শেষ সিদ্ধান্ত নিল—
+            <strong>এটাই neuron-এর কাজের মতো।</strong> 🧠✨
+        </p>
+
+        <h3>🧠 তাহলে মিঠুর গল্প থেকে Neuron-কে বুঝি</h3>
+
+        <ol>
+            <li>📥 <strong>Input:</strong> তথ্য সংগ্রহ করে</li>
+            <li>✖️ <strong>Weight:</strong> কোন তথ্য কতটা গুরুত্বপূর্ণ তা ঠিক করে</li>
+            <li>➕ <strong>Sum + Bias:</strong> সব হিসাব যোগ করে <code>z</code> তৈরি করে</li>
+            <li>🚪 <strong>Activation:</strong> <code>z</code> দেখে সিদ্ধান্তের জন্য output তৈরি করে</li>
+            <li>🎯 <strong>Output:</strong> শেষ ফলাফল দেয়</li>
+        </ol>
+
+        <div class="diagram">
+            🐜 Input
+            ↓
+            ⚖️ Weight দিয়ে গুরুত্ব নির্ধারণ
+            ↓
+            ➕ সব যোগ + Bias
+            ↓
+            🔢 z
+            ↓
+            🚪 Activation Function
+            ↓
+            🎯 Output
+        </div>
+
+        <p>
+            <strong>
+                আর এমন হাজার হাজার "মিঠু" 🐜🧠 একসাথে কাজ করলেই
+                তৈরি হয় একটা Neural Network! 🤖✨
+            </strong>
+        </p>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">🎚️</span> ৪. Activation Function কেন লাগে?</h2>
-    <p>
-        ধরুন activation ছাড়া শুধু <code>z = w·x + b</code> রাখলাম। তাহলে যতগুলো layer-ই জুড়ি না কেন, পুরো
-        network শেষ পর্যন্ত একটা <strong>সরল linear function</strong>-এই থেকে যাবে (linear-এর উপর linear আবার
-        linear)। মানে জটিল, বাঁকা (non-linear) pattern কখনো শিখতে পারবে না।
-    </p>
-    <div class="info-box">
-        <strong>এক লাইনে:</strong> activation function network-এ <strong>non-linearity</strong> আনে। এটাই
-        network-কে জটিল সম্পর্ক (যেমন XOR, ছবির pattern) শেখার ক্ষমতা দেয়। activation না থাকলে deep network
-        আর একটা logistic/linear regression-এর মধ্যে পার্থক্য থাকত না।
+
+    <div class="section">
+        <h2><span class="emoji">⚙️</span> ৩. Weight ও Bias — কেন এই দুটো সংখ্যা</h2>
+        <p>
+            <strong>Weight (w):</strong> প্রতিটা input কতটা গুরুত্বপূর্ণ সেটা ঠিক করে। বড় weight মানে সেই input-এর
+            প্রভাব বেশি। <strong>Bias (b):</strong> একটা "shift" — activation কখন চালু হবে সেই থ্রেশহোল্ড সরায়।
+        </p>
+        <div class="key-point">
+            Training-এর পুরো লক্ষ্যই হলো এই <strong>weight আর bias-এর সঠিক মান খুঁজে বের করা</strong>, যাতে model-এর
+            prediction সত্যিকারের উত্তরের কাছাকাছি হয়। শুরুতে এগুলো random থাকে, ধীরে ধীরে ঠিক হয় (পরের পর্বে দেখব
+            কীভাবে)।
+        </div>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">📈</span> ৫. জনপ্রিয় activation: Sigmoid, ReLU, Softmax</h2>
-    <table>
-        <tr><th>Activation</th><th>কী করে</th><th>কোথায় ব্যবহার</th></tr>
-        <tr><td><strong>ReLU</strong> max(0, z)</td><td>ঋণাত্মক হলে 0, ধনাত্মক হলে যেমন আছে</td><td>hidden layer-এর ডিফল্ট পছন্দ (দ্রুত, ভালো কাজ করে)</td></tr>
-        <tr><td><strong>Sigmoid</strong> 1/(1+e⁻ᶻ)</td><td>০ থেকে ১-এর মধ্যে চাপায়</td><td>binary classification-এর output (probability)</td></tr>
-        <tr><td><strong>Softmax</strong></td><td>একাধিক class-এর probability, যোগফল ১</td><td>multi-class classification-এর output</td></tr>
-        <tr><td><strong>Tanh</strong></td><td>-১ থেকে ১-এর মধ্যে</td><td>কিছু পুরোনো/RNN network</td></tr>
-    </table>
-    <div class="technical-box">
-        <strong>Engineer টিপ:</strong> hidden layer-এ সন্দেহ হলে <code>ReLU</code> দিয়ে শুরু করুন — এটা সবচেয়ে
-        নিরাপদ ডিফল্ট। output layer-এ সমস্যা অনুযায়ী: binary → Sigmoid, multi-class → Softmax, regression → কোনো
-        activation না (raw number)।
+    <div class="section">
+        <h2><span class="emoji">🎚️</span> ৪. Activation Function কেন লাগে?</h2>
+        <p>
+            ধরুন activation ছাড়া শুধু <code>z = w·x + b</code> রাখলাম। তাহলে যতগুলো layer-ই জুড়ি না কেন, পুরো
+            network শেষ পর্যন্ত একটা <strong>সরল linear function</strong>-এই থেকে যাবে (linear-এর উপর linear আবার
+            linear)। মানে জটিল, বাঁকা (non-linear) pattern কখনো শিখতে পারবে না।
+        </p>
+        <div class="info-box">
+            <strong>এক লাইনে:</strong> activation function network-এ <strong>non-linearity</strong> আনে। এটাই
+            network-কে জটিল সম্পর্ক (যেমন XOR, ছবির pattern) শেখার ক্ষমতা দেয়। activation না থাকলে deep network
+            আর একটা logistic/linear regression-এর মধ্যে পার্থক্য থাকত না।
+        </div>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">🔗</span> ৬. Layer ও Forward Propagation</h2>
-    <p>
-        একটা <strong>layer</strong> মানে সমান্তরালে বসানো একগুচ্ছ neuron। <strong>Forward propagation</strong>
-        মানে input থেকে শুরু করে layer-এর পর layer গণনা করতে করতে output পর্যন্ত পৌঁছানো — শুধু সামনের দিকে,
-        কোনো শেখা এখানে হয় না, শুধু prediction তৈরি হয়।
-    </p>
-    <p>একটা layer-এর গণনা আসলে matrix multiplication (Series 04 মনে করুন):</p>
-    <div class="diagram">
-Layer output:   a = activation( W · x + b )
-
-   W = weight matrix  (এই layer-এর সব neuron-এর weight একসাথে)
-   x = input vector
-   b = bias vector
-   ·  = matrix multiplication (dot product)
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🎯</span> ৭. তিন স্তরে বুঝি</h2>
-    <div class="technical-box">
-        <strong>Level 1 — intuition:</strong> প্রতিটা neuron একটা ছোট "ভোটার" — সে তার input দেখে একটা মতামত
-        (সংখ্যা) দেয়। অনেক ভোটার মিলে layer, অনেক layer মিলে চূড়ান্ত সিদ্ধান্ত।<br><br>
-        <strong>Level 2 — technical:</strong> forward pass হলো ধারাবাহিক <code>W·x + b → activation</code>
-        গণনা। এটা পুরোটাই matrix operation, তাই GPU-তে দ্রুত চলে (parallel)।<br><br>
-        <strong>Level 3 — engineer:</strong> production-এ inference মানেই এই forward pass চালানো। training শেষ,
-        weight fixed — শুধু নতুন input দিয়ে forward pass চালিয়ে উত্তর পাওয়া। তাই inference দ্রুত ও সস্তা,
-        training-এর চেয়ে অনেক হালকা। (মনে রাখবেন: <strong>training ≠ inference</strong>।)
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">💻</span> ৮. NumPy দিয়ে হাতে forward pass</h2>
-    <p>
-        এখানে ইচ্ছাকৃতভাবে PyTorch ব্যবহার করছি <strong>না</strong> — কারণ আমরা চাই ভেতরের গণিতটা দেখতে।
-        NumPy দিয়ে একটা ২-layer network-এর forward pass:
-    </p>
-    <div class="code-box">
-import numpy as np
-
-def relu(z):
-    return np.maximum(0, z)
-
-def softmax(z):
-    e = np.exp(z - np.max(z))   # numerical stability
-    return e / e.sum()
-
-# input: ৩টা feature (যেমন: job post-এর ৩টা সংখ্যা)
-x = np.array([0.5, -1.2, 2.0])
-
-# Hidden layer: ৩ input -&gt; ৪ neuron
-W1 = np.random.randn(4, 3) * 0.1   # (4x3) weight matrix
-b1 = np.zeros(4)
-
-# Output layer: ৪ -&gt; ২ class (যেমন: junior / senior role)
-W2 = np.random.randn(2, 4) * 0.1
-b2 = np.zeros(2)
-
-# ---- Forward propagation ----
-z1 = W1 @ x + b1        # hidden layer-এর weighted sum
-a1 = relu(z1)           # hidden activation
-
-z2 = W2 @ a1 + b2       # output layer-এর weighted sum
-a2 = softmax(z2)        # class probability
-
-print("Hidden activation:", np.round(a1, 3))
-print("Class probability :", np.round(a2, 3), " (যোগফল =", round(a2.sum(), 3), ")")
-    </div>
-    <p>
-        চালালে দেখবেন <code>a2</code>-এর দুটো সংখ্যার যোগফল ১ — কারণ softmax এদের probability-তে রূপান্তর করেছে।
-        এই পুরোটাই <strong>forward pass</strong>। এখনো model শেখেনি (weight random), তাই উত্তর ভুল — কিন্তু
-        pipeline-টা কাজ করছে।
-    </p>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🖼️</span> ৯. Visual: input → hidden → output</h2>
-    <div class="diagram">
- Input (3)        Hidden (4, ReLU)        Output (2, Softmax)
-  x1  ○ ┐
-       ─┼──&gt; ○ ┐
-  x2  ○ ┤     ○ ┼──&gt; ○  P(junior)
-       ─┼──&gt; ○ ┤     ○  P(senior)
-  x3  ○ ┘     ○ ┘
-             W1,b1        W2,b2
-
- forward:  x --(W1·x+b1)--&gt; ReLU --(W2·a1+b2)--&gt; Softmax --&gt; probabilities
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🧪</span> ১০. Experiment: activation বদলে দেখুন</h2>
-    <p>
-        উপরের কোডে <code>a1 = relu(z1)</code>-এর জায়গায় <code>a1 = z1</code> (মানে কোনো activation না) দিন।
-        তারপর ভাবুন — এখন পুরো network কি একটা linear function হয়ে গেল? হ্যাঁ। এটাই প্রমাণ করে কেন non-linear
-        activation ছাড়া deep network অর্থহীন।
-    </p>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের বাস্তব উদাহরণ</h2>
-    <p>
-        একটা fintech-এ যখন "এই transaction fraud কিনা" model deploy হয়, production-এ প্রতিটা transaction-এ
-        শুধু এই <strong>forward pass</strong> চলে — মিলিসেকেন্ডে উত্তর। GP/Robi-র recommendation বা কোনো
-        health-app-এর image scan — সবখানে user যা দেখে সেটা forward pass-এর ফল। Training হয় আগে, offline;
-        user শুধু inference (forward pass) পায়।
-    </p>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
-    <div class="story-box">
-        Boss: <em>"এই activation-টেকটিভেশন — এসব theory আমার কাজে কী লাগবে?"</em><br><br>
-        <strong>উত্তর:</strong> "স্যার, যখন আমাদের model production-এ ভুল প্রায়ই একই রকম ভুল করবে, বা training-এ
-        শেখাই বন্ধ করে দেবে (dead neuron সমস্যা), তখন এই activation-এর বোঝাপড়াই আমাকে দ্রুত সমস্যা খুঁজে ঠিক
-        করতে সাহায্য করবে। মানে এটা কম downtime, দ্রুত fix — সরাসরি খরচ বাঁচায়।"
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
-    <div class="key-point">"Understanding of neural network fundamentals (activation functions, forward pass)."</div>
-    <div class="info-box">
+    <div class="section">
+        <h2><span class="emoji">📈</span> ৫. জনপ্রিয় activation: Sigmoid, ReLU, Softmax</h2>
         <table>
-            <tr><th>প্রশ্ন</th><th>উত্তর</th></tr>
-            <tr><td>কী বোঝায়?</td><td>আপনি একটা network-এর ভেতরের গণনা (neuron, weight, activation, forward pass) বোঝেন।</td></tr>
-            <tr><td>কেন চায়?</td><td>যাতে API-blindly না চালিয়ে model debug ও tune করতে পারেন।</td></tr>
-            <tr><td>কোন সমস্যা সমাধান করে?</td><td>"কেন model শিখছে না / সব একই উত্তর দিচ্ছে" — এসব ডিবাগিং।</td></tr>
-            <tr><td>junior-এর কী জানা লাগে?</td><td>neuron-এর ৩ ধাপ, ReLU/Sigmoid/Softmax কখন, non-linearity কেন দরকার।</td></tr>
-            <tr><td>এখনই কী master লাগে না?</td><td>বিরল activation (GELU, Swish)-এর গাণিতিক প্রমাণ, custom activation।</td></tr>
-            <tr><td>GitHub-এ কীভাবে দেখাবে?</td><td>এই NumPy forward-pass demo + একটা ছোট MLP project।</td></tr>
-            <tr><td>interview-তে কী?</td><td>"Activation function কেন দরকার?", "ReLU বনাম Sigmoid কখন?"</td></tr>
+            <tr>
+                <th>Activation</th>
+                <th>কী করে</th>
+                <th>কোথায় ব্যবহার</th>
+            </tr>
+            <tr>
+                <td><strong>ReLU</strong> max(0, z)</td>
+                <td>ঋণাত্মক হলে 0, ধনাত্মক হলে যেমন আছে</td>
+                <td>hidden layer-এর ডিফল্ট পছন্দ (দ্রুত, ভালো কাজ করে)</td>
+            </tr>
+            <tr>
+                <td><strong>Sigmoid</strong> 1/(1+e⁻ᶻ)</td>
+                <td>০ থেকে ১-এর মধ্যে চাপায়</td>
+                <td>binary classification-এর output (probability)</td>
+            </tr>
+            <tr>
+                <td><strong>Softmax</strong></td>
+                <td>একাধিক class-এর probability, যোগফল ১</td>
+                <td>multi-class classification-এর output</td>
+            </tr>
+            <tr>
+                <td><strong>Tanh</strong></td>
+                <td>-১ থেকে ১-এর মধ্যে</td>
+                <td>কিছু পুরোনো/RNN network</td>
+            </tr>
         </table>
+        <div class="technical-box">
+            <strong>Engineer টিপ:</strong> hidden layer-এ সন্দেহ হলে <code>ReLU</code> দিয়ে শুরু করুন — এটা সবচেয়ে
+            নিরাপদ ডিফল্ট। output layer-এ সমস্যা অনুযায়ী: binary → Sigmoid, multi-class → Softmax, regression → কোনো
+            activation না (raw number)।
+        </div>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
-    <div class="technical-box">
-        <strong>ভুল ১:</strong> "activation optional, না দিলেও চলে।" →
-        <strong>ঠিক:</strong> hidden layer-এ activation ছাড়া পুরো network linear হয়ে অর্থহীন।<br><br>
-        <strong>ভুল ২:</strong> "output layer-এও সবসময় ReLU।" →
-        <strong>ঠিক:</strong> output activation সমস্যা অনুযায়ী (Sigmoid/Softmax/কিছুই না)।<br><br>
-        <strong>ভুল ৩:</strong> "forward pass-এ model শেখে।" →
-        <strong>ঠিক:</strong> forward pass শুধু prediction; শেখা হয় backprop-এ (পরের পর্ব)।<br><br>
-        <strong>ভুল ৪:</strong> "bias গুরুত্বহীন।" →
-        <strong>ঠিক:</strong> bias ছাড়া neuron সবসময় origin দিয়ে যেতে বাধ্য; flexibility কমে।
-    </div>
-</div>
+    <div class="section">
+        <h2><span class="emoji">🔗</span> ৬. Layer ও Forward Propagation</h2>
+        <p>
+            একটা <strong>layer</strong> মানে সমান্তরালে বসানো একগুচ্ছ neuron। <strong>Forward propagation</strong>
+            মানে input থেকে শুরু করে layer-এর পর layer গণনা করতে করতে output পর্যন্ত পৌঁছানো — শুধু সামনের দিকে,
+            কোনো শেখা এখানে হয় না, শুধু prediction তৈরি হয়।
+        </p>
+        <p>একটা layer-এর গণনা আসলে matrix multiplication (Series 04 মনে করুন):</p>
+        <div class="diagram">
+            Layer output: a = activation( W · x + b )
 
-<div class="section">
-    <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
-    <div class="info-box">
-        <strong>প্রশ্ন ১:</strong> একটা neuron ভেতরে কী করে?<br>
-        <em>উত্তর:</em> input × weight-এর যোগফল + bias (z), তারপর activation(z)।<br><br>
-        <strong>প্রশ্ন ২:</strong> Activation function কেন দরকার?<br>
-        <em>উত্তর:</em> non-linearity আনতে; নাহলে পুরো network একটা linear function হয়ে যায়।<br><br>
-        <strong>প্রশ্ন ৩:</strong> ReLU-এর সুবিধা কী?<br>
-        <em>উত্তর:</em> গণনায় সস্তা, vanishing gradient কম, বাস্তবে দ্রুত ও ভালো কাজ করে।<br><br>
-        <strong>প্রশ্ন ৪:</strong> Softmax কখন?<br>
-        <em>উত্তর:</em> multi-class classification-এর output-এ, যাতে সব class-এর probability পাওয়া যায় (যোগফল ১)।
+            W = weight matrix (এই layer-এর সব neuron-এর weight একসাথে)
+            x = input vector
+            b = bias vector
+            · = matrix multiplication (dot product)
+        </div>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে</h2>
-    <div class="key-point">
-        ১. উপরের forward-pass কোডে hidden neuron সংখ্যা ৪ থেকে ৮ করুন — <code>W1</code>-এর shape কী হবে?<br>
-        ২. একটা ৩-layer network বানান (input → hidden → hidden → output)।<br>
-        ৩. Softmax output-এর যোগফল সবসময় ১ কিনা print করে যাচাই করুন।
+    <div class="section">
+        <h2><span class="emoji">🎯</span> ৭. তিন স্তরে বুঝি</h2>
+        <div class="technical-box">
+            <strong>Level 1 — intuition:</strong> প্রতিটা neuron একটা ছোট "ভোটার" — সে তার input দেখে একটা মতামত
+            (সংখ্যা) দেয়। অনেক ভোটার মিলে layer, অনেক layer মিলে চূড়ান্ত সিদ্ধান্ত।<br><br>
+            <strong>Level 2 — technical:</strong> forward pass হলো ধারাবাহিক <code>W·x + b → activation</code>
+            গণনা। এটা পুরোটাই matrix operation, তাই GPU-তে দ্রুত চলে (parallel)।<br><br>
+            <strong>Level 3 — engineer:</strong> production-এ inference মানেই এই forward pass চালানো। training শেষ,
+            weight fixed — শুধু নতুন input দিয়ে forward pass চালিয়ে উত্তর পাওয়া। তাই inference দ্রুত ও সস্তা,
+            training-এর চেয়ে অনেক হালকা। (মনে রাখবেন: <strong>training ≠ inference</strong>।)
+        </div>
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">📌</span> ১৭. Project Connection ও সারসংক্ষেপ</h2>
-    <p>
-        আমাদের flagship-এ পরে যখন job description-কে embedding-এ রূপান্তর করে classify করব, তার নিচে ঠিক এই
-        forward pass-ই চলবে। ভিত্তিটা এখন হাতে গড়ে নিচ্ছি।
-    </p>
-    <div class="success-box">
-        এই পর্বে শিখলাম:<br>
-        ✓ neuron = গুণ → যোগ (+bias) → activation<br>
-        ✓ weight/bias হলো শেখার লক্ষ্য; activation আনে non-linearity<br>
-        ✓ ReLU (hidden), Sigmoid/Softmax (output) কখন ব্যবহার<br>
-        ✓ forward propagation = input থেকে output পর্যন্ত matrix গণনা (শেখা নয়)<br>
-        ✓ NumPy দিয়ে হাতে একটা network-এর forward pass চালালাম
+    <div class="section">
+        <h2><span class="emoji">💻</span> ৮. NumPy দিয়ে হাতে forward pass</h2>
+        <p>
+            এখানে ইচ্ছাকৃতভাবে PyTorch ব্যবহার করছি <strong>না</strong> — কারণ আমরা চাই ভেতরের গণিতটা দেখতে।
+            NumPy দিয়ে একটা ২-layer network-এর forward pass:
+        </p>
+        <div class="code-box">
+            import numpy as np
+
+            def relu(z):
+            return np.maximum(0, z)
+
+            def softmax(z):
+            e = np.exp(z - np.max(z)) # numerical stability
+            return e / e.sum()
+
+            # input: ৩টা feature (যেমন: job post-এর ৩টা সংখ্যা)
+            x = np.array([0.5, -1.2, 2.0])
+
+            # Hidden layer: ৩ input -&gt; ৪ neuron
+            W1 = np.random.randn(4, 3) * 0.1 # (4x3) weight matrix
+            b1 = np.zeros(4)
+
+            # Output layer: ৪ -&gt; ২ class (যেমন: junior / senior role)
+            W2 = np.random.randn(2, 4) * 0.1
+            b2 = np.zeros(2)
+
+            # ---- Forward propagation ----
+            z1 = W1 @ x + b1 # hidden layer-এর weighted sum
+            a1 = relu(z1) # hidden activation
+
+            z2 = W2 @ a1 + b2 # output layer-এর weighted sum
+            a2 = softmax(z2) # class probability
+
+            print("Hidden activation:", np.round(a1, 3))
+            print("Class probability :", np.round(a2, 3), " (যোগফল =", round(a2.sum(), 3), ")")
+        </div>
+        <p>
+            চালালে দেখবেন <code>a2</code>-এর দুটো সংখ্যার যোগফল ১ — কারণ softmax এদের probability-তে রূপান্তর করেছে।
+            এই পুরোটাই <strong>forward pass</strong>। এখনো model শেখেনি (weight random), তাই উত্তর ভুল — কিন্তু
+            pipeline-টা কাজ করছে।
+        </p>
     </div>
-    <div class="key-point">
-        <strong>পরবর্তী পর্ব (S06E03):</strong> "Backpropagation ও Gradient Descent" — এই random weight-গুলো
-        কীভাবে নিজে নিজে ঠিক হয়, মানে network আসলে কীভাবে <em>শেখে</em> — সেই রহস্য উন্মোচন।
+
+    <div class="section">
+        <h2><span class="emoji">🖼️</span> ৯. Visual: input → hidden → output</h2>
+        <div class="diagram">
+            Input (3) Hidden (4, ReLU) Output (2, Softmax)
+            x1 ○ ┐
+            ─┼──&gt; ○ ┐
+            x2 ○ ┤ ○ ┼──&gt; ○ P(junior)
+            ─┼──&gt; ○ ┤ ○ P(senior)
+            x3 ○ ┘ ○ ┘
+            W1,b1 W2,b2
+
+            forward: x --(W1·x+b1)--&gt; ReLU --(W2·a1+b2)--&gt; Softmax --&gt; probabilities
+        </div>
     </div>
-</div>
+
+    <div class="section">
+        <h2><span class="emoji">🧪</span> ১০. Experiment: activation বদলে দেখুন</h2>
+        <p>
+            উপরের কোডে <code>a1 = relu(z1)</code>-এর জায়গায় <code>a1 = z1</code> (মানে কোনো activation না) দিন।
+            তারপর ভাবুন — এখন পুরো network কি একটা linear function হয়ে গেল? হ্যাঁ। এটাই প্রমাণ করে কেন non-linear
+            activation ছাড়া deep network অর্থহীন।
+        </p>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">🇧🇩</span> ১১. বাংলাদেশের বাস্তব উদাহরণ</h2>
+        <p>
+            একটা fintech-এ যখন "এই transaction fraud কিনা" model deploy হয়, production-এ প্রতিটা transaction-এ
+            শুধু এই <strong>forward pass</strong> চলে — মিলিসেকেন্ডে উত্তর। GP/Robi-র recommendation বা কোনো
+            health-app-এর image scan — সবখানে user যা দেখে সেটা forward pass-এর ফল। Training হয় আগে, offline;
+            user শুধু inference (forward pass) পায়।
+        </p>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">💼</span> ১২. Boss Question</h2>
+        <div class="story-box">
+            Boss: <em>"এই activation-টেকটিভেশন — এসব theory আমার কাজে কী লাগবে?"</em><br><br>
+            <strong>উত্তর:</strong> "স্যার, যখন আমাদের model production-এ ভুল প্রায়ই একই রকম ভুল করবে, বা training-এ
+            শেখাই বন্ধ করে দেবে (dead neuron সমস্যা), তখন এই activation-এর বোঝাপড়াই আমাকে দ্রুত সমস্যা খুঁজে ঠিক
+            করতে সাহায্য করবে। মানে এটা কম downtime, দ্রুত fix — সরাসরি খরচ বাঁচায়।"
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">🔎</span> ১৩. Job Requirement Decoder</h2>
+        <div class="key-point">"Understanding of neural network fundamentals (activation functions, forward pass)."
+        </div>
+        <div class="info-box">
+            <table>
+                <tr>
+                    <th>প্রশ্ন</th>
+                    <th>উত্তর</th>
+                </tr>
+                <tr>
+                    <td>কী বোঝায়?</td>
+                    <td>আপনি একটা network-এর ভেতরের গণনা (neuron, weight, activation, forward pass) বোঝেন।</td>
+                </tr>
+                <tr>
+                    <td>কেন চায়?</td>
+                    <td>যাতে API-blindly না চালিয়ে model debug ও tune করতে পারেন।</td>
+                </tr>
+                <tr>
+                    <td>কোন সমস্যা সমাধান করে?</td>
+                    <td>"কেন model শিখছে না / সব একই উত্তর দিচ্ছে" — এসব ডিবাগিং।</td>
+                </tr>
+                <tr>
+                    <td>junior-এর কী জানা লাগে?</td>
+                    <td>neuron-এর ৩ ধাপ, ReLU/Sigmoid/Softmax কখন, non-linearity কেন দরকার।</td>
+                </tr>
+                <tr>
+                    <td>এখনই কী master লাগে না?</td>
+                    <td>বিরল activation (GELU, Swish)-এর গাণিতিক প্রমাণ, custom activation।</td>
+                </tr>
+                <tr>
+                    <td>GitHub-এ কীভাবে দেখাবে?</td>
+                    <td>এই NumPy forward-pass demo + একটা ছোট MLP project।</td>
+                </tr>
+                <tr>
+                    <td>interview-তে কী?</td>
+                    <td>"Activation function কেন দরকার?", "ReLU বনাম Sigmoid কখন?"</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">⚠️</span> ১৪. সাধারণ ভুল ধারণা</h2>
+        <div class="technical-box">
+            <strong>ভুল ১:</strong> "activation optional, না দিলেও চলে।" →
+            <strong>ঠিক:</strong> hidden layer-এ activation ছাড়া পুরো network linear হয়ে অর্থহীন।<br><br>
+            <strong>ভুল ২:</strong> "output layer-এও সবসময় ReLU।" →
+            <strong>ঠিক:</strong> output activation সমস্যা অনুযায়ী (Sigmoid/Softmax/কিছুই না)।<br><br>
+            <strong>ভুল ৩:</strong> "forward pass-এ model শেখে।" →
+            <strong>ঠিক:</strong> forward pass শুধু prediction; শেখা হয় backprop-এ (পরের পর্ব)।<br><br>
+            <strong>ভুল ৪:</strong> "bias গুরুত্বহীন।" →
+            <strong>ঠিক:</strong> bias ছাড়া neuron সবসময় origin দিয়ে যেতে বাধ্য; flexibility কমে।
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">🎤</span> ১৫. Interview Prep</h2>
+        <div class="info-box">
+            <strong>প্রশ্ন ১:</strong> একটা neuron ভেতরে কী করে?<br>
+            <em>উত্তর:</em> input × weight-এর যোগফল + bias (z), তারপর activation(z)।<br><br>
+            <strong>প্রশ্ন ২:</strong> Activation function কেন দরকার?<br>
+            <em>উত্তর:</em> non-linearity আনতে; নাহলে পুরো network একটা linear function হয়ে যায়।<br><br>
+            <strong>প্রশ্ন ৩:</strong> ReLU-এর সুবিধা কী?<br>
+            <em>উত্তর:</em> গণনায় সস্তা, vanishing gradient কম, বাস্তবে দ্রুত ও ভালো কাজ করে।<br><br>
+            <strong>প্রশ্ন ৪:</strong> Softmax কখন?<br>
+            <em>উত্তর:</em> multi-class classification-এর output-এ, যাতে সব class-এর probability পাওয়া যায় (যোগফল ১)।
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">✍️</span> ১৬. হাতে-কলমে</h2>
+        <div class="key-point">
+            ১. উপরের forward-pass কোডে hidden neuron সংখ্যা ৪ থেকে ৮ করুন — <code>W1</code>-এর shape কী হবে?<br>
+            ২. একটা ৩-layer network বানান (input → hidden → hidden → output)।<br>
+            ৩. Softmax output-এর যোগফল সবসময় ১ কিনা print করে যাচাই করুন।
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">📌</span> ১৭. Project Connection ও সারসংক্ষেপ</h2>
+        <p>
+            আমাদের flagship-এ পরে যখন job description-কে embedding-এ রূপান্তর করে classify করব, তার নিচে ঠিক এই
+            forward pass-ই চলবে। ভিত্তিটা এখন হাতে গড়ে নিচ্ছি।
+        </p>
+        <div class="success-box">
+            এই পর্বে শিখলাম:<br>
+            ✓ neuron = গুণ → যোগ (+bias) → activation<br>
+            ✓ weight/bias হলো শেখার লক্ষ্য; activation আনে non-linearity<br>
+            ✓ ReLU (hidden), Sigmoid/Softmax (output) কখন ব্যবহার<br>
+            ✓ forward propagation = input থেকে output পর্যন্ত matrix গণনা (শেখা নয়)<br>
+            ✓ NumPy দিয়ে হাতে একটা network-এর forward pass চালালাম
+        </div>
+        <div class="key-point">
+            <strong>পরবর্তী পর্ব (S06E03):</strong> "Backpropagation ও Gradient Descent" — এই random weight-গুলো
+            কীভাবে নিজে নিজে ঠিক হয়, মানে network আসলে কীভাবে <em>শেখে</em> — সেই রহস্য উন্মোচন।
+        </div>
+    </div>
 
     <div class="section">
 
@@ -1078,28 +1279,40 @@ print("Class probability :", np.round(a2, 3), " (যোগফল =", round(a2.su
             <p>সংস্করণ: ১.০ &nbsp;•&nbsp; ভাষা: বাংলা</p>
             <p>সিরিজ: AI/ML Engineer বাংলা সিরিজ — Zero to Job-Ready (Series 06, Episode 02)</p>
             <p>লেখক: Sheikh Thanbir Alam</p>
-            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s06e02.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img
+                    src="https://hits.sh/thanbirtamim.github.io/blog/ai-ml-engineer/s06e02.svg?style=flat-square&label=views&color=667eea"
+                    alt="Page Views" style="vertical-align: middle;"></p>
         </div>
     </div>
 
 </div>
 
 
-<div data-copyright-guard style="text-align:center;max-width:1400px;margin:0 auto;padding:16px 18px 26px;font-size:0.78rem;line-height:1.7;color:#8a8a8a;">© 2025 <strong>Sheikh Thanbir Alam</strong>. All Rights Reserved. <a href="https://thanbirtamim.github.io" style="color:inherit;text-decoration:underline;">thanbirtamim.github.io</a><br>এই লেখা মূল লেখকের সম্পত্তি — লিখিত অনুমতি ছাড়া কপি করে অন্য কোনো ওয়েবসাইট, ব্লগ, বই বা প্ল্যাটফর্মে প্রকাশ/বিতরণ করা কঠোরভাবে নিষিদ্ধ। Content may not be copied or republished without permission.</div>
+<div data-copyright-guard
+     style="text-align:center;max-width:1400px;margin:0 auto;padding:16px 18px 26px;font-size:0.78rem;line-height:1.7;color:#8a8a8a;">
+    © 2025 <strong>Sheikh Thanbir Alam</strong>. All Rights Reserved. <a href="https://thanbirtamim.github.io"
+                                                                         style="color:inherit;text-decoration:underline;">thanbirtamim.github.io</a><br>এই
+    লেখা মূল লেখকের সম্পত্তি — লিখিত অনুমতি ছাড়া কপি করে অন্য কোনো ওয়েবসাইট, ব্লগ, বই বা প্ল্যাটফর্মে প্রকাশ/বিতরণ করা
+    কঠোরভাবে নিষিদ্ধ। Content may not be copied or republished without permission.
+</div>
 <script data-copyright-guard>
-(function(){
-  document.addEventListener('copy', function(e){
-    try{
-      var sel = (window.getSelection && window.getSelection().toString()) || '';
-      if(sel && sel.length > 60){
-        var note = '\n\n\u2014 \u00a9 2025 Sheikh Thanbir Alam. All Rights Reserved.'
-                 + '\nSource: ' + location.href
-                 + '\n\u098f\u0987 \u09b2\u09c7\u0996\u09be \u0985\u09a8\u09c1\u09ae\u09a4\u09bf \u099b\u09be\u09dc\u09be \u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a5\u09be\u0993 \u09aa\u09cd\u09b0\u0995\u09be\u09b6 \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7 \u09a8\u09be\u0964';
-        if(e.clipboardData){ e.clipboardData.setData('text/plain', sel + note); e.preventDefault(); }
-      }
-    }catch(_){}
-  });
-})();
+    (function () {
+        document.addEventListener('copy', function (e) {
+            try {
+                var sel = (window.getSelection && window.getSelection().toString()) || '';
+                if (sel && sel.length > 60) {
+                    var note = '\n\n\u2014 \u00a9 2025 Sheikh Thanbir Alam. All Rights Reserved.'
+                        + '\nSource: ' + location.href
+                        + '\n\u098f\u0987 \u09b2\u09c7\u0996\u09be \u0985\u09a8\u09c1\u09ae\u09a4\u09bf \u099b\u09be\u09dc\u09be \u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a5\u09be\u0993 \u09aa\u09cd\u09b0\u0995\u09be\u09b6 \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7 \u09a8\u09be\u0964';
+                    if (e.clipboardData) {
+                        e.clipboardData.setData('text/plain', sel + note);
+                        e.preventDefault();
+                    }
+                }
+            } catch (_) {
+            }
+        });
+    })();
 </script>
 </body>
 </html>
