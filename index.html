@@ -247,7 +247,9 @@
     /* Table improvements */
     .table-responsive {
       border-radius: 20px;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
       box-shadow: 0 10px 35px rgba(102, 126, 234, 0.2);
       animation: fadeInUp 0.6s ease-out;
       border: 2px solid rgba(102, 126, 234, 0.1);
@@ -255,10 +257,13 @@
       padding: 20px;
     }
 
-    .table-responsive:hover {
-      box-shadow: 0 15px 45px rgba(102, 126, 234, 0.3);
-      transform: translateY(-5px);
-      border: 2px solid rgba(102, 126, 234, 0.2);
+    /* Hover lift only on real pointer devices (avoids stuck hover on touch) */
+    @media (hover: hover) {
+      .table-responsive:hover {
+        box-shadow: 0 15px 45px rgba(102, 126, 234, 0.3);
+        transform: translateY(-5px);
+        border: 2px solid rgba(102, 126, 234, 0.2);
+      }
     }
 
     .table {
@@ -343,12 +348,6 @@
       }
 
       .table {
-        overflow-x: auto;
-        display: block;
-        width: 100%;
-      }
-
-      .table table {
         min-width: 600px;
       }
     }
@@ -356,23 +355,7 @@
     @media (max-width: 480px) {
       .table {
         font-size: 0.75rem !important;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .table tbody {
-        display: block;
-        width: 100%;
-      }
-
-      .table thead {
-        display: block;
-        width: 100%;
-      }
-
-      .table tr {
-        display: block;
-        width: 100%;
+        min-width: 520px;
       }
 
       .table td,
@@ -1135,7 +1118,6 @@
       table {
         font-size: 0.8rem;
         margin: 15px 0;
-        display: block;
       }
 
       th, td {
@@ -1146,22 +1128,6 @@
       th {
         font-size: 0.75rem;
         padding: 8px 6px !important;
-      }
-
-      thead {
-        display: table;
-        width: 100%;
-      }
-
-      tbody {
-        display: block;
-        overflow-x: auto;
-      }
-
-      tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
       }
 
       .table-responsive {
@@ -1262,7 +1228,6 @@
       .table li {
         margin: 2px 0;
         font-size: 0.65rem;
-      }
       }
     }
     
