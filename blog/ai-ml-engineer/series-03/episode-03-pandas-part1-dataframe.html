@@ -799,202 +799,430 @@
     </ul>
 </div>
 
-<div class="section">
-    <h2><span class="emoji">🧩</span> ১. গল্প: Rahim প্রথমবার real data খুলল</h2>
+    <div class="section">
+        <h2><span class="emoji">🧩</span> ১. গল্প: Rahim প্রথমবার Real-World Data-র সামনে</h2>
+        <p>
+            Rahim এতদিন NumPy দিয়ে array নিয়ে কাজ করেছে। সংখ্যা, matrix, calculation — সবকিছুই বেশ
+            গোছানো মনে হচ্ছিল। কিন্তু একদিন Nila তাকে বাংলাদেশের কিছু tech job-এর real-world data দিয়ে
+            একটা <code>jobs.csv</code> file দিল।
+        </p>
 
-    <p>
-        Nila একটা CSV file পাঠাল — <code>jobs.csv</code> — বাংলাদেশের কিছু tech job post। Rahim NumPy দিয়ে
-        খুলতে গিয়ে দেখল ঝামেলা: এখানে তো সংখ্যা আর লেখা মিশে আছে — title (লেখা), salary (সংখ্যা), city (লেখা),
-        experience (সংখ্যা)। NumPy তো সব একই dtype চায়!
-    </p>
+        <p>
+            Rahim file-টা খুলে দেখল — একসাথে কত ধরনের information! কোথাও job-এর <strong>title</strong>,
+            কোথাও <strong>salary</strong>, কোথাও <strong>city</strong>, আবার কোথাও কত বছরের
+            <strong>experience</strong> দরকার তার তথ্য।
+        </p>
 
-    <div class="story-box">
-        <strong>Rahim:</strong> <em>"আপা, এই data-তে তো column-এর নাম আছে, আর একেক column একেক ধরনের। NumPy
-        দিয়ে এটা সামলানো তো কঠিন হয়ে যাচ্ছে।"</em><br><br>
-        <strong>Nila:</strong> <em>"ঠিক ধরেছ। NumPy বিশুদ্ধ সংখ্যার জন্য। কিন্তু real-world data table-এ column-এর
-        নাম, মিশ্র type, missing value — সব থাকে। এই কাজের জন্যই বানানো হয়েছে <strong>Pandas</strong>। ভাবো
-        এটা হলো Python-এর ভেতরে একটা super-powered Excel — কিন্তু লাখ লাখ row সামলাতে পারে, আর সবকিছু
-        automate করা যায়।"</em>
-    </div>
-</div>
+        <div class="story-box">
+            <strong>Rahim:</strong> <em>"আপা, এখানে তো title আর city-এর মতো text আছে, আবার salary আর
+            experience-এর মতো number-ও আছে। NumPy array-তে এগুলো একসাথে রাখা বেশ ঝামেলার মনে হচ্ছে!"</em>
+            <br><br>
+            <strong>Nila:</strong> <em>"একদম ঠিক ধরেছ। NumPy মূলত numerical computing-এর জন্য দুর্দান্ত।
+            কিন্তু real-world data শুধু সংখ্যা দিয়ে তৈরি হয় না। সেখানে column-এর নাম থাকে, text থাকে,
+            missing value থাকে, বিভিন্ন ধরনের data থাকে। এই জায়গাতেই Pandas তোমার কাজ অনেক সহজ করে দেয়।"</em>
+            <br><br>
+            <strong>Rahim:</strong> <em>"মানে Excel-এর মতো?"</em>
+            <br><br>
+            <strong>Nila:</strong> <em>"হ্যাঁ, conceptually Excel-এর মতো table ভাবতে পারো। তবে Pandas-এর
+            আসল শক্তি হলো — তুমি এই পুরো data-কে Python code দিয়ে automate, clean, filter, transform
+            এবং analyze করতে পারবে। হাজার বা লাখ লাখ row হলেও!"</em>
+        </div>
 
-<div class="section">
-    <h2><span class="emoji">❓</span> ২. সমস্যা: NumPy array-তে column-এর নাম নেই</h2>
-
-    <p>NumPy array দিয়ে real tabular data সামলাতে গেলে কিছু সমস্যা:</p>
-    <ul>
-        <li>column-এর নাম নেই — <code>data[:, 2]</code> মানে কী? মনে রাখা কঠিন।</li>
-        <li>এক array-তে সব একই dtype — কিন্তু title লেখা, salary সংখ্যা।</li>
-        <li>missing value (ফাঁকা ঘর) সামলানো ঝামেলার।</li>
-        <li>"salary 50k-এর বেশি এমন সব job-এর city দেখাও" — এমন প্রশ্ন কঠিন হয়ে যায়।</li>
-    </ul>
-    <p>Pandas এই সবগুলোই সহজ করে — কারণ এটা label (নাম) + mixed type + missing value একসাথে সামলায়।</p>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">📚</span> ৩. Pandas কী এবং কেন দরকার</h2>
-
-    <p>
-        <strong>Pandas</strong> হলো Python-এর সবচেয়ে জনপ্রিয় data manipulation library। এর দুটো মূল জিনিস:
-        <strong>Series</strong> (একটা labeled column) আর <strong>DataFrame</strong> (নাম-সহ column-এর একটা table)।
-        Pandas ভেতরে NumPy ব্যবহার করে, কিন্তু ওপরে label, mixed type, missing value handling ও হাজারো সুবিধাজনক
-        function যোগ করে।
-    </p>
-
-    <div class="key-point">
-        <strong>কেন এই tech?</strong> real-world structured data প্রায় সবসময় table আকারে আসে (CSV, Excel,
-        SQL, API)। বাংলাদেশ ও বিশ্বজুড়ে প্রায় প্রতিটা data/ML job-এ Pandas চাওয়া হয় — এটা junior-দের জন্য
-        একটা "must know" skill।
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🪜</span> ৪. তিন Level-এ DataFrame বোঝা</h2>
-
-    <h3>Level 1 — সহজ intuition</h3>
-    <p>
-        একটা DataFrame হলো Excel বা Google Sheets-এর একটা sheet — উপরে column-এর নাম, বাঁয়ে row-এর নম্বর
-        (index), আর প্রতিটা ঘরে একটা value। পার্থক্য: Excel-এ আপনি মাউস দিয়ে কাজ করেন, DataFrame-এ code দিয়ে —
-        তাই এটা automate করা যায়, বারবার ঠিকভাবে চালানো যায়, আর লাখ লাখ row সামলায়।
-    </p>
-
-    <h3>Level 2 — technical ভাবে</h3>
-    <p>
-        DataFrame হলো একগুচ্ছ Series-এর সমষ্টি, যাদের একটা common index আছে। প্রতিটা column আসলে একটা
-        <code>Series</code> — যার নিচে একটা NumPy array। তাই একটা column-এর হিসাব (যেমন <code>df["salary"].mean()</code>)
-        আসলে NumPy-র গতিতে হয়।
-    </p>
-
-    <h3>Level 3 — engineer দৃষ্টিতে</h3>
-    <p>
-        engineer রা DataFrame-কে data pipeline-এর কেন্দ্রীয় object হিসেবে দেখে: raw data → DataFrame-এ load →
-        clean → transform → model-এ ঢোকানোর মতো array-তে রূপান্তর। তারা <code>df.info()</code> আর <code>df.head()</code>
-        দিয়ে যেকোনো নতুন data-র সাথে প্রথম পরিচয় করে।
-    </p>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">🧱</span> ৫. Series বনাম DataFrame</h2>
-
-    <div class="code-box">
-import pandas as pd
-
-# Series — একটা labeled column
-salary = pd.Series([25000, 40000, 60000], name="salary")
-print(salary)
-# 0    25000
-# 1    40000
-# 2    60000
-# Name: salary, dtype: int64
-
-# DataFrame — নাম-সহ অনেক column-এর table
-df = pd.DataFrame({
-    "title":      ["Python Dev", "ML Engineer", "Data Analyst"],
-    "salary":     [40000, 90000, 45000],
-    "city":       ["Dhaka", "Dhaka", "Chattogram"],
-    "experience": [1, 3, 2],
-})
-print(df)
+        <p>
+            Rahim বুঝতে পারল — NumPy দিয়ে calculation শেখা গুরুত্বপূর্ণ, কিন্তু real-world data নিয়ে
+            কাজ করতে হলে তাকে Pandas-ও শিখতে হবে।
+        </p>
     </div>
 
-    <div class="diagram">
-DataFrame-এর গঠন:
+    <div class="section">
+        <h2><span class="emoji">❓</span> ২. NumPy দিয়ে Tabular Data সামলাতে সমস্যা কোথায়?</h2>
+        <p>
+            NumPy array numerical data নিয়ে অসাধারণ কাজ করে। কিন্তু যখন data দেখতে Excel বা database
+            table-এর মতো হয়, তখন কিছু practical সমস্যা সামনে আসে।
+        </p>
 
-        title        salary   city         experience
-index  ┌───────────┬────────┬────────────┬───────────┐
-  0    │ Python Dev │ 40000 │ Dhaka       │    1      │
-  1    │ ML Engineer│ 90000 │ Dhaka       │    3      │
-  2    │ Data Analyst│45000 │ Chattogram  │    2      │
-       └───────────┴────────┴────────────┴───────────┘
-        ↑ প্রতিটা column একটা Series
-    </div>
-</div>
+        <ul>
+            <li>
+                <strong>Column-এর নাম নেই:</strong>
+                <code>data[:, 2]</code> দেখলে বোঝা কঠিন — এটা কি salary, city নাকি experience?
+            </li>
 
-<div class="section">
-    <h2><span class="emoji">📥</span> ৬. Data load করা (CSV, JSON)</h2>
+            <li>
+                <strong>Data type-এর সীমাবদ্ধতা:</strong>
+                একই table-এ title-এর মতো text এবং salary-এর মতো numerical value থাকতে পারে।
+            </li>
 
-    <div class="code-box">
-import pandas as pd
+            <li>
+                <strong>Missing value:</strong>
+                কোনো employee-এর salary না থাকলে বা কোনো job-এর experience information missing হলে
+                সেটি পরিষ্কারভাবে handle করা দরকার।
+            </li>
 
-# CSV থেকে — সবচেয়ে সাধারণ
-df = pd.read_csv("jobs.csv")
+            <li>
+                <strong>Real-world প্রশ্ন:</strong>
+                "যেসব job-এর salary 50,000-এর বেশি, শুধু তাদের city এবং title দেখাও" —
+                এমন কাজ DataFrame-এর তুলনায় raw NumPy array-তে অনেক কম readable।
+            </li>
+        </ul>
 
-# বাংলা লেখা থাকলে encoding দিতে হতে পারে
-df = pd.read_csv("jobs.csv", encoding="utf-8")
+        <p>
+            Pandas-এর মূল সুবিধা এখানেই। এটি table-কে শুধু data হিসেবে দেখে না; বরং
+            <strong>column-এর নাম, row-এর index, বিভিন্ন data type এবং missing value</strong>—
+            সবকিছুকে একসাথে manage করার সুবিধা দেয়।
+        </p>
+        
 
-# JSON (API response) থেকে
-df = pd.read_json("jobs.json")
-
-# Excel থেকে
-df = pd.read_excel("jobs.xlsx")
-
-# হাতে বানানো (উদাহরণের জন্য)
-df = pd.DataFrame({
-    "title":  ["Python Dev", "ML Engineer", "Data Analyst", "Backend Dev"],
-    "salary": [40000, 90000, 45000, 70000],
-    "city":   ["Dhaka", "Dhaka", "Chattogram", "Sylhet"],
-    "experience": [1, 3, 2, 4],
-})
-    </div>
-
-    <div class="info-box">
-        বাংলাদেশি data-তে <code>encoding="utf-8"</code> প্রায়ই লাগে (বাংলা লেখার জন্য)। ভুল encoding দিলে
-        "গার্বেজ" অক্ষর দেখাবে — এটা একটা common junior সমস্যা, তাই মনে রাখুন।
-    </div>
-</div>
-
-<div class="section">
-    <h2><span class="emoji">👀</span> ৭. প্রথম নজর: data-কে চেনা</h2>
-
-    <p>নতুন কোনো data পেলে engineer রা প্রথমেই এই function-গুলো চালায় — এটাই "data-র সাথে হ্যান্ডশেক":</p>
-
-    <div class="code-box">
-df.head()        # প্রথম ৫ row — data কেমন দেখতে
-df.tail(3)       # শেষ ৩ row
-df.shape         # (row সংখ্যা, column সংখ্যা)
-df.columns       # column-এর নামগুলো
-df.info()        # প্রতিটা column-এর type ও কতগুলো non-null value
-df.describe()    # সংখ্যার column-এর summary (mean, min, max, ...)
-df.dtypes        # প্রতিটা column-এর data type
-df["city"].unique()        # city-তে কী কী distinct value আছে
-df["city"].value_counts()  # প্রতিটা city কতবার এসেছে
     </div>
 
-    <div class="key-point">
-        <code>df.info()</code> আর <code>df.describe()</code> — এই দুটো যেকোনো নতুন dataset-এ প্রথমেই চালানোর
-        অভ্যাস করুন। <code>info()</code> missing value ও type ধরিয়ে দেয়; <code>describe()</code> outlier ও
-        অদ্ভুত value-র ইঙ্গিত দেয় (যেমন salary-র max যদি ৪০ লাখ হয়, বুঝবেন কিছু ভুল আছে)।
+    <div class="section">
+        <h2><span class="emoji">📚</span> ৩. Pandas কী এবং কেন এত গুরুত্বপূর্ণ?</h2>
+
+        
+        <p>
+            <strong>Pandas</strong> হলো Python-এর একটি powerful data analysis এবং data manipulation library।
+            Data load করা, পরিষ্কার করা, filter করা, নতুন column তৈরি করা, group করে analysis করা —
+            এই ধরনের কাজের জন্য Pandas ব্যাপকভাবে ব্যবহৃত হয়।
+        </p>
+
+        <p>
+            Pandas-এর দুটি fundamental data structure হলো:
+        </p>
+
+        <ul>
+            <li><strong>Series:</strong> একটি labeled column-এর মতো।</li>
+            <li><strong>DataFrame:</strong> একাধিক labeled column নিয়ে তৈরি সম্পূর্ণ table-এর মতো।</li>
+        </ul>
+
+        <p>
+            সহজভাবে মনে রাখতে পারো:
+        </p>
+
+        <div class="key-point">
+            <strong>Series = একটি column</strong><br>
+            <strong>DataFrame = অনেকগুলো column নিয়ে একটি complete table</strong>
+        </div>
+
+        <p>
+            Pandas নিজে শূন্য থেকে numerical computing engine তৈরি করেনি। বরং এর নিচের স্তরে
+            NumPy-এর শক্তিকে কাজে লাগিয়ে তার ওপর আরও একটি convenient table-oriented interface তৈরি করেছে।
+            তাই NumPy এবং Pandas একে অপরের competitor নয় — বরং data science workflow-এ তারা
+            একে অপরকে complement করে।
+        </p>
+
+        <div class="key-point">
+            <strong>কেন এই technology শেখা জরুরি?</strong><br><br>
+            Real-world data প্রায়ই CSV, Excel, SQL database বা API response থেকে আসে। এই data-কে
+            model-এ দেওয়ার আগে সাধারণত load, inspect, clean এবং transform করতে হয়। এই workflow-এ
+            Pandas-এর ব্যবহার অত্যন্ত common — বিশেষ করে Data Analysis এবং traditional Machine Learning
+            ecosystem-এ।
+        </div>
+        
+
     </div>
-</div>
 
-<div class="section">
-    <h2><span class="emoji">🎯</span> ৮. Column ও row বেছে নেওয়া: loc বনাম iloc</h2>
+    <div class="section">
+        <h2><span class="emoji">🪜</span> ৪. DataFrame — তিনটি Level-এ বোঝা যাক</h2>
 
-    <div class="code-box">
-# একটা column (Series হিসেবে)
-df["salary"]
+        
+        <h3>Level 1 — একদম সহজভাবে</h3>
 
-# একাধিক column (DataFrame হিসেবে) — দুটো bracket
-df[["title", "salary"]]
+        <p>
+            DataFrame-কে প্রথমে একটি <strong>Excel বা Google Sheets-এর table</strong> হিসেবে ভাবো।
+            উপরে column-এর নাম, বাঁ পাশে row-এর index, আর মাঝখানে actual data।
+        </p>
 
-# --- loc: label (নাম) দিয়ে ---
-df.loc[0]                       # index label 0 এর পুরো row
-df.loc[0, "salary"]             # row 0, column "salary"
-df.loc[0:2, ["title", "city"]]  # row 0-2, নির্দিষ্ট column (0,1,2 তিনটাই)
+        <p>
+            তবে Excel-এর মতো mouse দিয়ে cell ধরে ধরে কাজ না করে এখানে তুমি Python code দিয়ে পুরো
+            table-এর ওপর operation চালাতে পারবে।
+        </p>
 
-# --- iloc: position (নম্বর) দিয়ে ---
-df.iloc[0]        # প্রথম row (position 0)
-df.iloc[0, 1]     # প্রথম row, দ্বিতীয় column
-df.iloc[0:2]      # প্রথম ২ row (position 0,1 — 2 বাদ)
+        <p>
+            অর্থাৎ, আজ ১০০টি row-এর ওপর যে কাজ করলে, আগামীকাল ১০ লাখ row-এর ওপর একই কাজ
+            automatically চালানো সম্ভব।
+        </p>
+
+        <h3>Level 2 — Technicalভাবে</h3>
+
+        <p>
+            একটি DataFrame-কে একাধিক <strong>Series</strong>-এর collection হিসেবে ভাবা যায়।
+            প্রতিটি column একটি Series এবং সাধারণত সব column একটি common index share করে।
+        </p>
+
+        <p>
+            যেমন:
+            <code>df["salary"]</code> লিখলে তুমি পুরো salary column-টিকে একটি Series হিসেবে পাচ্ছ।
+            এরপর <code>df["salary"].mean()</code> দিয়ে সেই column-এর average salary বের করতে পারো।
+        </p>
+
+        <h3>Level 3 — Engineer-এর দৃষ্টিতে</h3>
+
+        <p>
+            একজন engineer DataFrame-কে শুধু একটা table হিসেবে দেখেন না। Data pipeline-এর মাঝখানের
+            একটি গুরুত্বপূর্ণ representation হিসেবে দেখেন।
+        </p>
+
+        <div class="diagram">
+            Raw Data
+            ↓
+            Load
+            ↓
+            DataFrame
+            ↓
+            Inspect
+            ↓
+            Clean
+            ↓
+            Transform
+            ↓
+            Analyze / Feature Engineering
+            ↓
+            Machine Learning Model </div>
+
+        
+        <p>
+            নতুন কোনো dataset হাতে পেলে একজন engineer সাধারণত প্রথমেই data-র structure বোঝার চেষ্টা করেন।
+            এজন্য <code>df.head()</code>, <code>df.info()</code>, <code>df.describe()</code>-এর মতো
+            operation খুবই গুরুত্বপূর্ণ।
+        </p>
+        
+
     </div>
 
-    <div class="technical-box">
-        <strong>loc বনাম iloc — junior-দের সবচেয়ে বড় বিভ্রান্তি:</strong><br>
-        • <code>loc</code> = <strong>label</strong> (নাম) দিয়ে; আর slicing-এ শেষ সীমা <em>অন্তর্ভুক্ত</em> (<code>0:2</code> মানে 0,1,2)।<br>
-        • <code>iloc</code> = <strong>integer position</strong> দিয়ে; slicing Python-এর মতো শেষ সীমা <em>বাদ</em> (<code>0:2</code> মানে 0,1)।<br>
-        এই পার্থক্যটা interview-তে খুব জিজ্ঞেস করা হয়।
+    <div class="section">
+        <h2><span class="emoji">🧱</span> ৫. Series বনাম DataFrame</h2>
+
+        
+        <p>
+            Pandas শেখার শুরুতেই এই দুটি concept পরিষ্কার হওয়া জরুরি। কারণ DataFrame-এর প্রতিটি
+            column মূলত একটি Series হিসেবে কাজ করে।
+        </p>
+
+        <div class="code-box">
+            
+
+            import pandas as pd
+
+            # Series — একটি labeled column
+
+            salary = pd.Series(
+            [25000, 40000, 60000],
+            name="salary"
+            )
+
+            print(salary)
+
+            # DataFrame — একাধিক column নিয়ে একটি table
+
+            df = pd.DataFrame({
+            "title":      ["Python Dev", "ML Engineer", "Data Analyst"],
+            "salary":     [40000, 90000, 45000],
+            "city":       ["Dhaka", "Dhaka", "Chattogram"],
+            "experience": [1, 3, 2],
+            })
+
+            print(df)
+        </div>
+
+        
+        <div class="diagram">
+            <img
+                    src="images/pandas_data_frame.png"
+                    alt=""
+                    class="diagram-image"
+            >
+        </div>
+
+        
+        <p>
+            অর্থাৎ পুরো DataFrame হলো একটি complete table, আর এর প্রতিটি column আলাদাভাবে একটি
+            Series হিসেবে access করা যায়।
+        </p>
+        
+
     </div>
-</div>
+
+    <div class="section">
+        <h2><span class="emoji">📥</span> ৬. Real Data Pandas-এ Load করা</h2>
+
+        
+        <p>
+            এখন ধরো Rahim-এর হাতে বিভিন্ন source থেকে data আসছে। কখনো CSV, কখনো JSON, কখনো Excel।
+            Pandas এই common data source-গুলো থেকে সরাসরি DataFrame তৈরি করতে পারে।
+        </p>
+
+        <div class="code-box">
+            
+
+            import pandas as pd
+
+            # CSV থেকে
+
+            df = pd.read_csv("jobs.csv")
+
+            # CSV-তে বাংলা text থাকলে
+
+            df = pd.read_csv("jobs.csv", encoding="utf-8")
+
+            # JSON থেকে
+
+            df = pd.read_json("jobs.json")
+
+            # Excel থেকে
+
+            df = pd.read_excel("jobs.xlsx")
+
+            # Example হিসেবে হাতে DataFrame তৈরি
+
+            df = pd.DataFrame({
+            "title": ["Python Dev", "ML Engineer", "Data Analyst", "Backend Dev"],
+            "salary": [40000, 90000, 45000, 70000],
+            "city": ["Dhaka", "Dhaka", "Chattogram", "Sylhet"],
+            "experience": [1, 3, 2, 4],
+            }) </div>
+
+        
+        <div class="info-box">
+            <strong>বাংলা data-এর ক্ষেত্রে:</strong>
+            CSV file-এ বাংলা text থাকলে encoding নিয়ে সমস্যা দেখা দিতে পারে। UTF-8 সাধারণত
+            standard choice, তবে file কীভাবে তৈরি হয়েছে তার ওপর actual encoding নির্ভর করতে পারে।
+            Encoding ভুল হলে বাংলা text ভাঙা বা অদ্ভুত character হিসেবে দেখা যেতে পারে।
+        </div>
+        
+
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">👀</span> ৭. নতুন Dataset পেলে প্রথমে কী করবে?</h2>
+
+        
+        <p>
+            Imagine করো, তুমি একজন junior Data Scientist বা ML Engineer এবং আজ সকালে তোমার manager
+            তোমাকে একটি নতুন dataset দিলেন। তুমি কিন্তু সঙ্গে সঙ্গে model train করতে বসবে না।
+        </p>
+
+        <p>
+            প্রথম কাজ হলো — <strong>data-টাকে চিনে নেওয়া।</strong>
+        </p>
+
+        <p>
+            এজন্য কিছু basic Pandas operation প্রায় প্রতিদিনই কাজে লাগে:
+        </p>
+
+        <div class="code-box">
+            
+
+            df.head()                  # প্রথম ৫টি row
+            df.tail(3)                 # শেষ ৩টি row
+
+            df.shape                   # (row সংখ্যা, column সংখ্যা)
+
+            df.columns                 # column-এর নাম
+
+            df.info()                  # data type + non-null information
+
+            df.describe()              # numerical columns-এর statistical summary
+
+            df.dtypes                  # প্রতিটি column-এর data type
+
+            df["city"].unique()        # city-এর unique value
+
+            df["city"].value_counts()  # প্রতিটি city কতবার এসেছে </div>
+
+        
+        <div class="key-point">
+            <strong>Beginner হিসেবে এই habit তৈরি করো:</strong><br><br>
+            নতুন dataset হাতে পেলেই আগে <code>head()</code>, <code>shape</code>, <code>info()</code>,
+            <code>describe()</code> চালিয়ে data-এর structure বোঝার চেষ্টা করো।
+        </div>
+
+        <p>
+            উদাহরণস্বরূপ, যদি salary column-এর maximum value হঠাৎ ৪০ লাখ টাকা দেখা যায়, তাহলে
+            সেটা সত্যিই কোনো executive salary হতে পারে — অথবা data entry error-ও হতে পারে।
+            Data বোঝার এই ধাপটিই পরবর্তী cleaning এবং modeling-এর ভিত্তি তৈরি করে।
+        </p>
+        
+
+    </div>
+
+    <div class="section">
+        <h2><span class="emoji">🎯</span> ৮. Column ও Row বেছে নেওয়া: <code>loc</code> বনাম <code>iloc</code></h2>
+
+        
+        <p>
+            DataFrame-এর data access করার সময় <code>loc</code> এবং <code>iloc</code> খুব গুরুত্বপূর্ণ।
+            নাম দুটো কাছাকাছি হওয়ায় beginner-দের মধ্যে confusion হওয়াটা স্বাভাবিক।
+        </p>
+
+        <div class="code-box">
+            
+
+            # একটি column — Series
+
+            df["salary"]
+
+            # একাধিক column — DataFrame
+
+            df[["title", "salary"]]
+
+            # -------------------------
+
+            # loc → label-based access
+
+            # -------------------------
+
+            df.loc[0]                       # index label 0-এর পুরো row
+
+            df.loc[0, "salary"]             # index 0, salary column
+
+            df.loc[0:2, ["title", "city"]]  # index 0, 1, 2
+
+            # -------------------------
+
+            # iloc → position-based access
+
+            # -------------------------
+
+            df.iloc[0]          # position অনুযায়ী প্রথম row
+
+            df.iloc[0, 1]       # প্রথম row, দ্বিতীয় column
+
+            df.iloc[0:2]        # প্রথম দুইটি row </div>
+
+        
+        <div class="technical-box">
+            <strong>সহজে মনে রাখার trick:</strong><br><br>
+
+            <code>loc</code> → <strong>label</strong> দিয়ে খুঁজবে।<br>
+            <code>iloc</code> → <strong>integer position</strong> দিয়ে খুঁজবে।
+        </div>
+
+        <p>
+            আরেকটি গুরুত্বপূর্ণ পার্থক্য হলো slicing:
+        </p>
+
+        <ul>
+            <li>
+                <code>loc[0:2]</code> → label-based slicing, তাই <strong>2-ও included</strong>।
+            </li>
+            <li>
+                <code>iloc[0:2]</code> → Python-style positional slicing, তাই <strong>2 বাদ যাবে</strong>।
+            </li>
+        </ul>
+
+        <div class="key-point">
+            <strong>এক লাইনে মনে রাখো:</strong><br><br>
+            <code>loc = label</code> &nbsp;&nbsp;|&nbsp;&nbsp;
+            <code>iloc = position</code>
+        </div>
+
+        <p>
+            এই ছোট পার্থক্যটা শুরুতে confusing মনে হলেও কয়েকবার practice করলে খুব স্বাভাবিক হয়ে যাবে।
+            Pandas-এর পরবর্তী filtering, grouping এবং data transformation শেখার জন্য এই foundation-টা
+            পরিষ্কার থাকা অত্যন্ত গুরুত্বপূর্ণ।
+        </p>
+        
+
+    </div>
 
 <div class="section">
     <h2><span class="emoji">🔍</span> ৯. Filtering: শর্ত দিয়ে row বাছাই</h2>
