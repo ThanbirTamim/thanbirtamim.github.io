@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a7f6b" />
+  <meta name="description" content="Journey of Good Deeds — a gentle 3D adventure where children explore a friendly town, help others, and learn good Islamic manners and values through play." />
+  <title>🌙 Journey of Good Deeds</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <canvas id="scene"></canvas>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <div class="hud-top">
+        <div class="badge points"><span class="star">⭐</span> <b id="pointsVal">0</b> <span class="lbl">Good Deeds</span></div>
+        <div class="badge rank" id="rankBadge">🌱 Beginner</div>
+        <div class="hud-right">
+          <button class="icon-btn" id="soundBtn" title="Sound">🔊</button>
+          <button class="icon-btn" id="pauseBtn" title="Pause (Esc)">⏸</button>
+        </div>
+      </div>
+      <div class="area-tag" id="areaTag">🏠 Neighborhood</div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </div>
+
+    <!-- Interaction prompt -->
+    <div class="interact-prompt hidden" id="interactPrompt">
+      <span class="key">E</span><span id="promptText">Talk</span>
+    </div>
+
+    <!-- ===================== DIALOGUE ===================== -->
+    <div class="dialogue hidden" id="dialogue">
+      <div class="dlg-avatar" id="dlgAvatar">🙂</div>
+      <div class="dlg-box">
+        <div class="dlg-name" id="dlgName">Neighbor</div>
+        <div class="dlg-text" id="dlgText"></div>
+        <div class="dlg-choices" id="dlgChoices"></div>
+      </div>
+    </div>
+
+    <!-- ===================== MISSION / LEARNING CARD ===================== -->
+    <div class="overlay hidden" id="cardScreen">
+      <div class="panel card-panel">
+        <div class="card-emoji" id="cardEmoji">🌟</div>
+        <h2 class="title small" id="cardTitle">MISSION COMPLETE!</h2>
+        <p class="card-body-text" id="cardBody"></p>
+        <div class="card-points hidden" id="cardPoints">+10 ⭐</div>
+        <div class="lesson" id="cardLesson"></div>
+        <button class="btn primary" id="cardContinue">CONTINUE</button>
+      </div>
+    </div>
+
+    <!-- ===================== MINI-GAME: QUIZ ===================== -->
+    <div class="overlay hidden" id="quizScreen">
+      <div class="panel">
+        <h2 class="title small">🧩 Good Choice</h2>
+        <p class="quiz-q" id="quizQ"></p>
+        <div class="quiz-choices" id="quizChoices"></div>
+        <p class="quiz-feedback" id="quizFeedback"></p>
+      </div>
+    </div>
+
+    <!-- ===================== MAIN MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel menu-panel">
+        <div class="moon">🌙</div>
+        <h1 class="title">JOURNEY OF<br/>GOOD DEEDS</h1>
+        <p class="tagline">Learn • Explore • Help • Grow</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ PLAY</button>
+          <button class="btn" id="howBtn">❓ HOW TO PLAY</button>
+          <button class="btn" id="parentBtn">👪 PARENT AREA</button>
+          <button class="btn ghost" id="settingsBtn">⚙ SETTINGS</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Character select -->
+    <div class="overlay hidden" id="charScreen">
+      <div class="panel">
+        <h2 class="title small">CHOOSE YOUR CHARACTER</h2>
+        <div class="char-preview" id="charPreview"></div>
+        <div class="char-rows">
+          <div class="char-row"><span>Look</span><div class="seg" id="genderSeg">
+            <button data-g="boy" class="on">Boy</button>
+            <button data-g="girl">Girl</button>
+          </div></div>
+          <div class="char-row"><span>Skin</span><div class="swatches" id="skinSwatches"></div></div>
+          <div class="char-row"><span>Clothes</span><div class="swatches" id="clothSwatches"></div></div>
+          <div class="char-row hidden" id="scarfRow"><span>Headscarf</span><div class="seg" id="scarfSeg">
+            <button data-s="on" class="on">On</button>
+            <button data-s="off">Off</button>
+          </div></div>
+        </div>
+        <button class="btn primary" id="startBtn">▶ START ADVENTURE</button>
+      </div>
+    </div>
+
+    <!-- How to play -->
+    <div class="overlay hidden" id="howScreen">
+      <div class="panel">
+        <h2 class="title small">HOW TO PLAY</h2>
+        <div class="how-list">
+          <div><b>Move</b><span>W A S D / Arrow keys</span></div>
+          <div><b>Camera</b><span>Drag mouse / right side on mobile</span></div>
+          <div><b>Talk / Help</b><span>Press E (or the ✋ button)</span></div>
+          <div><b>Pause</b><span>Esc</span></div>
+        </div>
+        <p class="how-hint">Walk around the town, talk to people with a <b>!</b> above them, and choose the kind thing to do. Collecting litter and helping others earns ⭐ Good Deed Points!</p>
+        <button class="btn primary" data-close-how>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Parent area -->
+    <div class="overlay hidden" id="parentScreen">
+      <div class="panel">
+        <h2 class="title small">👪 PARENT SUMMARY</h2>
+        <div class="parent-stats" id="parentStats"></div>
+        <div class="values-learned" id="valuesLearned"></div>
+        <div class="achievements" id="achievementsList"></div>
+        <p class="parent-note">No accounts, no ads, no data collected — everything is saved only on this device. Encourage your child to practice these good habits in real life too. 🌟</p>
+        <button class="btn primary" data-close-parent>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="overlay hidden" id="settingsScreen">
+      <div class="panel">
+        <h2 class="title small">⚙ SETTINGS</h2>
+        <div class="setting-row"><span>Graphics</span><div class="seg" id="qualitySeg">
+          <button data-q="low">Low</button>
+          <button data-q="medium">Medium</button>
+          <button data-q="high">High</button>
+          <button data-q="auto" class="on">Auto</button>
+        </div></div>
+        <div class="setting-row"><span>Sound</span><div class="seg" id="soundSeg">
+          <button data-s="on" class="on">On</button>
+          <button data-s="off">Off</button>
+        </div></div>
+        <button class="btn ghost" id="resetBtn">↺ Reset progress</button>
+        <button class="btn primary" data-close-settings>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="parentBtn2">👪 PARENT AREA</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Completion -->
+    <div class="overlay hidden" id="completeScreen">
+      <div class="panel">
+        <div class="card-emoji">🌟</div>
+        <h2 class="title small">AMAZING!</h2>
+        <p class="card-body-text">You explored the town and learned many wonderful values:</p>
+        <div class="values-learned big" id="completeValues"></div>
+        <p class="card-body-text remember">But remember — the best part is practicing these good habits in <b>real life</b>. 💛</p>
+        <button class="btn primary" id="againBtn">↻ PLAY AGAIN</button>
+        <button class="btn" id="exploreBtn">🗺️ KEEP EXPLORING</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen"><div class="panel"><div class="moon">🌙</div><h2 class="title small">LOADING…</h2><p class="tagline" id="loadMsg">Building the town</p></div></div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="joystick" id="joystick"><div class="joy-knob" id="joyKnob"></div></div>
+      <button class="tbtn interact" id="touchInteract">✋</button>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
