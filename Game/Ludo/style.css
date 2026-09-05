@@ -101,8 +101,28 @@ html, body { height: 100%; background: radial-gradient(circle at 50% 0, #23305a 
 .overlay { position: absolute; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; background: rgba(8,12,22,0.82); backdrop-filter: blur(5px); padding: 16px; }
 .overlay.hidden { display: none; }
 
-.back-home { position: absolute; left: 10px; bottom: 8px; z-index: 6; font-size: 11px; color: rgba(234,240,255,0.6); text-decoration: none; background: rgba(14,20,34,0.6); padding: 4px 8px; border-radius: 6px; }
-.back-home:hover { color: var(--accent); }
+/* ---------- quick reactions ---------- */
+.emote-dock { position: absolute; left: 12px; bottom: 150px; z-index: 12; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.emote-fab { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: rgba(20,27,46,0.9); color: #fff; font-size: 22px; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.4); transition: transform .15s, background .2s; }
+.emote-fab:hover { background: rgba(124,92,255,0.25); }
+.emote-fab:active { transform: scale(0.9); }
+.emote-tray { display: flex; flex-wrap: wrap; gap: 6px; width: min(280px, 78vw); padding: 10px; background: rgba(20,27,46,0.96); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.45); backdrop-filter: blur(8px); animation: trayIn .18s ease-out; }
+.emote-tray.hidden { display: none; }
+@keyframes trayIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.emote-tray .em { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,0.05); font-size: 20px; cursor: pointer; transition: transform .1s, background .15s; }
+.emote-tray .em:hover { background: rgba(124,92,255,0.25); transform: scale(1.1); }
+.emote-tray .em:active { transform: scale(0.9); }
+.emote-tray .ph { flex: 1 1 100%; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.emote-tray .ph button { flex: 1 1 auto; font-family: var(--font); font-size: 12px; font-weight: 700; color: var(--ink); background: rgba(255,255,255,0.05); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+.emote-tray .ph button:hover { background: rgba(124,92,255,0.25); }
+/* floating reaction bubble */
+.emote-bubble { position: fixed; z-index: 60; transform: translate(-50%, 0); pointer-events: none; background: rgba(20,27,46,0.96); border: 1px solid var(--line); color: #fff; padding: 7px 12px; border-radius: 14px; font-size: 15px; font-weight: 700; white-space: nowrap; box-shadow: 0 10px 24px rgba(0,0,0,0.45); animation: bubbleUp 2.4s ease-out forwards; }
+.emote-bubble .who { font-size: 11px; opacity: 0.8; margin-right: 5px; }
+.emote-bubble .big { font-size: 22px; }
+@keyframes bubbleUp { 0% { opacity: 0; transform: translate(-50%, 10px) scale(0.6); } 12% { opacity: 1; transform: translate(-50%, 0) scale(1); } 80% { opacity: 1; transform: translate(-50%, -26px); } 100% { opacity: 0; transform: translate(-50%, -44px); } }
+@media (max-width: 560px) { .emote-dock { bottom: 132px; } }
+
+.back-home { position: absolute; left: 10px; bottom: 8px; z-index: 6; font-size: 11px; color: rgba(234,240,255,0.6); text-decoration: none; background: rgba(14,20,34,0.6); padding: 4px 8px; border-radius: 6px; }.back-home:hover { color: var(--accent); }
 #gameScreen ~ .back-home, body.in-game .back-home { display: none; }
 
 @media (max-width: 480px) { .panel { border-radius: 18px; } }

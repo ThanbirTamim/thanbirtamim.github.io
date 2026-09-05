@@ -70,6 +70,7 @@
     registerSelf(name) { const pid = "HOST"; this.roster.unshift({ pid, peerId: this.myId, name: (name || "Host").slice(0, 14), connected: true, host: true }); this.emit("roster", { roster: this.roster }); return pid; }
     startGame(payload) { this.started = true; this._send({ t: "start", payload }); }
     broadcastState(state, event) { this.lastState = state; this._send({ t: "state", state, event }); }
+    broadcastEmote(pid, content) { this._send({ t: "emote", pid, content }); }   // host relays reactions to all
 
     // ---------------- CLIENT ----------------
     joinRoom(opts) {
@@ -95,6 +96,7 @@
       else if (msg.t === "roster") { this.roster = msg.roster; if (msg.max) this.maxPlayers = msg.max; this.emit("roster", { roster: msg.roster }); }
       else if (msg.t === "start") { this.emit("start", msg.payload); }
       else if (msg.t === "state") { this.emit("state", { state: msg.state, event: msg.event }); }
+      else if (msg.t === "emote") { this.emit("emote", { pid: msg.pid, content: msg.content }); }
     }
     // client -> host
     sendAction(action) { if (this.hostConn && this.hostConn.open) { try { this.hostConn.send({ t: "action", action }); } catch (e) {} } }

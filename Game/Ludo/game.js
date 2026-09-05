@@ -159,7 +159,7 @@
     const idx = G.game.turn, pl = G.players[idx];
     el("gbTurn").innerHTML = pl ? (CFG.EMOJI[pl.color] + " " + esc(pl.name) + (controllable(idx) ? " — Your turn" : "'s turn")) : "";
     // chips
-    const strip = el("playstrip"); strip.innerHTML = G.players.map((p, i) => { const gp = G.game.players[i]; return `<span class="pchip ${i === idx ? "active" : ""} ${p.connected === false ? "gone" : ""}"><span class="dot" style="background:${HEX[p.color]}"></span>${esc(p.name)} <span class="hm">${gp ? gp.homeCount : 0}/4</span></span>`; }).join("");
+    const strip = el("playstrip"); strip.innerHTML = G.players.map((p, i) => { const gp = G.game.players[i]; return `<span class="pchip ${i === idx ? "active" : ""} ${p.connected === false ? "gone" : ""}" data-pid="${p.pid}"><span class="dot" style="background:${HEX[p.color]}"></span>${esc(p.name)} <span class="hm">${gp ? gp.homeCount : 0}/4</span></span>`; }).join("");
     const banner = el("turnBanner"); banner.textContent = (pl ? (controllable(idx) ? "Your turn!" : pl.name + "'s turn") : ""); banner.classList.add("show"); setTimeout(() => banner.classList.remove("show"), 1200);
     const roll = el("rollBtn");
     const myRoll = controllable(idx) && !G.dicePending && !G.animating && !G.busy && G.game.status === "playing";
@@ -259,8 +259,48 @@
     if (G.game.status === "won") endGame();
   }
   function onHostAction(data) {
-    if (!G.net.isHost) return; const idx = G.players.findIndex((p) => p.peerId === data.from); if (idx < 0 || idx !== G.game.turn) return;
-    const a = data.action; if (a.type === "roll") { if (!G.dicePending) processRoll(idx); } else if (a.type === "move") { if (G.dicePending) processMove(a.token); }
+    if (!G.net.isHost) return; const idx = G.players.findIndex((p) => p.peerId === data.from);
+    const a = data.action;
+    if (a && a.type === "emote") { const pid = idx >= 0 ? G.players[idx].pid : null; if (pid) { G.net.broadcastEmote(pid, a.content); showEmote(pid, a.content); } return; }
+    if (idx < 0 || idx !== G.game.turn) return;
+    if (a.type === "roll") { if (!G.dicePending) processRoll(idx); } else if (a.type === "move") { if (G.dicePending) processMove(a.token); }
+  }
+
+  // ---- quick reactions (emoji + preset phrases) ----
+  const EMOJIS = ["\ud83d\udc4d", "\ud83d\ude02", "\ud83c\udf89", "\ud83d\ude2e", "\ud83d\ude22", "\ud83d\udd25", "\ud83e\udd1d", "\ud83c\udfb2"];
+  const PHRASES = ["Good move!", "Nice!", "Your turn!", "Oops!", "GG!", "Haha \ud83d\ude04"];
+  function toggleEmoteTray(force) {
+    const tray = el("emoteTray"); const openNow = force != null ? force : tray.classList.contains("hidden");
+    if (openNow) {
+      tray.innerHTML = EMOJIS.map((e) => `<button class="em" data-e="${e}">${e}</button>`).join("") +
+        `<div class="ph">` + PHRASES.map((p) => `<button data-e="${esc(p)}">${esc(p)}</button>`).join("") + `</div>`;
+      tray.querySelectorAll("[data-e]").forEach((b) => b.onclick = () => { sendEmote(b.dataset.e); toggleEmoteTray(false); });
+      tray.classList.remove("hidden");
+    } else tray.classList.add("hidden");
+  }
+  function sendEmote(content) {
+    Audio.ensure(); Audio.click();
+    const mine = (G.mode === "online") ? G.mePid : (G.mode === "cpu" ? ((G.players.find((p) => p.isMe) || {}).pid) : (G.game && G.players[G.game.turn] ? G.players[G.game.turn].pid : "me"));
+    if (G.mode === "online" && G.net) {
+      if (G.net.isHost) { G.net.broadcastEmote(mine, content); showEmote(mine, content); }
+      else G.net.sendAction({ type: "emote", content });   // host echoes back to everyone (incl. us)
+    } else { showEmote(mine, content); }
+  }
+  function showEmote(pid, content) {
+    if (!content) return;
+    const isEmoji = /^\p{Extended_Pictographic}/u.test(content) || [...content].length <= 2;
+    const player = (G.players || []).find((p) => p.pid === pid);
+    const name = player ? player.name : "";
+    const bubble = document.createElement("div"); bubble.className = "emote-bubble";
+    bubble.innerHTML = (name ? `<span class="who">${esc(name)}</span>` : "") + `<span class="${isEmoji ? "big" : ""}">${esc(content)}</span>`;
+    // position above that player's chip if visible, else centre-top of the board
+    let x = innerWidth / 2, y = innerHeight * 0.3;
+    const chip = document.querySelector('.pchip[data-pid="' + (pid || "").replace(/"/g, "") + '"]');
+    if (chip) { const r = chip.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top - 6; }
+    else { const bw = el("board"); if (bw) { const r = bw.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top + 30; } }
+    bubble.style.left = x + "px"; bubble.style.top = y + "px";
+    document.body.appendChild(bubble);
+    setTimeout(() => bubble.remove(), 2500);
   }
 
   // ============================================================
@@ -337,6 +377,7 @@
     net.on("start", (payload) => applyOnlineStart(payload));
     net.on("state", (d) => onNetState(d));
     net.on("action", (d) => onHostAction(d));
+    net.on("emote", (d) => showEmote(d.pid, d.content));
     net.on("host-lost", () => netOverlay("⚠", "Host disconnected", "The room host left. You can return to the menu.", [{ t: "Main Menu", fn: toMenu }]));
     return net;
   }
@@ -396,6 +437,7 @@
 
     // game
     el("rollBtn").onclick = requestRoll;
+    el("emoteBtn").onclick = () => { Audio.ensure(); toggleEmoteTray(); };
     el("gameMenuBtn").onclick = () => toast("Leave this game and return to the menu?") || setTimeout(() => {}, 0);
     el("gameMenuBtn").onclick = () => { const o = el("modal"); el("modalContent").innerHTML = `<h3 style="margin-bottom:12px">Menu</h3><div class="btns"><button class="btn" id="mResume">Resume</button><button class="btn ghost" id="mQuit">Quit to Menu</button></div>`; o.classList.remove("hidden"); el("mResume").onclick = () => o.classList.add("hidden"); el("mQuit").onclick = () => { o.classList.add("hidden"); toMenu(); }; };
     canvas.addEventListener("click", onCanvasClick);
