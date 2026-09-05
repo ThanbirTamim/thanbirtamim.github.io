@@ -275,7 +275,7 @@
       tray.innerHTML = EMOJIS.map((e) => `<button class="em" data-e="${e}">${e}</button>`).join("") +
         `<div class="ph">` + PHRASES.map((p) => `<button data-e="${esc(p)}">${esc(p)}</button>`).join("") + `</div>` +
         `<div class="chat-label">💬 Write your own message</div>` +
-        `<div class="chat"><input id="emoteInput" maxlength="80" placeholder="Type a message…" autocomplete="off" /><button id="emoteSend">Send</button></div>`;
+        `<div class="chat"><input id="emoteInput" maxlength="80" placeholder="Type a message…" autocomplete="off" /><button id="emoteSend">▶</button></div>`;
       tray.querySelectorAll(".em, .ph button").forEach((b) => b.onclick = () => { sendEmote(b.dataset.e); toggleEmoteTray(false); });
       const inp = el("emoteInput"), snd = el("emoteSend");
       // Send the typed text but keep the tray open so you can chat freely.
