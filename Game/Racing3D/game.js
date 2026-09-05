@@ -201,10 +201,10 @@
     }
     update(dt, input, speed01, night) {
       // steering
-      const acc = 26;
+      const acc = 52;
       let dir = (input.right ? 1 : 0) - (input.left ? 1 : 0);
       this.vx += dir * acc * dt;
-      this.vx *= 0.86;
+      this.vx *= 0.84;
       this.x = clamp(this.x + this.vx * dt, -PLAYER_X_LIMIT, PLAYER_X_LIMIT);
       if ((this.x <= -PLAYER_X_LIMIT && dir < 0) || (this.x >= PLAYER_X_LIMIT && dir > 0)) this.vx = 0;
       this.group.position.x = this.x;
