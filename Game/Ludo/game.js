@@ -134,7 +134,25 @@
       await new Promise((res) => { const tick = () => { const t = Math.min(1, (performance.now() - t0) / dur); G.anim = { pi, ti, coord: { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t } }; if (t < 1) requestAnimationFrame(tick); else res(); }; tick(); });
     }
     G.anim = null;
-    if (ev.captures && ev.captures.length) { Audio.capture(); }
+    if (ev.captures && ev.captures.length) { Audio.capture(); showCapturePop(); }
+  }
+
+  // Random image popup shown when a token gets eaten.
+  // Images are listed in assets/images/manifest.json (regenerate with gen-manifest.sh).
+  let CAPTURE_IMAGES = [];
+  (function loadCaptureImages() {
+    fetch("assets/images/manifest.json", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list) => { if (Array.isArray(list)) CAPTURE_IMAGES = list.map((n) => "assets/images/" + n); })
+      .catch(() => {});
+  })();
+  function showCapturePop() {
+    const pop = el("capturePop"), img = el("capturePopImg"); if (!pop || !img) return;
+    if (!CAPTURE_IMAGES.length) return;
+    img.src = CAPTURE_IMAGES[(Math.random() * CAPTURE_IMAGES.length) | 0];
+    pop.classList.add("show");
+    clearTimeout(pop._t);
+    pop._t = setTimeout(() => pop.classList.remove("show"), 1000);
   }
 
   // dice DOM
