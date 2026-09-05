@@ -1,449 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Arcade — a collection of original browser games built with HTML5 Canvas and vanilla JavaScript by Sheikh Thanbir Alam.">
-  <meta name="theme-color" content="#667eea">
-  <meta name="author" content="Sheikh Thanbir Alam">
-  <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
-  <title>Games - SHEIKH THANBIR ALAM</title>
-  <link rel="icon" type="image/x-icon" href="../assets/img/favicon2.ico">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Arcade — a collection of original browser games (2D & 3D) by Sheikh Thanbir Alam. Free, no ads, mobile-friendly." />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="author" content="Sheikh Thanbir Alam" />
+  <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved." />
+  <title>Arcade — Games by Thanbir</title>
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: linear-gradient(135deg, #f5f7ff 0%, #f0f4ff 100%);
-      transition: background-color 0.3s, color 0.3s;
-      padding-top: 80px;
-      overflow-x: hidden;
+    /* ============================================================
+       ARCADE HUB — fresh compact, theme-aware design
+       ============================================================ */
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --grad1:#7c5cff; --grad2:#00d4ff;
+      --bg:#f5f7ff; --bg2:#eef1fb;
+      --text:#1b2145; --muted:#6b7396;
+      --card:#ffffff; --card-brd:rgba(30,40,110,.10); --card-shadow:rgba(40,50,120,.12);
+      --chip:#eef1fb; --chip-tx:#5a67ad; --hdr-tx:#fff;
+      --nav:rgba(255,255,255,.85);
+    }
+    body.dark{
+      --grad1:#7c5cff; --grad2:#00d4ff;
+      --bg:#0b1020; --bg2:#070a16;
+      --text:#e9edff; --muted:#98a3cf;
+      --card:#141b30; --card-brd:rgba(150,170,235,.14); --card-shadow:rgba(0,0,0,.5);
+      --chip:rgba(255,255,255,.06); --chip-tx:#aab6ea; --hdr-tx:#fff;
+      --nav:rgba(14,19,38,.85);
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;
+      background:radial-gradient(1200px 600px at 80% -10%,rgba(124,92,255,.18),transparent 60%),
+                 radial-gradient(1000px 500px at 0% 110%,rgba(0,212,255,.15),transparent 60%),
+                 linear-gradient(160deg,var(--bg),var(--bg2));
+      background-attachment:fixed;
+      color:var(--text); min-height:100vh; padding-top:64px; transition:background .4s,color .3s;
     }
 
-    /* Navbar */
-    .navbar {
-      position: fixed !important;
-      top: 0; width: 100%; z-index: 1030;
-      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(245,247,255,0.98) 100%) !important;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
-      border-bottom: 2px solid #667eea;
-      padding: 0.75rem 1.5rem !important;
-    }
-    .navbar-brand {
-      font-size: clamp(1.3rem, 1rem + 1vw, 2rem) !important;
-      font-weight: 800 !important; letter-spacing: 2px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-      display: flex; align-items: center; gap: 10px;
-      animation: logoFloat 3s ease-in-out infinite;
-    }
-    @keyframes logoFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    .navbar-brand:hover { transform: scale(1.1) translateY(-8px); letter-spacing: 3px; animation: none; }
-    .dark-mode .navbar {
-      background: linear-gradient(135deg, rgba(30,30,30,0.98) 0%, rgba(18,18,18,0.98) 100%) !important;
-      border-bottom: 2px solid #0d6efd; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-    .dark-mode .navbar-brand {
-      background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
+    /* nav */
+    .nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;gap:12px;
+      padding:10px clamp(14px,4vw,32px);background:var(--nav);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--card-brd)}
+    .brand{font-weight:800;letter-spacing:1px;font-size:1.15rem;display:flex;align-items:center;gap:8px;
+      background:linear-gradient(135deg,var(--grad1),var(--grad2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-decoration:none}
+    .nav .home{margin-left:auto;color:var(--muted);text-decoration:none;font-size:.85rem;padding:7px 12px;border-radius:10px;border:1px solid var(--card-brd)}
+    .nav .home:hover{color:var(--text)}
+    .toggle{width:40px;height:38px;border-radius:11px;border:1px solid var(--card-brd);background:transparent;color:var(--text);cursor:pointer;font-size:1rem;transition:transform .2s}
+    .toggle:active{transform:scale(.9)}
 
-    /* Dark toggle */
-    .dark-mode-toggle {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
-      border: 2px solid #667eea; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      font-size: 1.3rem; color: #667eea; flex-shrink: 0;
-    }
-    .dark-mode-toggle:hover { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transform: rotate(180deg) scale(1.1); box-shadow: 0 6px 20px rgba(102,126,234,0.4); color: #fff; }
-    .dark-mode .dark-mode-toggle { background: linear-gradient(135deg, rgba(13,110,253,0.1) 0%, rgba(0,212,255,0.1) 100%); border: 2px solid #0d6efd; color: #0d6efd; }
-    .dark-mode .dark-mode-toggle:hover { background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%); color: #fff; }
+    main{max-width:1200px;margin:0 auto;padding:26px clamp(14px,4vw,32px) 60px}
 
-    /* Dark mode base */
-    .dark-mode { background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%) !important; color: #f0f0f0; }
-    .dark-mode .card { background-color: #1e1e1e !important; border-color: #333 !important; }
-    .dark-mode a { color: #0d6efd; }
-    .dark-mode a:hover { color: #00d4ff; }
-    .dark-mode footer { background: linear-gradient(135deg, rgba(13,110,253,0.1) 0%, rgba(0,212,255,0.1) 100%) !important; border-top: 2px solid #0d6efd; color: #f0f0f0; }
+    /* hero */
+    .hero{position:relative;overflow:hidden;border-radius:22px;padding:clamp(24px,5vw,42px);margin-bottom:26px;
+      background:linear-gradient(135deg,var(--grad1),var(--grad2));color:var(--hdr-tx);
+      box-shadow:0 20px 50px rgba(124,92,255,.28)}
+    .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(circle at 90% 10%,rgba(255,255,255,.18),transparent 40%),
+      repeating-linear-gradient(45deg,rgba(255,255,255,.05) 0 10px,transparent 10px 20px)}
+    .hero-in{position:relative;z-index:2}
+    .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);
+      padding:5px 14px;border-radius:20px;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+    .hero h1{font-size:clamp(1.8rem,1.2rem+3vw,3rem);font-weight:800;margin:12px 0 6px;letter-spacing:1px}
+    .hero p{opacity:.95;max-width:560px;font-size:clamp(.9rem,.85rem+.3vw,1.05rem)}
+    .pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}
+    .pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:6px 13px;border-radius:20px;font-size:.78rem;font-weight:600;display:inline-flex;gap:6px;align-items:center}
 
-    /* Main */
-    main { padding: 40px clamp(15px, 4vw, 30px); animation: fadeInUp 0.6s ease-out; width: 100%; max-width: 1400px; margin: 0 auto; }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px);} to { opacity: 1; transform: translateY(0);} }
+    /* grid — compact cards */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
 
-    .back-link { margin-bottom: 30px; }
-    .back-link a { font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: #667eea; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-    .back-link a:hover { text-decoration: underline; color: #764ba2; }
-    .dark-mode .back-link a { color: #0d6efd; }
-    .dark-mode .back-link a:hover { color: #00d4ff; }
+    .card{position:relative;border-radius:16px;overflow:hidden;background:var(--card);
+      border:1px solid var(--card-brd);box-shadow:0 8px 24px var(--card-shadow);
+      display:flex;flex-direction:column;transition:transform .22s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,border-color .25s;
+      animation:rise .5s ease-out both}
+    @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+    .card:hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent) 55%,transparent);
+      box-shadow:0 16px 38px color-mix(in srgb,var(--accent) 30%,var(--card-shadow))}
 
-    /* Header */
-    .page-header {
-      position: relative; overflow: hidden;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff; padding: clamp(35px, 6vw, 60px) clamp(25px, 5vw, 45px);
-      margin-bottom: 40px; border-radius: 20px;
-      box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
-      animation: fadeInUp 0.6s ease-out 0.2s both;
-    }
-    .page-header::before, .page-header::after { content: ''; position: absolute; border-radius: 50%; background: rgba(255,255,255,0.12); pointer-events: none; }
-    .page-header::before { width: 220px; height: 220px; top: -90px; right: -60px; }
-    .page-header::after { width: 140px; height: 140px; bottom: -70px; left: -40px; background: rgba(255,255,255,0.08); }
-    .page-header:hover { transform: translateY(-5px); box-shadow: 0 25px 60px rgba(102,126,234,0.35); transition: all 0.3s ease; }
-    .header-content { position: relative; z-index: 2; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.18); padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 18px; }
-    .page-header h1 { font-size: clamp(1.6rem, 1.2rem + 2.5vw, 2.6rem); font-weight: 700; margin-bottom: 12px; line-height: 1.2; }
-    .page-header p { font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.15rem); opacity: 0.95; max-width: 640px; margin-bottom: 24px; }
-    .stats { display: flex; flex-wrap: wrap; gap: 14px; }
-    .stat-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; transition: transform 0.25s ease, background 0.25s ease; }
-    .stat-pill:hover { transform: translateY(-3px); background: rgba(255,255,255,0.26); }
-    .dark-mode .page-header { background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%); box-shadow: 0 15px 50px rgba(13,110,253,0.3); }
+    .thumb{position:relative;height:112px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 120%,color-mix(in srgb,var(--accent) 45%,transparent),transparent 60%),
+        linear-gradient(160deg,#0e1430,#0a0f22)}
+    .thumb::after{content:"";position:absolute;inset:0;background-image:
+      linear-gradient(color-mix(in srgb,var(--accent) 18%,transparent) 1px,transparent 1px),
+      linear-gradient(90deg,color-mix(in srgb,var(--accent) 18%,transparent) 1px,transparent 1px);
+      background-size:22px 22px;mask-image:linear-gradient(to top,#000,transparent);opacity:.5}
+    .thumb i{position:relative;z-index:2;font-size:2.7rem;color:var(--accent);
+      filter:drop-shadow(0 0 16px color-mix(in srgb,var(--accent) 70%,transparent));animation:float 3.2s ease-in-out infinite}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+    .badge{position:absolute;top:9px;right:9px;z-index:3;background:linear-gradient(135deg,#ff6b6b,#ee5253);
+      color:#fff;font-size:.62rem;font-weight:800;letter-spacing:1px;padding:4px 9px;border-radius:20px;box-shadow:0 4px 10px rgba(238,82,83,.5)}
+    .cat{position:absolute;left:9px;bottom:9px;z-index:3;background:color-mix(in srgb,var(--accent) 26%,#0a0f22);
+      color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.5px;padding:4px 10px;border-radius:20px;border:1px solid color-mix(in srgb,var(--accent) 45%,transparent)}
 
-    /* Grid */
-    .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: clamp(20px, 3vw, 30px); align-items: stretch; }
+    .body{padding:13px 14px 14px;display:flex;flex-direction:column;flex:1}
+    .title{font-size:1.02rem;font-weight:800;margin-bottom:5px}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+    .tags span{font-size:.62rem;font-weight:700;color:var(--chip-tx);background:var(--chip);padding:3px 8px;border-radius:12px}
+    .desc{font-size:.8rem;line-height:1.5;color:var(--muted);flex:1;margin-bottom:12px;
+      display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .play{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;
+      font-weight:800;font-size:.85rem;letter-spacing:.5px;color:#0a0f22;padding:10px;border-radius:11px;
+      background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 60%,#fff));
+      box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 40%,transparent);transition:transform .15s,box-shadow .2s}
+    .play:hover{transform:translateY(-2px);box-shadow:0 10px 22px color-mix(in srgb,var(--accent) 55%,transparent)}
+    .play:active{transform:scale(.97)}
 
-    /* Card */
-    .game-card {
-      display: flex; flex-direction: column; height: 100%;
-      border: 2px solid rgba(102, 126, 234, 0.1); border-radius: 16px; overflow: hidden;
-      background: #fff; box-shadow: 0 10px 30px rgba(102, 126, 234, 0.1);
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); animation: fadeInUp 0.6s ease-out; position: relative;
-    }
-    .game-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(102,126,234,0.25); border-color: rgba(102,126,234,0.2); }
-    .dark-mode .game-card { border-color: rgba(13,110,253,0.15); box-shadow: 0 10px 30px rgba(13,110,253,0.1); }
-    .dark-mode .game-card:hover { box-shadow: 0 20px 50px rgba(13,110,253,0.25); border-color: rgba(13,110,253,0.25); }
+    .card.soon{opacity:.7;border-style:dashed}
+    .card.soon .thumb{background:repeating-linear-gradient(45deg,#0e1430 0 12px,#0a0f22 12px 24px)}
+    .card.soon .thumb i{color:var(--muted);filter:none;animation:none}
+    .card.soon .play{background:var(--chip);color:var(--muted);cursor:default;box-shadow:none;pointer-events:none}
 
-    /* Card thumbnail (animated arcade preview) */
-    .thumb { position: relative; height: 180px; overflow: hidden; background: radial-gradient(circle at 50% 30%, #141a3a 0%, #0a0e27 60%, #05070f 100%); display: flex; align-items: center; justify-content: center; }
-    .thumb .thumb-icon { font-size: 3.4rem; color: #00d4ff; text-shadow: 0 0 18px rgba(0,212,255,0.7); z-index: 2; animation: floaty 3s ease-in-out infinite; }
-    @keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    .thumb .stars-bg { position: absolute; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 60%, #fff, transparent), radial-gradient(2px 2px at 40% 80%, #bcd4ff, transparent), radial-gradient(1px 1px at 85% 20%, #fff, transparent); background-size: 200px 200px; opacity: 0.6; animation: scroll-stars 6s linear infinite; }
-    @keyframes scroll-stars { from { background-position: 0 0; } to { background-position: -200px 0; } }
-    .thumb .scanlines { position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, rgba(255,255,255,0.04) 0 2px, transparent 2px 4px); z-index: 3; pointer-events: none; }
+    footer{text-align:center;padding:26px 16px;color:var(--muted);font-size:.82rem;border-top:1px solid var(--card-brd);margin-top:30px}
+    footer .tg{opacity:.7;font-size:.76rem;margin-top:5px}
 
-    .new-badge { position: absolute; top: 12px; right: 12px; z-index: 5; background: linear-gradient(135deg, #ff6b6b 0%, #ee5253 100%); color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; padding: 5px 12px; border-radius: 20px; box-shadow: 0 4px 12px rgba(238,82,83,0.45); animation: badgePulse 1.8s ease-in-out infinite; }
-    @keyframes badgePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    .top{position:fixed;right:18px;bottom:18px;width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+      background:linear-gradient(135deg,var(--grad1),var(--grad2));color:#fff;font-size:1rem;opacity:0;visibility:hidden;
+      transform:translateY(12px);transition:all .3s;z-index:40;box-shadow:0 8px 20px rgba(124,92,255,.4)}
+    .top.show{opacity:1;visibility:visible;transform:translateY(0)}
 
-    .card-body { padding: 22px; display: flex; flex-direction: column; flex-grow: 1; }
-    .category { display: inline-block; align-self: flex-start; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; margin-bottom: 12px; font-weight: 500; box-shadow: 0 4px 12px rgba(102,126,234,0.25); }
-    .dark-mode .category { background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%); }
-    .card-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 8px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-    .tag { font-size: 0.72rem; font-weight: 600; color: #667eea; background: rgba(102,126,234,0.1); border: 1px solid rgba(102,126,234,0.25); padding: 3px 10px; border-radius: 14px; }
-    .dark-mode .tag { color: #00d4ff; background: rgba(0,212,255,0.1); border-color: rgba(0,212,255,0.3); }
-    .desc { color: #444; font-size: 0.93rem; line-height: 1.6; flex-grow: 1; margin-bottom: 16px; }
-    .dark-mode .desc { color: #aaa; }
-    .meta { font-size: 0.8rem; color: #999; margin-bottom: 14px; display: flex; flex-wrap: wrap; gap: 12px; }
-    .dark-mode .meta { color: #888; }
-
-    .play-btn { align-self: flex-start; margin-top: auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; color: #fff; text-decoration: none; padding: 12px 26px; border-radius: 10px; font-weight: 700; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(102,126,234,0.3); transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-    .play-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(102,126,234,0.5); color: #fff; }
-    .dark-mode .play-btn { background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%); box-shadow: 0 4px 15px rgba(13,110,253,0.4); }
-
-    /* Coming soon */
-    .game-card.coming-soon { opacity: 0.8; border-style: dashed; }
-    .game-card.coming-soon .thumb { background: repeating-linear-gradient(45deg, #0a0e27 0 12px, #0d1330 12px 24px); }
-    .game-card.coming-soon .thumb-icon { color: rgba(102,126,234,0.6); text-shadow: none; }
-
-    /* Back to top */
-    .back-to-top { position: fixed; bottom: 25px; right: 25px; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(102,126,234,0.4); cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(15px); transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 1020; text-decoration: none; }
-    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-    .back-to-top:hover { transform: translateY(-4px) scale(1.08); color: #fff; }
-    .dark-mode .back-to-top { background: linear-gradient(135deg, #0d6efd 0%, #00d4ff 100%); }
-
-    /* Footer */
-    footer { background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%) !important; border-top: 2px solid #667eea; padding: 30px 20px !important; }
-    .footer-tagline { font-size: 0.85rem; opacity: 0.75; margin-top: 6px; }
-
-    @media (max-width: 480px) {
-      body { padding-top: 65px; font-size: 14px; }
-      main { padding: 20px 12px; }
-      .thumb { height: 150px; }
-    }
+    @media(max-width:520px){ .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px} .thumb{height:92px} .thumb i{font-size:2.1rem} }
   </style>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="../index.html">
-        <span style="font-size: 1.5rem;">⚡</span> Thanbir
-      </a>
-      <div class="ms-auto">
-        <div class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
-          <i class="fas fa-moon"></i>
-        </div>
-      </div>
-    </div>
+  <nav class="nav">
+    <a class="brand" href="../index.html"><span style="font-size:1.3rem">🎮</span> GAMES</a>
+    <a class="home" href="../index.html"><i class="fas fa-arrow-left"></i> Home</a>
+    <button class="toggle" id="themeBtn" title="Toggle theme" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
   </nav>
 
   <main id="top">
-    <div class="back-link">
-      <a href="../index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
-    </div>
-
-    <div class="page-header">
-      <div class="header-content">
-        <span class="eyebrow"><i class="fas fa-gamepad"></i> Arcade</span>
-        <h1><i class="fas fa-ghost me-2"></i>Games</h1>
-        <p>Original browser games I build for fun — crafted with HTML5 Canvas &amp; vanilla JavaScript. No frameworks, no downloads, just click and play.</p>
-        <div class="stats">
-          <span class="stat-pill"><i class="fas fa-gamepad"></i> 6 Games</span>
-          <span class="stat-pill"><i class="fas fa-bolt"></i> Canvas + JS</span>
-          <span class="stat-pill"><i class="fas fa-mobile-screen"></i> Desktop &amp; Mobile</span>
-          <span class="stat-pill"><i class="fas fa-arrows-rotate"></i> More Coming</span>
+    <section class="hero">
+      <div class="hero-in">
+        <span class="eyebrow"><i class="fas fa-gamepad"></i> Play Zone</span>
+        <h1>Games Arcade</h1>
+        <p>Original browser games — 2D &amp; 3D, single-player and multiplayer. Built with HTML5 Canvas, Three.js &amp; WebRTC. Just click and play.</p>
+        <div class="pills">
+          <span class="pill"><i class="fas fa-gamepad"></i> 6 Games</span>
+          <span class="pill"><i class="fas fa-bolt"></i> Free &amp; instant</span>
+          <span class="pill"><i class="fas fa-ban"></i> No ads</span>
+          <span class="pill"><i class="fas fa-mobile-screen"></i> Mobile-friendly</span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <div class="game-grid">
+    <div class="grid">
 
       <!-- Star Impact -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-rocket thumb-icon"></i>
-          <div class="scanlines"></div>
+      <article class="card" style="--accent:#00d4ff">
+        <div class="thumb"><span class="cat">Arcade • Shooter</span><i class="fas fa-rocket"></i></div>
+        <div class="body">
+          <h3 class="title">Star Impact</h3>
+          <div class="tags"><span>Canvas</span><span>Retro</span><span>Bosses</span></div>
+          <p class="desc">Dodge waves of enemies, blast bosses and grab power-ups in a fast retro space shooter. Drag to fly on mobile.</p>
+          <a class="play" href="space-impact/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-        <div class="card-body">
-          <span class="category">Arcade / Shooter</span>
-          <h5 class="card-title">Star Impact</h5>
-          <div class="tags">
-            <span class="tag">Canvas</span>
-            <span class="tag">Retro</span>
-            <span class="tag">Space Shooter</span>
-            <span class="tag">Boss Fights</span>
-          </div>
-          <p class="desc">
-            A modernized retro-arcade side-scrolling space shooter. Blast through enemy
-            formations, grab power-ups, survive boss fights, and chase the high score.
-            Full keyboard + touch controls.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-keyboard me-1"></i> Keyboard &amp; Touch</span>
-            <span><i class="fas fa-trophy me-1"></i> High score saved</span>
-          </p>
-          <a href="space-impact/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
+      </article>
 
       <!-- Neon Snake -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-staff-snake thumb-icon" style="color:#5ee0a0;text-shadow:0 0 18px rgba(94,224,160,0.7);"></i>
-          <div class="scanlines"></div>
+      <article class="card" style="--accent:#5ee0a0">
+        <div class="thumb"><span class="cat">Arcade • Classic</span><i class="fas fa-staff-snake"></i></div>
+        <div class="body">
+          <h3 class="title">Neon Snake</h3>
+          <div class="tags"><span>Canvas</span><span>Classic</span><span>Swipe</span></div>
+          <p class="desc">The timeless classic with a neon glow — eat, grow and speed up, but don't bite your tail. Swipe to turn.</p>
+          <a class="play" href="snake/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-        <div class="card-body">
-          <span class="category">Arcade / Classic</span>
-          <h5 class="card-title">Neon Snake</h5>
-          <div class="tags">
-            <span class="tag">Canvas</span>
-            <span class="tag">Retro</span>
-            <span class="tag">Snake</span>
-            <span class="tag">Arcade</span>
-          </div>
-          <p class="desc">
-            The timeless classic, reborn with a neon glow. Eat the orbs, grow longer, speed
-            up as you score — and don't bite your own tail. Keyboard, swipe, and on-screen pad.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-keyboard me-1"></i> Keyboard, Swipe &amp; Touch</span>
-            <span><i class="fas fa-trophy me-1"></i> High score saved</span>
-          </p>
-          <a href="snake/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
+      </article>
 
       <!-- 3D Racing -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-car-side thumb-icon" style="color:#ffd166;text-shadow:0 0 18px rgba(255,209,102,0.7);"></i>
-          <div class="scanlines"></div>
+      <article class="card" style="--accent:#ffd166">
+        <div class="thumb"><span class="cat">3D • Racing</span><i class="fas fa-car-side"></i></div>
+        <div class="body">
+          <h3 class="title">3D Racing</h3>
+          <div class="tags"><span>Three.js</span><span>Endless</span><span>Nitro</span></div>
+          <p class="desc">Endless highway racer — dodge traffic, chain nitro boosts through a day-night city. Hold to steer on mobile.</p>
+          <a class="play" href="Racing3D/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-        <div class="card-body">
-          <span class="category">3D / Racing</span>
-          <h5 class="card-title">3D Racing</h5>
-          <div class="tags">
-            <span class="tag">Three.js</span>
-            <span class="tag">WebGL</span>
-            <span class="tag">Endless</span>
-            <span class="tag">Nitro</span>
-          </div>
-          <p class="desc">
-            Drive • Dodge • Survive. A polished 3D arcade highway racer — dodge traffic,
-            grab coins &amp; power-ups, chain nitro boosts through a day–night highway.
-            Endless, Time Trial &amp; Challenge modes.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-keyboard me-1"></i> Keyboard &amp; Touch</span>
-            <span><i class="fas fa-trophy me-1"></i> High score saved</span>
-          </p>
-          <a href="Racing3D/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
-
-      <!-- Journey of Good Deeds -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-moon thumb-icon" style="color:#2fae8f;text-shadow:0 0 18px rgba(47,174,143,0.7);"></i>
-          <div class="scanlines"></div>
-        </div>
-        <div class="card-body">
-          <span class="category">3D / Adventure • Kids</span>
-          <h5 class="card-title">Journey of Good Deeds</h5>
-          <div class="tags">
-            <span class="tag">Three.js</span>
-            <span class="tag">Kindness</span>
-            <span class="tag">Values</span>
-            <span class="tag">Explore</span>
-          </div>
-          <p class="desc">
-            A 3D adventure for children — explore a friendly town, help others, and learn
-            good manners &amp; Islamic values through play. Kind choices earn ⭐ Good Deed Points.
-            Learn • Explore • Help • Grow.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-child me-1"></i> Family-friendly</span>
-            <span><i class="fas fa-shield-heart me-1"></i> No ads, no data</span>
-          </p>
-          <a href="JourneyOfGoodDeeds/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
-
-      <!-- My Five Daily Salah -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-mosque thumb-icon" style="color:#e9c46a;text-shadow:0 0 18px rgba(233,196,106,0.7);"></i>
-          <div class="scanlines"></div>
-        </div>
-        <div class="card-body">
-          <span class="category">3D / Educational • Kids</span>
-          <h5 class="card-title">My Five Daily Salah</h5>
-          <div class="tags">
-            <span class="tag">Three.js</span>
-            <span class="tag">Islamic</span>
-            <span class="tag">Learning</span>
-            <span class="tag">Explore</span>
-          </div>
-          <p class="desc">
-            Learn about the five daily prayers through a peaceful 3D adventure — explore a
-            friendly neighbourhood, make Wudu, face the Qiblah, and learn each Salah. Education
-            and habit awareness, always respectful.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-child me-1"></i> Family-friendly</span>
-            <span><i class="fas fa-shield-heart me-1"></i> No ads, no data</span>
-          </p>
-          <a href="FiveSalah/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
+      </article>
 
       <!-- Ludo -->
-      <div class="game-card">
-        <span class="new-badge">NEW</span>
-        <div class="thumb">
-          <div class="stars-bg"></div>
-          <i class="fas fa-dice thumb-icon" style="color:#ffcf5c;text-shadow:0 0 18px rgba(255,207,92,0.7);"></i>
-          <div class="scanlines"></div>
+      <article class="card" style="--accent:#a06bff">
+        <div class="thumb"><span class="cat">Board • Multiplayer</span><i class="fas fa-dice"></i></div>
+        <div class="body">
+          <h3 class="title">Ludo</h3>
+          <div class="tags"><span>P2P</span><span>2–4 Players</span><span>vs CPU</span></div>
+          <p class="desc">Create a private room and play with 1–3 friends across devices (peer-to-peer), or play offline vs the computer.</p>
+          <a class="play" href="Ludo/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-        <div class="card-body">
-          <span class="category">Board • Multiplayer</span>
-          <h5 class="card-title">Ludo</h5>
-          <div class="tags">
-            <span class="tag">WebRTC P2P</span>
-            <span class="tag">2–4 Players</span>
-            <span class="tag">vs Computer</span>
-            <span class="tag">2.5D</span>
-          </div>
-          <p class="desc">
-            Multiplayer Ludo. Create a private room, invite 1–3 friends with a room code and
-            play together across devices (peer-to-peer) — or play offline vs the computer with
-            four AI difficulties.
-          </p>
-          <p class="meta">
-            <span><i class="fas fa-users me-1"></i> Play with friends</span>
-            <span><i class="fas fa-shield-heart me-1"></i> No backend, no data</span>
-          </p>
-          <a href="Ludo/index.html" class="play-btn">
-            <i class="fas fa-play"></i> Play Now
-          </a>
-        </div>
-      </div>
+      </article>
 
-      <!-- Coming soon placeholder -->
-      <div class="game-card coming-soon">
-        <div class="thumb">
-          <i class="fas fa-hourglass-half thumb-icon"></i>
+      <!-- Journey of Good Deeds -->
+      <article class="card" style="--accent:#34c98b">
+        <div class="thumb"><span class="cat">3D • Kids</span><i class="fas fa-hand-holding-heart"></i></div>
+        <div class="body">
+          <h3 class="title">Journey of Good Deeds</h3>
+          <div class="tags"><span>Three.js</span><span>Values</span><span>Explore</span></div>
+          <p class="desc">A gentle 3D town adventure — help people, make kind choices and learn good manners &amp; Islamic values through play.</p>
+          <a class="play" href="JourneyOfGoodDeeds/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-        <div class="card-body">
-          <span class="category">More Posts</span>
-          <h5 class="card-title">More Games Coming</h5>
-          <div class="tags">
-            <span class="tag">Puzzle</span>
-            <span class="tag">Platformer</span>
-            <span class="tag">Snake</span>
-          </div>
-          <p class="desc">
-            New browser games are in the works — puzzles, classic arcade remakes, and more.
-            Check back soon!
-          </p>
-          <p class="meta"><span><i class="fas fa-clock me-1"></i> Coming Soon</span></p>
+      </article>
+
+      <!-- My Five Daily Salah -->
+      <article class="card" style="--accent:#e9c46a">
+        <div class="thumb"><span class="cat">3D • Educational</span><i class="fas fa-mosque"></i></div>
+        <div class="body">
+          <h3 class="title">My Five Daily Salah</h3>
+          <div class="tags"><span>Three.js</span><span>Islamic</span><span>Learning</span></div>
+          <p class="desc">Learn the five daily prayers in a peaceful 3D neighbourhood — Wudu, Qiblah and prayer basics, always respectful.</p>
+          <a class="play" href="FiveSalah/index.html"><i class="fas fa-play"></i> Play</a>
         </div>
-      </div>
+      </article>
+
+      <!-- Coming soon -->
+      <article class="card soon" style="--accent:#8892c9">
+        <div class="thumb"><span class="cat">Soon</span><i class="fas fa-hourglass-half"></i></div>
+        <div class="body">
+          <h3 class="title">More Coming</h3>
+          <div class="tags"><span>Puzzle</span><span>Platformer</span></div>
+          <p class="desc">New browser games are in the works — puzzles, classic remakes and more. Check back soon!</p>
+          <a class="play"><i class="fas fa-clock"></i> Soon</a>
+        </div>
+      </article>
 
     </div>
   </main>
 
-  <footer class="text-center py-4 mt-5 bg-light">
-    <div>&copy; 2026 SHEIKH THANBIR ALAM. All rights reserved.</div>
-    <div class="footer-tagline">Original games, built with care for the web.</div>
+  <footer>
+    <div>&copy; 2025 Sheikh Thanbir Alam. All rights reserved.</div>
+    <div class="tg">Original games, built with care for the web.</div>
   </footer>
 
-  <a href="#top" class="back-to-top" id="backToTop" title="Back to top" aria-label="Back to top">
-    <i class="fas fa-arrow-up"></i>
-  </a>
+  <button class="top" id="top-btn" title="Back to top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
 
   <script>
-    function toggleDarkMode() {
-      const btn = document.querySelector('.dark-mode-toggle i');
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      btn.classList.toggle('fa-moon', !isDark);
-      btn.classList.toggle('fa-sun', isDark);
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
     (function () {
-      const btn = document.querySelector('.dark-mode-toggle i');
-      if ((localStorage.getItem('theme') || 'light') === 'dark') {
-        document.body.classList.add('dark-mode');
-        btn.classList.remove('fa-moon'); btn.classList.add('fa-sun');
-      }
-      const top = document.getElementById('backToTop');
-      addEventListener('scroll', () => top.classList.toggle('visible', window.scrollY > 400));
+      var body = document.body, icon = document.querySelector("#themeBtn i");
+      function apply(t) { body.classList.toggle("dark", t === "dark"); icon.className = t === "dark" ? "fas fa-sun" : "fas fa-moon"; }
+      apply(localStorage.getItem("theme") || "dark");   // arcade looks best dark by default
+      document.getElementById("themeBtn").onclick = function () {
+        var t = body.classList.contains("dark") ? "light" : "dark";
+        localStorage.setItem("theme", t); apply(t);
+      };
+      var top = document.getElementById("top-btn");
+      top.onclick = function () { window.scrollTo({ top: 0, behavior: "smooth" }); };
+      addEventListener("scroll", function () { top.classList.toggle("show", scrollY > 400); });
     })();
   </script>
 </body>
-
 </html>
