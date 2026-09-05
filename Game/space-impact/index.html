@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0e27" />
+  <meta name="description" content="Star Impact — a retro-arcade side-scrolling space shooter built with HTML5 Canvas and vanilla JavaScript. Part of Sheikh Thanbir Alam's portfolio." />
+  <title>Star Impact — Retro Space Shooter</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+
+    <!-- Top HUD -->
+    <div class="hud" id="hud">
+      <div class="hud-left">
+        <span class="hud-item">SCORE <b id="scoreVal">0</b></span>
+        <span class="hud-item">HIGH <b id="highVal">0</b></span>
+        <span class="hud-item">LV <b id="levelVal">1</b></span>
+      </div>
+      <div class="hud-right">
+        <span class="hud-item lives" id="livesVal"></span>
+        <button class="icon-btn" id="soundBtn" title="Toggle sound" aria-label="Toggle sound">🔊</button>
+        <button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">⏸</button>
+      </div>
+    </div>
+
+    <!-- Boss health bar -->
+    <div class="boss-bar" id="bossBar" aria-hidden="true">
+      <span class="boss-name" id="bossName">BOSS</span>
+      <div class="boss-bar-track"><div class="boss-bar-fill" id="bossFill"></div></div>
+    </div>
+
+    <!-- Canvas -->
+    <canvas id="game" width="800" height="450" aria-label="Space shooter game area" role="img"></canvas>
+
+    <!-- Overlays -->
+    <div class="overlay" id="startScreen">
+      <div class="panel">
+        <h1 class="title">STAR&nbsp;IMPACT</h1>
+        <p class="tagline">A retro side-scrolling space shooter</p>
+        <div class="how">
+          <div><b>Move</b><span>Arrows / WASD</span></div>
+          <div><b>Shoot</b><span>Space</span></div>
+          <div><b>Pause</b><span>P</span></div>
+          <div><b>Restart</b><span>R</span></div>
+        </div>
+        <button class="btn primary" id="startBtn">▶ START</button>
+        <p class="hint">On mobile, use the on-screen controls.</p>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART</button>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">GAME OVER</h2>
+        <p class="score-line">Score <b id="finalScore">0</b></p>
+        <p class="score-line">Best <b id="finalHigh">0</b></p>
+        <p class="new-high hidden" id="newHigh">★ NEW HIGH SCORE ★</p>
+        <button class="btn primary" id="restartBtn">↻ PLAY AGAIN</button>
+      </div>
+    </div>
+
+    <!-- Level banner -->
+    <div class="banner hidden" id="banner"></div>
+
+    <!-- Touch controls -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="dpad">
+        <button class="tbtn up"    data-dir="up">▲</button>
+        <button class="tbtn left"  data-dir="left">◀</button>
+        <button class="tbtn right" data-dir="right">▶</button>
+        <button class="tbtn down"  data-dir="down">▼</button>
+      </div>
+      <button class="tbtn fire" id="fireBtn">FIRE</button>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
