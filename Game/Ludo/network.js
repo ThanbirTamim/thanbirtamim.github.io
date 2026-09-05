@@ -25,6 +25,10 @@
     on(type, cb) { (this.handlers[type] || (this.handlers[type] = [])).push(cb); return this; }
     emit(type, data) { (this.handlers[type] || []).forEach((cb) => { try { cb(data); } catch (e) { console.error(e); } }); (this.handlers["*"] || []).forEach((cb) => cb(type, data)); }
 
+    // Resolve the PeerJS config. Kept as a hook; currently returns the
+    // static keyless config (STUN + best-effort public TURN, no accounts).
+    async _peerConfig() { return CFG.NET.peerConfig; }
+
     genCode() { const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let s = ""; for (let i = 0; i < 6; i++) s += A[(Math.random() * A.length) | 0]; return s; }
 
     // ---------------- HOST ----------------
@@ -33,12 +37,15 @@
       this.isHost = true; this.maxPlayers = opts.max || 4; this.passcode = opts.passcode || null;
       this.roomCode = opts.code || this.genCode();
       const pid = CFG.NET.idPrefix + this.roomCode;
-      this.peer = new root.Peer(pid, CFG.NET.peerConfig);
       this._openTimer = setTimeout(() => { if (!this.myId && !this.closed) this.emit("error", { code: "create-timeout", msg: "Couldn't reach the connection service. Check your internet and try again." }); }, CFG.NET.createTimeoutMs || 15000);
-      this.peer.on("open", (id) => { clearTimeout(this._openTimer); this.myId = id; this.hostId = id; this.emit("room-created", { code: this.roomCode, id }); });
-      this.peer.on("connection", (conn) => this._hostOnConn(conn));
-      this.peer.on("error", (e) => { const code = (e && e.type) || "peer-error"; if (code === "unavailable-id") this.emit("error", { code: "code-taken", msg: "That room code is busy — try creating again." }); else this.emit("error", { code, msg: "Network error: " + code }); });
-      this.peer.on("disconnected", () => { if (!this.closed) try { this.peer.reconnect(); } catch (e) {} });
+      this._peerConfig().then((cfg) => {
+        if (this.closed) return;
+        this.peer = new root.Peer(pid, cfg);
+        this.peer.on("open", (id) => { clearTimeout(this._openTimer); this.myId = id; this.hostId = id; this.emit("room-created", { code: this.roomCode, id }); });
+        this.peer.on("connection", (conn) => this._hostOnConn(conn));
+        this.peer.on("error", (e) => { const code = (e && e.type) || "peer-error"; if (code === "unavailable-id") this.emit("error", { code: "code-taken", msg: "That room code is busy — try creating again." }); else this.emit("error", { code, msg: "Network error: " + code }); });
+        this.peer.on("disconnected", () => { if (!this.closed) try { this.peer.reconnect(); } catch (e) {} });
+      });
     }
     _hostOnConn(conn) {
       conn.on("open", () => { this.conns[conn.peer] = conn; });
@@ -77,10 +84,13 @@
       if (!this.available()) { this.emit("error", { code: "no-peerjs", msg: "Networking unavailable. Check your connection." }); return; }
       this.isHost = false; this.roomCode = (opts.code || "").toUpperCase(); this._name = opts.name; this._pass = opts.pass; this._rejoinId = opts.rejoinId || null;
       this.hostId = CFG.NET.idPrefix + this.roomCode;
-      this.peer = new root.Peer(CFG.NET.peerConfig);
-      this.peer.on("open", (id) => { this.myId = id; this._connectHost(); });
-      this.peer.on("error", (e) => { const code = (e && e.type) || "peer-error"; if (code === "peer-unavailable") this.emit("error", { code: "not-found", msg: "Room not found. Check the code." }); else this.emit("error", { code, msg: "Connection failed: " + code }); });
-      this.peer.on("disconnected", () => { if (!this.closed) try { this.peer.reconnect(); } catch (e) {} });
+      this._peerConfig().then((cfg) => {
+        if (this.closed) return;
+        this.peer = new root.Peer(cfg);
+        this.peer.on("open", (id) => { this.myId = id; this._connectHost(); });
+        this.peer.on("error", (e) => { const code = (e && e.type) || "peer-error"; if (code === "peer-unavailable") this.emit("error", { code: "not-found", msg: "Room not found. Check the code." }); else this.emit("error", { code, msg: "Connection failed: " + code }); });
+        this.peer.on("disconnected", () => { if (!this.closed) try { this.peer.reconnect(); } catch (e) {} });
+      });
     }
     _connectHost() {
       const conn = this.peer.connect(this.hostId, { reliable: true }); this.hostConn = conn;

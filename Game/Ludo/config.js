@@ -54,37 +54,65 @@
     // To self-host, set NET.host/port/path and secure:true. No secrets here.
     NET: {
       idPrefix: "thanbir-ludo-",     // room code -> peer id (namespaced to avoid clashes)
-      // ---- ICE servers (STUN discovers your address; TURN relays when P2P is blocked) ----
-      // STUN alone works when both players are on the SAME Wi-Fi. Different networks
-      // (e.g. phone on mobile data + laptop on Wi-Fi) usually need a TURN relay.
-      //
-      // >>> IMPORTANT: free public TURN is unreliable. For rock-solid cross-network play,
-      //     create a FREE account at https://www.metered.ca/tools/openrelay/ (or any TURN
-      //     provider), then paste your credentials into NET.userTurn below. No secrets are
-      //     sensitive here — TURN credentials are meant to live in the client.
+
+      // ============================================================
+      //  ICE SERVERS  (this is what makes SAME / DIFFERENT / MIXED
+      //  networks all work)
+      //  - STUN: lets two peers discover each other and punch through
+      //          most NATs directly (works same-Wi-Fi and many
+      //          different-network cases).
+      //  - TURN: relays traffic when direct P2P is blocked (strict
+      //          firewalls, symmetric NAT, mobile carriers). TURN
+      //          works for EVERY combination, so with a live TURN
+      //          server the game connects no matter the networks.
+      // ============================================================
+
+      // >>> For guaranteed cross-network play (optional), paste your own free
+      //     TURN server below (from any provider). Checked first if present.
+      //     Leave empty to use only the keyless public servers below.
       userTurn: [
         // { urls: "turn:YOUR.turn.server:3478", username: "YOUR_USER", credential: "YOUR_CRED" },
+        // { urls: "turns:YOUR.turn.server:5349?transport=tcp", username: "YOUR_USER", credential: "YOUR_CRED" },
       ],
+
+      // STUN — direct connectivity (multiple providers for redundancy).
       stun: [
         { urls: "stun:stun.l.google.com:19302" },
         { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun2.l.google.com:19302" },
+        { urls: "stun:stun3.l.google.com:19302" },
+        { urls: "stun:stun4.l.google.com:19302" },
+        { urls: "stun:stun.l.google.com:5349" },
+        { urls: "stun:stun.cloudflare.com:3478" },
         { urls: "stun:stun.relay.metered.ca:80" },
       ],
-      // best-effort free relays (may or may not be up — use userTurn for reliability)
+
+      // best-effort free TURN relays (public Open Relay Project, no account
+      // needed; may be rate-limited — for guaranteed uptime add your own
+      // relay in userTurn above). UDP + TCP + TLS on 80/443 to survive firewalls.
       turn: [
         { urls: "turn:openrelay.metered.ca:80", username: "openrelayproject", credential: "openrelayproject" },
         { urls: "turn:openrelay.metered.ca:443", username: "openrelayproject", credential: "openrelayproject" },
         { urls: "turn:openrelay.metered.ca:443?transport=tcp", username: "openrelayproject", credential: "openrelayproject" },
+        { urls: "turns:openrelay.metered.ca:443?transport=tcp", username: "openrelayproject", credential: "openrelayproject" },
       ],
       graceMs: 20000,                 // reconnect grace period
-      joinTimeoutMs: 20000,           // ICE over TURN can be slow
+      joinTimeoutMs: 25000,           // ICE over TURN can be slow
       createTimeoutMs: 15000,
     },
     AI_DELAY: 700,
   };
 
-  // assemble PeerJS options: user TURN first (preferred), then STUN, then best-effort free TURN
-  CFG.NET.peerConfig = { debug: 1, config: { iceServers: [].concat(CFG.NET.userTurn || [], CFG.NET.stun || [], CFG.NET.turn || []) } };
+  // assemble PeerJS options: user TURN first (preferred), then STUN, then best-effort free TURN.
+  // iceCandidatePoolSize pre-gathers candidates so same-network relay fallback is quick.
+  CFG.NET.peerConfig = {
+    debug: 1,
+    config: {
+      iceServers: [].concat(CFG.NET.userTurn || [], CFG.NET.stun || [], CFG.NET.turn || []),
+      iceCandidatePoolSize: 4,
+      sdpSemantics: "unified-plan",
+    },
+  };
 
   if (typeof module !== "undefined" && module.exports) module.exports = CFG;
   root.LUDO_CONFIG = CFG;

@@ -38,16 +38,19 @@ secrets pass through it, and no server of your own is required. The **room code*
 namespaced PeerJS id (`config.js` → `NET.idPrefix`). To self-host the broker later, set
 `NET.host/port/path` in `config.js`. No credentials live in the frontend.
 
-> **NAT traversal / TURN:** pure STUN works when both players are on the **same Wi-Fi**. Across
-> different networks (e.g. a phone on mobile data + a laptop on Wi-Fi) a **TURN relay** is
-> usually required. Free public TURN relays are unreliable, so for dependable cross-network play
-> create a **free TURN account** (e.g. <https://www.metered.ca/tools/openrelay/>, 50 GB/mo free)
-> and paste the credentials into `config.js` → `NET.userTurn` (they are placed first, so they win).
+> **Works on ANY network mix (same / different / mixed):** connectivity is handled by ICE
+> servers in `config.js` → `NET`.
+> - **STUN** (many providers preconfigured) covers same-Wi-Fi and most different-network cases
+>   by punching directly through NAT.
+> - **TURN** relays traffic when direct P2P is blocked (strict firewalls, symmetric NAT, mobile
+>   carriers). A live TURN server makes **every** combination connect, since relay always works.
+>
+> Best-effort public TURN is included (no account needed). For **guaranteed** cross-network
+> play you can optionally paste your own free relay's `{ urls, username, credential }` into
+> `config.js` → `NET.userTurn` (checked first).
+>
 > TURN credentials are meant to live in the client, so this is safe. If a connection still can't
 > be made, the game shows a clear message with recovery instead of hanging.
->
-> **Quick test:** put both devices on the same Wi-Fi first — if that works, the game logic is
-> fine and any remaining failure is purely NAT/TURN, fixed by adding `NET.userTurn` above.
 
 > **Dice fairness:** the authority generates dice with `crypto.getRandomValues` and broadcasts
 > the result. This is a lightweight casual-game anti-cheat model — not cryptographic,

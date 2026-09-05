@@ -394,9 +394,19 @@
   // ============================================================
   function buildPlayers(colors, defs) { return colors.map((c, i) => Object.assign({ color: c }, defs[i])); }
 
+  // Seat colours so players are spread across the board.
+  // 2 players -> diagonally opposite corners (red = top-left, yellow = bottom-right)
+  //             so each, after the per-player rotation, sees itself bottom-right
+  //             and the opponent top-left.
+  // 3/4 players -> natural order (remaining corner(s) filled as they are).
+  function seatColors(count) {
+    if (count === 2) return ["red", "yellow"];
+    return CFG.ORDER.slice(0, count);
+  }
+
   function startOffline(mode, count, human, aiDiff) {
     G.mode = mode; G.aiDiff = aiDiff || "normal";
-    const colors = CFG.ORDER.slice(0, count);
+    const colors = seatColors(count);
     let defs;
     if (mode === "cpu") defs = colors.map((c, i) => i === 0 ? { name: human || "You", type: "human", isMe: true, pid: "me", connected: true } : { name: "CPU " + i, type: "ai", ai: aiDiff, connected: true });
     else defs = colors.map((c, i) => ({ name: ["Red", "Green", "Yellow", "Blue"][CFG.ORDER.indexOf(c)] + "", type: "human", isMe: true, pid: "p" + i, connected: true }));
@@ -416,7 +426,7 @@
   function hostStartGame() {
     const roster = G.net.roster.filter((r) => r.connected);
     if (roster.length < 2) { toast("Need at least 2 players"); return; }
-    const colors = CFG.ORDER.slice(0, roster.length);
+    const colors = seatColors(roster.length);
     const players = roster.map((r, i) => ({ color: colors[i], name: r.name, type: r.pid === "HOST" ? "human" : "remote", pid: r.pid, peerId: r.peerId, connected: true, isMe: r.pid === "HOST" }));
     const payload = { players, colors };
     G.net.startGame(payload); applyOnlineStart(payload);
