@@ -274,10 +274,12 @@
     if (openNow) {
       tray.innerHTML = EMOJIS.map((e) => `<button class="em" data-e="${e}">${e}</button>`).join("") +
         `<div class="ph">` + PHRASES.map((p) => `<button data-e="${esc(p)}">${esc(p)}</button>`).join("") + `</div>` +
+        `<div class="chat-label">💬 Write your own message</div>` +
         `<div class="chat"><input id="emoteInput" maxlength="80" placeholder="Type a message…" autocomplete="off" /><button id="emoteSend">Send</button></div>`;
       tray.querySelectorAll(".em, .ph button").forEach((b) => b.onclick = () => { sendEmote(b.dataset.e); toggleEmoteTray(false); });
       const inp = el("emoteInput"), snd = el("emoteSend");
-      const fire = () => { const v = (inp.value || "").trim(); if (!v) return; sendEmote(v.slice(0, 80)); inp.value = ""; toggleEmoteTray(false); };
+      // Send the typed text but keep the tray open so you can chat freely.
+      const fire = () => { const v = (inp.value || "").trim(); if (!v) return; sendEmote(v.slice(0, 80)); inp.value = ""; try { inp.focus(); } catch (e) {} };
       snd.onclick = fire;
       inp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); fire(); } });
       setTimeout(() => { try { inp.focus(); } catch (e) {} }, 30);
