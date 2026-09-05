@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#123c4a" />
+  <meta name="description" content="My Five Daily Salah — a peaceful 3D educational game where children learn about the five daily prayers, Wudu, Qiblah and prayer preparation." />
+  <title>🕌 My Five Daily Salah</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <canvas id="scene"></canvas>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <div class="hud-top">
+        <div class="prayer-card">
+          <span class="p-icon" id="prayerIcon">☀</span>
+          <div class="p-txt"><b id="prayerName">Fajr</b><span id="prayerTime">Before Sunrise</span></div>
+        </div>
+        <div class="hud-right">
+          <div class="progress-pill">🕌 <b id="progressText">0 / 5</b></div>
+          <button class="icon-btn" id="soundBtn" title="Sound">🔊</button>
+          <button class="icon-btn" id="pauseBtn" title="Pause (Esc)">⏸</button>
+        </div>
+      </div>
+      <div class="hud-bottom">
+        <button class="hud-btn" id="learnBtn">📖 Learn Salah</button>
+        <button class="hud-btn" id="mapBtn">🗺️ Map</button>
+        <button class="hud-btn" id="advanceBtn">⏩ Next Time</button>
+      </div>
+      <div class="toast" id="toast" aria-live="polite"></div>
+    </div>
+
+    <div class="interact-prompt hidden" id="interactPrompt"><span class="key">E</span><span id="promptText">Interact</span></div>
+
+    <!-- ===================== GENERIC MODAL ===================== -->
+    <div class="overlay hidden" id="modal"><div class="panel" id="modalContent"></div></div>
+
+    <!-- ===================== MAIN MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel menu-panel">
+        <div class="mosque-emoji">🕌</div>
+        <h1 class="title">MY FIVE<br/>DAILY SALAH</h1>
+        <p class="tagline">Learn • Explore • Grow</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ PLAY</button>
+          <button class="btn" id="learnMenuBtn">📖 Learn Salah</button>
+          <button class="btn" id="howBtn">❓ How to Play</button>
+          <button class="btn ghost" id="settingsBtn">⚙ Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen"><div class="panel"><div class="mosque-emoji">🕌</div><h2 class="title small">LOADING…</h2><p class="tagline" id="loadMsg">Building the neighborhood</p></div></div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="joystick" id="joystick"><div class="joy-knob" id="joyKnob"></div></div>
+      <div class="touch-right">
+        <button class="tbtn small" id="btnJump">⤒</button>
+        <button class="tbtn interact" id="btnInteract">✋</button>
+      </div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
