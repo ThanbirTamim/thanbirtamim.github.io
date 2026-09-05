@@ -246,9 +246,9 @@ canvas {
 
 /* show touch controls on touch / small screens */
 @media (hover: none) and (pointer: coarse) {
-  .touch { display: flex; }
+  .touch { display: none; }   /* mobile uses drag-to-move + auto-fire instead of buttons */
 }
-body.touch-mode .touch { display: flex; }
+body.touch-mode .touch { display: none; }
 
 .back-home {
   position: absolute;

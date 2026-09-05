@@ -89,25 +89,25 @@
     }
     bindPointer() {
       const cv = el("scene");
-      const start = (x, id) => { this.camDrag.active = true; this.camDrag.lastX = x; this.camDrag.id = id; };
-      const moveTo = (x) => { if (!this.camDrag.active) return; const dx = x - this.camDrag.lastX; this.camDrag.lastX = x; this.yaw -= dx * 0.006; };
-      const end = () => { this.camDrag.active = false; this.camDrag.id = null; };
-      cv.addEventListener("mousedown", (e) => start(e.clientX, "m"));
-      addEventListener("mousemove", (e) => moveTo(e.clientX));
-      addEventListener("mouseup", end);
-      cv.addEventListener("touchstart", (e) => { const t = e.changedTouches[0]; start(t.clientX, t.identifier); }, { passive: true });
-      cv.addEventListener("touchmove", (e) => { for (const t of e.changedTouches) if (t.identifier === this.camDrag.id) moveTo(t.clientX); }, { passive: true });
-      cv.addEventListener("touchend", end); cv.addEventListener("touchcancel", end);
+      // desktop mouse = rotate camera
+      let md = false, lx = 0;
+      cv.addEventListener("mousedown", (e) => { md = true; lx = e.clientX; });
+      addEventListener("mousemove", (e) => { if (md) { this.yaw -= (e.clientX - lx) * 0.006; lx = e.clientX; } });
+      addEventListener("mouseup", () => { md = false; });
       document.addEventListener("touchmove", (e) => { if (this.game.state === "playing") e.preventDefault(); }, { passive: false });
     }
+    // Floating joystick: touch the LEFT half to spawn a movement stick at your finger;
+    // the RIGHT half rotates the camera. No fixed buttons cluttering the screen.
     bindJoystick() {
-      const j = el("joystick"), k = el("joyKnob"); if (!j) return;
-      let id = null, cx = 0, cy = 0, R = 46;
-      const set = (dx, dy) => { const d = Math.hypot(dx, dy) || 1; const cl = Math.min(d, R); const nx = dx / d * cl, ny = dy / d * cl; k.style.transform = `translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`; this.move.x = nx / R; this.move.y = ny / R; };
-      const reset = () => { id = null; k.style.transform = "translate(-50%,-50%)"; this.move.x = 0; this.move.y = 0; };
-      j.addEventListener("touchstart", (e) => { this.game.audio.ensure(); const t = e.changedTouches[0]; id = t.identifier; const r = j.getBoundingClientRect(); cx = r.left + r.width / 2; cy = r.top + r.height / 2; set(t.clientX - cx, t.clientY - cy); e.preventDefault(); }, { passive: false });
-      j.addEventListener("touchmove", (e) => { for (const t of e.changedTouches) if (t.identifier === id) { set(t.clientX - cx, t.clientY - cy); } e.preventDefault(); }, { passive: false });
-      j.addEventListener("touchend", reset); j.addEventListener("touchcancel", reset);
+      const j = el("joystick"), k = el("joyKnob"), cv = el("scene"); if (!j) return;
+      const R = 46; let joyId = null, jcx = 0, jcy = 0, camId = null, camX = 0;
+      const showJoy = (x, y) => { j.style.left = x + "px"; j.style.top = y + "px"; j.classList.add("floating"); jcx = x; jcy = y; };
+      const hideJoy = () => { j.classList.remove("floating"); k.style.transform = "translate(-50%,-50%)"; this.move.x = 0; this.move.y = 0; };
+      const setKnob = (dx, dy) => { const d = Math.hypot(dx, dy) || 1, cl = Math.min(d, R), nx = dx / d * cl, ny = dy / d * cl; k.style.transform = `translate(calc(-50% + ${nx}px), calc(-50% + ${ny}px))`; this.move.x = nx / R; this.move.y = ny / R; };
+      cv.addEventListener("touchstart", (e) => { this.game.audio.ensure(); document.body.classList.add("touch-mode"); for (const t of e.changedTouches) { if (t.clientX < innerWidth * 0.5 && joyId === null) { joyId = t.identifier; showJoy(t.clientX, t.clientY); setKnob(0, 0); } else if (camId === null) { camId = t.identifier; camX = t.clientX; } } }, { passive: true });
+      cv.addEventListener("touchmove", (e) => { for (const t of e.changedTouches) { if (t.identifier === joyId) setKnob(t.clientX - jcx, t.clientY - jcy); else if (t.identifier === camId) { this.yaw -= (t.clientX - camX) * 0.006; camX = t.clientX; } } }, { passive: true });
+      const end = (e) => { for (const t of e.changedTouches) { if (t.identifier === joyId) { joyId = null; hideJoy(); } if (t.identifier === camId) camId = null; } };
+      cv.addEventListener("touchend", end, { passive: true }); cv.addEventListener("touchcancel", end, { passive: true });
       addEventListener("touchstart", () => document.body.classList.add("touch-mode"), { once: true });
       el("touchInteract").addEventListener("touchstart", (e) => { e.preventDefault(); this.game.audio.ensure(); this.game.interaction.trigger(); }, { passive: false });
       el("touchInteract").addEventListener("click", () => this.game.interaction.trigger());

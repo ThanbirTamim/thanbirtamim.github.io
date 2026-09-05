@@ -113,13 +113,18 @@
         b.addEventListener("mousedown", on); b.addEventListener("mouseup", off); b.addEventListener("mouseleave", off);
       });
       addEventListener("touchstart", () => document.body.classList.add("touch-mode"), { once: true });
-      // swipe steering on canvas
-      const cv = el("scene"); let sx = 0, sy = 0, sw = false;
-      cv.addEventListener("touchstart", (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; sw = true; }, { passive: true });
-      cv.addEventListener("touchend", (e) => {
-        if (!sw) return; sw = false; const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-        if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { const k = dx > 0 ? "right" : "left"; this.state[k] = true; setTimeout(() => (this.state[k] = false), 140); }
-      }, { passive: true });
+      // ---- Steering: touch & hold the LEFT or RIGHT half of the screen (multi-touch aware) ----
+      const cv = el("scene");
+      const steer = (touches) => {
+        let anyL = false, anyR = false;
+        for (const t of touches) { if (t.clientX < innerWidth / 2) anyL = true; else anyR = true; }
+        this.state.left = anyL && !anyR;
+        this.state.right = anyR && !anyL;   // touching both sides = go straight
+      };
+      cv.addEventListener("touchstart", (e) => { this.game.audio.ensure(); document.body.classList.add("touch-mode"); steer(e.touches); }, { passive: true });
+      cv.addEventListener("touchmove", (e) => steer(e.touches), { passive: true });
+      cv.addEventListener("touchend", (e) => steer(e.touches), { passive: true });
+      cv.addEventListener("touchcancel", (e) => steer(e.touches), { passive: true });
       document.addEventListener("touchmove", (e) => { if (this.game.state === "playing") e.preventDefault(); }, { passive: false });
     }
   }

@@ -136,8 +136,8 @@ canvas {
 .dpad .right { top: 50px; left: 100px; }
 .dpad .down  { top: 100px; left: 50px; }
 
-@media (hover: none) and (pointer: coarse) { .touch { display: flex; } }
-body.touch-mode .touch { display: flex; }
+@media (hover: none) and (pointer: coarse) { .touch { display: none; } }
+body.touch-mode .touch { display: none; }
 
 .back-home {
   position: absolute; left: 10px; bottom: 8px; z-index: 6;

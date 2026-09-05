@@ -152,9 +152,10 @@ html, body {
 .char-preview { width: 110px; height: 110px; margin: 0 auto 12px; border-radius: 20px; background: linear-gradient(160deg,#cdeffb,#eafaf4); display: flex; align-items: center; justify-content: center; font-size: 60px; }
 
 /* ---------------- Touch controls ---------------- */
-.touch { position: absolute; inset: auto 0 64px 0; z-index: 7; display: none; justify-content: space-between; align-items: flex-end; padding: 0 clamp(16px,5vw,40px); pointer-events: none; }
-.joystick { pointer-events: auto; width: 124px; height: 124px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.5); position: relative; touch-action: none; }
-.joy-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.85); transform: translate(-50%,-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.touch { position: absolute; inset: auto 0 64px 0; z-index: 7; display: none; justify-content: flex-end; align-items: flex-end; padding: 0 clamp(16px,5vw,40px); pointer-events: none; }
+.joystick { pointer-events: none; width: 118px; height: 118px; border-radius: 50%; background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.45); position: fixed; left: -999px; top: -999px; transform: translate(-50%,-50%); display: none; touch-action: none; z-index: 7; }
+.joystick.floating { display: block; }
+.joy-knob { position: absolute; left: 50%; top: 50%; width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,0.85); transform: translate(-50%,-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 .touch-right { display: flex; align-items: center; gap: 12px; pointer-events: none; }
 .tbtn { pointer-events: auto; border: none; cursor: pointer; color: #fff; }
 .tbtn.small { width: 54px; height: 54px; border-radius: 14px; font-size: 22px; background: rgba(18,60,74,0.7); border: 1px solid rgba(233,196,106,0.5); }

@@ -83,6 +83,7 @@
   //  INPUT
   // ============================================================
   const keys = { up: false, down: false, left: false, right: false, fire: false };
+  const touch = { active: false, tx: 0, ty: 0 };  // drag-to-move (mobile)
   const KEYMAP = {
     ArrowUp: "up", KeyW: "up", ArrowDown: "down", KeyS: "down",
     ArrowLeft: "left", KeyA: "left", ArrowRight: "right", KeyD: "right",
@@ -117,6 +118,14 @@
     fire.addEventListener("mousedown", fon); fire.addEventListener("mouseup", foff); fire.addEventListener("mouseleave", foff);
     // reveal touch controls if a touch happens
     addEventListener("touchstart", () => document.body.classList.add("touch-mode"), { once: true });
+
+    // ---- Primary mobile control: drag anywhere on the play area to move; auto-fire ----
+    const canvasPos = (cx, cy) => { const r = canvas.getBoundingClientRect(); return { x: (cx - r.left) / r.width * W, y: (cy - r.top) / r.height * H }; };
+    const onTouch = (e) => { e.preventDefault(); const t = e.touches[0]; if (!t) return; const p = canvasPos(t.clientX, t.clientY); touch.active = true; touch.tx = p.x; touch.ty = p.y; Sound.unlock(); document.body.classList.add("touch-mode"); if (game.state === "start") startGame(); else if (game.state === "over") restart(); };
+    canvas.addEventListener("touchstart", onTouch, { passive: false });
+    canvas.addEventListener("touchmove", onTouch, { passive: false });
+    canvas.addEventListener("touchend", (e) => { e.preventDefault(); if (e.touches.length === 0) touch.active = false; }, { passive: false });
+    canvas.addEventListener("touchcancel", () => { touch.active = false; }, { passive: false });
   }
   // Prevent scroll/zoom gestures on the play area
   document.addEventListener("touchmove", (e) => { if (game.state === "playing") e.preventDefault(); }, { passive: false });
@@ -279,13 +288,24 @@
     if (game.bannerT <= 0 && !banner.classList.contains("hidden")) banner.classList.add("hidden");
 
     // ----- player movement -----
-    let mvx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
-    let mvy = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
-    player.thrust = keys.left ? -1 : keys.right ? 1 : 0;
-    player.x = clamp(player.x + mvx * player.speed * dt, 6, W - player.w - 6);
-    player.y = clamp(player.y + mvy * player.speed * dt, 24, H - player.h - 6);
+    // ----- player movement (keyboard OR drag-to-move on touch) -----
+    if (touch.active) {
+      const tx = clamp(touch.tx - player.w / 2, 6, W - player.w - 6);
+      const ty = clamp(touch.ty - player.h / 2, 24, H - player.h - 6);
+      const maxStep = player.speed * dt * 1.6;
+      const dx = clamp(tx - player.x, -maxStep, maxStep), dy = clamp(ty - player.y, -maxStep, maxStep);
+      player.x = clamp(player.x + dx, 6, W - player.w - 6);
+      player.y = clamp(player.y + dy, 24, H - player.h - 6);
+      player.thrust = dx > 0.2 ? 1 : dx < -0.2 ? -1 : 0;
+    } else {
+      let mvx = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+      let mvy = (keys.down ? 1 : 0) - (keys.up ? 1 : 0);
+      player.thrust = keys.left ? -1 : keys.right ? 1 : 0;
+      player.x = clamp(player.x + mvx * player.speed * dt, 6, W - player.w - 6);
+      player.y = clamp(player.y + mvy * player.speed * dt, 24, H - player.h - 6);
+    }
 
-    if (keys.fire) firePlayer();
+    if (keys.fire || touch.active) firePlayer();   // auto-fire while dragging
     player.cooldown = Math.max(0, player.cooldown - dt);
     player.invuln = Math.max(0, player.invuln - dt);
     for (const k of ["shield", "rapid", "spread"]) player[k] = Math.max(0, player[k] - dt);

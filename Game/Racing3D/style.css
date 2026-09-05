@@ -165,12 +165,13 @@ html, body {
 /* ---------- Touch controls ---------- */
 .touch {
   position: absolute; inset: auto 0 0 0; z-index: 8;
-  display: none; justify-content: space-between; align-items: flex-end;
+  display: none; justify-content: flex-end; align-items: flex-end;
   padding: 16px clamp(14px, 4vw, 34px) calc(16px + env(safe-area-inset-bottom));
   pointer-events: none;
 }
-.touch-left, .touch-right { display: flex; align-items: center; gap: 12px; pointer-events: none; }
-.touch-right { flex-direction: column; }
+/* mobile steers by holding the left/right half of the screen — hide the arrow pads */
+.touch-left, .tbtn.small { display: none !important; }
+.touch-right { display: flex; align-items: center; gap: 12px; pointer-events: none; }
 .tbtn {
   pointer-events: auto;
   width: 62px; height: 62px; border-radius: 16px;
@@ -178,12 +179,11 @@ html, body {
   color: #fff; font-size: 22px; display: flex; align-items: center; justify-content: center;
   touch-action: none; transition: background .1s, transform .05s;
 }
-.tbtn.small { width: 58px; height: 46px; font-size: 18px; }
 .tbtn:active, .tbtn.active { background: rgba(0,212,255,0.5); transform: scale(0.92); }
 .tbtn.nitro {
-  width: 78px; height: 78px; border-radius: 50%; font-size: 13px; font-weight: 800; letter-spacing: 1px;
-  background: radial-gradient(circle at 40% 35%, rgba(255,209,102,.75), rgba(118,75,162,.6));
-  border: 2px solid rgba(255,209,102,0.8);
+  width: 72px; height: 72px; border-radius: 50%; font-size: 13px; font-weight: 800; letter-spacing: 1px;
+  background: radial-gradient(circle at 40% 35%, rgba(255,209,102,.72), rgba(118,75,162,.55));
+  border: 2px solid rgba(255,209,102,0.7); opacity: 0.9;
 }
 @media (hover: none) and (pointer: coarse) { .touch { display: flex; } }
 body.touch-mode .touch { display: flex; }

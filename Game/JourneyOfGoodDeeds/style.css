@@ -195,10 +195,12 @@ html, body {
 .parent-note { font-size: 12px; color: #6a8a82; line-height: 1.5; margin-bottom: 14px; }
 
 /* ---------------- Touch controls ---------------- */
-.touch { position: absolute; inset: auto 0 0 0; z-index: 7; display: none; justify-content: space-between; align-items: flex-end; padding: 20px clamp(16px,5vw,40px) calc(20px + env(safe-area-inset-bottom)); pointer-events: none; }
-.joystick { pointer-events: auto; width: 128px; height: 128px; border-radius: 50%; background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.5); position: relative; touch-action: none; }
-.joy-knob { position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.85); transform: translate(-50%,-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.tbtn.interact { pointer-events: auto; width: 88px; height: 88px; border-radius: 50%; font-size: 34px; border: none; background: radial-gradient(circle at 40% 35%, var(--warm), var(--warm2)); box-shadow: 0 8px 22px rgba(255,159,74,0.5); cursor: pointer; }
+.touch { position: absolute; inset: auto 0 0 0; z-index: 7; display: none; justify-content: flex-end; align-items: flex-end; padding: 20px clamp(16px,5vw,40px) calc(20px + env(safe-area-inset-bottom)); pointer-events: none; }
+/* floating joystick: hidden until you touch the left half of the screen */
+.joystick { pointer-events: none; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.18); border: 2px solid rgba(255,255,255,0.45); position: fixed; left: -999px; top: -999px; transform: translate(-50%,-50%); display: none; touch-action: none; z-index: 7; }
+.joystick.floating { display: block; }
+.joy-knob { position: absolute; left: 50%; top: 50%; width: 54px; height: 54px; border-radius: 50%; background: rgba(255,255,255,0.85); transform: translate(-50%,-50%); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.tbtn.interact { pointer-events: auto; width: 76px; height: 76px; border-radius: 50%; font-size: 30px; border: none; background: radial-gradient(circle at 40% 35%, var(--warm), var(--warm2)); box-shadow: 0 8px 22px rgba(255,159,74,0.45); cursor: pointer; opacity: 0.92; }
 .tbtn.interact:active { transform: scale(0.92); }
 @media (hover: none) and (pointer: coarse) { .touch { display: flex; } }
 body.touch-mode .touch { display: flex; }

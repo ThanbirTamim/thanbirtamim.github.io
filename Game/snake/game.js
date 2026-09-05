@@ -126,16 +126,20 @@
     addEventListener("touchstart", () => document.body.classList.add("touch-mode"), { once: true });
   }
 
-  // swipe on canvas
-  let sx = 0, sy = 0, swiping = false;
-  canvas.addEventListener("touchstart", (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; swiping = true; Sound.unlock(); }, { passive: true });
+  // swipe on canvas — responsive: turn as soon as a swipe threshold is crossed,
+  // and re-anchor so you can chain turns without lifting your finger.
+  let sx = 0, sy = 0, swiping = false, swipedThisTouch = false;
+  const TH = 24;
+  canvas.addEventListener("touchstart", (e) => { const t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; swiping = true; swipedThisTouch = false; Sound.unlock(); if (game.state === "start") startGame(); }, { passive: true });
+  canvas.addEventListener("touchmove", (e) => {
+    if (!swiping) return; const t = e.changedTouches[0]; const dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) < TH && Math.abs(dy) < TH) return;
+    if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0); else setDir(0, dy > 0 ? 1 : -1);
+    sx = t.clientX; sy = t.clientY; swipedThisTouch = true;   // re-anchor for chained turns
+  }, { passive: true });
   canvas.addEventListener("touchend", (e) => {
     if (!swiping) return; swiping = false;
-    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
-    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) { if (game.state === "start") startGame(); return; }
-    if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0);
-    else setDir(0, dy > 0 ? 1 : -1);
-    if (game.state === "start") startGame();
+    if (!swipedThisTouch) { const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy; if (Math.abs(dx) > 12 || Math.abs(dy) > 12) { if (Math.abs(dx) > Math.abs(dy)) setDir(dx > 0 ? 1 : -1, 0); else setDir(0, dy > 0 ? 1 : -1); } }
   }, { passive: true });
   document.addEventListener("touchmove", (e) => { if (game.state === "playing") e.preventDefault(); }, { passive: false });
 
