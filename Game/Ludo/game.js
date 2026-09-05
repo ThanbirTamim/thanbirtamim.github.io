@@ -273,8 +273,14 @@
     const tray = el("emoteTray"); const openNow = force != null ? force : tray.classList.contains("hidden");
     if (openNow) {
       tray.innerHTML = EMOJIS.map((e) => `<button class="em" data-e="${e}">${e}</button>`).join("") +
-        `<div class="ph">` + PHRASES.map((p) => `<button data-e="${esc(p)}">${esc(p)}</button>`).join("") + `</div>`;
-      tray.querySelectorAll("[data-e]").forEach((b) => b.onclick = () => { sendEmote(b.dataset.e); toggleEmoteTray(false); });
+        `<div class="ph">` + PHRASES.map((p) => `<button data-e="${esc(p)}">${esc(p)}</button>`).join("") + `</div>` +
+        `<div class="chat"><input id="emoteInput" maxlength="80" placeholder="Type a message…" autocomplete="off" /><button id="emoteSend">Send</button></div>`;
+      tray.querySelectorAll(".em, .ph button").forEach((b) => b.onclick = () => { sendEmote(b.dataset.e); toggleEmoteTray(false); });
+      const inp = el("emoteInput"), snd = el("emoteSend");
+      const fire = () => { const v = (inp.value || "").trim(); if (!v) return; sendEmote(v.slice(0, 80)); inp.value = ""; toggleEmoteTray(false); };
+      snd.onclick = fire;
+      inp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); fire(); } });
+      setTimeout(() => { try { inp.focus(); } catch (e) {} }, 30);
       tray.classList.remove("hidden");
     } else tray.classList.add("hidden");
   }
@@ -288,10 +294,10 @@
   }
   function showEmote(pid, content) {
     if (!content) return;
-    const isEmoji = /^\p{Extended_Pictographic}/u.test(content) || [...content].length <= 2;
+    const isEmoji = /\p{Extended_Pictographic}/u.test(content) && [...content].length <= 3;
     const player = (G.players || []).find((p) => p.pid === pid);
     const name = player ? player.name : "";
-    const bubble = document.createElement("div"); bubble.className = "emote-bubble";
+    const bubble = document.createElement("div"); bubble.className = "emote-bubble" + (isEmoji ? "" : " txt");
     bubble.innerHTML = (name ? `<span class="who">${esc(name)}</span>` : "") + `<span class="${isEmoji ? "big" : ""}">${esc(content)}</span>`;
     // position above that player's chip if visible, else centre-top of the board
     let x = innerWidth / 2, y = innerHeight * 0.3;
