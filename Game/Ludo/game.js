@@ -33,7 +33,7 @@
     game: null, players: [], mePid: null, hostAuthority: false,
     net: null, speed: localStorage.getItem("ludoFast") === "1" ? "fast" : "normal",
     dicePending: false, legal: [], selecting: false, animating: false, busy: false,
-    anim: null, roomCode: null, aiDiff: "normal",
+    anim: null, roomCode: null, aiDiff: "normal", flyBacks: null,
   };
 
   const screens = ["menu", "create", "join", "cpu", "lobby", "game", "results"];
@@ -63,10 +63,25 @@
   }
   function roundRect(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
 
+  // ---- per-player perspective: local player's colour sits bottom-right ----
+  function viewColorIndex() {
+    if (!G.game || !G.players || !G.players.length) return -1;
+    let color = null;
+    if (G.mode === "passplay") { const pl = G.players[G.game.turn]; color = pl && pl.color; }
+    else { const me = G.players.find((p) => p.isMe || (G.mePid && p.pid === G.mePid)); color = me && me.color; }
+    return color ? CFG.ORDER.indexOf(color) : -1;
+  }
+  function viewRotSteps() { const ci = viewColorIndex(); return ci < 0 ? 0 : ((2 - ci) % 4 + 4) % 4; }  // bring my corner to bottom-right (yellow slot)
+  function viewAngle() { return viewRotSteps() * Math.PI / 2; }
+  function rotatePt(x, y, ang) { const cx = G.size / 2, cy = G.size / 2, dx = x - cx, dy = y - cy, cs = Math.cos(ang), sn = Math.sin(ang); return { x: cx + dx * cs - dy * sn, y: cy + dx * sn + dy * cs }; }
+
   function drawBoard() {
     if (!G.game) return;
     const c = G.cell, S = G.size;
     ctx.clearRect(0, 0, S, S);
+    const ang = viewAngle();
+    ctx.save();
+    ctx.translate(S / 2, S / 2); ctx.rotate(ang); ctx.translate(-S / 2, -S / 2);
     // board base
     ctx.fillStyle = "#f4f1e6"; roundRect(0, 0, S, S, c * 0.6); ctx.fill();
     // home corners
@@ -90,29 +105,52 @@
     const tri = [["red", -1, 0], ["green", 0, -1], ["yellow", 1, 0], ["blue", 0, 1]];
     for (const [col, dx, dy] of tri) { ctx.fillStyle = HEX[col]; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(dx * c * 1.5 - (dy ? c * 1.5 : 0) + (dy ? 0 : 0), dy * c * 1.5 - (dx ? c * 1.5 : 0)); ctx.lineTo(dx * c * 1.5 + (dy ? c * 1.5 : 0), dy * c * 1.5 + (dx ? c * 1.5 : 0)); ctx.closePath(); ctx.fill(); }
     ctx.restore();
-    // tokens (group by cell for stacking)
+    // tokens (group by cell for stacking) — positions rotate with the board, discs stay upright
     const groups = {};
-    G.players.forEach((pl, pi) => { const gp = G.game.players[pi]; if (!gp) return; gp.tokens.forEach((r, ti) => { let coord; if (G.anim && G.anim.pi === pi && G.anim.ti === ti) coord = G.anim.coord; else coord = tokenCoord(pl.color, r, ti); const key = coord.x.toFixed(2) + "," + coord.y.toFixed(2); (groups[key] || (groups[key] = [])).push({ pl, pi, ti, r, coord }); }); });
+    G.players.forEach((pl, pi) => {
+      const gp = G.game.players[pi]; if (!gp) return;
+      gp.tokens.forEach((r, ti) => {
+        let coord, scale = 1;
+        if (G.anim && G.anim.pi === pi && G.anim.ti === ti) coord = G.anim.coord;
+        else { const fb = G.flyBacks && G.flyBacks.find((f) => f.pi === pi && f.ti === ti); if (fb) { coord = fb.coord; scale = fb.scale || 1; } else coord = tokenCoord(pl.color, r, ti); }
+        const key = coord.x.toFixed(2) + "," + coord.y.toFixed(2);
+        (groups[key] || (groups[key] = [])).push({ pl, pi, ti, r, coord, scale });
+      });
+    });
     const legalSet = new Set(G.selecting ? G.legal : []);
     for (const key in groups) {
-      const arr = groups[key]; arr.forEach((tk, k) => {
+      const arr = groups[key];
+      arr.forEach((tk, k) => {
         const p = cellPx(tk.coord.x, tk.coord.y);
         const off = arr.length > 1 ? (k - (arr.length - 1) / 2) * (G.cell * 0.16) : 0;
-        const px = p.x + off, py = p.y - off * 0.5;
-        const rad = G.cell * (arr.length > 1 ? 0.26 : 0.32);
-        // shadow (2.5D)
-        ctx.fillStyle = "rgba(0,0,0,0.3)"; ctx.beginPath(); ctx.ellipse(px, py + rad * 0.5, rad * 0.9, rad * 0.5, 0, 0, 7); ctx.fill();
-        // disc
-        const grad = ctx.createRadialGradient(px - rad * 0.3, py - rad * 0.5, rad * 0.2, px, py, rad);
-        grad.addColorStop(0, "#ffffff"); grad.addColorStop(0.25, HEX[tk.pl.color]); grad.addColorStop(1, HEXD[tk.pl.color]);
-        ctx.fillStyle = grad; ctx.beginPath(); ctx.arc(px, py - rad * 0.35, rad, 0, 7); ctx.fill();
-        ctx.strokeStyle = "rgba(0,0,0,0.35)"; ctx.lineWidth = 1.5; ctx.stroke();
-        // legal highlight
+        const rad = G.cell * (arr.length > 1 ? 0.26 : 0.32) * (tk.scale || 1);
         const isLegal = pi_ti_legal(tk, legalSet);
-        if (isLegal) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(px, py - rad * 0.35, rad + 3 + Math.sin(Date.now() / 200) * 1.5, 0, 7); ctx.stroke(); }
+        const bob = isLegal ? Math.sin(Date.now() / 260) * rad * 0.16 : 0;
+        ctx.save();
+        ctx.translate(p.x + off, p.y - off * 0.5);
+        ctx.rotate(-ang);                 // keep pieces upright whatever the board angle
+        ctx.translate(0, -bob);
+        drawToken(0, 0, rad, tk.pl.color, isLegal);
+        ctx.restore();
       });
     }
+    ctx.restore();
   }
+
+  // lucrative 2.5D playing piece
+  function drawToken(x, y, rad, color, glow) {
+    ctx.fillStyle = "rgba(0,0,0,0.28)"; ctx.beginPath(); ctx.ellipse(x, y + rad * 0.62, rad * 0.92, rad * 0.42, 0, 0, 7); ctx.fill();
+    const cy = y - rad * 0.35;
+    if (glow) { const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 240); ctx.save(); ctx.shadowColor = HEX[color]; ctx.shadowBlur = 10 + pulse * 12; ctx.fillStyle = HEX[color]; ctx.beginPath(); ctx.arc(x, cy, rad * 0.98, 0, 7); ctx.fill(); ctx.restore(); }
+    const g = ctx.createRadialGradient(x - rad * 0.35, cy - rad * 0.55, rad * 0.15, x, cy, rad);
+    g.addColorStop(0, "#ffffff"); g.addColorStop(0.28, HEX[color]); g.addColorStop(1, HEXD[color]);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, cy, rad, 0, 7); ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.75)"; ctx.lineWidth = Math.max(1, rad * 0.09); ctx.beginPath(); ctx.arc(x, cy, rad * 0.86, 0, 7); ctx.stroke();
+    ctx.strokeStyle = "rgba(0,0,0,0.35)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, cy, rad, 0, 7); ctx.stroke();
+    ctx.fillStyle = "rgba(255,255,255,0.55)"; ctx.beginPath(); ctx.ellipse(x - rad * 0.28, cy - rad * 0.42, rad * 0.34, rad * 0.2, -0.5, 0, 7); ctx.fill();
+    if (glow) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.arc(x, cy, rad + 3 + Math.sin(Date.now() / 200) * 1.5, 0, 7); ctx.stroke(); }
+  }
+
   function pi_ti_legal(tk, legalSet) { if (!G.selecting) return false; return tk.pi === G.game.turn && legalSet.has(tk.ti); }
   function drawStar(x, y, r, color) { ctx.fillStyle = color; ctx.beginPath(); for (let i = 0; i < 10; i++) { const ang = (Math.PI / 5) * i - Math.PI / 2; const rr = i % 2 ? r * 0.45 : r; ctx.lineTo(x + Math.cos(ang) * rr, y + Math.sin(ang) * rr); } ctx.closePath(); ctx.fill(); }
 
@@ -134,7 +172,29 @@
       await new Promise((res) => { const tick = () => { const t = Math.min(1, (performance.now() - t0) / dur); G.anim = { pi, ti, coord: { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t } }; if (t < 1) requestAnimationFrame(tick); else res(); }; tick(); });
     }
     G.anim = null;
-    if (ev.captures && ev.captures.length) { Audio.capture(); showCapturePop(); }
+    if (ev.captures && ev.captures.length) { Audio.capture(); showCapturePop(); await animateCaptureReturns(ev, pl.color); }
+  }
+
+  // smoothly slide each eaten token from the landing cell back to its yard
+  async function animateCaptureReturns(ev, moverColor) {
+    const landing = tokenCoord(moverColor, ev.to, ev.token);
+    const backs = ev.captures.map((cap) => {
+      const pi = G.players.findIndex((p) => p.color === cap.color);
+      return { pi, ti: cap.token, from: landing, to: CFG.YARD[cap.color][cap.token] };
+    }).filter((b) => b.pi >= 0);
+    if (!backs.length) return;
+    const dur = G.speed === "fast" ? 300 : 560; const t0 = performance.now();
+    await new Promise((res) => {
+      const tick = () => {
+        const raw = Math.min(1, (performance.now() - t0) / dur);
+        const t = 1 - Math.pow(1 - raw, 3);              // easeOutCubic glide
+        const pop = 1 + Math.sin(raw * Math.PI) * 0.35;  // grow mid-flight, settle on land
+        G.flyBacks = backs.map((b) => ({ pi: b.pi, ti: b.ti, scale: pop, coord: { x: b.from.x + (b.to.x - b.from.x) * t, y: b.from.y + (b.to.y - b.from.y) * t } }));
+        if (raw < 1) requestAnimationFrame(tick); else res();
+      };
+      tick();
+    });
+    G.flyBacks = null;
   }
 
   // Random image popup shown when a token gets eaten.
@@ -483,9 +543,10 @@
 
   function onCanvasClick(e) {
     if (!G.game || !G.selecting || !isMyTurn()) return;
-    const rect = canvas.getBoundingClientRect(); const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const rect = canvas.getBoundingClientRect();
+    const pt = rotatePt(e.clientX - rect.left, e.clientY - rect.top, -viewAngle());  // undo board rotation
     let best = -1, bd = (G.cell * 0.7) ** 2;
-    for (const ti of G.legal) { const r = G.game.players[G.game.turn].tokens[ti]; const coord = tokenCoord(G.players[G.game.turn].color, r, ti); const p = cellPx(coord.x, coord.y); const d = (p.x - x) ** 2 + (p.y - y) ** 2; if (d < bd) { bd = d; best = ti; } }
+    for (const ti of G.legal) { const r = G.game.players[G.game.turn].tokens[ti]; const coord = tokenCoord(G.players[G.game.turn].color, r, ti); const p = cellPx(coord.x, coord.y); const d = (p.x - pt.x) ** 2 + (p.y - pt.y) ** 2; if (d < bd) { bd = d; best = ti; } }
     if (best >= 0) requestMove(best);
   }
 
