@@ -83,7 +83,7 @@
     }
     _connectHost() {
       const conn = this.peer.connect(this.hostId, { reliable: true }); this.hostConn = conn;
-      const timeout = setTimeout(() => { if (!this._welcomed) this.emit("error", { code: "timeout", msg: "Could not reach the room. Make sure the host's screen is open on the lobby, check the code, and try again." }); }, CFG.NET.joinTimeoutMs || 15000);
+      const timeout = setTimeout(() => { if (!this._welcomed) this.emit("error", { code: "timeout", msg: "Couldn't connect. Tip: make sure the host is on the lobby screen with the code, and try both devices on the SAME Wi-Fi first. Different networks (e.g. mobile data) may need a TURN server — see README." }); }, CFG.NET.joinTimeoutMs || 20000);
       conn.on("open", () => { conn.send({ t: "join", name: this._name, pass: this._pass, rejoinId: this._rejoinId }); });
       conn.on("data", (msg) => { clearTimeout(timeout); this._clientHandle(msg); });
       conn.on("close", () => { this.emit("host-lost", {}); });

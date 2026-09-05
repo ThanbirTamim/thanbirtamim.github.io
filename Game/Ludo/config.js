@@ -54,23 +54,37 @@
     // To self-host, set NET.host/port/path and secure:true. No secrets here.
     NET: {
       idPrefix: "thanbir-ludo-",     // room code -> peer id (namespaced to avoid clashes)
-      // leave host empty to use the free PeerJS cloud broker (0.peerjs.com)
-      // STUN alone fails across many mobile/NAT networks, so we also include free public
-      // TURN relays (openrelay.metered.ca) so phone <-> laptop connections work reliably.
-      // These are public, non-secret credentials. Swap for your own TURN in production if desired.
-      peerConfig: { debug: 1, config: { iceServers: [
+      // ---- ICE servers (STUN discovers your address; TURN relays when P2P is blocked) ----
+      // STUN alone works when both players are on the SAME Wi-Fi. Different networks
+      // (e.g. phone on mobile data + laptop on Wi-Fi) usually need a TURN relay.
+      //
+      // >>> IMPORTANT: free public TURN is unreliable. For rock-solid cross-network play,
+      //     create a FREE account at https://www.metered.ca/tools/openrelay/ (or any TURN
+      //     provider), then paste your credentials into NET.userTurn below. No secrets are
+      //     sensitive here — TURN credentials are meant to live in the client.
+      userTurn: [
+        // { urls: "turn:YOUR.turn.server:3478", username: "YOUR_USER", credential: "YOUR_CRED" },
+      ],
+      stun: [
         { urls: "stun:stun.l.google.com:19302" },
-        { urls: "stun:global.stun.twilio.com:3478" },
+        { urls: "stun:stun1.l.google.com:19302" },
+        { urls: "stun:stun.relay.metered.ca:80" },
+      ],
+      // best-effort free relays (may or may not be up — use userTurn for reliability)
+      turn: [
         { urls: "turn:openrelay.metered.ca:80", username: "openrelayproject", credential: "openrelayproject" },
         { urls: "turn:openrelay.metered.ca:443", username: "openrelayproject", credential: "openrelayproject" },
         { urls: "turn:openrelay.metered.ca:443?transport=tcp", username: "openrelayproject", credential: "openrelayproject" },
-      ] } },
+      ],
       graceMs: 20000,                 // reconnect grace period
-      joinTimeoutMs: 16000,           // ICE can be slow over TURN — give it time
+      joinTimeoutMs: 20000,           // ICE over TURN can be slow
       createTimeoutMs: 15000,
     },
     AI_DELAY: 700,
   };
+
+  // assemble PeerJS options: user TURN first (preferred), then STUN, then best-effort free TURN
+  CFG.NET.peerConfig = { debug: 1, config: { iceServers: [].concat(CFG.NET.userTurn || [], CFG.NET.stun || [], CFG.NET.turn || []) } };
 
   if (typeof module !== "undefined" && module.exports) module.exports = CFG;
   root.LUDO_CONFIG = CFG;

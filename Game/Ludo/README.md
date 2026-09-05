@@ -38,11 +38,16 @@ secrets pass through it, and no server of your own is required. The **room code*
 namespaced PeerJS id (`config.js` → `NET.idPrefix`). To self-host the broker later, set
 `NET.host/port/path` in `config.js`. No credentials live in the frontend.
 
-> **NAT traversal / TURN:** pure STUN fails on many mobile-carrier and strict-NAT networks, so
-> `config.js` also lists free public **TURN** relays (openrelay.metered.ca) so phone ↔ laptop
-> connections work reliably. Those are public, non-secret credentials — swap in your own TURN
-> server for heavy use. If a connection still can't be established, the game shows a clear
-> "could not reach the room" message with recovery rather than hanging.
+> **NAT traversal / TURN:** pure STUN works when both players are on the **same Wi-Fi**. Across
+> different networks (e.g. a phone on mobile data + a laptop on Wi-Fi) a **TURN relay** is
+> usually required. Free public TURN relays are unreliable, so for dependable cross-network play
+> create a **free TURN account** (e.g. <https://www.metered.ca/tools/openrelay/>, 50 GB/mo free)
+> and paste the credentials into `config.js` → `NET.userTurn` (they are placed first, so they win).
+> TURN credentials are meant to live in the client, so this is safe. If a connection still can't
+> be made, the game shows a clear message with recovery instead of hanging.
+>
+> **Quick test:** put both devices on the same Wi-Fi first — if that works, the game logic is
+> fine and any remaining failure is purely NAT/TURN, fixed by adding `NET.userTurn` above.
 
 > **Dice fairness:** the authority generates dice with `crypto.getRandomValues` and broadcasts
 > the result. This is a lightweight casual-game anti-cheat model — not cryptographic,
