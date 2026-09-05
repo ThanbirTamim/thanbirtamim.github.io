@@ -34,7 +34,8 @@
       this.roomCode = opts.code || this.genCode();
       const pid = CFG.NET.idPrefix + this.roomCode;
       this.peer = new root.Peer(pid, CFG.NET.peerConfig);
-      this.peer.on("open", (id) => { this.myId = id; this.hostId = id; this.emit("room-created", { code: this.roomCode, id }); });
+      this._openTimer = setTimeout(() => { if (!this.myId && !this.closed) this.emit("error", { code: "create-timeout", msg: "Couldn't reach the connection service. Check your internet and try again." }); }, CFG.NET.createTimeoutMs || 15000);
+      this.peer.on("open", (id) => { clearTimeout(this._openTimer); this.myId = id; this.hostId = id; this.emit("room-created", { code: this.roomCode, id }); });
       this.peer.on("connection", (conn) => this._hostOnConn(conn));
       this.peer.on("error", (e) => { const code = (e && e.type) || "peer-error"; if (code === "unavailable-id") this.emit("error", { code: "code-taken", msg: "That room code is busy — try creating again." }); else this.emit("error", { code, msg: "Network error: " + code }); });
       this.peer.on("disconnected", () => { if (!this.closed) try { this.peer.reconnect(); } catch (e) {} });
@@ -82,7 +83,7 @@
     }
     _connectHost() {
       const conn = this.peer.connect(this.hostId, { reliable: true }); this.hostConn = conn;
-      const timeout = setTimeout(() => { if (!this._welcomed) this.emit("error", { code: "timeout", msg: "Could not reach the room. Check the code and try again." }); }, 9000);
+      const timeout = setTimeout(() => { if (!this._welcomed) this.emit("error", { code: "timeout", msg: "Could not reach the room. Make sure the host's screen is open on the lobby, check the code, and try again." }); }, CFG.NET.joinTimeoutMs || 15000);
       conn.on("open", () => { conn.send({ t: "join", name: this._name, pass: this._pass, rejoinId: this._rejoinId }); });
       conn.on("data", (msg) => { clearTimeout(timeout); this._clientHandle(msg); });
       conn.on("close", () => { this.emit("host-lost", {}); });

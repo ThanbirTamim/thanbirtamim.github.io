@@ -38,6 +38,12 @@ secrets pass through it, and no server of your own is required. The **room code*
 namespaced PeerJS id (`config.js` → `NET.idPrefix`). To self-host the broker later, set
 `NET.host/port/path` in `config.js`. No credentials live in the frontend.
 
+> **NAT traversal / TURN:** pure STUN fails on many mobile-carrier and strict-NAT networks, so
+> `config.js` also lists free public **TURN** relays (openrelay.metered.ca) so phone ↔ laptop
+> connections work reliably. Those are public, non-secret credentials — swap in your own TURN
+> server for heavy use. If a connection still can't be established, the game shows a clear
+> "could not reach the room" message with recovery rather than hanging.
+
 > **Dice fairness:** the authority generates dice with `crypto.getRandomValues` and broadcasts
 > the result. This is a lightweight casual-game anti-cheat model — not cryptographic,
 > casino-grade randomness (a malicious host could bias its own rolls). Fine for playing with

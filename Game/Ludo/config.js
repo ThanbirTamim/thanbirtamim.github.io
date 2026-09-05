@@ -55,8 +55,19 @@
     NET: {
       idPrefix: "thanbir-ludo-",     // room code -> peer id (namespaced to avoid clashes)
       // leave host empty to use the free PeerJS cloud broker (0.peerjs.com)
-      peerConfig: { debug: 1, config: { iceServers: [ { urls: "stun:stun.l.google.com:19302" }, { urls: "stun:global.stun.twilio.com:3478" } ] } },
+      // STUN alone fails across many mobile/NAT networks, so we also include free public
+      // TURN relays (openrelay.metered.ca) so phone <-> laptop connections work reliably.
+      // These are public, non-secret credentials. Swap for your own TURN in production if desired.
+      peerConfig: { debug: 1, config: { iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:global.stun.twilio.com:3478" },
+        { urls: "turn:openrelay.metered.ca:80", username: "openrelayproject", credential: "openrelayproject" },
+        { urls: "turn:openrelay.metered.ca:443", username: "openrelayproject", credential: "openrelayproject" },
+        { urls: "turn:openrelay.metered.ca:443?transport=tcp", username: "openrelayproject", credential: "openrelayproject" },
+      ] } },
       graceMs: 20000,                 // reconnect grace period
+      joinTimeoutMs: 16000,           // ICE can be slow over TURN — give it time
+      createTimeoutMs: 15000,
     },
     AI_DELAY: 700,
   };
