@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#141b2e" />
+  <meta name="description" content="Ludo — play private-room multiplayer Ludo with 2–4 friends (P2P/WebRTC) or vs the computer. Runs entirely in the browser." />
+  <title>🎲 Ludo — Play with Friends</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap" id="wrap">
+
+    <!-- ===================== MAIN MENU ===================== -->
+    <section class="screen active" id="menuScreen">
+      <div class="panel">
+        <div class="logo">🎲</div>
+        <h1 class="title">LUDO</h1>
+        <p class="subtitle">Play with friends</p>
+        <div class="btns">
+          <button class="btn primary" id="createBtn">➕ Create Room</button>
+          <button class="btn" id="joinBtn">🔑 Join Room</button>
+          <div class="divider"><span>play offline</span></div>
+          <button class="btn" id="cpuBtn">🤖 Play vs Computer</button>
+          <button class="btn ghost" id="passplayBtn">👥 Pass &amp; Play</button>
+        </div>
+        <div class="menu-foot">
+          <button class="mini" id="soundBtn">🔊 Sound</button>
+          <button class="mini" id="helpBtn">❓ How to play</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CREATE ROOM ===================== -->
+    <section class="screen" id="createScreen">
+      <div class="panel">
+        <h2 class="title small">Create Room</h2>
+        <label class="fld"><span>Your name</span><input id="createName" maxlength="14" placeholder="Thanbir" /></label>
+        <label class="fld"><span>Players</span>
+          <div class="seg" id="createPlayers"><button data-n="2">2</button><button data-n="3">3</button><button data-n="4" class="on">4</button></div>
+        </label>
+        <label class="fld"><span>Passcode (optional)</span><input id="createPass" maxlength="4" inputmode="numeric" placeholder="4-digit, optional" /></label>
+        <div class="btns"><button class="btn primary" id="doCreate">Create Room</button><button class="btn ghost" data-back>← Back</button></div>
+        <p class="hint" id="createHint"></p>
+      </div>
+    </section>
+
+    <!-- ===================== JOIN ROOM ===================== -->
+    <section class="screen" id="joinScreen">
+      <div class="panel">
+        <h2 class="title small">Join Room</h2>
+        <label class="fld"><span>Room code</span><input id="joinCode" maxlength="6" placeholder="L7K92P" style="text-transform:uppercase" /></label>
+        <label class="fld"><span>Your name</span><input id="joinName" maxlength="14" placeholder="Player 2" /></label>
+        <label class="fld"><span>Passcode (if required)</span><input id="joinPass" maxlength="4" inputmode="numeric" placeholder="4-digit" /></label>
+        <div class="btns"><button class="btn primary" id="doJoin">Join Room</button><button class="btn ghost" data-back>← Back</button></div>
+        <p class="hint" id="joinHint"></p>
+      </div>
+    </section>
+
+    <!-- ===================== VS COMPUTER ===================== -->
+    <section class="screen" id="cpuScreen">
+      <div class="panel">
+        <h2 class="title small">Play vs Computer</h2>
+        <label class="fld"><span>Your name</span><input id="cpuName" maxlength="14" placeholder="You" /></label>
+        <label class="fld"><span>Players</span>
+          <div class="seg" id="cpuPlayers"><button data-n="2" class="on">2</button><button data-n="3">3</button><button data-n="4">4</button></div>
+        </label>
+        <label class="fld"><span>AI difficulty</span>
+          <div class="seg" id="cpuDiff"><button data-d="easy">Easy</button><button data-d="normal" class="on">Normal</button><button data-d="hard">Hard</button><button data-d="expert">Expert</button></div>
+        </label>
+        <div class="lineup" id="cpuLineup"></div>
+        <div class="btns"><button class="btn primary" id="doCpu">Start</button><button class="btn ghost" data-back>← Back</button></div>
+      </div>
+    </section>
+
+    <!-- ===================== LOBBY ===================== -->
+    <section class="screen" id="lobbyScreen">
+      <div class="panel">
+        <h2 class="title small">Room <span class="code" id="lobbyCode">------</span></h2>
+        <button class="mini copy" id="copyCode">📋 Copy code</button>
+        <div class="roster" id="lobbyRoster"></div>
+        <p class="hint" id="lobbyStatus">Waiting for players…</p>
+        <div class="btns">
+          <button class="btn primary" id="startGameBtn">▶ Start Game</button>
+          <button class="btn ghost" id="leaveLobbyBtn">Leave</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== GAME ===================== -->
+    <section class="screen" id="gameScreen">
+      <div class="topbar">
+        <button class="mini" id="gameMenuBtn">☰</button>
+        <span class="gb-title">🎲 Ludo</span>
+        <span class="gb-room" id="gbRoom"></span>
+        <span class="gb-turn" id="gbTurn"></span>
+      </div>
+      <div class="playstrip" id="playstrip"></div>
+      <div class="boardwrap"><canvas id="board"></canvas>
+        <div class="turn-banner" id="turnBanner"></div>
+        <div class="net-overlay hidden" id="netOverlay"></div>
+      </div>
+      <div class="controls">
+        <div class="dice-area">
+          <div class="dice" id="dice"><div class="dot"></div></div>
+          <button class="btn primary roll" id="rollBtn">🎲 ROLL</button>
+        </div>
+        <div class="ctrl-hint" id="ctrlHint">Waiting…</div>
+      </div>
+    </section>
+
+    <!-- ===================== RESULTS ===================== -->
+    <section class="screen" id="resultsScreen">
+      <div class="panel">
+        <div class="logo">🏆</div>
+        <h2 class="title small" id="resultTitle">Results</h2>
+        <div class="standings" id="standings"></div>
+        <div class="matchstats" id="matchStats"></div>
+        <div class="btns">
+          <button class="btn primary" id="playAgainBtn">↻ Play Again</button>
+          <button class="btn" id="toLobbyBtn">Return to Lobby</button>
+          <button class="btn ghost" id="toMenuBtn">Main Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MODAL ===================== -->
+    <div class="overlay hidden" id="modal"><div class="panel" id="modalContent"></div></div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- PeerJS (WebRTC signalling broker; P2P data). Only needed for online rooms. -->
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="config.js"></script>
+  <script src="ludo.js"></script>
+  <script src="ai.js"></script>
+  <script src="network.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
