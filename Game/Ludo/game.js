@@ -327,7 +327,7 @@
   function makeNet() {
     const net = new window.LudoNet(); G.net = net;
     net.on("error", (e) => { netErr(e.msg); });
-    net.on("room-created", (d) => { G.roomCode = d.code; net.registerSelf(el("createName").value || "Host"); openLobby(true); });
+    net.on("room-created", (d) => { G.roomCode = d.code; G.mePid = "HOST"; net.registerSelf(el("createName").value || "Host"); openLobby(true); });
     net.on("welcome", (d) => { G.mePid = d.you; G.roomCode = d.code; openLobby(false); renderRoster(d.roster); });
     net.on("roster", (d) => renderRoster(d.roster));
     net.on("peer-joined", () => { el("lobbyStatus").textContent = "Player joined."; });
