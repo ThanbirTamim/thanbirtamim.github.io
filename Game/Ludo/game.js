@@ -196,10 +196,9 @@
     const ev = { type: "roll", color: G.game.curColor(), v, legal, forfeit };
     broadcast(ev);
     await applyRollEvent(ev);
-    G.busy = false;
-    // authority decides next
-    if (forfeit || legal.length === 0) { await delay(650); if (authority()) { G.game.setDice(null); G.game.nextTurn(false); broadcastTurn(); authorityStep(); } }
-    else { afterRollWithMoves(idx, v, legal); }
+    // authority decides next (keep 'busy' until the turn truly advances so nobody can re-roll)
+    if (forfeit || legal.length === 0) { await delay(650); G.game.setDice(null); G.game.nextTurn(false); broadcastTurn(); G.busy = false; authorityStep(); }
+    else { G.busy = false; afterRollWithMoves(idx, v, legal); }
   }
   async function applyRollEvent(ev) {
     G.dicePending = !ev.forfeit && ev.legal.length > 0;
@@ -233,10 +232,11 @@
     const ev = G.game.applyMove(token); ev.type = "move"; ev.color = mover;
     broadcast(ev);
     await applyMoveEvent(ev);
-    G.busy = false;
-    if (G.game.status === "won") { broadcastTurn(); endGame(); return; }
+    if (G.game.status === "won") { broadcastTurn(); G.busy = false; endGame(); return; }
     await delay(250);
-    if (authority()) { G.game.nextTurn(ev.extra); broadcastTurn(); authorityStep(); }
+    G.game.nextTurn(ev.extra); broadcastTurn();   // pass turn (or same player on 6/capture/home)
+    G.busy = false;
+    authorityStep();
   }
   async function applyMoveEvent(ev) {
     G.animating = true; updateTurnUI();
