@@ -52,18 +52,18 @@
         const connectedCount = this.roster.filter((r) => r.connected).length;
         // reconnect: same requested playerId still in roster
         const existing = msg.rejoinId && this.roster.find((r) => r.pid === msg.rejoinId);
-        if (existing) { existing.peerId = conn.peer; existing.connected = true; conn.send({ t: "welcome", you: existing.pid, roster: this.roster, code: this.roomCode, started: this.started }); this._broadcastRoster(); this.emit("peer-rejoined", { pid: existing.pid }); if (this.started && this.lastState) conn.send({ t: "state", state: this.lastState }); return; }
+        if (existing) { existing.peerId = conn.peer; existing.connected = true; conn.send({ t: "welcome", you: existing.pid, roster: this.roster, code: this.roomCode, started: this.started, max: this.maxPlayers }); this._broadcastRoster(); this.emit("peer-rejoined", { pid: existing.pid }); if (this.started && this.lastState) conn.send({ t: "state", state: this.lastState }); return; }
         if (this.started) { conn.send({ t: "join-reject", reason: "started" }); return; }
         if (this.roster.length >= this.maxPlayers) { conn.send({ t: "join-reject", reason: "full" }); return; }
         const pid = "P" + (this.roster.length + 1) + "-" + Math.random().toString(36).slice(2, 6);
         const entry = { pid, peerId: conn.peer, name: (msg.name || "Player").slice(0, 14), connected: true };
         this.roster.push(entry);
-        conn.send({ t: "welcome", you: pid, roster: this.roster, code: this.roomCode, started: false });
+        conn.send({ t: "welcome", you: pid, roster: this.roster, code: this.roomCode, started: false, max: this.maxPlayers });
         this._broadcastRoster(); this.emit("peer-joined", { entry });
       } else if (msg.t === "action") { this.emit("action", { from: conn.peer, action: msg.action }); }
       else if (msg.t === "leave") { const e = this.roster.find((r) => r.peerId === conn.peer); if (e) e.connected = false; this._broadcastRoster(); this.emit("peer-left", { peerId: conn.peer }); }
     }
-    _broadcastRoster() { this.emit("roster", { roster: this.roster }); this._send({ t: "roster", roster: this.roster }); }
+    _broadcastRoster() { this.emit("roster", { roster: this.roster }); this._send({ t: "roster", roster: this.roster, max: this.maxPlayers }); }
     _send(obj) { for (const id in this.conns) { try { this.conns[id].send(obj); } catch (e) {} } }
 
     // host: register the local host player into roster
@@ -90,9 +90,9 @@
       conn.on("error", () => this.emit("error", { code: "conn", msg: "Connection error." }));
     }
     _clientHandle(msg) {
-      if (msg.t === "welcome") { this._welcomed = true; this.myPid = msg.you; this.roster = msg.roster; this.emit("welcome", msg); }
+      if (msg.t === "welcome") { this._welcomed = true; this.myPid = msg.you; this.roster = msg.roster; if (msg.max) this.maxPlayers = msg.max; this.emit("welcome", msg); }
       else if (msg.t === "join-reject") { const m = { full: "This room already has the maximum players.", started: "The game has already started.", passcode: "Wrong passcode." }[msg.reason] || "Could not join."; this.emit("error", { code: "reject-" + msg.reason, msg: m }); }
-      else if (msg.t === "roster") { this.roster = msg.roster; this.emit("roster", { roster: msg.roster }); }
+      else if (msg.t === "roster") { this.roster = msg.roster; if (msg.max) this.maxPlayers = msg.max; this.emit("roster", { roster: msg.roster }); }
       else if (msg.t === "start") { this.emit("start", msg.payload); }
       else if (msg.t === "state") { this.emit("state", { state: msg.state, event: msg.event }); }
     }

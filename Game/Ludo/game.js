@@ -205,6 +205,7 @@
     G.dicePending = !ev.forfeit && ev.legal.length > 0;
     G.legal = ev.legal || [];
     await animateDice(ev.v);
+    G.selecting = G.dicePending && controllable(G.game.turn);   // let the active player pick a token (host OR client)
     if (ev.forfeit) { el("ctrlHint").textContent = "Three 6s — turn skipped"; }
     else if (!ev.legal.length) { el("ctrlHint").textContent = "No valid move — passing"; }
     updateTurnUI();
@@ -345,7 +346,8 @@
   }
   function renderRoster(roster) {
     G._roster = roster;
-    const rows = []; for (let i = 0; i < 4; i++) { const r = roster[i]; const col = CFG.ORDER[i]; rows.push(`<div class="rrow ${r ? "" : "empty"}"><span class="dot" style="background:${HEX[col]}"></span><span class="nm">${r ? esc(r.name) : "Waiting…"}</span><span class="tag">${r ? (r.host ? "Host" : "Ready") : ""}</span></div>`); }
+    const rows = []; const slots = (G.net && G.net.maxPlayers) || roster.length || 4;
+    for (let i = 0; i < slots; i++) { const r = roster[i]; const col = CFG.ORDER[i]; rows.push(`<div class="rrow ${r ? "" : "empty"}"><span class="dot" style="background:${HEX[col]}"></span><span class="nm">${r ? esc(r.name) : "Waiting…"}</span><span class="tag">${r ? (r.host ? "Host" : "Ready") : ""}</span></div>`); }
     el("lobbyRoster").innerHTML = rows.join("");
     el("lobbyStatus").textContent = "Players: " + roster.filter((x) => x.connected).length + " / " + (G.net ? G.net.maxPlayers : 4);
     el("startGameBtn").style.display = (G.net && G.net.isHost) ? "" : "none";
