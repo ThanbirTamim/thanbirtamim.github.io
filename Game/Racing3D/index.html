@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0e27" />
+  <meta name="description" content="3D Racing — an arcade endless highway racer built with Three.js and vanilla JavaScript. Part of Sheikh Thanbir Alam's portfolio." />
+  <title>3D Racing — Arcade Highway Racer</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <!-- Three.js renders here -->
+    <canvas id="scene"></canvas>
+
+    <!-- Speed lines / nitro overlay -->
+    <div class="fx-speedlines" id="speedlines" aria-hidden="true"></div>
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <div class="hud-row hud-top">
+        <div class="hud-box">
+          <span class="lbl">SCORE</span><b id="scoreVal">0</b>
+          <span class="lbl best">BEST <i id="bestVal">0</i></span>
+        </div>
+        <div class="hud-box center">
+          <span class="lbl" id="modeTag">ENDLESS</span>
+          <b id="bigInfo">0.0 <small>KM</small></b>
+          <span class="challenge hidden" id="challengeTag"></span>
+        </div>
+        <div class="hud-box right">
+          <span class="lbl">COINS</span><b id="coinVal">0</b>
+          <span class="lbl">LV <i id="levelVal">1</i></span>
+        </div>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="soundBtn" title="Sound" aria-label="Sound">🔊</button>
+      </div>
+
+      <div class="hud-row hud-bottom">
+        <div class="hud-box lives-box">
+          <span class="lives" id="livesVal">❤❤❤</span>
+          <span class="timer hidden" id="timerVal">60.0s</span>
+        </div>
+        <div class="speedo">
+          <b id="speedVal">0</b><span class="lbl">KM/H</span>
+        </div>
+        <div class="nitro-box">
+          <span class="lbl">NITRO</span>
+          <div class="nitro-track"><div class="nitro-fill" id="nitroFill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">🏎️ 3D&nbsp;RACING</h1>
+        <p class="tagline">Drive • Dodge • Survive</p>
+        <div class="menu-btns">
+          <button class="btn primary" data-mode="endless">▶ PLAY (ENDLESS)</button>
+          <button class="btn" data-mode="timetrial">⏱ TIME TRIAL</button>
+          <button class="btn" data-mode="challenge">🎯 CHALLENGES</button>
+          <button class="btn ghost" id="scoresBtn">🏆 HIGH SCORES</button>
+          <button class="btn ghost" id="settingsBtn">⚙ SETTINGS</button>
+        </div>
+        <p class="hint" id="menuHint">Arrows / WASD to steer · Space = Nitro · P = Pause</p>
+      </div>
+    </div>
+
+    <!-- High scores -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 HIGH SCORES</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="overlay hidden" id="settingsScreen">
+      <div class="panel">
+        <h2 class="title small">⚙ SETTINGS</h2>
+        <div class="setting-row">
+          <span>Quality</span>
+          <div class="seg" id="qualitySeg">
+            <button data-q="auto" class="on">Auto</button>
+            <button data-q="high">High</button>
+            <button data-q="low">Low</button>
+          </div>
+        </div>
+        <div class="setting-row">
+          <span>Sound</span>
+          <div class="seg" id="soundSeg">
+            <button data-s="on" class="on">On</button>
+            <button data-s="off">Off</button>
+          </div>
+        </div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Game over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">GAME OVER</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW RECORD ★</p>
+        <div class="result">
+          <div><span>SCORE</span><b id="finalScore">0</b></div>
+          <div><span>DISTANCE</span><b id="finalDist">0.0 KM</b></div>
+          <div><span>COINS</span><b id="finalCoins">0</b></div>
+          <div><span>BEST</span><b id="finalBest">0</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ PLAY AGAIN</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">LOADING…</h2><p class="tagline" id="loadMsg">Preparing the highway</p></div>
+    </div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="touch-left">
+        <button class="tbtn" data-act="left">◀</button>
+        <button class="tbtn" data-act="right">▶</button>
+      </div>
+      <div class="touch-right">
+        <button class="tbtn small" data-act="up">▲</button>
+        <button class="tbtn nitro" data-act="nitro">NITRO</button>
+        <button class="tbtn small" data-act="down">▼</button>
+      </div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
