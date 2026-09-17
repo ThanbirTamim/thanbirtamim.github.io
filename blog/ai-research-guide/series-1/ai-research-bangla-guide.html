@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+  <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
+<meta name="rights" content="Proprietary — no reproduction or republishing without written permission.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI দিয়ে Research কীভাবে করবে — সম্পূর্ণ বাংলা গাইড। Paper summary, literature matrix, research gap, research question, methodology বোঝা, figure/table analysis, citation যাচাই, experiment planning, code, results analysis, paper writing ও 'humanize' — সব ক্ষেত্রে AI-কে Research Assistant হিসেবে ব্যবহার করা, কিন্তু thinking, verification ও scientific judgment গবেষকের হাতে রাখা।">
+    <meta name="keywords" content="AI research বাংলা, research assistant AI, paper summary AI, literature review, research gap, research question, AI hallucination citation, prompt cheat sheet, methodology বোঝা, AI দিয়ে গবেষণা, humanize AI text, scientific integrity, ChatGPT research">
+    <meta property="og:title" content="AI দিয়ে Research কীভাবে করব? — Research Assistant, তোমার বদলি Researcher না">
+    <meta property="og:description" content="AI ব্যবহার করা সমস্যা না; AI-কে কীভাবে ব্যবহার করছ সেটাই আসল। Paper পড়া থেকে writing পর্যন্ত AI-কে Research Assistant বানানোর বাস্তব, মজার ও সৎ বাংলা গাইড — thinking ও দায়িত্ব গবেষকের হাতে।">
+    <meta property="og:type" content="article">
+    <link rel="canonical" href="https://thanbirtamim.github.io/blog/ai-research-guide/series-1/ai-research-bangla-guide.html">
+    <title>AI দিয়ে Research কীভাবে করব? — Research Assistant, তোমার বদলি Researcher না</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.6em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.3em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.1em;
+            line-height: 2;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            border-left: 8px solid #d63031;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #5f0a0a;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 30px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.95em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.05em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 40px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 12px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 12px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.4em;
+            margin: 0 8px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.2) translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 0 20px rgba(102, 126, 234, 0.8);
+            animation: none;
+        }
+
+        .nav-btn i {
+            font-size: 1.4rem;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 2;
+        }
+
+        .page-break {
+            page-break-after: always;
+            margin: 60px 0;
+            border-top: 3px dashed #ccc;
+            padding-top: 60px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .comparison-item {
+            background: #f8f9ff;
+            padding: 22px;
+            border-radius: 10px;
+            border-left: 6px solid #667eea;
+            font-size: 1.05em;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 20px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+                margin: 30px 0 20px 0;
+            }
+
+            h3 {
+                font-size: 1.3rem;
+                margin: 20px 0 15px 0;
+                padding-left: 15px;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.2rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box {
+                padding: 20px;
+                margin: 20px 0;
+                font-size: 1rem;
+            }
+
+            .code-box {
+                padding: 20px;
+                font-size: 0.85rem;
+                margin: 20px 0;
+            }
+
+            table {
+                font-size: 0.95rem;
+            }
+
+            th, td {
+                padding: 12px 10px;
+            }
+
+            .toc {
+                padding: 20px;
+                margin: 25px 0;
+            }
+
+            .toc h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            .toc li {
+                margin: 10px 0;
+                font-size: 0.95rem;
+            }
+
+            .key-point {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-buttons {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 1.1rem;
+            }
+
+            .nav-btn i {
+                font-size: 1.1rem;
+            }
+
+            body {
+                padding: 15px 10px;
+                font-size: 14px;
+                line-height: 1.8;
+            }
+
+            .container {
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 10px;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                margin: 25px 0 15px 0;
+                padding-bottom: 8px;
+            }
+
+            h3 {
+                font-size: 1.1rem;
+                margin: 18px 0 12px 0;
+                padding-left: 12px;
+                border-left: 4px solid #667eea;
+            }
+
+            h4 {
+                font-size: 1rem;
+                margin: 15px 0 10px 0;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin: 12px 0;
+                line-height: 1.7;
+                text-align: left;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box {
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+
+            .code-box {
+                padding: 15px;
+                font-size: 0.8rem;
+                margin: 15px 0;
+                border-left: 6px solid #667eea;
+            }
+
+            code {
+                padding: 2px 6px;
+                font-size: 0.85rem;
+            }
+
+            .diagram {
+                padding: 15px;
+                font-size: 0.8rem;
+                margin: 15px 0;
+            }
+
+            table {
+                font-size: 0.85rem;
+                margin: 15px 0;
+            }
+
+            th {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            td {
+                padding: 10px 8px;
+                font-size: 0.9rem;
+            }
+
+            ul, ol {
+                margin: 15px 0 15px 25px;
+            }
+
+            li {
+                margin: 8px 0;
+                font-size: 0.95rem;
+            }
+
+            .toc {
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+
+            .toc h2 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                border: none;
+                padding: 0;
+                margin-top: 0;
+            }
+
+            .toc li {
+                margin: 8px 0;
+                font-size: 0.9rem;
+                padding-left: 20px;
+            }
+
+            .comparison {
+                gap: 15px;
+                margin: 20px 0;
+            }
+
+            .comparison-item {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            .key-point {
+                padding: 12px;
+                margin: 12px 0;
+            }
+
+            .emoji {
+                font-size: 1.2rem;
+                margin: 0 5px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-buttons {
+                top: 12px;
+                right: 12px;
+                gap: 8px;
+            }
+
+            .nav-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+
+            body {
+                padding: 12px 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 15px 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h3 {
+                font-size: 1rem;
+            }
+
+            p {
+                font-size: 0.9rem;
+            }
+
+            .story-box, .technical-box, .info-box, .success-box, .warning-box, .code-box {
+                padding: 12px;
+                margin: 12px 0;
+                font-size: 0.9rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home">
+        <i class="fas fa-home"></i>
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI Research সিরিজ &raquo; Episode ০১
+    </div>
+
+    <h1><i class="fa-solid fa-flask-vial"></i> AI দিয়ে Research কীভাবে করব?</h1>
+    <p class="subtitle">AI তোমার Research Assistant — তোমার বদলি Researcher না (Series 1, Episode 01)</p>
+
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তু</h2>
+        <ul>
+            <li>১. শুরুর কথা — "৩০ page-এর PDF, summary করে দাও!"</li>
+            <li>২. AI কে Research Assistant হিসেবে ভাবো</li>
+            <li>৩. Paper PDF দিয়ে Summary — Layered পদ্ধতি</li>
+            <li>৪. AI Summary Verification (সবচেয়ে জরুরি)</li>
+            <li>৫. AI-কে Paper সঠিকভাবে দেওয়া — "Do not invent"</li>
+            <li>৬. AI দিয়ে Literature Matrix বানানো</li>
+            <li>৭. দুইটা Paper Compare করা</li>
+            <li>৮. AI দিয়ে Research Gap খোঁজা</li>
+            <li>৯. AI দিয়ে Research Question তৈরি</li>
+            <li>১০. AI as a "Research Critic"</li>
+            <li>১১. AI দিয়ে Methodology বুঝে নেওয়া</li>
+            <li>১২. AI দিয়ে Figure / Table বোঝা</li>
+            <li>১৩. AI দিয়ে Literature Search Planning</li>
+            <li>১৪. Citation খোঁজায় সতর্কতা (Red Flag)</li>
+            <li>১৫. নিজের Research Idea Challenge করা</li>
+            <li>১৬. AI দিয়ে Experiment Planning</li>
+            <li>১৭. AI দিয়ে Code / Experiment Implementation</li>
+            <li>১৮. AI দিয়ে Results Analyze করা</li>
+            <li>১৯. AI দিয়ে Paper Writing</li>
+            <li>২০. AI Text "Humanize" কীভাবে করব?</li>
+            <li>২১. "AI-ish" Writing চিনবে কীভাবে?</li>
+            <li>২২. AI Dependency Levels (Maturity Model)</li>
+            <li>২৩. AI + Research — Golden Rules</li>
+            <li>২৪. AI Research Red Flags</li>
+            <li>২৫. Prompt Cheat Sheet</li>
+            <li>২৬. AI Research Workflow Cheat Sheet</li>
+            <li>২৭. Master Research Cheat Sheet + শেষ কথা</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">👋</span> ১. শুরুর কথা — "৩০ page-এর PDF, summary করে দাও!"</h2>
+
+        <div class="story-box">
+            রাত ১টা। নীলা thesis-এর জন্য paper পড়তে বসেছে। PDF খুলতেই দেখল — ৩০ page, ছোট font, দুই column,
+            ভেতরে গোটা বিশেক equation। মাথা সাথে সাথে ফিসফিস করে বলল, <strong>"ভাই, AI-কে দিয়ে summary করে দাও না,
+            এত পড়ার কী দরকার!"</strong><br><br>
+            নীলা AI-কে PDF দিয়ে লিখল "summarize this paper"। ১০ সেকেন্ডে সুন্দর একটা summary এলো। নীলা খুশি মনে সেটা
+            copy করে literature review-তে বসিয়ে দিল। পরদিন supervisor জিজ্ঞেস করল, "এই dataset-টা paper-এ কোথায় বলা
+            আছে?" নীলা খুঁজতে গিয়ে দেখল — ওই dataset-এর নাম paper-এ নেই-ই। AI নিজে থেকে বানিয়ে দিয়েছিল।
+        </div>
+
+        <p>
+            চেনা লাগছে? এটা এই যুগের সবচেয়ে common ফাঁদ। AI সত্যিই research-এর অনেক পরিশ্রম কমিয়ে দিতে পারে — কিন্তু
+            অসাবধানে ব্যবহার করলে সে দিব্যি বানিয়ে দেয়:
+        </p>
+
+        <div class="warning-box">
+            • hallucinated fact — যা paper-এ নেই, তা-ও "আছে" বলে দেওয়া<br>
+            • fake citation — বানানো লেখক, journal, সাল<br>
+            • ভুল methodology summary<br>
+            • fabricated DOI<br>
+            • ভুল interpretation<br>
+            • plagiarism<br>
+            • generic, প্রাণহীন লেখা<br>
+            • তোমার নিজস্ব reasoning হারিয়ে যাওয়া
+        </div>
+
+        <div class="key-point">
+            তাই পুরো লেখার মূল সুর একটাই —<br>
+            <strong>AI ব্যবহার করা সমস্যা না। AI-কে কীভাবে ব্যবহার করছি, সেটাই আসল।</strong><br><br>
+            আরেকভাবে বললে: <em>AI তোমার Research Assistant হতে পারে; তোমার Researcher হওয়ার দায়িত্ব AI-কে দিয়ে
+            দিলেই সমস্যা।</em>
+        </div>
+
+        <p>এই গাইডে আমরা ধাপে ধাপে শিখব — paper পড়া থেকে শুরু করে writing পর্যন্ত AI-কে কীভাবে একজন সৎ, কাজের
+        assistant বানানো যায়, অথচ thinking, verification আর scientific judgment নিজের হাতেই রাখা যায়।</p>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🤝</span> ২. AI কে Research Assistant হিসেবে ভাবো</h2>
+
+        <p>প্রথমেই দুটো mental model-এর পার্থক্য বুঝে নাও। বেশিরভাগ ছাত্র ভুল model-টা ব্যবহার করে:</p>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>❌ খারাপ model</strong><br><br>
+                Student → AI → পুরো Paper<br><br>
+                এখানে চিন্তাটাই AI করছে, ছাত্র শুধু copy করছে। ফল: শেখা হয় না, ভুল ধরা পড়ে না, দায়িত্বও ছাত্রের ঘাড়েই থাকে।
+            </div>
+            <div class="comparison-item">
+                <strong>✅ ভালো model</strong><br><br>
+                Researcher → AI Assistant → Researcher verifies → Evidence → Researcher decides<br><br>
+                AI কাজ এগিয়ে দেয়, কিন্তু প্রতিটি গুরুত্বপূর্ণ ধাপে গবেষক যাচাই করে, প্রমাণ দেখে, তারপর সিদ্ধান্ত নেয়।
+            </div>
+        </div>
+
+        <p>একজন সৎ Research Assistant হিসেবে AI অনেক কিছুতে সাহায্য করতে পারে:</p>
+
+        <div class="technical-box">
+            • literature discovery (কী কী পড়া যায়)<br>
+            • paper summarization<br>
+            • concept explanation<br>
+            • comparison<br>
+            • note organization<br>
+            • literature matrix<br>
+            • question generation<br>
+            • methodology বোঝা<br>
+            • code assistance<br>
+            • experiment planning<br>
+            • debugging<br>
+            • data-analysis assistance<br>
+            • writing structure<br>
+            • grammar ও editing<br>
+            • reviewer-style criticism
+        </div>
+
+        <div class="key-point">
+            কিন্তু একটা জিনিস কখনো AI-কে দেওয়া যাবে না — <strong>final scientific judgment</strong>। "এই claim ঠিক কি
+            না", "এই gap সত্যি কি না", "এই result কী বোঝায়" — এই সিদ্ধান্ত সবসময় গবেষকের।
+        </div>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📄</span> ৩. Paper PDF দিয়ে Summary — Layered পদ্ধতি</h2>
+
+        <p>
+            শুধু "summarize this paper" লিখলে যা পাবে, সেটা প্রায়ই surface-level আর মাঝেমধ্যে ভুল। বদলে
+            <strong>layered summarization</strong> করো — ধাপে ধাপে গভীরে যাও।
+        </p>
+
+        <h3>Level 1 — Executive Summary</h3>
+        <p>AI-কে বলো এই জিনিসগুলো আলাদা করে বের করতে:</p>
+        <div class="info-box">
+            research problem · motivation · research question/objective · proposed method · dataset · baseline ·
+            metrics · main result · contribution · limitation
+        </div>
+
+        <h3>Level 2 — Methodology Summary</h3>
+        <p>এবার জিজ্ঞেস করো, লেখকরা <em>ঠিক কী</em> করলেন:</p>
+        <div class="info-box">
+            • What exactly did the authors do?<br>
+            • input/output কী?<br>
+            • কী কী assumption?<br>
+            • কোন algorithm?<br>
+            • কোন architecture?<br>
+            • কী parameter?<br>
+            • experimental setup কেমন?
+        </div>
+
+        <h3>Level 3 — Critical Summary</h3>
+        <p>এখানেই আসল গবেষণা শুরু। AI-কে critic হিসেবে জিজ্ঞেস করো:</p>
+        <div class="info-box">
+            • সবচেয়ে শক্তিশালী অংশ কোনটা?<br>
+            • methodology-তে দুর্বলতা কী?<br>
+            • baseline গুলো কি fair?<br>
+            • dataset কি উপযুক্ত?<br>
+            • data leakage-এর সম্ভাবনা আছে কি?<br>
+            • metric গুলো কি ঠিক?<br>
+            • result থেকে কি সত্যিই conclusion আসে?<br>
+            • কোন limitation লেখকরা স্বীকার করেছেন?<br>
+            • কোন limitation তারা <strong>আলোচনাই করেননি</strong>?
+        </div>
+
+        <h3>Level 4 — Researcher Summary</h3>
+        <p>শেষে নিজের গবেষণার দিকে তাকাও:</p>
+        <div class="success-box">
+            • এই paper থেকে আমি কী শিখলাম?<br>
+            • কোন সমস্যা এখনো সমাধান হয়নি?<br>
+            • কোন experiment দিয়ে এই কাজ এগিয়ে নেওয়া যায়?<br>
+            • কোন assumption পরীক্ষা করে দেখা যায়?<br>
+            • এরপর কোন paper গুলো পড়া উচিত?
+        </div>
+
+        <div class="key-point">
+            এই চার layer একসাথে করলে তুমি paper-টা "পড়া" ছাড়াই বুঝে ফেলবে না — বরং AI-এর সাহায্যে
+            <strong>দ্রুত ও গভীরভাবে</strong> পড়বে। AI এখানে টর্চলাইট, তোমার চোখের বিকল্প না।
+        </div>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔍</span> ৪. AI Summary Verification (সবচেয়ে জরুরি)</h2>
+
+        <div class="warning-box">
+            এই section-টা লাল কালিতে দাগিয়ে রাখো —<br>
+            <strong>AI summary = secondary interpretation, evidence না।</strong><br>
+            AI যা বলছে সেটা প্রমাণ না; প্রমাণ আছে মূল paper-এর ভেতরে।
+        </div>
+
+        <p>প্রতিটি গুরুত্বপূর্ণ statement-এর জন্য AI-কে জিজ্ঞেস করো:</p>
+
+        <div class="code-box">"এই দাবিটা paper-এর কোন section / table / figure সমর্থন করে?
+সেই জায়গার হুবহু লাইন/সংখ্যা উদ্ধৃত করো।"</div>
+
+        <p>তারপর নিজে মূল paper-এ গিয়ে সেই জায়গাটা খুঁজে মিলিয়ে দেখো। সঠিক workflow:</p>
+
+        <div class="diagram">
+AI summary
+    ↓
+মূল paper-এ সেই passage খুঁজে বের করো
+    ↓
+নিজের চোখে verify করো
+    ↓
+এবার নিজের ভাষায় নিজের note লেখো
+        </div>
+
+        <div class="key-point">
+            <strong>কখনো</strong> AI summary সরাসরি copy করে literature review-তে বসিয়ো না। AI summary হলো তোমার
+            পড়ার সহায়ক; তোমার literature review হবে তোমার নিজের যাচাই করা বোঝার প্রতিফলন।
+        </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📥</span> ৫. AI-কে Paper সঠিকভাবে দেওয়া — "Do not invent"</h2>
+
+        <p>AI ভালো কাজ করে যখন তুমি তাকে ঠিক জিনিস আর ঠিক ভূমিকা দাও। যতটা পারো দাও:</p>
+
+        <div class="info-box">
+            • পুরো paper (বা প্রাসঙ্গিক section)<br>
+            • প্রয়োজনীয় figure/table<br>
+            • supplementary material (থাকলে)<br>
+            • তোমার exact research question
+        </div>
+
+        <p>আর সবচেয়ে গুরুত্বপূর্ণ — AI-কে বলে দাও সে কোন role-এ কাজ করবে এবং সে যেন কিছু বানিয়ে না ফেলে:</p>
+
+        <div class="code-box">"Act as a research assistant. Read this paper and extract the
+research problem, gap, methodology, dataset, baselines, metrics,
+results, limitations and contribution.
+
+Do not invent information. If something is unclear or absent,
+explicitly say 'Not specified in the paper.'"</div>
+
+        <div class="key-point">
+            <strong>"Do not invent" আর "Not specified" — এই দুই নির্দেশ প্রতিটি research prompt-এ রাখো।</strong> এতে
+            hallucination অনেক কমে; AI ফাঁকা জায়গা নিজে থেকে ভরে ফেলার বদলে সৎভাবে বলে "এটা paper-এ নেই।"
+        </div>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🗂️</span> ৬. AI দিয়ে Literature Matrix বানানো</h2>
+
+        <p>
+            অনেকগুলো paper পড়ার পর মাথায় সব জট পাকিয়ে যায়। সমাধান — <strong>literature matrix</strong>: প্রতিটি
+            paper-কে একই কাঠামোয় সাজানো একটা টেবিল। AI তোমার যাচাই করা note গুলোকে এই কাঠামোয় সাজিয়ে দিতে পারে।
+        </p>
+
+        <table>
+            <tr><th>Field</th><th>Information</th></tr>
+            <tr><td>Paper</td><td>Citation</td></tr>
+            <tr><td>Year</td><td>প্রকাশের সাল</td></tr>
+            <tr><td>Problem</td><td>Research problem</td></tr>
+            <tr><td>Gap</td><td>দাবিকৃত gap</td></tr>
+            <tr><td>Method</td><td>প্রস্তাবিত approach</td></tr>
+            <tr><td>Dataset</td><td>ব্যবহৃত dataset</td></tr>
+            <tr><td>Baseline</td><td>তুলনার methods</td></tr>
+            <tr><td>Metrics</td><td>Evaluation</td></tr>
+            <tr><td>Result</td><td>মূল ফলাফল</td></tr>
+            <tr><td>Limitation</td><td>সীমাবদ্ধতা</td></tr>
+            <tr><td>Contribution</td><td>দাবিকৃত অবদান</td></tr>
+            <tr><td><strong>My Critique</strong></td><td><strong>গবেষকের নিজের পর্যবেক্ষণ</strong></td></tr>
+        </table>
+
+        <div class="warning-box">
+            <strong>খুব জরুরি:</strong> "My Critique" column-টা তুমি নিজে লিখবে — AI দিয়ে অন্ধভাবে generate করবে না।
+            AI বড়জোর কিছু প্রশ্ন suggest করতে পারে, কিন্তু scientific judgment-টা তোমার নিজের হতে হবে। ওই এক column-ই
+            তোমার literature review-কে "AI-এর copy" থেকে "তোমার গবেষণা"-য় বদলে দেয়।
+        </div>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">⚖️</span> ৭. দুইটা Paper Compare করা</h2>
+
+        <p>দুটো paper পাশাপাশি বুঝতে structured comparison দারুণ কাজে দেয়। prompt এমন হতে পারে:</p>
+
+        <div class="code-box">"Compare these two papers based on problem, dataset, methodology,
+baseline, metrics, results, limitations and assumptions.
+
+Do not declare one paper better unless the evidence supports a
+specific comparison. Identify where they are genuinely different."</div>
+
+        <p>
+            লক্ষ করো — আমরা AI-কে বলছি "কে ভালো" রায় না দিতে, বরং <em>কোথায় সত্যিকারের পার্থক্য</em> সেটা দেখাতে।
+            কারণ দুটো paper আলাদা dataset/metric ব্যবহার করলে "কে better" প্রশ্নটাই অর্থহীন।
+        </p>
+
+        <p>এরপর comparison-কে এগিয়ে নাও — এটাই research gap খোঁজার পথ:</p>
+
+        <div class="diagram">
+Paper A + Paper B + Paper C
+        ↓
+সবার মধ্যে common limitation কী?
+        ↓
+সেই common ফাঁক থেকে সম্ভাব্য Research Question
+        </div>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🕳️</span> ৮. AI দিয়ে Research Gap খোঁজা</h2>
+
+        <div class="warning-box">
+            <strong>ভুল ধারণা:</strong> "AI-কে জিজ্ঞেস করলেই সে research gap বের করে দেবে।"<br>
+            <strong>বাস্তবতা:</strong> AI জাদু করে gap প্রমাণ করতে পারে না। AI শুধু <em>সম্ভাব্য gap নিয়ে hypothesis</em>
+            তৈরিতে সাহায্য করতে পারে — সেটা সত্যি কি না, যাচাই তোমাকেই করতে হবে।
+        </div>
+
+        <p>সঠিক workflow:</p>
+        <div class="diagram">
+Paper গুলো নিজে পড়ো
+    ↓
+যাচাই করা note AI-কে দাও
+    ↓
+AI-কে pattern খুঁজতে বলো
+    ↓
+মূল paper-এ ফিরে গিয়ে সেই pattern যাচাই করো
+    ↓
+gap সত্যি কি না নিশ্চিত করো
+    ↓
+Research Question গঠন করো
+        </div>
+
+        <p>ভালো prompt:</p>
+        <div class="code-box">"Based only on the information provided from these papers,
+identify recurring limitations, contradictions, unexplored
+assumptions, missing evaluations and possible research questions.
+
+Separate directly supported observations from your suggestions."</div>
+
+        <p>এই তিনটা জিনিস সবসময় আলাদা করে রাখো — এটাই scientific thinking-এর মূল:</p>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>Evidence</strong><br><br>
+                paper আসলে যা বলছে। যাচাইযোগ্য, নির্ভরযোগ্য।
+            </div>
+            <div class="comparison-item">
+                <strong>AI inference</strong><br><br>
+                AI যা "মনে করছে interesting হতে পারে"। শুধু ইঙ্গিত, প্রমাণ না।
+            </div>
+        </div>
+        <div class="key-point">
+            <strong>Researcher's conclusion:</strong> গবেষক নিজে যা স্বাধীনভাবে যাচাই করে সিদ্ধান্তে পৌঁছায়। শুধু
+            এটাই তোমার paper-এ যাওয়ার যোগ্য।
+        </div>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">❓</span> ৯. AI দিয়ে Research Question তৈরি</h2>
+
+        <div class="warning-box">
+            কখনো লিখো না: <strong>"Give me a research topic."</strong> — এভাবে চাইলে তুমি generic, অতিব্যবহৃত,
+            অথবা অসম্ভব একটা topic পাবে, যেটার সাথে তোমার কোনো সংযোগ নেই।
+        </div>
+
+        <p>বদলে AI-কে প্রসঙ্গ দাও, তারপর candidate question চাও:</p>
+        <div class="info-box">
+            • research area<br>
+            • যে literature তুমি জানো<br>
+            • যেসব limitation তুমি লক্ষ করেছ<br>
+            • target application<br>
+            • constraints (data, সময়, compute)
+        </div>
+
+        <p>একটা প্রশ্ন সাধারণত এই কাঠামোয় সরু হতে হতে তৈরি হয়:</p>
+        <div class="diagram">
+Broad area  →  Specific problem  →  Gap  →  Research Question
+        </div>
+
+        <p>এবার AI-কে দিয়ে নিজের প্রশ্নটাকে চ্যালেঞ্জ করাও: "Is this question actually researchable?"</p>
+        <div class="technical-box">
+            • এটা কি measurable?<br>
+            • যথেষ্ট data আছে?<br>
+            • আমি কি experiment-টা করতে পারব?<br>
+            • এর জন্য baseline আছে?<br>
+            • আমি কি evaluate করতে পারব?<br>
+            • এটা কি যথেষ্ট specific?<br>
+            • কোন evidence পেলে এই প্রশ্নের উত্তর হবে?
+        </div>
+    </div>
+
+    <!-- PART 10 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧑‍⚖️</span> ১০. AI as a "Research Critic"</h2>
+
+        <p>AI-এর সবচেয়ে কাজের ব্যবহারগুলোর একটা — তাকে একজন সন্দেহপ্রবণ reviewer বানানো:</p>
+
+        <div class="code-box">"Act as a skeptical peer reviewer. Identify weaknesses in this
+research design. Focus on dataset, baseline selection, evaluation
+metrics, leakage, reproducibility, statistical validity,
+assumptions and generalizability.
+
+Do not rewrite the study; only identify issues and explain why
+they matter."</div>
+
+        <div class="key-point">
+            মনে রাখো — AI-এর criticism একটা <strong>starting point</strong>, প্রমাণ না যে criticism-টা সঠিক। AI হয়তো
+            বলবে "তোমার baseline দুর্বল" — কিন্তু সেটা সত্যি কি না, তোমাকে খতিয়ে দেখতে হবে। প্রতিটা আপত্তি নিজে
+            investigate করো, তারপর গ্রহণ বা বর্জন করো।
+        </div>
+    </div>
+
+    <!-- PART 11 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧮</span> ১১. AI দিয়ে Methodology বুঝে নেওয়া</h2>
+
+        <p>কঠিন paper-এর methodology আটকে গেলে AI-কে ধাপে ধাপে জিজ্ঞেস করো:</p>
+
+        <div class="info-box">
+            • methodology-টা step by step ব্যাখ্যা করো<br>
+            • algorithm-টা একটা সহজ উদাহরণ দিয়ে বোঝাও<br>
+            • equation-এর প্রতিটি variable ব্যাখ্যা করো<br>
+            • architecture ব্যাখ্যা করো<br>
+            • প্রতিটি component কেন আছে?<br>
+            • একটা component সরিয়ে দিলে কী হবে?<br>
+            • কী কী assumption?<br>
+            • training/inference pipeline ব্যাখ্যা করো
+        </div>
+
+        <p>Equation-এর জন্য একটা চমৎকার prompt:</p>
+        <div class="code-box">"Explain this equation symbol by symbol, then explain what the
+equation is doing conceptually. Do not simplify away important
+mathematical meaning."</div>
+
+        <p>এভাবে AI একটা ধৈর্যশীল tutor-এর মতো কাজ করে — যে ৩ বার জিজ্ঞেস করলেও বিরক্ত হয় না।</p>
+    </div>
+
+    <!-- PART 12 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📊</span> ১২. AI দিয়ে Figure / Table বোঝা</h2>
+
+        <p>Figure/table বোঝাতে তিনটা প্রশ্ন পরপর করো — শেষটা critical thinking-এর জন্য সবচেয়ে দামি:</p>
+
+        <div class="technical-box">
+            ১. "Explain what this figure demonstrates." (এটা কী দেখাচ্ছে?)<br>
+            ২. "Which claim in the paper does this figure support?" (কোন দাবিকে সমর্থন করছে?)<br>
+            ৩. <strong>"What can this figure NOT prove?"</strong> (এটা কী <em>প্রমাণ করতে পারে না</em>?)
+        </div>
+
+        <div class="key-point">
+            তৃতীয় প্রশ্নটাই আসল গবেষককে আলাদা করে। একটা accuracy-বাড়ার graph দেখতে দারুণ, কিন্তু সেটা হয়তো
+            generalization, fairness বা robustness নিয়ে কিছুই বলে না। "এটা কী প্রমাণ করে না" — এই প্রশ্ন তোমাকে
+            over-claim করা থেকে বাঁচায়।
+        </div>
+    </div>
+
+    <!-- PART 13 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔎</span> ১৩. AI দিয়ে Literature Search Planning</h2>
+
+        <p>
+            AI দিয়ে "কোন paper আছে" খুঁজো না (সে বানিয়ে ফেলবে) — বরং AI দিয়ে <strong>search vocabulary</strong> তৈরি
+            করো, তারপর সেই শব্দগুলো আসল scholarly database-এ খোঁজো।
+        </p>
+
+        <p>ধরো তোমার topic: <code>deep learning based image security</code>। AI-কে বলো generate করতে:</p>
+        <div class="info-box">
+            • synonyms<br>
+            • related terminology<br>
+            • alternative problem formulations<br>
+            • সম্ভাব্য method names<br>
+            • সম্ভাব্য dataset names<br>
+            • evaluation terms
+        </div>
+
+        <p>এরপর এই term গুলো দিয়ে খোঁজো — Google Scholar, IEEE Xplore, ACM DL, Scopus, arXiv-এ।</p>
+
+        <div class="warning-box">
+            <strong>নিয়ম:</strong> AI দিয়ে search query তৈরি করো — কিন্তু "কোন literature আসলে আছে" তার চূড়ান্ত
+            কর্তৃপক্ষ AI না। কোন paper সত্যিই আছে, সেটা database-ই বলবে।
+        </div>
+    </div>
+
+    <!-- PART 14 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🚩</span> ১৪. Citation খোঁজায় সতর্কতা (Red Flag)</h2>
+
+        <div class="warning-box">
+            <strong>কখনোই অন্ধভাবে বিশ্বাস কোরো না "AI-generated citation"।</strong> AI অবলীলায় বানিয়ে ফেলতে পারে —<br><br>
+            • paper title<br>
+            • authors<br>
+            • journal<br>
+            • year<br>
+            • DOI<br>
+            • এমনকি results<br><br>
+            দেখতে একদম আসল মনে হবে, DOI-ও থাকবে — কিন্তু সেই paper পৃথিবীতে নেই।
+        </div>
+
+        <p>প্রতিটি citation-এর জন্য এই চক্র মানো:</p>
+        <div class="diagram">
+Citation
+   ↓
+মূল paper খুলে বের করো (Google Scholar / DOI)
+   ↓
+metadata মিলিয়ে দেখো (author, year, venue)
+   ↓
+তোমার লেখা বাক্যটা paper আসলেই সমর্থন করে কি না, যাচাই করো
+        </div>
+
+        <div class="key-point">
+            যে source-টা তুমি cite করছ, সেটা <strong>আসলেই</strong> তোমার বাক্যকে সমর্থন করতে হবে। "নাম মিলল" যথেষ্ট
+            না — দাবিটাও মিলতে হবে।
+        </div>
+    </div>
+
+    <!-- PART 15 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🥊</span> ১৫. নিজের Research Idea Challenge করা</h2>
+
+        <p>
+            মানুষের স্বভাব — নিজের idea-কে ভালোবাসা (confirmation bias)। এই ফাঁদ থেকে বাঁচতে AI-কে বলো তোমার idea
+            <em>ভেঙে ফেলতে</em>:
+        </p>
+
+        <div class="code-box">"Try to disprove my proposed research idea."</div>
+
+        <p>তারপর ধারালো প্রশ্নগুলো করাও:</p>
+        <div class="technical-box">
+            • কোন existing work এই idea-কে non-novel বানিয়ে দিতে পারে?<br>
+            • কোন assumption দুর্বল?<br>
+            • কোন experiment এই hypothesis ভুল প্রমাণ করতে পারে?<br>
+            • বিকল্প ব্যাখ্যা কী হতে পারে?<br>
+            • কোন baseline আমার method-কে হারিয়ে দিতে পারে?<br>
+            • একজন কড়া reviewer কী প্রশ্ন করবে?
+        </div>
+
+        <div class="success-box">
+            নিজের idea-কে আগেভাগে নিজে ভাঙার চেষ্টা করলে — reviewer যখন ভাঙতে আসবে, তুমি প্রস্তুত থাকবে। এটাই
+            scientific thinking, শুধু নিজের পিঠ চাপড়ানো না।
+        </div>
+    </div>
+
+    <!-- PART 16 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧪</span> ১৬. AI দিয়ে Experiment Planning</h2>
+
+        <p>AI দিয়ে একটা experiment checklist বানিয়ে নাও — কিছু যেন বাদ না পড়ে:</p>
+
+        <div class="info-box">
+            • baseline methods<br>
+            • datasets<br>
+            • train / validation / test split<br>
+            • metrics<br>
+            • ablation studies<br>
+            • robustness tests<br>
+            • parameter sensitivity<br>
+            • statistical analysis<br>
+            • computational cost<br>
+            • reproducibility requirements
+        </div>
+
+        <div class="key-point">
+            <strong>AI suggests. Researcher decides.</strong> AI checklist দেয়; কোনটা তোমার গবেষণায় প্রাসঙ্গিক,
+            কোন split fair, কোন baseline সৎ — সেই সিদ্ধান্ত তোমার।
+        </div>
+    </div>
+
+    <!-- PART 17 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">💻</span> ১৭. AI দিয়ে Code / Experiment Implementation</h2>
+
+        <p>AI code-এ দারুণ সাহায্য করে। কাজের ব্যবহার:</p>
+        <div class="technical-box">
+            • boilerplate<br>
+            • data preprocessing<br>
+            • experiment scripts<br>
+            • unit tests<br>
+            • debugging<br>
+            • visualization<br>
+            • configuration files<br>
+            • documentation
+        </div>
+
+        <p>কিন্তু AI-generated code merge করার আগে তুমি ব্যাখ্যা করতে পারতে হবে:</p>
+        <div class="info-box">
+            • code-টা আসলে কী করে<br>
+            • কেন এটা সঠিক<br>
+            • কী assumption ধরে নিয়েছে<br>
+            • computational complexity কত<br>
+            • কোন কোন ক্ষেত্রে fail করতে পারে
+        </div>
+
+        <div class="key-point">
+            <strong>AI দিয়ে code generate করো, কিন্তু AI-generated code-এর researcher তুমি নিজেই হও।</strong> না
+            বুঝে চালানো code মানে ভবিষ্যতের একটা নীরব bug — যেটা তোমার result-কেই ভুল বানিয়ে দিতে পারে।
+        </div>
+    </div>
+
+    <!-- PART 18 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📈</span> ১৮. AI দিয়ে Results Analyze করা</h2>
+
+        <p>AI সাহায্য করতে পারে — table summarize, trend খুঁজে বের করা, visualization suggest, statistical
+        concept ব্যাখ্যা, arithmetic check, analysis-এর প্রশ্ন তৈরি। কিন্তু একটা মারাত্মক ফাঁদ আছে:</p>
+
+        <div class="warning-box">
+            <strong>❌ কখনো এভাবে জিজ্ঞেস কোরো না:</strong><br>
+            "AI, আমার accuracy 92%, বলো কেন আমার method better।"<br><br>
+            এটা সরাসরি confirmation bias ডেকে আনে — তুমি AI-কে দিয়ে নিজের পক্ষে ওকালতি করাচ্ছ, বিশ্লেষণ করাচ্ছ না।
+        </div>
+
+        <p>বদলে, নিরপেক্ষভাবে জিজ্ঞেস করো:</p>
+        <div class="code-box">"Here are the results. Identify possible explanations for the
+observed differences, including explanations that challenge my
+hypothesis. Clearly distinguish evidence from speculation."</div>
+
+        <div class="key-point">
+            এটা এই পুরো গাইডের একটা বড় শিক্ষা — <strong>AI-কে দিয়ে নিজের result-এর প্রশংসা করিয়ো না, বরং নিজের
+            hypothesis-কে চ্যালেঞ্জ করাও।</strong> ভালো গবেষক নিজের ফলাফলকেও সন্দেহ করতে জানে।
+        </div>
+    </div>
+
+    <!-- PART 19 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">✍️</span> ১৯. AI দিয়ে Paper Writing</h2>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>✅ ভালো ব্যবহার</strong><br><br>
+                • outline<br>
+                • organization<br>
+                • grammar<br>
+                • clarity<br>
+                • sentence-level editing<br>
+                • transition উন্নত করা<br>
+                • repetitive লেখা ছোট করা<br>
+                • অস্পষ্ট লেখা ব্যাখ্যা করা<br>
+                • reviewer-style critique
+            </div>
+            <div class="comparison-item">
+                <strong>⚠️ বিপজ্জনক ব্যবহার</strong><br><br>
+                • পুরো paper generate করা<br>
+                • reference বানানো<br>
+                • প্রমাণহীন claim তৈরি<br>
+                • result-কে জোর করে বড় দাবিতে বদলানো<br>
+                • methodology fabricate করা<br>
+                • limitation লুকানো
+            </div>
+        </div>
+
+        <div class="key-point">
+            AI তোমার লেখাকে পরিষ্কার করতে পারে, কিন্তু <strong>scientific content-এর মালিক তুমি</strong>। idea,
+            interpretation, evidence, দাবি — সব তোমার। AI শুধু সেটাকে সুন্দর করে উপস্থাপনে সাহায্য করে।
+        </div>
+    </div>
+
+    <!-- PART 20 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🧍</span> ২০. AI Text "Humanize" কীভাবে করব?</h2>
+
+        <div class="warning-box">
+            শুরুতেই একটা লাইন পরিষ্কার করি —<br>
+            <strong>Humanize ≠ AI detector ফাঁকি দেওয়া।</strong><br>
+            এই গাইড কখনোই শেখাবে না কীভাবে detector এড়াবে বা নিষিদ্ধ AI ব্যবহার লুকাবে। সেটা প্রতারণা, গবেষণা না।
+        </div>
+
+        <div class="key-point">
+            <strong>সঠিক অর্থ:</strong> Humanize মানে লেখাটাকে সত্যিকারভাবে <em>তোমার নিজের reasoning, evidence আর
+            voice</em>-এর প্রতিফলন বানানো। লেখা "human" হয় যখন এর ভেতরের চিন্তাটা সত্যিই মানুষের।
+        </div>
+
+        <p>সৎ humanize workflow:</p>
+        <div class="diagram">
+Step 1: scientific idea-টা নিজে লেখো
+   ↓
+Step 2: draft-টা AI-কে দাও
+   ↓
+Step 3: AI-কে চিহ্নিত করতে বলো —
+        awkward sentence · repetition · verbosity ·
+        unclear logic · generic wording
+   ↓
+Step 4: নিজের অর্থ অনুযায়ী নিজে rewrite করো
+   ↓
+Step 5: প্রতিটি scientific claim যাচাই করো
+   ↓
+Step 6: নিজের উদাহরণ, interpretation ও reasoning ফিরিয়ে আনো
+        </div>
+
+        <div class="success-box">
+            যত বেশি নিজের বুদ্ধিবৃত্তিক content ঢালবে, লেখা তত authentic হবে — কারণ তখন লেখাটা সত্যিই তোমার। এটাই
+            আসল "humanizing": লুকানো না, বরং নিজের চিন্তা যোগ করা।
+        </div>
+    </div>
+
+    <!-- PART 21 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🤖</span> ২১. "AI-ish" Writing চিনবে কীভাবে?</h2>
+
+        <p>নিচের লক্ষণগুলো দেখলে সতর্ক হও — নিজের লেখাতেও, অন্যেরটাতেও:</p>
+
+        <div class="technical-box">
+            • অতিরিক্ত generic introduction<br>
+            • বারবার "Furthermore / Moreover"<br>
+            • অতিরঞ্জিত দাবি<br>
+            • ভাসা ভাসা statement<br>
+            • অপ্রয়োজনীয় adjective<br>
+            • কৃত্রিম transition<br>
+            • প্রায় একই গঠনের বাক্যের পর বাক্য<br>
+            • খুব মসৃণ কিন্তু ফাঁপা paragraph<br>
+            • প্রমাণহীন দাবি
+        </div>
+
+        <div class="info-box">
+            <strong>তবে সাবধান:</strong> এই লক্ষণগুলো প্রমাণ করে না যে লেখাটা AI লিখেছে। এগুলো আসলে
+            <em>generic বা দুর্বল academic writing</em>-এর চিহ্ন — মানুষও এভাবে লেখে। তাই এগুলোকে "AI ধরার test"
+            হিসেবে না, "লেখা উন্নত করার checklist" হিসেবে ব্যবহার করো।
+        </div>
+    </div>
+
+    <!-- PART 22 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📶</span> ২২. AI Dependency Levels (Maturity Model)</h2>
+
+        <p>নিজের AI ব্যবহার কোন স্তরে আছে, বুঝে নাও:</p>
+
+        <table>
+            <tr><th>Level</th><th>AI-এর ভূমিকা</th></tr>
+            <tr><td><strong>Level 0</strong></td><td>No AI — একদম নিজে</td></tr>
+            <tr><td><strong>Level 1</strong></td><td>AI as tutor — concept বোঝায়</td></tr>
+            <tr><td><strong>Level 2</strong></td><td>AI as debugger / explainer</td></tr>
+            <tr><td><strong>Level 3</strong></td><td>AI as research assistant</td></tr>
+            <tr><td><strong>Level 4</strong></td><td>AI as critical reviewer</td></tr>
+            <tr><td><strong>Level 5</strong></td><td>AI-assisted research workflow (পূর্ণ)</td></tr>
+        </table>
+
+        <div class="key-point">
+            একটা ভুল ধারণা ভাঙো — উঁচু Level মানে <strong>"AI বেশি চিন্তা করছে" না।</strong> বরং —<br><br>
+            <em>উঁচু Level মানে: AI বেশি যান্ত্রিক (mechanical) কাজ সামলাচ্ছে, আর গবেষক বেশি scientific দায়িত্ব
+            ধরে রাখছে।</em> Level 5-এও চিন্তাটা তোমার; AI শুধু খাটুনি কমায়।
+        </div>
+    </div>
+
+    <!-- PART 23 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🏅</span> ২৩. AI + Research — Golden Rules</h2>
+
+        <div class="key-point">
+            <strong>Rule 1:</strong> AI can suggest; it cannot certify. (AI পরামর্শ দেয়, সিলমোহর দেয় না।)<br><br>
+            <strong>Rule 2:</strong> মূল paper সবসময় AI summary-র চেয়ে শক্তিশালী evidence।<br><br>
+            <strong>Rule 3:</strong> যাচাই না করা citation কখনো জমা দিয়ো না।<br><br>
+            <strong>Rule 4:</strong> যে result তুমি আসলে পাওনি, তা কখনো report কোরো না।<br><br>
+            <strong>Rule 5:</strong> AI-কে দিয়ে তোমার research gap বানিয়ো না।<br><br>
+            <strong>Rule 6:</strong> AI-কে দিয়ে idea-র প্রশংসা না, চ্যালেঞ্জ করাও।<br><br>
+            <strong>Rule 7:</strong> scientific interpretation নিজে লেখো।<br><br>
+            <strong>Rule 8:</strong> AI-generated code বুঝতে ও test করতে হবে।<br><br>
+            <strong>Rule 9:</strong> Humanize করো human reasoning যোগ করে, AI ব্যবহার লুকিয়ে না।<br><br>
+            <strong>Rule 10:</strong> চূড়ান্ত paper-এর দায়িত্ব তোমার।
+        </div>
+    </div>
+
+    <!-- PART 24 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🚨</span> ২৪. AI Research Red Flags</h2>
+
+        <div class="warning-box">
+            <strong>এই জিনিসগুলোর জন্য AI-কে কখনো অন্ধভাবে বিশ্বাস কোরো না — সবসময় মূল source-এ যাচাই করো:</strong><br><br>
+            ☑ citations<br>
+            ☑ DOI<br>
+            ☑ publication details<br>
+            ☑ numerical results<br>
+            ☑ statistical significance<br>
+            ☑ আগের গবেষণা সম্পর্কে দাবি<br>
+            ☑ novelty claims<br>
+            ☑ dataset facts<br>
+            ☑ methodological details<br>
+            ☑ conclusions
+        </div>
+
+        <div class="key-point">
+            সহজ নিয়ম: AI যা-ই বলুক, যদি সেটা তোমার paper-এ যাবে — আগে মূল source-এ গিয়ে মিলিয়ে নাও। "verify, then
+            trust", কখনো "trust, then regret" না।
+        </div>
+    </div>
+
+    <!-- PART 25 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">📝</span> ২৫. Prompt Cheat Sheet</h2>
+
+        <p>ব্যবহারযোগ্য prompt-এর একটা library — সরাসরি copy করে ব্যবহার করতে পারো (তারপর যাচাই করো!):</p>
+
+        <h4>Paper Summary</h4>
+        <div class="code-box">"Summarize this paper using: Problem, Motivation, Research
+Question, Method, Dataset, Baseline, Metrics, Results,
+Contribution, Limitations. If information is missing, say
+'Not specified.' Do not invent anything."</div>
+
+        <h4>Critical Review</h4>
+        <div class="code-box">"Act as a skeptical reviewer. Identify weaknesses in methodology,
+dataset, baseline, evaluation, reproducibility and claims.
+Distinguish evidence from inference."</div>
+
+        <h4>Methodology Explanation</h4>
+        <div class="code-box">"Explain this methodology step by step. Define every important
+component and explain why it is needed."</div>
+
+        <h4>Research Gap</h4>
+        <div class="code-box">"Based only on the supplied papers, identify recurring
+limitations, contradictions, unexplored assumptions and missing
+evaluations. Clearly separate evidence from suggested research
+directions."</div>
+
+        <h4>Paper Comparison</h4>
+        <div class="code-box">"Create a structured comparison of these papers across problem,
+method, dataset, baseline, metrics, results and limitations.
+Do not invent missing information."</div>
+
+        <h4>Research Question</h4>
+        <div class="code-box">"Based on these verified literature notes, generate candidate
+research questions. For each, explain what evidence would be
+needed to answer it."</div>
+
+        <h4>Reviewer Simulation</h4>
+        <div class="code-box">"Pretend you are a strict peer reviewer. Give me the five
+strongest questions you would ask about this research."</div>
+
+        <h4>Writing Review</h4>
+        <div class="code-box">"Review this paragraph for clarity, logic, repetition and
+unsupported claims. Do not change the scientific meaning."</div>
+
+        <h4>Claim Verification</h4>
+        <div class="code-box">"List every factual/scientific claim in this paragraph that
+requires a citation or verification."</div>
+
+        <h4>Anti-Hallucination</h4>
+        <div class="code-box">"Use only the information explicitly present in the provided
+paper. If the paper does not state something, say
+'Not specified.' Do not infer it as fact."</div>
+    </div>
+
+    <!-- PART 26 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🔁</span> ২৬. AI Research Workflow Cheat Sheet</h2>
+
+        <p>পুরো গবেষণা-যাত্রায় AI কোথায় বসে, এক নজরে:</p>
+
+        <div class="diagram">
+ 1. Paper খুঁজে বের করো
+        ↓
+ 2. নিজে পড়ো
+        ↓
+ 3. Paper/note AI-কে দাও
+        ↓
+ 4. Structured summary বানাও
+        ↓
+ 5. মূল paper-এ verify করো
+        ↓
+ 6. Literature matrix-এ যোগ করো
+        ↓
+ 7. Paper গুলো compare করো
+        ↓
+ 8. AI-কে সম্ভাব্য pattern/gap জিজ্ঞেস করো
+        ↓
+ 9. Gap যাচাই করো
+        ↓
+10. Research Question গঠন করো
+        ↓
+11. Methodology design করো
+        ↓
+12. AI-কে critic হিসেবে ব্যবহার করো
+        ↓
+13. Experiment চালাও
+        ↓
+14. Evidence analyze করো
+        ↓
+15. নিজের interpretation লেখো
+        ↓
+16. AI দিয়ে editing করাও
+        ↓
+17. প্রতিটি claim যাচাই করো
+        ↓
+18. চূড়ান্ত human/researcher judgment
+        </div>
+
+        <div class="key-point">
+            খেয়াল করো — ১৮টা ধাপের মধ্যে AI বসে মাঝের যান্ত্রিক কাজগুলোতে; শুরু (পড়া), মাঝের যাচাই, আর শেষ
+            (judgment) — তিন জায়গাতেই <strong>মানুষ</strong>।
+        </div>
+    </div>
+
+    <!-- PART 27 -->
+    <div class="page-break"></div>
+    <div class="section">
+        <h2><span class="emoji">🎓</span> ২৭. Master Research Cheat Sheet + শেষ কথা</h2>
+
+        <p>সবকিছু এক জায়গায় — এই cheat sheet-টা bookmark করে রাখো:</p>
+
+        <h4>🔬 Research</h4>
+        <div class="diagram">
+Problem → Existing Knowledge → Gap → Question → Method →
+Evidence → Analysis → Contribution
+        </div>
+
+        <h4>📖 Paper Reading</h4>
+        <div class="diagram">
+Title → Abstract → Figures/Tables → Introduction → Related Work →
+Method → Experiments → Results → Discussion → Limitations →
+Conclusion
+        </div>
+
+        <h4>📚 Literature Review</h4>
+        <div class="diagram">
+Find → Filter → Read → Compare → Critique → Synthesize → Gap
+        </div>
+
+        <h4>✍️ Paper Writing</h4>
+        <div class="diagram">
+Abstract → Introduction → Literature Review → Methodology →
+Results → Discussion → Limitations → Future Work → Conclusion →
+References
+        </div>
+
+        <h4>🤖 AI-Assisted Research</h4>
+        <div class="diagram">
+Search support → Summary → Extraction → Comparison →
+Gap hypothesis → Research questions → Critique → Coding →
+Analysis support → Writing review → Verification
+        </div>
+
+        <div class="key-point">
+            <strong>Human Research Writing — কোনটা ঠিক?</strong><br><br>
+            ✅ Before AI: Think → Research → Analyze → Write<br>
+            ✅ With AI: Think → Research → Analyze → Draft → AI Review → Verify → Rewrite → Final<br>
+            ❌ কখনো না: Prompt → AI Paper → Submit
+        </div>
+
+        <div class="success-box">
+            <strong>Final Responsibility: Researcher.</strong><br><br>
+            AI যত ভালোই হোক, paper-এর নিচে নাম তোমার, দায়িত্বও তোমার।
+        </div>
+
+        <p>
+            শুরুতে নীলার গল্প বলেছিলাম — যে ৩০ page-এর PDF দেখে AI-কে দিয়ে summary বানিয়ে fake dataset বসিয়ে
+            ফেলেছিল। এতদূর পড়ে তুমি এখন জানো, নীলার ভুল AI ব্যবহার করা ছিল না — ভুল ছিল <em>যাচাই না করা</em>, চিন্তার
+            দায়িত্ব AI-কে দিয়ে দেওয়া।
+        </p>
+
+        <div class="key-point">
+            <strong>AI তোমার Research Assistant হতে পারে; তোমার Researcher হওয়ার দায়িত্ব AI-কে দিয়ে দিলেই সমস্যা।</strong>
+        </div>
+
+        <p>
+            AI নিয়ে ভয় পেয়ো না, আবার AI-এর কোলে ঘুমিয়েও পোড়ো না। তাকে একজন পরিশ্রমী, দ্রুত, কিন্তু মাঝেমধ্যে
+            মিথ্যাবাদী assistant হিসেবে ভাবো — যার প্রতিটা কাজ তোমাকে যাচাই করতে হয়। thinking, evidence,
+            interpretation আর judgment যতক্ষণ তোমার হাতে, ততক্ষণ AI তোমার সবচেয়ে বড় শক্তি। ছেড়ে দিলেই সবচেয়ে বড় ফাঁদ।
+        </p>
+
+        <div class="success-box">
+            শুভ গবেষণা, ভবিষ্যতের researcher। AI-কে টর্চলাইট বানাও, চোখ বানিয়ো না। 🔦
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+        <p>সংস্করণ: ১.০</p>
+        <p>ভাষা: বাংলা</p>
+        <p>সিরিজ: AI Research বাংলা সিরিজ — Series 1, Episode 01</p>
+        <p>বিষয়: AI-কে Research Assistant হিসেবে ব্যবহার করা, দায়িত্ব গবেষকের হাতে রাখা</p>
+        <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-research-guide/series-1.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+    </div>
+
+</div>
+
+
+<div data-copyright-guard style="text-align:center;max-width:1400px;margin:0 auto;padding:16px 18px 26px;font-size:0.78rem;line-height:1.7;color:#8a8a8a;">© 2025 <strong>Sheikh Thanbir Alam</strong>. All Rights Reserved. <a href="https://thanbirtamim.github.io" style="color:inherit;text-decoration:underline;">thanbirtamim.github.io</a><br>এই লেখা মূল লেখকের সম্পত্তি — লিখিত অনুমতি ছাড়া কপি করে অন্য কোনো ওয়েবসাইট, ব্লগ, বই বা প্ল্যাটফর্মে প্রকাশ/বিতরণ করা কঠোরভাবে নিষিদ্ধ। Content may not be copied or republished without permission.</div>
+<script data-copyright-guard>
+(function(){
+  document.addEventListener('copy', function(e){
+    try{
+      var sel = (window.getSelection && window.getSelection().toString()) || '';
+      if(sel && sel.length > 60){
+        var note = '\n\n\u2014 \u00a9 2025 Sheikh Thanbir Alam. All Rights Reserved.'
+                 + '\nSource: ' + location.href
+                 + '\n\u098f\u0987 \u09b2\u09c7\u0996\u09be \u0985\u09a8\u09c1\u09ae\u09a4\u09bf \u099b\u09be\u09dc\u09be \u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a5\u09be\u0993 \u09aa\u09cd\u09b0\u0995\u09be\u09b6 \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7 \u09a8\u09be\u0964';
+        if(e.clipboardData){ e.clipboardData.setData('text/plain', sel + note); e.preventDefault(); }
+      }
+    }catch(_){}
+  });
+})();
+</script>
+</body>
+</html>
