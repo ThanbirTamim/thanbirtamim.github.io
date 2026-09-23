@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="copyright" content="© 2025 Sheikh Thanbir Alam. All Rights Reserved.">
+    <meta name="rights" content="Proprietary — no reproduction or republishing without written permission.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Agentic Researcher: Research from Idea to Publication with Agentic AI — আধুনিক গবেষকদের কীভাবে AI Agent পরিচালনা ও অর্কেস্ট্রেশন করে আইডিয়া থেকে পাবলিকেশন পর্যন্ত গবেষণা পরিচালনা করতে হবে তার সম্পূর্ণ বাংলা মাস্টার গাইড।">
+    <meta name="keywords" content="The Agentic Researcher, Agentic AI, AI Agent research, literature review AI, research workflow, RAG, research methodology, AI research orchestration, prompt engineering for research, academic writing AI, Sheikh Thanbir Alam">
+    <meta property="og:title" content="The Agentic Researcher: Research from Idea to Publication with Agentic AI">
+    <meta property="og:description" content="শুধু প্রম্পট লেখা নয়; AI Agent-কে কীভাবে দায়িত্ব ভাগ করে দেওয়া, ফাইল সিস্টেমে কনটেক্সট দেওয়া, রেজাল্ট বিশ্লেষণ করানো এবং পাবলিকেশন পর্যন্ত অর্কেস্ট্রেট করা যায় তার পূর্ণাঙ্গ রূপরেখা।">
+    <meta property="og:type" content="article">
+    <meta property="og:locale" content="bn_BD">
+    <title>The Agentic Researcher: Research from Idea to Publication with Agentic AI | AI Research বাংলা সিরিজ</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon2.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Bengali', Roboto, Arial, sans-serif;
+            line-height: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 50px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.25em;
+            color: #666;
+            margin-bottom: 35px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .breadcrumbs {
+            text-align: center;
+            font-size: 0.95em;
+            color: #764ba2;
+            margin-bottom: 25px;
+        }
+
+        .breadcrumbs a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+        h2 {
+            font-size: 1.85em;
+            color: #764ba2;
+            margin: 50px 0 25px 0;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin: 30px 0 18px 0;
+            padding-left: 20px;
+            border-left: 6px solid #667eea;
+        }
+
+        h4 {
+            font-size: 1.25em;
+            color: #555;
+            margin: 22px 0 12px 0;
+        }
+
+        p {
+            margin: 18px 0;
+            line-height: 2;
+            font-size: 1.08em;
+            text-align: justify;
+        }
+
+        .story-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 8px solid #e17055;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.08em;
+            line-height: 1.9;
+        }
+
+        .technical-box {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 8px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+            line-height: 1.9;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            border-left: 8px solid #0984e3;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-size: 1.05em;
+            line-height: 1.9;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+            border-left: 8px solid #00b894;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #1d3557;
+            font-size: 1.05em;
+            line-height: 1.9;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffcccc 0%, #ff9999 100%);
+            border-left: 8px solid #d63031;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            color: #5f0a0a;
+            font-size: 1.05em;
+            line-height: 1.9;
+        }
+
+        .key-point {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            border-left: 8px solid #e17055;
+            padding: 22px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 1.08em;
+            line-height: 1.9;
+        }
+
+        .code-box {
+            background: linear-gradient(135deg, #2d3436 0%, #636e72 100%);
+            color: #00ff00;
+            padding: 25px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 8px solid #667eea;
+            line-height: 1.8;
+            font-size: 0.95em;
+            white-space: pre;
+            direction: ltr;
+            text-align: left;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e17055;
+            font-weight: bold;
+        }
+
+        .diagram {
+            background: #f8f9ff;
+            border: 3px dashed #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            white-space: pre;
+            font-size: 0.92em;
+            line-height: 1.8;
+            direction: ltr;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 1.03em;
+        }
+
+        tr:hover {
+            background-color: #f8f9ff;
+        }
+
+        ul, ol {
+            margin: 20px 0 20px 35px;
+            line-height: 2;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 1.08em;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f5f7ff 0%, #e8e9f6 100%);
+            border-left: 8px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 35px 0;
+        }
+
+        .toc h2 {
+            border: none;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .toc li:before {
+            content: "▶ ";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        strong {
+            color: #764ba2;
+            font-weight: 600;
+        }
+
+        .emoji {
+            font-size: 1.3em;
+            margin: 0 6px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.7) 0%, rgba(118, 75, 162, 0.7) 100%);
+            backdrop-filter: blur(10px);
+            border: 2.5px solid rgba(255, 255, 255, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.4rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+            animation: navBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes navBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            border: 2.5px solid rgba(255, 255, 255, 0.9);
+            transform: scale(1.15) translateY(-6px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+            animation: none;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin: 4px 6px 4px 0;
+            color: #fff;
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+        }
+
+        .meta-pills { text-align: center; margin: 10px 0 30px 0; }
+        .meta-pill {
+            display: inline-block;
+            background: #f0f2ff;
+            color: #764ba2;
+            border: 1.5px solid #667eea;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 4px;
+        }
+
+        .series-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .series-nav a {
+            flex: 1;
+            min-width: 220px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 20px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.05em;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .series-nav a:hover {
+            transform: translateY(-3px);
+        }
+
+        .series-nav .disabled {
+            background: #ccc;
+            color: #888;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 4px dashed #ccc;
+            color: #666;
+            font-size: 1.05em;
+            line-height: 2;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 15px 10px; }
+            .container { padding: 25px 18px; }
+            h1 { font-size: 1.9em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.25em; }
+            p { font-size: 1em; }
+            .diagram, .code-box { font-size: 0.85em; padding: 16px; }
+            .series-nav a { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav-buttons">
+    <a href="../../index.html" class="nav-btn" title="Back to Blog">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <a href="../../../index.html" class="nav-btn" title="Back to Home">
+        <i class="fas fa-home"></i>
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="breadcrumbs">
+        <a href="../../../index.html">Home</a> &raquo;
+        <a href="../../index.html">Blog</a> &raquo;
+        AI Research সিরিজ &raquo; Episode ০২
+    </div>
+
+    <h1><i class="fa-solid fa-robot"></i> The Agentic Researcher</h1>
+    <p class="subtitle">Research from Idea to Publication with Agentic AI — গবেষক হিসেবে AI Agent পরিচালনা, ওয়ার্কস্পেস ডিজাইন ও টাস্ক অর্কেস্ট্রেশনের পূর্ণাঙ্গ মাস্টার গাইড (Series 1, Episode 02)</p>
+
+    <div class="meta-pills">
+        <span class="level-badge">⭐ ADVANCED RESEARCH</span>
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> AI Research Assistant Series</span>
+        <span class="meta-pill"><i class="fas fa-file-lines"></i> Episode 02 / 02</span>
+        <span class="meta-pill"><i class="fas fa-clock"></i> ~৪৫ মিনিট পাঠ</span>
+        <span class="meta-pill"><i class="fas fa-microchip"></i> Agentic Orchestration</span>
+    </div>
+
+    <div class="toc">
+        <h2><span class="emoji">📑</span> বিষয়বস্তুর সূচিপত্র</h2>
+        <ul>
+            <li>১. ভূমিকার দর্শন: কাজের ধরনে এক ঐতিহাসিক রূপান্তর (From Manual Coding to Agentic AI)</li>
+            <li>২. নতুন যুগের সুপার-স্কিল: "Learning How to Play the Agent"</li>
+            <li>৩. গবেষণাকে একটি স্বয়ংক্রিয় পাইপলাইন হিসেবে সাজানো (Research as an Agentic Workflow)</li>
+            <li>৪. রিসার্চ ওয়ার্কস্পেস ও ফাইল সিস্টেম আর্কিটেকচার (Designing the Research Workspace)</li>
+            <li>৫. পেপার অনুসন্ধান ও পদ্ধতিগত সংগ্রহ (Finding & Collecting Research Papers)</li>
+            <li>৬. কাঁচা PDF থেকে মেশিন-রিডেবল নলেজ (From PDF to Machine-Readable Knowledge)</li>
+            <li>৭. পেপারের তথ্যের শ্রেণিবিভাজন (Separating Introduction, Literature Review & Methodology)</li>
+            <li>৮. এজেন্টের সাথে মেথডোলজি ডিজাইন (Designing Research Methodology with Agents)</li>
+            <li>৯. পেপার লেখার আগেই ফিগার আর্কিটেকচার তৈরি (Designing Figures Before Writing)</li>
+            <li>১০. মেথডোলজি থেকে রিপ্রোডিউসিবল কোড ও এক্সপেরিমেন্ট (From Methodology to Code)</li>
+            <li>১১. রেজাল্ট ম্যানেজমেন্ট: কাঁচা ডেটার শৃঙ্খলিত সংরক্ষণ (Never Give the Agent Only Raw Results)</li>
+            <li>১২. এজেন্টের গভীর বিশ্লেষণ বনাম ভাসা-ভাসা সামারি (Agentic Analysis: Why it happened)</li>
+            <li>১৩. রিসার্চ আর্টিফ্যাক্ট দিয়ে পেপার নির্মাণ (Building the Paper from Validated Artifacts)</li>
+            <li>১৪. সাইটেশন যাচাই ও হলুসিনেশন প্রতিরোধ (Citation, Verification & Academic Integrity)</li>
+            <li>১৫. পূর্ণাঙ্গ এন্ড-টু-এন্ড বাস্তব কেস স্টাডি (Complete Hypothetical Project Walkthrough)</li>
+            <li>১৬. দীর্ঘমেয়াদি প্রজেক্টে মেমোরি ও কনটেক্সট রক্ষা (Managing Long Agentic Projects)</li>
+            <li>১৭. রিসার্চ এজেন্টের জন্য স্ট্রাকচার্ড প্রম্পট লাইব্রেরি (Prompt Architecture for Research Agents)</li>
+            <li>১৮. একজন Agentic Researcher-এর Master Checklist (চূড়ান্ত রূপরেখা)</li>
+        </ul>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="section">
+        <h2><span class="emoji">🏛️</span> ১. ভূমিকার দর্শন: কাজের ধরনে এক ঐতিহাসিক রূপান্তর</h2>
+
+        <p>
+            দশ থেকে পনেরো বছর আগের সফটওয়্যার ইঞ্জিনিয়ারিং কিংবা একাডেমিক গবেষণার চিত্রটি একবার মনে করা যাক। তখন একজন প্রোগ্রামার বা গবেষককে তাঁর কাজের প্রতিটি ক্ষুদ্রাতিক্ষুদ্র পদক্ষেপ নিজের হাতে সম্পাদন করতে হতো। ভেরিয়েবল ঘোষণা, জটিল ফর-লুপ লেখা, মেমোরি অপ্টিমাইজেশন, লাইব্রেরির প্রতিটি ফাংশন ম্যানুয়াল দেখে মুখস্থ করা, ঘন্টার পর ঘণ্টা ব্যয় করে বাগ ডিবাগ করা, কিংবা পেপারের টেবিল অব কন্টেন্টস হাতে টাইপ করা—সবকিছুই ছিল কায়িক ও মানসিক শ্রমের এক নিঃসীম সংমিশ্রণ।
+        </p>
+
+        <p>
+            এরপর এলো প্রাথমিক কৃত্রিম বুদ্ধিমত্তা ও কোডিং অ্যাসিস্ট্যান্টের যুগ—যেমন GitHub Copilot কিংবা ChatGPT-র প্রাথমিক সংস্করণ। এই যুগে আমরা দেখলাম লাইন-লেভেল অটোকমপ্লিট; অর্থাৎ গবেষক কোড বা টেক্সট লিখছেন, আর এআই তার পরবর্তী দুই-তিন লাইন অনুমান করে লিখে দিচ্ছে। এটি নিঃসন্দেহে কাজকে কিছুটা দ্রুত করেছিল, কিন্তু মূল কাজের গতিপ্রকৃতি অপরিবর্তিতই থেকে গিয়েছিল।
+        </p>
+
+        <div class="key-point">
+            আজ আমরা প্রবেশ করেছি <strong>Agentic AI (স্বায়ত্তশাসিত এআই এজেন্ট)</strong>-এর যুগে। এই যুগের মূল দর্শনটি চিরাচরিত সমস্ত নিয়ম বদলে দিয়েছে:
+            <br><br>
+            <strong>"আগে আমরা নিজের হাতে প্রতিটি কাজ করতাম। কিন্তু Agentic যুগে সবচেয়ে গুরুত্বপূর্ণ দক্ষতা শুধু কাজটি নিজের হাতে করতে জানা নয়; বরং সেই কাজটিকে সুনির্দিষ্ট যৌক্তিক ধাপে ভাগ করা, প্রস্তুত করা, ফাইল ও কনটেক্সটের মাধ্যমে এজেন্টের কাছে অর্পণ করা, কাজের তদারকি করা, আউটপুট ভ্যালিডেট করা এবং সামগ্রিক ওয়ার্কফ্লো পরিচালনা (Orchestrate) করতে জানা।"</strong>
+        </div>
+
+        <p>
+            একটি সুন্দর রূপকের সাহায্যে বিষয়টি হৃদয়ঙ্গম করা যাক:
+        </p>
+
+        <div class="story-box">
+            <strong>🏠 স্থাপত্য বনাম নির্মাণশ্রমের উপমা:</strong><br><br>
+            অতীতে একজন গবেষক ছিলেন এমন এক নির্মাতার মতো, যাঁকে একটি অট্টালিকা বানানোর জন্য নিজের হাতে মাটি কাটতে হতো, প্রতিটি ইট বহন করে আনতে হতো এবং সিমেন্ট গুলে একটি একটি করে ইট গাঁথতে হতো। 
+            <br><br>
+            আধুনিক Agentic AI যুগে গবেষক আর সাধারণ রাজমিস্ত্রি নন; তিনি হলেন একজন <strong>চিফ আর্কিটেক্ট (Chief Architect) এবং রিসার্চ ডিরেক্টর (Research Director)</strong>। আপনার হাতে রয়েছে অত্যন্ত শক্তিশালী, দ্রুতগামী এবং দক্ষ এক কনস্ট্রাকশন টিম (AI Agents)। কিন্তু আপনি যদি প্রধান স্থপতি হিসেবে তাদের একটি নিখুঁত নকশা (Blueprint), সঠিক নির্মাণসামগ্রী (Context & Evidence), এবং কঠোর গুণমান যাচাইয়ের মাপকাঠি না দেন—তবে সেই কর্মীবাহিনী যত দক্ষই হোক না কেন, নির্মিত বাড়িটি ভেঙে পড়বে কিংবা সম্পূর্ণ ভুল পথে নির্মিত হবে।
+        </div>
+
+        <div class="diagram">
+┌────────────────────────────────────────────────────────────────────────┐
+│                        TRADITIONAL RESEARCH ERA                        │
+│                                                                        │
+│  Researcher (All Manual Steps):                                        │
+│  Idea ➔ Search ➔ Download ➔ Read ➔ Notes ➔ Gap ➔ Methodology          │
+│  ➔ Code ➔ Experiment ➔ Raw Results ➔ Figures ➔ Write ➔ Format ➔ Submit │
+└────────────────────────────────────────────────────────────────────────┘
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                          AGENTIC RESEARCH ERA                          │
+│                                                                        │
+│  Human Researcher (Research Director / Orchestrator):                  │
+│  • Core Research Questions   • Scientific Reasoning   • Novelty Check  │
+│  • Architecture Design       • Evidence Verification  • Final Decision │
+│                                                                        │
+│                               ↕ ↕ ↕                                    │
+│                     [ Structured Workspace ]                           │
+│                               ↕ ↕ ↕                                    │
+│                                                                        │
+│  AI Agents (Autonomous Execution & Synthesis):                         │
+│  • Source Processing    • Paper Markdown Extraction   • Code Scaffolding│
+│  • Experiment Execution • Data Analysis & Metrics     • Paper Drafts   │
+└────────────────────────────────────────────────────────────────────────┘
+        </div>
+
+        <div class="warning-box">
+            <strong>🚨 সবচেয়ে বড় ভুল ধারণা:</strong><br>
+            Agentic AI মানে কখনোই এটি নয় যে—"এআই আমার হয়ে সম্পূর্ণ গবেষণাটি করে দেবে।" এআই বৈজ্ঞানিক সততা, নৈতিক দায়বদ্ধতা বা মৌলিক মানবিক প্রজ্ঞার বিকল্প হতে পারে না। 
+            <strong>রিসার্চ প্রশ্ন নির্বাচন, নতুনত্ব (Novelty), বৈজ্ঞানিক সিদ্ধান্ত, ডেটার সত্যতা যাচাই এবং চূড়ান্ত সিদ্ধান্তের সার্বিক দায়ভার আজীবন মানব গবেষকের হাতেই থাকবে।</strong>
+        </div>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="section">
+        <h2><span class="emoji">🎮</span> ২. নতুন যুগের সুপার-স্কিল: "Learning How to Play the Agent"</h2>
+
+        <p>
+            সাধারণ একজন এআই ব্যবহারকারী এবং একজন পেশাদার **Agentic Researcher**-এর মধ্যে সবচেয়ে বড় পার্থক্য স্পষ্ট হয় তাঁদের নির্দেশের ধরনে। একজন অপেশাদার মানুষ চ্যাটবট খুলে সরাসরি বলে দেন: <em>"আমাকে অমুক বিষয়ের ওপর একটি রিসার্চ পেপার লিখে দাও।"</em>
+        </p>
+
+        <p>
+            ফলাফল যা আসে তা হলো সম্পূর্ণ অকেজো, ভাসা-ভাসা, মনগড়া রেফারেন্সে ভরা এক কল্পিত লেখার স্তূপ (Hallucination)। কারণ মডেলটির কাছে কোনো নির্দিষ্ট পরিপ্রেক্ষিত বা প্রমাণ ছিল না।
+        </p>
+
+        <div class="technical-box">
+            <strong>💎 এজেন্টের স্বর্ণসূত্র (The Golden Axiom):</strong><br><br>
+            • <code>Bad Context ➔ Bad Agent Output</code> (ত্রুটিপূর্ণ কনটেক্সট দিলে ফলাফলও ত্রুটিপূর্ণ হবে)<br>
+            • <code>Good Context ➔ Good Agent Output</code> (পরিচ্ছন্ন কনটেক্সট দিলে ফলাফল মানসম্মত হবে)<br>
+            • <code>Structured Context + Clear Tasks + Verified Evidence + Validation Checkpoints ➔ Reliable Agent Workflow</code> (কাঠামোবদ্ধ ফাইল, সুস্পষ্ট কাজ, যাচাইকৃত প্রমাণ ও পর্যবেক্ষণ দিলে তবেই জন্ম নেয় একটি আন্তর্জাতিক মানের গবেষণা)
+        </div>
+
+        <h3>"Playing the Agent" আসলে কী?</h3>
+        <p>
+            এজেন্টকে সঠিকভাবে পরিচালনা করার অর্থ হলো নিচের উপাদানগুলোর ওপর পূর্ণ কর্তৃত্ব প্রতিষ্ঠা করা:
+        </p>
+
+        <ul>
+            <li><strong>কনটেক্সট সরবরাহ (Context Provisioning):</strong> এজেন্টের মেমোরিতে অপ্রয়োজনীয় কোটি কথা না ঢুকিয়ে শুধুমাত্র সংশ্লিষ্ট কাজের জন্য দরকারি ফাইল ও ডকুমেন্টস যুক্ত করা।</li>
+            <li><strong>সুনির্দিষ্ট উদ্দেশ্য (Defining Objectives):</strong> "পেপারটি ভালো করো"—এমন অস্পষ্ট কথা না বলে "এই সেকশনে পূর্ববর্তী তিনটি অ্যালগরিদমের মেমোরি খরচের সাথে আমাদের পদ্ধতির একটি তুলনামূলক অনুচ্ছেদ লেখো"—এমন সুনির্দিষ্ট লক্ষ্য বেঁধে দেওয়া।</li>
+            <li><strong>কাজের ব্যবচ্ছেদ (Task Decomposition):</strong> একটি বিশাল পর্বতসম কাজকে (যেমন পুরো পেপার লেখা) ১০টি ক্ষুদ্র ও স্বয়ংসম্পূর্ণ পদক্ষেপে বিভক্ত করে একের পর এক সম্পন্ন করানো।</li>
+            <li><strong>স্কোপ নিয়ন্ত্রণ ও সীমা নির্ধারণ (Scope Control):</strong> এজেন্টকে স্পষ্ট বলে দেওয়া সে কী করতে পারবে এবং কী করতে পারবে না (যেমন: "তুমি কোনো নতুন রেফারেন্স নিজে থেকে বানাবে না; কেবল প্রদত্ত references.bib ফাইল থেকেই উদ্ধৃতি দেবে")।</li>
+            <li><strong>চেকপয়েন্ট ও ভ্যালিডেশন (Checkpoints & Human-in-the-Loop):</strong> এজেন্টের প্রতিটি ধাপ শেষ হওয়ার পর মানুষের চোখে তার ফলাফল যাচাই করে পরবর্তী ধাপে অগ্রসর হওয়ার অনুমোদন দেওয়া।</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>বৈশিষ্ট্য</th>
+                <th>সাধারণ এআই ব্যবহারকারী (User)</th>
+                <th>রিসার্চ অর্কেস্ট্রেটর (Agentic Researcher)</th>
+            </tr>
+            <tr>
+                <td><strong>কাজের ধরন</strong></td>
+                <td>একক প্রম্পটে সম্পূর্ণ সমাধান চাওয়া ("Write my paper")</td>
+                <td>ধাপে ধাপে কাজ ভাগ করে এজেন্টকে চালনা করা</td>
+            </tr>
+            <tr>
+                <td><strong>কনটেক্সট</strong></td>
+                <td>শূন্য বা মাত্র কয়েক লাইনের সাধারণ চ্যাট প্রম্পট</td>
+                <td>কাঠামোবদ্ধ ওয়ার্কস্পেস, পেপারের এক্সট্র্যাক্ট করা ফাইল ও এভিডেন্স</td>
+            </tr>
+            <tr>
+                <td><strong>রেফারেন্স</strong></td>
+                <td>মডেলের মুখস্থ স্মৃতি থেকে রেফারেন্স তৈরি করতে বলা (যা প্রায়ই ভুয়া হয়)</td>
+                <td>যাচাইকৃত DOI সমৃদ্ধ বিবলিওগ্রাফি ফাইল সরবরাহ করা</td>
+            </tr>
+            <tr>
+                <td><strong>দায়িত্ব</strong></td>
+                <td>এআই-এর আউটপুটকে অন্ধের মতো গ্রহণ করা</td>
+                <td>প্রতিটি দাবি ও পরিসংখ্যান ক্রস-ভেরিফাই করে দায়িত্ব গ্রহণ করা</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="section">
+        <h2><span class="emoji">🔄</span> ৩. গবেষণাকে একটি স্বয়ংক্রিয় পাইপলাইন হিসেবে সাজানো</h2>
+
+        <p>
+            একটি সফল একাডেমিক গবেষণাকে কখনোই একটিমাত্র বিশালাকার কাজ ভাবা যাবে না। আধুনিক সফটওয়্যার ইঞ্জিনিয়ারিংয়ে যেমন আমরা CI/CD পাইপলাইনের মাধ্যমে কোড টেস্ট ও ডিপ্লয় করি, তেমনি পুরো গবেষণাকে একটি সুশৃঙ্খল **এন্ড-টু-এন্ড রিসার্চ পাইপলাইন (Research Pipeline)** হিসেবে রূপদান করতে হবে।
+        </p>
+
+        <div class="diagram">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     THE AGENTIC RESEARCH PIPELINE                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+  [ Stage 1: Research Architecture ]
+  Research Goal ➔ Research Questions ➔ Methodology Constraints ➔ Workspace Setup
+                                     │
+                                     ▼
+  [ Stage 2: Knowledge Ingestion ]
+  Paper Search ➔ PDF Ingestion ➔ Machine-Readable Markdown ➔ Metadata Tagging
+                                     │
+                                     ▼
+  [ Stage 3: Synthesis & Gaps ]
+  Literature Matrix ➔ Strengths/Weaknesses ➔ Research Gap Formulation
+                                     │
+                                     ▼
+  [ Stage 4: Execution Engine ]
+  Methodology Blueprint ➔ Implementation Plan ➔ Code ➔ Experiments ➔ Metrics
+                                     │
+                                     ▼
+  [ Stage 5: Synthesis & Construction ]
+  Structured Analysis ➔ Figure/Table Specs ➔ Section-by-Section Manuscript
+                                     │
+                                     ▼
+  [ Stage 6: Audit & Publication ]
+  Citation Verification ➔ Hallucination Check ➔ Format to DOCX/PDF ➔ Human Review
+        </div>
+
+        <p>
+            এই পাইপলাইনের প্রতিটি স্তরে গবেষক এবং এজেন্টের ভূমিকা থাকে অত্যন্ত পরিষ্কার ও সুনির্দিষ্ট। গবেষক প্রতিটি স্তরের প্রবেশদ্বার (Gatekeeper) হিসেবে ইনপুট দেন এবং এজেন্টের তৈরি আউটপুট যাচাই করে সবুজ সংকেত প্রদান করেন।
+        </p>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="section">
+        <h2><span class="emoji">📁</span> ৪. রিসার্চ ওয়ার্কস্পেস ও ফাইল সিস্টেম আর্কিটেকচার</h2>
+
+        <p>
+            লার্জ ল্যাঙ্গুয়েজ মডেলের একটি বড় সীমাবদ্ধতা হলো তার কনটেক্সট উইন্ডোর সীমাবদ্ধতা এবং দীর্ঘ চ্যাটে অতীতের তথ্য ভুলে যাওয়ার প্রবণতা। যদি আপনি এজেন্টের সাথে একটি সাধারণ চ্যাট থ্রেডে দুই মাস ধরে কথা বলেন, তবে ৫০তম দিনে গিয়ে এজেন্ট প্রথম দিনের সিদ্ধান্ত সম্পূর্ণ ভুলে যাবে।
+        </p>
+
+        <div class="key-point">
+            <strong>ফাইল সিস্টেম হলো এজেন্টের দীর্ঘমেয়াদি বাহ্যিক স্মৃতি (External Memory)!</strong><br>
+            চ্যাট উইন্ডোর ওপর ভরসা না করে গবেষণার প্রতিটি ক্ষুদ্র অগ্রগতি, সিদ্ধান্ত, পেপারের সামারি ও এক্সপেরিমেন্টের লগ সরাসরি ফাইল আকারে সেভ করতে হবে। এজেন্ট যখনই কোনো কাজ করবে, সে এই ফাইলগুলো পড়ে নিজের স্মৃতি পুনরুজ্জীবিত করে নেবে।
+        </div>
+
+        <p>
+            একটি আদর্শ প্রফেশনাল Agentic Research Workspace-এর ডিরেক্টরি কাঠামো নিচে প্রদর্শন করা হলো:
+        </p>
+
+        <div class="code-box">
+my-research-project/
+│
+├── README.md                   # প্রজেক্টের সারসংক্ষেপ ও বর্তমান অবস্থা
+├── PROJECT_STATE.md            # কোন ধাপে আছি, পরবর্তী কাজ কী (Agent Memory)
+├── DECISIONS.md                # গবেষণার সমস্ত মেথডোলজিক্যাল সিদ্ধান্তের লগ
+│
+├── 01_problem_definition/
+│   ├── research_questions.md   # সুনির্দিষ্ট গবেষণা প্রশ্ন ও উদ্দেশ্য
+│   └── scope_constraints.md    # গবেষণার সীমা ও কী করা হবে না
+│
+├── 02_literature/
+│   ├── search_queries.md       # কোন কোন ডাটাবেজে কী কিওয়ার্ড দিয়ে খোঁজা হলো
+│   ├── pdfs/                   # সংগৃহীত মূল পেপারের কাঁচা পিডিএফ (Raw PDFs)
+│   ├── extracted_markdown/     # পিডিএফ থেকে কনভার্ট করা মেশিন-রিডেবল পেপার
+│   │   ├── paper_001_chen2023.md
+│   │   ├── paper_002_rahman2024.md
+│   │   └── ...
+│   ├── literature_matrix.md    # সমস্ত পেপারের তুলনামূলক টেবিল
+│   └── research_gaps.md        # বর্তমান গবেষণার ফাঁক ও আমাদের নতুনত্ব
+│
+├── 03_methodology/
+│   ├── architecture_spec.md    # প্রস্তাবিত সিস্টেম বা পদ্ধতির তাত্ত্বিক নকশা
+│   ├── algorithms.md           # গাণিতিক সমীকরণ ও অ্যালগরিদমের সিউডোকোড
+│   └── evaluation_protocol.md  # কোন কোন মেট্রিক্সে মডেল যাচাই করা হবে
+│
+├── 04_data/
+│   ├── raw/                    # কাঁচা অপরিবর্তিত ডেটাসেট
+│   ├── processed/              # পরিষ্কার ও প্রিপ্রসেস করা ডেটাসেট
+│   └── data_dictionary.md      # প্রতিটি কলাম বা ফিচারের সুনির্দিষ্ট অর্থ
+│
+├── 05_experiments/
+│   ├── code/                   # পাইথন স্ক্রিপ্ট ও রিপোজিটরি
+│   ├── configs/                # হাইপারপ্যারামিটার ও এক্সপেরিমেন্ট সেটিংস
+│   ├── logs/                   # এক্সপেরিমেন্ট রানের টার্মিনাল লগ
+│   └── results/                # প্রাপ্ত নির্ভুল পরিসংখ্যান ও মেট্রিক্স
+│       ├── metrics_summary.json
+│       └── ablation_results.csv
+│
+├── 06_artifacts/
+│   ├── figures/                # সিস্টেম আর্কিটেকচার, চার্ট ও গ্রাফের ছবি
+│   └── tables/                 # পেপারের জন্য ফরম্যাট করা Markdown টেবিল
+│
+├── 07_manuscript/              # পেপারের প্রতিটি স্বতন্ত্র সেকশন
+│   ├── 01_abstract.md
+│   ├── 02_introduction.md
+│   ├── 03_related_work.md
+│   ├── 04_methodology.md
+│   ├── 05_experiments_results.md
+│   ├── 06_discussion_limitations.md
+│   └── 07_conclusion.md
+│
+├── 08_references/
+│   ├── references.bib          # যাচাইকৃত বিবটেক্স (BibTeX) ডাটাবেজ
+│   └── doi_verification_log.md # প্রতিটি রেফারেন্সের ডিওআই ভেরিফিকেশন প্রমাণ
+│
+└── 09_build/                   # চূড়ান্ত পাবলিকেশন ড্রাফট
+    ├── paper.docx              # প্রফেশনাল ওয়ার্ড ডকুমেন্ট
+    └── paper.pdf               # সাবমিশনের জন্য প্রস্তুত পিডিএফ
+        </div>
+
+        <div class="info-box">
+            <strong>কেন Markdown?</strong><br>
+            বাইনারি ফাইল (যেমন ডক বা ভারী পিডিএফ) অপেক্ষা প্লেইন-টেক্সট <strong>Markdown (.md)</strong> ফাইল এআই এজেন্টের জন্য শতগুণ বেশি পঠনযোগ্য, টোকেন-সাশ্রয়ী এবং গিট (Git) ভার্সন কন্ট্রোলে নিখুঁতভাবে ট্র্যাক করা যায়।
+        </div>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="section">
+        <h2><span class="emoji">🔍</span> ৫. পেপার অনুসন্ধান ও পদ্ধতিগত সংগ্রহ</h2>
+
+        <p>
+            একাডেমিক পেপার খোঁজার ক্ষেত্রে অনেকেই সাধারণ গুগলে এলোমেলো সার্চ করে প্রথম দুই-তিনটি পেপার নিয়ে কাজ শুরু করেন। একজন সিস্টেমেটিক গবেষকের কাজ হলো প্রাতিষ্ঠানিক ডাটাবেজ ব্যবহার করে বৈজ্ঞানিক পদ্ধতিতে পেপার সংগ্রহ করা।
+        </p>
+
+        <h3>শীর্ষস্থানীয় প্রাতিষ্ঠানিক সার্চ ইঞ্জিনসমূহ:</h3>
+        <ul>
+            <li><strong>Google Scholar:</strong> সর্ববৃহৎ একাডেমিক সার্চ ইঞ্জিন। সাইটেশন ট্র্যাকিং এবং সম্পর্কিত পেপার অনুসন্ধানের জন্য সেরা।</li>
+            <li><strong>Semantic Scholar:</strong> এআই-চালিত সার্চ ইঞ্জিন, যা পেপারের ইনফ্লুয়েনশিয়াল সাইটেশন ও ফিল্ড অব স্টাডি আলাদা করে দেয়।</li>
+            <li><strong>arXiv:</strong> কম্পিউটার সায়েন্স ও এআই-এর সর্বশেষ প্রি-প্রিন্ট রিসার্চ পেপারের উন্মুক্ত ভান্ডার।</li>
+            <li><strong>PubMed:</strong> বায়োমেডিক্যাল ও স্বাস্থ্যসেবা সংক্রান্ত গবেষণার নির্ভরযোগ্য ঠিকানা।</li>
+            <li><strong>IEEE Xplore, ACM Digital Library, ScienceDirect:</strong> পিয়ার-রিভিউড আন্তর্জাতিক কনফারেন্স ও জার্নালের অফিসিয়াল ডাটাবেজ।</li>
+        </ul>
+
+        <div class="technical-box">
+            <strong>🛠️ বুলিয়ান সার্চ (Boolean Search) ও কিওয়ার্ড ইঞ্জিনিয়ারিং:</strong><br>
+            সাধারণ সার্চের বদলে বুলিয়ান অপারেটর (<code>AND</code>, <code>OR</code>, <code>NOT</code>) এবং কোটেশন মার্ক ব্যবহার করে সার্চ স্ট্রিং তৈরি করতে এজেন্টকে নির্দেশ দিন।<br><br>
+            <em>উদাহরণ সার্চ কোয়েরি:</em><br>
+            <code>("air pollution" OR "PM2.5" OR "particulate matter") AND ("respiratory disease" OR "asthma") AND ("machine learning" OR "deep learning") AND ("Dhaka" OR "Bangladesh")</code>
+        </div>
+
+        <p>
+            সংগৃহীত পেপারগুলোর মধ্য থেকে কোনগুলোকে গবেষণায় রাখা হবে আর কোনগুলোকে বাদ দেওয়া হবে, তার একটি কঠোর <strong>Inclusion and Exclusion Criteria</strong> নির্ধারণ করতে হবে। যেমন: শুধুমাত্র বিগত ৫ বছরের পেপার গ্রহণ করা হবে, যেসব পেপারে ডেটাসেটের বর্ণনা নেই সেগুলো বাদ দেওয়া হবে।
+        </p>
+    </div>
+
+    <!-- PART 6 -->
+    <div class="section">
+        <h2><span class="emoji">📄</span> ৬. কাঁচা PDF থেকে মেশিন-রিডেবল নলেজ</h2>
+
+        <p>
+            অধিকাংশ গবেষক যে ভুলটি করেন তা হলো—চ্যাটবটে একটি ৬০ পাতার ভারী পিডিএফ আপলোড করে বলেন: "পেপারটি আমাকে বুঝিয়ে দাও।" 
+            পিডিএফ ফাইল মূলত প্রিন্টিংয়ের জন্য তৈরি; এর ভেতরে দুই কলামের টেক্সট, হেডার, ফুটার, ছবির ক্যাপশন এবং রেফারেন্সের জটিল বিন্যাস থাকে, যা এআই এজেন্টের টোকেন নষ্ট করে এবং ভুল ব্যাখ্যার ঝুঁকি তৈরি করে।
+        </p>
+
+        <div class="key-point">
+            <strong>আধুনিক পদ্ধতি: PDF ➔ Clean Markdown ➔ Structured Metadata Extraction</strong><br>
+            পিডিএফ থেকে টেক্সট এক্সট্র্যাক্ট করে প্রতিটি পেপারের জন্য একটি করে একক <code>paper_XXX.md</code> ফাইল তৈরি করতে হবে, যার শীর্ষে থাকবে একটি মানসম্মত মেটাডেটা ব্লক।
+        </div>
+
+        <p>
+            প্রতিটি পেপারের শুরুতে নিচে প্রদর্শিত কাঠামোর মতো একটি স্ট্যান্ডার্ড মেটাডেটা ব্লক থাকা আবশ্যক:
+        </p>
+
+        <div class="code-box">
+---
+paper_id: "chen2023_deep_respiratory"
+title: "Deep Multimodal Learning for Urban Respiratory Health Risk Prediction"
+authors: ["Chen, L.", "Zhang, Y.", "Rahman, M."]
+year: 2023
+venue: "IEEE Transactions on Biomedical Engineering"
+doi: "10.1109/TBME.2023.1234567"
+core_problem: "বায়ুদূষণের তাৎক্ষণিক ও দীর্ঘমেয়াদি প্রভাবে শ্বাসকষ্টের ঝুঁকি প্রেডিক্ট করা"
+dataset_used: "Beijing Air Quality Dataset (35,000 records) + Hospital EHR"
+methodology: "Spatial-Temporal Graph Convolutional Network (ST-GCN) + LSTM"
+key_results: "AUC-ROC: 0.89, F1-score: 0.84 (baseline-এর চেয়ে ৮% উন্নত)"
+limitations: "শুধুমাত্র একটি একক শহরের ডেটায় টেস্ট করা; গ্রামীণ পরিবেশ অন্তর্ভুক্ত নয়"
+research_gap_identified: "মাল্টি-সিটি সাধারণীকরণ ও ক্লিনিক্যাল ল্যাব রিপোর্টের অনুপস্থিতি"
+---
+        </div>
+
+        <p>
+            যখন আপনার ওয়ার্কস্পেসে ৫০টি পেপারের এমন পরিচ্ছন্ন মেটাডেটা ফাইল সাজানো থাকবে, তখন এআই এজেন্ট নিমেষের মধ্যে সেই ৫০টি ফাইল স্ক্যান করে সমস্ত পদ্ধতির তুলনা, সীমাবদ্ধতা এবং গবেষণার ফাঁক (Research Gap) বের করে ফেলতে পারবে।
+        </p>
+    </div>
+
+    <!-- PART 7 -->
+    <div class="section">
+        <h2><span class="emoji">🗂️</span> ৭. পেপারের তথ্যের শ্রেণিবিভাজন</h2>
+
+        <p>
+            পেপার পড়া এবং তথ্য সংগ্রহের সময় সবচেয়ে বড় কৌশল হলো সংগৃহীত জ্ঞানকে পেপারের নির্দিষ্ট সেকশন অনুযায়ী আলাদা ড্রয়ারে সাজিয়ে রাখা। প্রতিটি সেকশনের মনস্তাত্ত্বিক উদ্দেশ্য আলাদা:
+        </p>
+
+        <table>
+            <tr>
+                <th>সেকশন</th>
+                <th>সংগৃহীত তথ্যের ধরন (Knowledge Category)</th>
+                <th>কী কী তথ্য খুঁজবেন ও সংরক্ষণ করবেন?</th>
+            </tr>
+            <tr>
+                <td><strong>Introduction</strong></td>
+                <td>সমস্যার গভীরতা ও পটভূমি (Problem & Motivation)</td>
+                <td>বিশ্ব স্বাস্থ্য সংস্থার পরিসংখ্যান, সমস্যার সামাজিক ও অর্থনৈতিক ক্ষতি, কেন এই সমস্যা এখনই সমাধান করা জরুরি।</td>
+            </tr>
+            <tr>
+                <td><strong>Literature Review</strong></td>
+                <td>বিগত কাজের তুলনামূলক রূপরেখা (Previous Work & Gaps)</td>
+                <td>কে কোন অ্যালগরিদম ব্যবহার করেছিল, তাদের ডেটাসেট কী ছিল, তাদের মূল সাফল্য এবং কোন কোন ক্ষেত্রে তারা ব্যর্থ হয়েছে।</td>
+            </tr>
+            <tr>
+                <td><strong>Methodology</strong></td>
+                <td>কারিগরি স্থাপত্য ও নকশা (Technical Architecture)</td>
+                <td>ডেটা প্রিপ্রসেসিং ধাপ, ফিচার ইঞ্জিনিয়ারিং, গাণিতিক সমীকরণ, হাইপারপ্যারামিটার এবং মডেল আর্কিটেকচার।</td>
+            </tr>
+            <tr>
+                <td><strong>Results & Discussion</strong></td>
+                <td>পরিসংখ্যান ও বাস্তব প্রমাণ (Empirical Evidence)</td>
+                <td>তুলনামূলক বেঞ্চমার্ক টেবিল, অ্যাকুরেসি/এফ১-স্কোর, অপ্রত্যাশিত ফলাফল ও তার বৈজ্ঞানিক ব্যাখ্যা।</td>
+            </tr>
+        </table>
+
+        <div class="success-box">
+            এই শ্রেণিবিভাজন নিশ্চিত করে যে, যখন আপনি এজেন্টকে বলবেন "Introduction সেকশনের প্রথম ড্রাফট তৈরি করো", এজেন্ট তখন শুধু Introduction ফোল্ডারের ফাইলগুলো পড়বে; সে অপ্রাসঙ্গিক অ্যালগরিদমিক সমীকরণ এনে আপনার ভূমিকার স্বাভাবিক প্রবাহ নষ্ট করবে না।
+        </div>
+    </div>
+
+    <!-- PART 8 -->
+    <div class="section">
+        <h2><span class="emoji">⚙️</span> ৮. এজেন্টের সাথে মেথডোলজি ডিজাইন</h2>
+
+        <p>
+            গবেষণার সবচেয়ে গুরুত্বপূর্ণ হৃদয় হলো তার মেথডোলজি (Methodology)। এখানে এজেন্টকে অন্ধভাবে কোনো পদ্ধতি আবিষ্কার করতে বলবেন না; বরং আপনার চিন্তা ও নকশাকে নিখুঁত করতে এজেন্টকে একজন অভিজ্ঞ সহকারী হিসেবে ব্যবহার করুন।
+        </p>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>🤖 এআই যে কাজে সাহায্য করতে পারে:</strong><br>
+                • বিদ্যমান বিভিন্ন মডেলের শক্তি ও দুর্বলতার তুলনা করা<br>
+                • আর্কিটেকচারের যৌক্তিক ফাঁক বা অসংগতি খুঁজে বের করা<br>
+                • সম্ভাব্য মূল্যায়ন মেট্রিক্স (Evaluation Metrics) সুপারিশ করা<br>
+                • জটিল অ্যালগরিদমের সিউডোকোড বা ফ্লোচার্ট স্পেসিফিকেশন তৈরি করা
+            </div>
+            <div class="comparison-item">
+                <strong>🧠 গবেষক যা নিজে সিদ্ধান্ত নেবেন:</strong><br>
+                • গবেষণার আসল অভিনবত্ব ও নতুনত্ব (Novelty)<br>
+                • পদ্ধতির বৈজ্ঞানিক যৌক্তিকতা ও গ্রহণযোগ্যতা<br>
+                • ডেটাসেটের সীমাবদ্ধতা ও বাস্তব জীবনের প্রযোজ্যতা<br>
+                • নৈতিক ও আইনি দিকসমূহ (Ethical Considerations)
+            </div>
+        </div>
+
+        <p>
+            মেথডোলজিকে সর্বদা সাতটি ধাপে ভেঙে সাজান: 
+            <code>Problem ➔ Input ➔ Preprocessing ➔ Model Architecture ➔ Training Engine ➔ Output ➔ Evaluation Protocol</code>।
+        </p>
+    </div>
+
+    <!-- PART 9 -->
+    <div class="section">
+        <h2><span class="emoji">🎨</span> ৯. পেপার লেখার আগেই ফিগার আর্কিটেকচার তৈরি</h2>
+
+        <p>
+            অধিকাংশ গবেষক পেপারের লেখা সম্পূর্ণ শেষ করার পর একদম শেষ মুহূর্তে কিছু সাদামাটা ছবি বা গ্রাফ তৈরি করেন। এটি একটি মারাত্মক ভুল কৌশল। আন্তর্জাতিক মানের গবেষকদের গোপন কৌশল হলো: **পেপার লেখার আগেই পেপারের সমস্ত চিত্র ও আর্কিটেকচার চূড়ান্ত করে ফেলা।**
+        </p>
+
+        <div class="key-point">
+            একটি চমৎকার আর্কিটেকচার ডায়াগ্রাম পুরো গবেষণার ব্লু-প্রিন্ট হিসেবে কাজ করে। যখন পেপারের ফিগারগুলো প্রস্তুত থাকে, তখন টেক্সট লেখা হয়ে ওঠে কেবল সেই ছবির প্রতিটি অংশকে ধাপে ধাপে বর্ণনা করার সহজ প্রক্রিয়া।
+        </div>
+
+        <p>একটি গবেষণাপত্রে মূলত নিচের ধরনের ভিজ্যুয়াল উপাদানগুলো প্রয়োজন হয়:</p>
+        <ul>
+            <li><code>system_architecture.png</code>: পুরো সিস্টেমের উচ্চপর্যায়ের এন্ড-টু-এন্ড স্থাপত্য নকশা।</li>
+            <li><code>data_pipeline.png</code>: কাঁচা ডেটা থেকে পরিষ্কার ফিচার তৈরি হওয়ার ফ্লোচার্ট।</li>
+            <li><code>methodology_flow.png</code>: অ্যালগরিদমের ভেতরের গাণিতিক রূপান্তর ও লেয়ারসমূহ।</li>
+            <li><code>result_comparison.png</code>: বেসলাইন মডেলগুলোর সাথে আমাদের প্রস্তাবিত পদ্ধতির তুলনামূলক গ্রাফ বা বার চার্ট।</li>
+            <li><code>ablation_study.png</code>: মডেলের বিভিন্ন উপাদান বাদ দিলে পারফরম্যান্সে কী প্রভাব পড়ে তার বিশ্লেষণাত্মক প্লট।</li>
+        </ul>
+
+        <p>
+            এজেন্টকে দিয়ে আপনি এই চিত্রগুলোর জন্য Mermaid.js, PlantUML কিংবা পাইথন Matplotlib কোড তৈরি করিয়ে নিতে পারেন, যা পরবর্তীতে হাই-রেজোলিউশন ভেক্টর গ্রাফিক্সে রূপান্তর করা যায়।
+        </p>
+    </div>
+
+    <!-- PART 10 -->
+    <div class="section">
+        <h2><span class="emoji">💻</span> ১০. মেথডোলজি থেকে রিপ্রোডিউসিবল কোড ও এক্সপেরিমেন্ট</h2>
+
+        <p>
+            বৈজ্ঞানিক গবেষণার অন্যতম মূল শর্ত হলো **পুনরুৎপাদনযোগ্যতা (Reproducibility)**। অর্থাৎ বিশ্বের যেকোনো প্রান্তের অন্য একজন গবেষক যদি আপনার ডেটাসেট ও কোড রান করেন, তবে তিনিও যেন হুবহু আপনার গবেষণার মতো ফলাফল পান।
+        </p>
+
+        <div class="info-box">
+            <strong>কোডিংয়ের এজেন্টিক ওয়ার্কফ্লো:</strong><br>
+            কখনোই এজেন্টকে বলবেন না: "আমার মডেলের সম্পূর্ণ কোড লিখে দাও।"<br>
+            বরং পদ্ধতিটি হবে:<br>
+            <code>Methodology Spec ➔ Implementation Plan ➔ Modular Code Scaffolding ➔ Unit Tests ➔ Seed-Fixed Execution ➔ Automated Logging</code>
+        </div>
+
+        <p>
+            কোড লেখার সময় নিচের চারটি নিয়ম কঠোরভাবে অনুসরণ করতে হবে:
+        </p>
+        <ol>
+            <li><strong>Random Seed ফিক্স করা:</strong> সমস্ত র্যান্ডম নম্বর জেনারেটর (NumPy, PyTorch, Scikit-learn)-এ নির্দিষ্ট সিড (যেমন <code>seed=42</code>) নির্ধারণ করা, যাতে প্রতিবার একই ফলাফল আসে।</li>
+            <li><strong>কনফিগারেশন আলাদা রাখা:</strong> কোডের ভেতরে হাইপারপ্যারামিটার হার্ডকোড না করে <code>config.yaml</code> ফাইলে সংরক্ষণ করা।</li>
+            <li><strong>মডুলার ডিরেক্টরি:</strong> ডেটা লোডার, মডেল সংজ্ঞা, ট্রেইনিং লুপ এবং ইভ্যালুয়েশন আলাদা আলাদা ফাইলে রাখা।</li>
+            <li><strong>স্বয়ংক্রিয় মেট্রিক্স সেভিং:</strong> টার্মিনালের আউটপুট চোখের দেখায় না রেখে সরাসরি JSON বা CSV ফাইলে স্বয়ংক্রিয়ভাবে রেকর্ড করা।</li>
+        </ol>
+    </div>
+
+    <!-- PART 11 -->
+    <div class="section">
+        <h2><span class="emoji">📊</span> ১১. রেজাল্ট ম্যানেজমেন্ট: কাঁচা ডেটার শৃঙ্খলিত সংরক্ষণ</h2>
+
+        <p>
+            এক্সপেরিমেন্ট চালানোর পর যে ভুলটি প্রায়ই ঘটে তা হলো—টার্মিনাল থেকে স্ক্রিনশট বা কিছু বিচ্ছিন্ন সংখ্যা নিয়ে পেপারে বসিয়ে দেওয়া। এজেন্টকে দিয়ে গভীর বৈজ্ঞানিক বিশ্লেষণ করাতে হলে ফলাফলগুলোকে অত্যন্ত কাঠামোবদ্ধভাবে <code>results/</code> ফোল্ডারে রাখতে হবে।
+        </p>
+
+        <div class="code-box">
+results/
+├── raw_logs/
+│   ├── run_001_baseline_rf.log
+│   └── run_002_proposed_model.log
+├── metrics/
+│   ├── comparison_table.json
+│   └── cross_validation_folds.csv
+└── summary/
+    └── experiment_findings.md
+        </div>
+
+        <p>
+            একটি নমুনা <code>metrics_summary.json</code> ফাইলের কাঠামো:
+        </p>
+
+        <div class="code-box">
+{
+  "experiment_id": "EXP_2025_03",
+  "dataset": "Dhaka_Urban_Respiratory_v1",
+  "samples_evaluated": 12500,
+  "models": {
+    "Logistic_Regression": { "accuracy": 0.712, "precision": 0.684, "recall": 0.701, "f1": 0.692, "auc": 0.745 },
+    "Random_Forest":       { "accuracy": 0.795, "precision": 0.778, "recall": 0.765, "f1": 0.771, "auc": 0.832 },
+    "XGBoost":             { "accuracy": 0.834, "precision": 0.821, "recall": 0.812, "f1": 0.816, "auc": 0.878 },
+    "Proposed_Multimodal": { "accuracy": 0.887, "precision": 0.879, "recall": 0.865, "f1": 0.872, "auc": 0.924 }
+  },
+  "runtime_seconds": 142.5,
+  "gpu_memory_mb": 4200
+}
+        </div>
+
+        <div class="technical-box">
+            যখন এজেন্টের সামনে এই ধরনের সুসংগঠিত JSON ফাইল দেওয়া হয়, তখন সে প্রতিটি মডেলের তুলনামূলক লাভ-ক্ষতি, পারসেন্টেজ ইম্প্রুভমেন্ট এবং ট্রেড-অফ নিয়ে অত্যন্ত উচ্চমানের একাডেমিক প্যারাগ্রাফ রচনা করতে পারে।
+        </div>
+    </div>
+
+    <!-- PART 12 -->
+    <div class="section">
+        <h2><span class="emoji">🧠</span> ১২. এজেন্টের গভীর বিশ্লেষণ বনাম ভাসা-ভাসা সামারি</h2>
+
+        <p>
+            এআই চ্যাটবটের সবচেয়ে বড় দুর্বলতা হলো সে স্বভাবগতভাবে অলস; সে শুধুই বলে দেয় <em>কী ঘটেছে (What happened)</em>। কিন্তু একটি পিয়ার-রিভিউড রিসার্চ পেপারের মূল দাবি হলো <em>কেন এমন ঘটল (Why did it happen)</em>।
+        </p>
+
+        <div class="comparison">
+            <div class="comparison-item">
+                <strong>❌ অগভীর সামারি (Shallow Summary):</strong><br>
+                "আমাদের মডেল ৮৮.৭% একুরেসি পেয়েছে যা অন্যান্য মডেলের চেয়ে বেশি। র্যান্ডম ফরেস্ট পেয়েছে ৭৯.৫% এবং এক্সজিবুস্ট পেয়েছে ৮৩.৪%। অতএব আমাদের মডেল সেরা।"
+            </div>
+            <div class="comparison-item">
+                <strong>✅ গভীর বিশ্লেষণমূলক অনুচ্ছেদ (Deep Academic Analysis):</strong><br>
+                "প্রস্তাবিত মডেলটি বেসলাইন XGBoost-এর তুলনায় এফ১-স্কোরে ৫.৬% উল্লেখযোগ্য উন্নতি প্রদর্শন করেছে (০.৮৭২ বনাম ০.৮১৬)। এই উন্নতির প্রধান কারণ হলো কেবল ক্লিনিক্যাল রেকর্ডের ওপর নির্ভর না করে তাৎক্ষণিক বায়ুদূষণের স্প্যাশিও-টেম্পোরাল গ্রাফ এম্বেডিংস সংযুক্ত করা। লক্ষণীয় যে, চরম দূষিত শীতকালীন মাসগুলোতে ফলস-নেগেটিভের হার প্রায় ১৪% হ্রাস পেয়েছে, যা প্রমাণ করে যে পরিবেশগত সূচকগুলো দীর্ঘমেয়াদি অ্যাজমা অ্যাটাকের আগাম সতর্কতা শনাক্তে অত্যন্ত সহায়ক ভূমিকা পালন করে।"
+            </div>
+        </div>
+
+        <p>
+            এজেন্টকে দিয়ে গভীর বিশ্লেষণ বের করে আনতে গবেষককে সবসময় পাঁচটি অনুসন্ধানমূলক প্রশ্ন করতে হবে:
+        </p>
+        <ul>
+            <li>ফলাফলটি আমাদের প্রাথমিক হাইপোথিসিসকে কীভাবে সমর্থন বা খণ্ডন করছে?</li>
+            <li>কোন নির্দিষ্ট ডেটা ক্যাটাগরিতে মডেলটি সবচেয়ে বেশি ভুল (Error Analysis) করেছে এবং কেন?</li>
+            <li>উন্নতির পেছনে মেথডোলজির কোন উপাদানটির অবদান সবচেয়ে বেশি (Ablation Insights)?</li>
+            <li>পারফরম্যান্স বৃদ্ধির পাশাপাশি কম্পিউটেশনাল খরচ বা ল্যাটেন্সির কোনো নেতিবাচক ট্রেড-অফ আছে কি?</li>
+            <li>এই ফলাফলের বাস্তব সীমাবদ্ধতা কী এবং কোন ক্ষেত্রে এই মডেল ব্যর্থ হতে পারে?</li>
+        </ul>
+    </div>
+
+    <!-- PART 13 -->
+    <div class="section">
+        <h2><span class="emoji">✍️</span> ১৩. রিসার্চ আর্টিফ্যাক্ট দিয়ে পেপার নির্মাণ</h2>
+
+        <p>
+            একটি পেপারের ড্রাফট কখনোই শূন্য থেকে শুরু হয় না। যখন আপনার ওয়ার্কস্পেসে লিটারেচার নোটস, মেথডোলজি ব্লু-প্রিন্ট, রেজাল্ট JSON ফাইল এবং ফিগারগুলো প্রস্তুত থাকে—তখন পেপার লেখা হয়ে ওঠে সেই পূর্ব-যাচাইকৃত উপাদানগুলোকে একটি সুসংহত বৈজ্ঞানিক ভাষায় গেঁথে ফেলার কাজ।
+        </p>
+
+        <div class="diagram">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       MANUSCRIPT ASSEMBLY PIPELINE                          │
+│                                                                             │
+│  [ Research Artifacts ]                       [ Manuscript Sections ]       │
+│  • problem_definition.md        ══════════►   • 01_introduction.md          │
+│  • literature_matrix.md         ══════════►   • 02_related_work.md          │
+│  • architecture_spec.md         ══════════►   • 03_methodology.md           │
+│  • metrics_summary.json         ══════════►   • 04_results.md               │
+│  • error_analysis_notes.md      ══════════►   • 05_discussion.md            │
+│  • references.bib               ══════════►   • 06_references.md            │
+└─────────────────────────────────────────────────────────────────────────────┘
+        </div>
+
+        <h3>একটি পূর্ণাঙ্গ একাডেমিক পেপারের ১২টি স্তম্ভ:</h3>
+        <ol>
+            <li><strong>Title:</strong> সংক্ষিপ্ত, আকর্ষণীয় এবং মূল অবদান ও পদ্ধতি স্পষ্টকারী শিরোনাম।</li>
+            <li><strong>Abstract:</strong> পুরো গবেষণার ট্রেলার (সমস্যা, মেথড, সেরা রেজাল্ট ও ইমপ্যাক্ট — ২০০-২৫০ শব্দে)।</li>
+            <li><strong>Introduction:</strong> চওড়া সামাজিক প্রেক্ষাপট থেকে শুরু করে ধীরে ধীরে নির্দিষ্ট সমস্যা ও আমাদের অবদানে পৌঁছানো।</li>
+            <li><strong>Related Work:</strong> পূর্ববর্তী কাজের অগভীর তালিকা নয়; বরং তাদের সীমাবদ্ধতার একটি সমালোচনামূলক সংশ্লেষণ।</li>
+            <li><strong>Research Gap & Motivation:</strong> কেন বর্তমান গবেষণাটি নতুন এবং কোন শূন্যস্থানটি এটি পূরণ করছে।</li>
+            <li><strong>Methodology:</strong> পদ্ধতির খুঁটিনাটি যাতে অন্য যে কেউ এটি পুনঃনির্মাণ করতে পারে।</li>
+            <li><strong>Experimental Setup:</strong> ডেটাসেট বিবরণ, হার্ডওয়্যার স্পেসিফিকেশন ও বেসলাইন সমূহের তালিকা।</li>
+            <li><strong>Results:</strong> সারণি ও গ্রাফের মাধ্যমে নিরপেক্ষ পরিসংখ্যানিক প্রমাণের উপস্থাপন।</li>
+            <li><strong>Discussion:</strong> ফলাফলের পেছনের কারণ, তাত্ত্বিক তাৎপর্য ও প্রায়োগিক উপযোগিতা।</li>
+            <li><strong>Limitations:</strong> সততার সাথে নিজের কাজের দুর্বলতা ও সীমাবদ্ধতা স্বীকার করা।</li>
+            <li><strong>Conclusion & Future Work:</strong> সারসংক্ষেপ এবং আগামী দিনে এই কাজকে কীভাবে আরও এগিয়ে নেওয়া যায়।</li>
+            <li><strong>References:</strong> শতভাগ সত্য, যাচাইকৃত ও আন্তর্জাতিক মানসম্মত বিব্লিওগ্রাফি।</li>
+        </ol>
+    </div>
+
+    <!-- PART 14 -->
+    <div class="section">
+        <h2><span class="emoji">🛡️</span> ১৪. সাইটেশন যাচাই ও হলুসিনেশন প্রতিরোধ</h2>
+
+        <p>
+            একাডেমিক জগতে সবচেয়ে ক্ষমার অযোগ্য অপরাধ হলো জালিয়াতি ও ভুয়া সাইটেশন। লার্জ ল্যাঙ্গুয়েজ মডেলের একটি ভয়ংকর স্বভাব হলো—যখন তাকে কোনো দাবির পেছনে রেফারেন্স দিতে বলা হয়, সে প্রায়ই এমন সব লেখক, জার্নাল এবং অবাস্তব DOI নম্বর বানিয়ে ফেলে যা শুনতে সম্পূর্ণ আসল মনে হলেও বাস্তবে তার কোনো অস্তিত্বই নেই!
+        </p>
+
+        <div class="warning-box">
+            <strong>⚠️ একাডেমিক সততার অলঙ্ঘনীয় নীতি:</strong><br>
+            কখনোই এআই এজেন্টকে নিজের স্মৃতি থেকে সাইটেশন বানাতে দেবেন না। প্রতিটি সাইটেশনের বিপরীতে ক্রস-চেক নিশ্চিত করতে হবে।<br><br>
+            <code>Claim in Text ➔ Source Paper in Workspace ➔ Verified DOI ➔ BibTeX Entry ➔ Validation Pass</code>
+        </div>
+
+        <p>
+            সাইটেশন সুরক্ষার তিনটি বাস্তবায়ন কৌশল:
+        </p>
+        <ul>
+            <li><strong>লকড বিব্লিওগ্রাফি (Locked Bibliography):</strong> এজেন্টকে শুধুমাত্র আপনার নিজস্ব <code>references.bib</code> ফাইলটি ব্যবহার করার অনুমতি দিন। বাইরের কোনো পেপার উদ্ধৃত করতে হলে আগে গবেষকের অনুমোদন নিতে হবে।</li>
+            <li><strong>DOI ভেরিফিকেশন স্ক্রিপ্ট:</strong> পাইথনের মাধ্যমে Crossref API বা Google Scholar ব্যবহার করে প্রতিটি DOI সক্রিয় কি না তা স্বয়ংক্রিয়ভাবে যাচাই করা।</li>
+            <li><strong>ক্লেইম-এভিডেন্স ম্যাপিং:</strong> পেপারের প্রতিটি সংখ্যাসূচক দাবির পাশে (যেমন "৮.৭% বৃদ্ধি") কোন এক্সপেরিমেন্ট লগের ভিত্তিতে এই দাবি করা হয়েছে, তার অভ্যন্তরীণ ট্যাগ রাখা।</li>
+        </ul>
+    </div>
+
+    <!-- PART 15 -->
+    <div class="section">
+        <h2><span class="emoji">🧪</span> ১৫. পূর্ণাঙ্গ এন্ড-টু-এন্ড বাস্তব কেস স্টাডি</h2>
+
+        <p>
+            পুরো দর্শনটিকে জীবন্ত করার জন্য আমরা একটি বাস্তবসম্মত অথচ কাল্পনিক গবেষণা প্রজেক্টের শুরু থেকে শেষ পর্যন্ত পর্যালোচনা করব।
+        </p>
+
+        <div class="story-box">
+            <strong>🎯 কেস স্টাডি প্রজেক্ট:</strong><br>
+            <em>"ঢাকা শহরের পরিবেশগত বায়ুদূষণ এবং হাসপাতাল ক্লিনিক্যাল ডেটা সমন্বয়ে শ্বাসকষ্টের ঝুঁকি আগাম প্রেডিকশন: একটি মাল্টিমোডাল এআই ফ্রেমওয়ার্ক"</em><br>
+            (Predicting Urban Respiratory Health Risk in Dhaka by Fusing Environmental and Clinical Records: A Multimodal Agentic Pipeline)
+        </div>
+
+        <h3>ধাপ ১: গবেষণা প্রশ্ন ও উদ্দেশ্য নির্ধারণ</h3>
+        <p>
+            গবেষক তাঁর <code>01_problem_definition/research_questions.md</code> ফাইলে তিনটি সুস্পষ্ট প্রশ্ন লিখে এজেন্টকে নির্দেশ দিলেন:
+        </p>
+        <ul>
+            <li>RQ1: ঢাকা শহরের শীতকালীন PM2.5 ও NO2-এর তীব্র ওঠানামা কি হাসপাতালের শ্বাসকষ্টের রোগী ভর্তির সাথে সরাসরি সম্পর্কিত?</li>
+            <li>RQ2: শুধুমাত্র রক্তের ল্যাব টেস্ট বনাম পরিবেশগত ডেটার সংযোজন—মডেলের এফ১-স্কোরে কতটা পরিসংখ্যানিক পার্থক্য তৈরি করে?</li>
+            <li>RQ3: কোন নির্দিষ্ট ফিচারটি সবচেয়ে বেশি আগাম সতর্কবার্তা প্রদানে ভূমিকা রাখছে (Feature Importance)?</li>
+        </ul>
+
+        <h3>ধাপ ২: পেপার সংগ্রহ ও মার্কডাউন নলেজ রূপান্তর</h3>
+        <p>
+            এজেন্ট প্রাতিষ্ঠানিক ডাটাবেজ থেকে ৩০টি সাম্প্রতিক পেপার অনুসন্ধান করল। সেখান থেকে সেরা ১৫টি পেপারের পিডিএফ ডাউনলোড করে সেগুলোকে <code>extracted_markdown/</code> ফোল্ডারে মেটাডেটা সহ সংরক্ষণ করা হলো।
+        </p>
+
+        <h3>ধাপ ৩: মেথডোলজি ও কোড অর্কেস্ট্রেশন</h3>
+        <p>
+            গবেষক একটি মাল্টিমোডাল আর্কিটেকচার ব্লু-প্রিন্ট নির্ধারণ করলেন। এজেন্ট সেই ব্লু-প্রিন্ট দেখে <code>05_experiments/code/</code> ফোল্ডারে মডুলার পাইটর্চ কোড প্রস্তুত করল, ইউনিট টেস্ট পরিচালনা করল এবং ৫-ফোল্ড ক্রস ভ্যালিডেশনের মাধ্যমে মডেল ট্রেইন করে ফলাফল <code>metrics_summary.json</code> ফাইলে সেভ করল।
+        </p>
+
+        <h3>ধাপ ৪: পেপার ড্রাফট ও ভ্যালিডেশন</h3>
+        <p>
+            সংগৃহীত প্রমাণাদি ও রেজাল্ট ফাইলের ভিত্তিতে এজেন্ট প্রতিটি সেকশন ধারাবাহিকভাবে ড্রাফট করল। গবেষক প্রতিটি লাইন অডিট করলেন, ভুয়া সাইটেশন প্রতিরোধ করলেন এবং পরিশেষে একটি পূর্ণাঙ্গ আন্তর্জাতিক মানের রিসার্চ পেপার প্রস্তুত করলেন।
+        </p>
+    </div>
+
+    <!-- PART 16 -->
+    <div class="section">
+        <h2><span class="emoji">💾</span> ১৬. দীর্ঘমেয়াদি প্রজেক্টে মেমোরি ও কনটেক্সট রক্ষা</h2>
+
+        <p>
+            একটি ভালো গবেষণা সম্পন্ন হতে কয়েক সপ্তাহ থেকে কয়েক মাস পর্যন্ত সময় লেগে যেতে পারে। এই দীর্ঘ সময়ে এআই যাতে কোনোভাবেই খেই হারিয়ে না ফেলে, সেজন্য তিনটি বিশেষ কন্ট্রোল ফাইল সর্বদা আপডেট রাখতে হয়:
+        </p>
+
+        <div class="code-box">
+### PROJECT_STATE.md (বর্তমান প্রজেক্টের অবস্থা)
+- শেষ সম্পন্ন কাজ: মেথডোলজি ড্রাফট ও কোড ভ্যালিডেশন সম্পন্ন (2025-03-21)
+- বর্তমান সক্রিয় কাজ: এক্সপেরিমেন্ট ২-এর অ্যাবলেশন রেজাল্ট বিশ্লেষণ
+- পরবর্তী পদক্ষেপ: Discussion সেকশন রচনা ও লিমিটেশন ডকুমেন্টেশন
+- ব্লকড ইস্যু: কোনো পেন্ডিং ব্লকার নেই
+
+### DECISIONS.md (গৃহীত মেথডোলজিক্যাল সিদ্ধান্তের লগ)
+- 2025-03-10: ডেটা মিসিং হ্যান্ডলিংয়ে মিন-ইমপ্যুটেশনের বদলে KNN Imputer ব্যবহারের সিদ্ধান্ত (কারণ ডেটা নন-র‍্যান্ডমভাবে মিসিং ছিল)।
+- 2025-03-15: মডেল ব্যাকবোন হিসেবে সাধারণ সিএনএন-এর বদলে টেম্পোরাল গ্রাফ নেটওয়ার্ক ফাইনাল করা হয়েছে।
+
+### AGENT_INSTRUCTIONS.md (এজেন্টের অলঙ্ঘনীয় আচরণবিধি)
+- নিয়ম ১: কখনোই references.bib ফাইলের বাইরে কোনো নতুন সাইটেশন নিজে তৈরি করবে না।
+- নিয়ম ২: সমস্ত সংখ্যাসূচক দাবি অবশ্যই metrics_summary.json ফাইলের সাথে মিলতে হবে।
+- নিয়ম ৩: বাক্য সবসময় একাডেমিক ও বস্তুনিষ্ঠ হবে; কোনো মার্কেটিং বাজওয়ার্ড ব্যবহার করা যাবে না।
+        </div>
+    </div>
+
+    <!-- PART 17 -->
+    <div class="section">
+        <h2><span class="emoji">🧰</span> ১৭. রিসার্চ এজেন্টের জন্য স্ট্রাকচার্ড প্রম্পট লাইব্রেরি</h2>
+
+        <p>
+            এজেন্টিক রিসার্চে কখনোই একটি সাধারণ লাইনের প্রম্পট দেওয়া যাবে না। প্রতিটি প্রম্পটকে একটি আট-অংশের শক্তিশালী আর্কিটেকচারে সাজাতে হবে:
+            <br>
+            <code>ROLE + CONTEXT + OBJECTIVE + INPUTS + CONSTRAINTS + PROCESS + OUTPUT FORMAT + VALIDATION</code>
+        </p>
+
+        <div class="code-box">
+[ROLE]: তুমি একজন অভিজ্ঞ বায়োমেডিক্যাল এআই গবেষক ও একাডেমিক রিভিউয়ার।
+[CONTEXT]: আমরা ঢাকা শহরের বায়ুদূষণ এবং শ্বাসকষ্টের ঝুঁকি প্রেডিকশন নিয়ে একটি রিসার্চ পেপার লিখছি। আমাদের ডেটাসেট ও এক্সপেরিমেন্ট সম্পন্ন হয়েছে।
+[OBJECTIVE]: আমাদের পেপারের 'Results' সেকশনের ৩.২ সাবসেকশন (Ablation Study Analysis) ড্রাফট করো।
+[INPUTS]: 
+1. 05_experiments/results/ablation_metrics.csv
+2. 03_methodology/architecture_spec.md
+[CONSTRAINTS]:
+- কোনো সংখ্যা অনুমান বা মনগড়াভাবে লিখবে না; যা CSV ফাইলে আছে কেবল তাই উল্লেখ করবে।
+- কোনো উদ্ধৃতি দিলে কেবল 08_references/references.bib-এর কি ব্যবহার করবে।
+- লেখার টোন হবে নিষ্ক্রিয়, বস্তুনিষ্ঠ ও একাডেমিক।
+[PROCESS]:
+ধাপ ১: CSV ফাইল থেকে প্রতিটি কম্পোনেন্ট বাদ দিলে এফ১-স্কোর কতটা হ্রাস পায় তা ক্যালকুলেট করো।
+ধাপ ২: কোন কম্পোনেন্টটি সবচেয়ে বেশি প্রভাব ফেলেছে তা ব্যাখ্যা করো।
+ধাপ ৩: ক্লিনিক্যাল দৃষ্টিকোণ থেকে এই হ্রাসের সম্ভাব্য কারণ আলোচনা করো।
+[OUTPUT FORMAT]: Academic Markdown with professional paragraph transitions.
+[VALIDATION]: শেষে একটি চেকলিস্ট দাও যাতে দেখানো হয় প্রতিটি দাবি CSV-র কোন রো থেকে এসেছে।
+        </div>
+    </div>
+
+    <!-- PART 18 -->
+    <div class="section">
+        <h2><span class="emoji">✅</span> ১৮. একজন Agentic Researcher-এর Master Checklist</h2>
+
+        <p>
+            গবেষণা জমা দেওয়ার পূর্বে একজন সচেতন গবেষক নিজের কাজের প্রতিটি স্তরকে নিচের চেকলিস্টের মুখোমুখি দাঁড় করাবেন:
+        </p>
+
+        <div class="technical-box">
+            <strong>📋 প্রি-রিসার্চ পর্যায়:</strong><br>
+            [ ] গবেষণা সমস্যাটি সুনির্দিষ্ট ও স্পষ্ট কি না?<br>
+            [ ] অন্তত ৩টি সুস্পষ্ট রিসার্চ প্রশ্ন (Research Questions) নির্ধারিত হয়েছে কি না?<br>
+            [ ] প্রজেক্ট ডিরেক্টরি কাঠামো ও গিট রিপোজিটরি ইনিশিয়ালাইজ করা হয়েছে কি না?<br><br>
+
+            <strong>📚 লিটারেচার পর্যায়:</strong><br>
+            [ ] অন্তত ৩০-৪০টি প্রাসঙ্গিক সাম্প্রতিক পেপারের মেটাডেটা এক্সট্র্যাক্ট করা হয়েছে কি না?<br>
+            [ ] একটি তুলনামূলক লিটারেচার ম্যাট্রিক্স টেবিল প্রস্তুত আছে কি না?<br>
+            [ ] গবেষণার সুনির্দিষ্ট শূন্যস্থান (Research Gap) চিহ্নিত ও ডকুমেন্টেড হয়েছে কি না?<br><br>
+
+            <strong>🔬 মেথডোলজি ও এক্সপেরিমেন্ট পর্যায়:</strong><br>
+            [ ] ডেটা প্রিপ্রসেসিং ধাপগুলো সম্পূর্ণরূপে ডেটা-লিকেজ মুক্ত কি না?<br>
+            [ ] এক্সপেরিমেন্টের সমস্ত র্যান্ডম সিড (Seed) লক করা হয়েছে কি না?<br>
+            [ ] ফলাফলগুলো স্বয়ংক্রিয়ভাবে JSON/CSV ফাইলে লগ হয়েছে কি না?<br><br>
+
+            <strong>📝 পেপার ও পাবলিকেশন পর্যায়:</strong><br>
+            [ ] পেপারের প্রতিটি সংখ্যাগত দাবি কি রেজাল্ট ফাইল থেকে সরাসরি প্রমাণিত?<br>
+            [ ] প্রতিটি রেফারেন্সের DOI ক্রস-চেক করে ভেরিফাই করা হয়েছে কি না?<br>
+            [ ] এআই হলুসিনেশন ও মনগড়া কোনো বক্তব্য পেপারে অবশিষ্ট নেই তো?<br>
+            [ ] মানুষ গবেষক হিসেবে সম্পূর্ণ পেপারের প্রতিটি বাক্য পড়ে চূড়ান্ত দায়িত্ব গ্রহণ করেছেন কি না?
+        </div>
+
+        <div class="story-box">
+            <strong>🌟 সমাপনী বার্তা:</strong><br><br>
+            ভবিষ্যতের সেরা গবেষক তিনি হবেন না যিনি চ্যাটবটকে সবকিছু করতে দিয়ে অলস বসে থাকেন। 
+            ভবিষ্যতের শীর্ষ গবেষক হবেন তিনি যিনি কৃত্রিম বুদ্ধিমত্তার প্রচণ্ড ক্ষমতাকে নিজের হাতের তুলি বানিয়ে, কঠোর বৈজ্ঞানিক সত্যের ক্যানভাসে মানবজাতির অগ্রগতির নতুন দিগন্ত উন্মোচন করবেন।
+            <br><br>
+            <em>"AI-কে তোমার চিন্তা বানিয়ো না; AI-কে বানাও তোমার সবচেয়ে অনুগত ও দক্ষ চিন্তার রূপকার।"</em>
+        </div>
+
+        <div class="series-nav">
+            <a href="../series-1/ai-research-bangla-guide.html">
+                <i class="fas fa-arrow-left"></i> পূর্ববর্তী পর্ব: AI দিয়ে Research কীভাবে করব? (Episode 01)
+            </a>
+            <a href="../../index.html">
+                <i class="fas fa-list"></i> ব্লগের সকল সিরিজ ও পর্ব দেখুন
+            </a>
+        </div>
+
+        <div class="footer">
+            <p><strong>📖 ডকুমেন্ট তথ্য</strong></p>
+            <p>সংস্করণ: ১.০ (মাস্টার এডিশন)</p>
+            <p>ভাষা: বাংলা (আন্তর্জাতিক কারিগরি পরিভাষা সমন্বিত)</p>
+            <p>সিরিজ: AI Research Assistant Series — Episode 02</p>
+            <p>লেখক: <strong>Sheikh Thanbir Alam</strong></p>
+            <p>বিষয়: The Agentic Researcher — Idea থেকে Publication পর্যন্ত AI Agent অর্কেস্ট্রেশনের পূর্ণাঙ্গ রূপরেখা</p>
+            <p style="margin-top: 15px;">👁️ পাতাটি দেখা হয়েছে: <img src="https://hits.sh/thanbirtamim.github.io/blog/ai-research-guide/series-2.svg?style=flat-square&label=views&color=667eea" alt="Page Views" style="vertical-align: middle;"></p>
+        </div>
+    </div>
+
+</div>
+
+<div data-copyright-guard style="text-align:center;max-width:1400px;margin:0 auto;padding:16px 18px 26px;font-size:0.78rem;line-height:1.7;color:#8a8a8a;">© 2025 <strong>Sheikh Thanbir Alam</strong>. All Rights Reserved. <a href="https://thanbirtamim.github.io" style="color:inherit;text-decoration:underline;">thanbirtamim.github.io</a><br>এই লেখা মূল লেখকের সম্পত্তি — লিখিত অনুমতি ছাড়া কপি করে অন্য কোনো ওয়েবসাইট, ব্লগ, বই বা প্ল্যাটফর্মে প্রকাশ/বিতরণ করা কঠোরভাবে নিষিদ্ধ। Content may not be copied or republished without permission.</div>
+<script data-copyright-guard>
+(function(){
+  document.addEventListener('copy', function(e){
+    try{
+      var sel = (window.getSelection && window.getSelection().toString()) || '';
+      if(sel && sel.length > 60){
+        var note = '\n\n\u2014 \u00a9 2025 Sheikh Thanbir Alam. All Rights Reserved.'
+                 + '\nSource: ' + location.href
+                 + '\n\u098f\u0987 \u09b2\u09c7\u0996\u09be \u0985\u09a8\u09c1\u09ae\u09a4\u09bf \u099b\u09be\u09dc\u09be \u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a5\u09be\u0993 \u09aa\u09cd\u09b0\u0995\u09be\u09b6 \u0995\u09b0\u09be \u09af\u09be\u09ac\u09c7 \u09a8\u09be\u0964';
+        if(e.clipboardData){ e.clipboardData.setData('text/plain', sel + note); e.preventDefault(); }
+      }
+    }catch(_){}
+  });
+})();
+</script>
+</body>
+</html>
