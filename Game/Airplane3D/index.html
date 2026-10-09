@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#071226" />
+  <meta name="description" content="Sky Dogfight 3D — an infinite procedural flight combat game built with Three.js and vanilla JavaScript. Part of Sheikh Thanbir Alam's portfolio." />
+  <title>Sky Dogfight 3D — Airplane Combat</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <!-- Three.js renders here -->
+    <canvas id="scene"></canvas>
+
+    <!-- Hit / stall flash -->
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+    <div class="fx-vignette" id="lowHealthFx" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <div class="hud-row hud-top">
+        <div class="hud-box">
+          <span class="lbl">SCORE</span><b id="scoreVal">0</b>
+          <span class="lbl best">BEST <i id="bestVal">0</i></span>
+        </div>
+        <div class="hud-box center">
+          <span class="lbl" id="waveTag">WAVE 1</span>
+          <b id="killsVal">0 <small>KILLS</small></b>
+        </div>
+        <div class="hud-box right">
+          <span class="lbl">AMMO</span><b id="ammoVal">∞</b>
+          <span class="lbl">LV <i id="levelVal">1</i></span>
+        </div>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">⏸</button>
+      </div>
+
+      <!-- crosshair -->
+      <div class="crosshair" id="crosshair">
+        <span class="ch-h"></span><span class="ch-v"></span><span class="ch-dot"></span>
+      </div>
+
+      <div class="hud-row hud-bottom">
+        <div class="gauge-box">
+          <span class="lbl">HEALTH</span>
+          <div class="bar-track"><div class="bar-fill health" id="healthFill"></div></div>
+        </div>
+        <div class="instruments">
+          <div class="instrument">
+            <b id="altVal">0</b><span class="lbl">ALT (m)</span>
+          </div>
+          <div class="instrument">
+            <b id="speedVal">0</b><span class="lbl">KM/H</span>
+          </div>
+        </div>
+        <div class="gauge-box">
+          <span class="lbl">THROTTLE</span>
+          <div class="bar-track"><div class="bar-fill throttle" id="throttleFill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">✈️ SKY&nbsp;DOGFIGHT</h1>
+        <p class="tagline">Fly • Hunt • Survive the Infinite Skies</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ TAKE OFF</button>
+          <button class="btn ghost" id="scoresBtn">🏆 HIGH SCORES</button>
+          <button class="btn ghost" id="helpBtn">❔ HOW TO PLAY</button>
+        </div>
+        <p class="hint">Desktop: <b>W/S</b> pitch · <b>A/D</b> roll · <b>Q/E</b> yaw · <b>Shift/Ctrl</b> throttle · <b>Space / Click</b> fire · <b>P</b> pause<br>Mobile: left stick to steer, right buttons for throttle &amp; fire</p>
+      </div>
+    </div>
+
+    <!-- How to play -->
+    <div class="overlay hidden" id="helpScreen">
+      <div class="panel">
+        <h2 class="title small">❔ HOW TO PLAY</h2>
+        <ul class="help-list">
+          <li>🕹️ Pitch with <b>W/S</b> or <b>↑/↓</b>, roll with <b>A/D</b> or <b>←/→</b>, yaw with <b>Q/E</b>.</li>
+          <li>🚀 Hold <b>Shift</b> to throttle up, <b>Ctrl</b> to throttle down.</li>
+          <li>🔫 Fire with <b>Space</b> or mouse click — take down enemy drones for points.</li>
+          <li>⚠️ Don't fly into the ground or hills — crashing costs heavy damage!</li>
+          <li>🌍 The world is infinite — terrain, rivers, trees and clouds generate forever as you fly.</li>
+        </ul>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- High scores -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 HIGH SCORES</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Game over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">AIRCRAFT LOST</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW RECORD ★</p>
+        <div class="result">
+          <div><span>SCORE</span><b id="finalScore">0</b></div>
+          <div><span>KILLS</span><b id="finalKills">0</b></div>
+          <div><span>DISTANCE</span><b id="finalDist">0.0 KM</b></div>
+          <div><span>BEST</span><b id="finalBest">0</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ FLY AGAIN</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">LOADING…</h2><p class="tagline" id="loadMsg">Fueling up the aircraft</p></div>
+    </div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="touch-stick" id="touchStick">
+        <div class="stick-base"><div class="stick-knob" id="stickKnob"></div></div>
+      </div>
+      <div class="touch-right">
+        <button class="tbtn yaw" data-act="yawL">⟲</button>
+        <button class="tbtn yaw" data-act="yawR">⟳</button>
+        <button class="tbtn throttle-up" data-act="throttleUp">▲ THR</button>
+        <button class="tbtn throttle-dn" data-act="throttleDn">▼ THR</button>
+        <button class="tbtn fire" data-act="fire">FIRE</button>
+      </div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

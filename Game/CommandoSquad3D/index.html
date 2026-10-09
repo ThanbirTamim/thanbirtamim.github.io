@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1206" />
+  <meta name="description" content="CommandoSquad3D — a 3D squad-based urban combat game. Command 4 AI teammates through a coastal tropical city and eliminate enemy forces. Built with Three.js and vanilla JavaScript." />
+  <title>CommandoSquad3D — Tactical Urban Combat</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <canvas id="scene"></canvas>
+
+    <!-- FX overlays -->
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+    <div class="fx-vignette" id="lowHealthFx" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <!-- Minimap -->
+      <div class="minimap-box">
+        <canvas id="minimap" width="168" height="168"></canvas>
+        <span class="minimap-label">SECTOR MAP</span>
+      </div>
+
+      <div class="hud-row hud-top">
+        <div class="hud-box">
+          <span class="lbl">OBJECTIVE</span><b id="objectiveVal">Eliminate all enemies in the sector</b>
+        </div>
+        <div class="hud-box right">
+          <span class="lbl">ENEMIES</span><b id="enemyCountVal">0</b>
+        </div>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (Esc)" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="soundBtn" title="Sound" aria-label="Sound">🔊</button>
+      </div>
+
+      <!-- crosshair + hit marker -->
+      <div class="crosshair" id="crosshair">
+        <span class="ch-h"></span><span class="ch-v"></span><span class="ch-dot"></span>
+      </div>
+      <div class="hitmarker" id="hitmarker"><span></span><span></span><span></span><span></span></div>
+
+      <!-- Squad status panel (bottom-left) -->
+      <div class="squad-panel" id="squadPanel">
+        <div class="squad-row" data-slot="0">
+          <span class="squad-id">A1</span>
+          <span class="squad-role">HEAVY</span>
+          <div class="squad-bar-track"><div class="squad-bar-fill"></div></div>
+          <span class="squad-state">Following</span>
+        </div>
+        <div class="squad-row" data-slot="1">
+          <span class="squad-id">A2</span>
+          <span class="squad-role">MEDIC</span>
+          <div class="squad-bar-track"><div class="squad-bar-fill"></div></div>
+          <span class="squad-state">Following</span>
+        </div>
+        <div class="squad-row" data-slot="2">
+          <span class="squad-id">A3</span>
+          <span class="squad-role">SNIPER</span>
+          <div class="squad-bar-track"><div class="squad-bar-fill"></div></div>
+          <span class="squad-state">Following</span>
+        </div>
+        <div class="squad-row" data-slot="3">
+          <span class="squad-id">A4</span>
+          <span class="squad-role">DEMO</span>
+          <div class="squad-bar-track"><div class="squad-bar-fill"></div></div>
+          <span class="squad-state">Following</span>
+        </div>
+        <div class="squad-cmds">
+          <span class="cmd-chip" id="cmdFollow">1 FOLLOW</span>
+          <span class="cmd-chip" id="cmdHold">2 HOLD</span>
+          <span class="cmd-chip" id="cmdFire">3 FIRE AT WILL</span>
+        </div>
+      </div>
+
+      <!-- Bottom-right: weapon / health / ammo -->
+      <div class="hud-row hud-bottom">
+        <div class="gauge-box">
+          <span class="lbl">HEALTH</span>
+          <div class="bar-track"><div class="bar-fill health" id="healthFill"></div></div>
+        </div>
+        <div class="weapon-box">
+          <b id="weaponVal">M4 RIFLE</b>
+          <span class="lbl" id="ammoVal">30 / 90</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">🎖️ COMMANDO&nbsp;SQUAD</h1>
+        <p class="tagline">Lead Alpha Squad • Clear the Sector • Leave No One Behind</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ DEPLOY</button>
+          <button class="btn ghost" id="scoresBtn">🏆 MISSION RECORDS</button>
+          <button class="btn ghost" id="helpBtn">❔ FIELD MANUAL</button>
+        </div>
+        <p class="hint">Desktop: <b>WASD</b> move · <b>Mouse</b> look/aim · <b>Click</b> fire · <b>R</b> reload · <b>Q</b> switch weapon<br><b>1</b> Follow · <b>2</b> Hold · <b>3</b> Fire at Will · <b>Esc</b> pause<br>Mobile: left stick to move, drag right side to look, tap FIRE</p>
+      </div>
+    </div>
+
+    <!-- Field manual -->
+    <div class="overlay hidden" id="helpScreen">
+      <div class="panel">
+        <h2 class="title small">❔ FIELD MANUAL</h2>
+        <ul class="help-list">
+          <li>🪖 You lead 4 AI teammates: <b>A1 Heavy, A2 Medic, A3 Sniper, A4 Demolitions.</b></li>
+          <li>🎯 Click to fire your current weapon at the crosshair. Enemies have visible health bars.</li>
+          <li>🗣️ Command your squad: <b>1</b> Follow you in formation, <b>2</b> Hold their current position, <b>3</b> Fire at Will (engage any enemy they see).</li>
+          <li>🛡️ Teammates automatically take cover behind walls and buildings when under fire.</li>
+          <li>🌴 Watch rooftops and alleys — enemies patrol the city and will engage on sight or sound.</li>
+          <li>🏆 Clear every hostile in the sector to complete the mission. Don't let your health reach zero!</li>
+        </ul>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Mission records -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 MISSION RECORDS</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">MISSION PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART MISSION</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Mission over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">MISSION COMPLETE</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW BEST TIME ★</p>
+        <div class="result">
+          <div><span>KILLS</span><b id="finalKills">0</b></div>
+          <div><span>TIME</span><b id="finalTime">0:00</b></div>
+          <div><span>SQUAD LOST</span><b id="finalLosses">0</b></div>
+          <div><span>BEST KILLS</span><b id="finalBest">0</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ REDEPLOY</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">LOADING SECTOR…</h2><p class="tagline" id="loadMsg">Briefing Alpha Squad</p></div>
+    </div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="touch-stick" id="touchStick">
+        <div class="stick-base"><div class="stick-knob" id="stickKnob"></div></div>
+      </div>
+      <div class="touch-right">
+        <button class="tbtn" data-act="reload">RELD</button>
+        <button class="tbtn" data-act="weapon">SWAP</button>
+        <button class="tbtn fire" data-act="fire">FIRE</button>
+      </div>
+      <div id="touchLook" class="touch-look" aria-hidden="true"></div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Modular game source (plain scripts sharing the CS3D namespace — no build step) -->
+  <script src="js/map.js"></script>
+  <script src="js/weapons.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/teammates.js"></script>
+  <script src="js/enemies.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

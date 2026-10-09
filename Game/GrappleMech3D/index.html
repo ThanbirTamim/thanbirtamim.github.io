@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#06080f" />
+  <meta name="description" content="GrappleMech3D — a fast-paced 3D mech arena deathmatch. Swing dual energy grapple hooks across a floating arena over a lava void and duel 3 AI mechs. Built with Three.js and vanilla JavaScript." />
+  <title>GrappleMech3D — Grapple Mech Arena</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <canvas id="scene"></canvas>
+
+    <!-- FX overlays -->
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+    <div class="fx-killflash" id="killFlash" aria-hidden="true"></div>
+    <div class="fx-vignette" id="lowHealthFx" aria-hidden="true"></div>
+    <div class="fx-heatwarn" id="heatWarnFx" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <!-- Radar (top-left) -->
+      <div class="radar-box">
+        <canvas id="radar" width="160" height="160"></canvas>
+        <span class="radar-label">TACTICAL RADAR</span>
+      </div>
+
+      <!-- Leaderboard (top-right) -->
+      <div class="leaderboard" id="leaderboard">
+        <div class="lb-head">DUEL STANDINGS</div>
+        <div class="lb-row" data-id="player"><span class="lb-name">YOU</span><b class="lb-kd">0 / 0</b></div>
+        <div class="lb-row" data-id="rival"><span class="lb-name">RIVAL</span><b class="lb-kd">0 / 0</b></div>
+        <div class="lb-row" data-id="heavy"><span class="lb-name">BRAWLER</span><b class="lb-kd">0 / 0</b></div>
+        <div class="lb-row" data-id="sniper"><span class="lb-name">SNIPER</span><b class="lb-kd">0 / 0</b></div>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (Esc)" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="soundBtn" title="Sound" aria-label="Sound">🔊</button>
+      </div>
+
+      <!-- storm warning -->
+      <div class="storm-banner hidden" id="stormBanner">⚠ PLASMA SURGE INCOMING — ZONE CONTRACTING ⚠</div>
+
+      <!-- crosshair + hit marker -->
+      <div class="crosshair" id="crosshair"><span class="ch-h"></span><span class="ch-v"></span><span class="ch-dot"></span></div>
+      <div class="hitmarker" id="hitmarker"><span></span><span></span><span></span><span></span></div>
+      <div class="killfeed" id="killfeed"></div>
+
+      <!-- Bottom-left: mech status -->
+      <div class="status-panel">
+        <div class="gauge"><span class="lbl">SHIELD</span><div class="bar-track"><div class="bar-fill shield" id="shieldFill"></div></div></div>
+        <div class="gauge"><span class="lbl">ARMOR</span><div class="bar-track"><div class="bar-fill armor" id="armorFill"></div></div></div>
+        <div class="gauge"><span class="lbl">BOOST HEAT</span><div class="bar-track"><div class="bar-fill heat" id="heatFill"></div></div></div>
+        <div class="hook-row">
+          <div class="hook-ind" id="hookLeftInd"><span class="lbl">HOOK L</span><div class="bar-track small"><div class="bar-fill hook" id="hookLeftFill"></div></div></div>
+          <div class="hook-ind" id="hookRightInd"><span class="lbl">HOOK R</span><div class="bar-track small"><div class="bar-fill hook" id="hookRightFill"></div></div></div>
+        </div>
+      </div>
+
+      <!-- Bottom-right: weapon -->
+      <div class="weapon-box">
+        <b id="weaponVal">PLASMA CANNON</b>
+        <div class="bar-track small"><div class="bar-fill weapon" id="weaponFill"></div></div>
+        <span class="hint-sm">F: Plasma &nbsp;·&nbsp; R: Railgun</span>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">⚙️ GRAPPLE&nbsp;MECH</h1>
+        <p class="tagline">Swing • Slam • Dominate the Arena</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ ENTER ARENA</button>
+          <button class="btn ghost" id="scoresBtn">🏆 WAR RECORDS</button>
+          <button class="btn ghost" id="helpBtn">❔ FIELD MANUAL</button>
+        </div>
+        <p class="hint">Desktop: <b>WASD</b> move · <b>Mouse</b> look · <b>LMB/Q</b> &amp; <b>RMB/E</b> grapple hooks · <b>F</b> Plasma · <b>R</b> Railgun · <b>Space</b> boost<br>Mobile: left stick to move, drag to look, on-screen hook &amp; fire buttons</p>
+      </div>
+    </div>
+
+    <!-- Field manual -->
+    <div class="overlay hidden" id="helpScreen">
+      <div class="panel">
+        <h2 class="title small">❔ FIELD MANUAL</h2>
+        <ul class="help-list">
+          <li>🪝 Fire a grapple hook (<b>LMB/Q</b> left hand, <b>RMB/E</b> right hand) at a pillar, ring or wall to swing &amp; slingshot across the arena.</li>
+          <li>🤖 Hook an enemy mech to yank them toward you — close the gap for a brutal point-blank barrage.</li>
+          <li>🚀 <b>Space</b> fires your thrusters for a directional boost/dash — watch the heat gauge, overheating locks it out.</li>
+          <li>🔫 <b>F</b> fires the rapid Plasma Cannon, <b>R</b> charges the Railgun for a high-impact long-range shot.</li>
+          <li>🌋 Falling into the lava void deals continuous damage — grapple back up fast!</li>
+          <li>⚠️ Periodic plasma surge storms shrink the safe zone — stay inside the ring or take storm damage.</li>
+          <li>🏆 First mech (you or an AI) to 5 kills wins the duel. Shield regenerates when you avoid damage for a few seconds.</li>
+        </ul>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- War records -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 WAR RECORDS</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">ARENA PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART DUEL</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Match over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">MATCH COMPLETE</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW BEST STREAK ★</p>
+        <div class="result">
+          <div><span>KILLS</span><b id="finalKills">0</b></div>
+          <div><span>DEATHS</span><b id="finalDeaths">0</b></div>
+          <div><span>WINNER</span><b id="finalWinner">—</b></div>
+          <div><span>BEST KILLS</span><b id="finalBest">0</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ REDEPLOY</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">CALIBRATING MECH…</h2><p class="tagline" id="loadMsg">Charging grapple cores</p></div>
+    </div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="touch-stick" id="touchStick"><div class="stick-base"><div class="stick-knob" id="stickKnob"></div></div></div>
+      <div id="touchLook" class="touch-look" aria-hidden="true"></div>
+      <div class="touch-right">
+        <button class="tbtn" data-act="hookL">HOOK L</button>
+        <button class="tbtn" data-act="hookR">HOOK R</button>
+        <button class="tbtn" data-act="boost">BOOST</button>
+        <button class="tbtn" data-act="plasma">PLASMA</button>
+        <button class="tbtn fire" data-act="railgun">RAILGUN</button>
+      </div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Modular game source (plain scripts sharing the GM3D namespace — no build step) -->
+  <script src="js/arena.js"></script>
+  <script src="js/weapons.js"></script>
+  <script src="js/grapple.js"></script>
+  <script src="js/mech.js"></script>
+  <script src="js/ai_mechs.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

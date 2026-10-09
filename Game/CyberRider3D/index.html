@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0318" />
+  <meta name="description" content="CyberRider 3D — a neon hoverbike endless runner through an infinite synthwave cyber highway, built with Three.js and vanilla JavaScript. Part of Sheikh Thanbir Alam's portfolio." />
+  <title>CyberRider 3D — Neon Hoverbike Runner</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <!-- Three.js renders here -->
+    <canvas id="scene"></canvas>
+
+    <!-- FX overlays -->
+    <div class="fx-speedlines" id="speedlines" aria-hidden="true"></div>
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+    <div class="fx-scanlines" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <div class="hud-row hud-top">
+        <div class="hud-box">
+          <span class="lbl">SCORE</span><b id="scoreVal">0</b>
+          <span class="lbl best">BEST <i id="bestVal">0</i></span>
+        </div>
+        <div class="hud-box center">
+          <span class="lbl">DISTANCE</span>
+          <b id="distVal">0.0 <small>KM</small></b>
+        </div>
+        <div class="hud-box right">
+          <span class="lbl">LIVES</span><b id="livesVal">❤❤❤</b>
+        </div>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (P)" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="soundBtn" title="Sound" aria-label="Sound">🔊</button>
+      </div>
+
+      <div class="hud-row hud-bottom">
+        <div class="speedo">
+          <b id="speedVal">0</b><span class="lbl">KM/H</span>
+        </div>
+        <div class="boost-box">
+          <span class="lbl">NITRO</span>
+          <div class="boost-track"><div class="boost-fill" id="boostFill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">🏍️ CYBER&nbsp;RIDER</h1>
+        <p class="tagline">Ride • Dodge • Overdrive the Neon Highway</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ START ENGINE</button>
+          <button class="btn ghost" id="scoresBtn">🏆 HIGH SCORES</button>
+          <button class="btn ghost" id="helpBtn">❔ HOW TO PLAY</button>
+        </div>
+        <p class="hint">Desktop: <b>A/D</b> or <b>←/→</b> steer · <b>W / ↑</b> Nitro Boost · <b>P</b> pause<br>Mobile: drag left/right to steer, tap NITRO to boost</p>
+      </div>
+    </div>
+
+    <!-- How to play -->
+    <div class="overlay hidden" id="helpScreen">
+      <div class="panel">
+        <h2 class="title small">❔ HOW TO PLAY</h2>
+        <ul class="help-list">
+          <li>🕹️ Steer with <b>A/D</b> or <b>←/→</b> — move freely across the 3-lane highway.</li>
+          <li>🚀 Hold <b>W</b> or <b>↑</b> to burn Nitro for a speed burst — refill by grabbing yellow crystals.</li>
+          <li>💎 Collect glowing cyan orbs for score &amp; a small Nitro refill.</li>
+          <li>⚠️ Dodge laser gates, drone mines &amp; barricades — crashing costs a life and resets your Nitro.</li>
+          <li>📈 The highway never ends and keeps accelerating — survive as long as you can!</li>
+        </ul>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- High scores -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 HIGH SCORES</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Game over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">SYSTEM CRASH</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW RECORD ★</p>
+        <div class="result">
+          <div><span>SCORE</span><b id="finalScore">0</b></div>
+          <div><span>DISTANCE</span><b id="finalDist">0.0 KM</b></div>
+          <div><span>BEST</span><b id="finalBest">0</b></div>
+          <div><span>TOP SPEED</span><b id="finalSpeed">0 KM/H</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ RIDE AGAIN</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">BOOTING…</h2><p class="tagline" id="loadMsg">Calibrating hover engines</p></div>
+    </div>
+
+    <!-- ===================== TOUCH CONTROLS ===================== -->
+    <div class="touch" id="touch" aria-hidden="true">
+      <div class="touch-left">
+        <button class="tbtn" data-act="left">◀</button>
+        <button class="tbtn" data-act="right">▶</button>
+      </div>
+      <div class="touch-right">
+        <button class="tbtn nitro" data-act="nitro">NITRO</button>
+      </div>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Modular game source (plain scripts sharing the CR3D namespace — no build step) -->
+  <script src="js/track.js"></script>
+  <script src="js/hoverbike.js"></script>
+  <script src="js/obstacles.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1406" />
+  <meta name="description" content="ArcheryDuel3D — a 3D weather-based archery competition. Duel an AI rival across rain, blizzard and sandstorm conditions where real wind physics bend every shot. Built with Three.js and vanilla JavaScript." />
+  <title>ArcheryDuel3D — Weather Archery Competition</title>
+  <link rel="icon" href="../../assets/img/favicon2.ico" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="game-wrap" id="gameWrap">
+    <canvas id="scene"></canvas>
+
+    <!-- FX overlays -->
+    <div class="fx-flash" id="hitFlash" aria-hidden="true"></div>
+    <div class="fx-lightning" id="lightningFx" aria-hidden="true"></div>
+    <div class="fx-vignette" id="slowmoFx" aria-hidden="true"></div>
+
+    <!-- ===================== HUD ===================== -->
+    <div class="hud hidden" id="hud">
+      <!-- Wind compass (top-left) -->
+      <div class="wind-box">
+        <canvas id="windCompass" width="110" height="110"></canvas>
+        <div class="wind-readout">
+          <b id="windSpeedVal">0</b><span>km/h</span>
+        </div>
+        <span class="wind-label" id="weatherLabel">CLEAR SUNSET</span>
+      </div>
+
+      <!-- Distance + round info (top-right) -->
+      <div class="info-box">
+        <span class="lbl">DISTANCE</span><b id="distanceVal">30m</b>
+        <span class="lbl">ROUND <i id="roundVal">1</i> / <i id="roundTotal">3</i></span>
+      </div>
+
+      <div class="hud-row hud-mid">
+        <button class="icon-btn" id="pauseBtn" title="Pause (Esc)" aria-label="Pause">⏸</button>
+        <button class="icon-btn" id="soundBtn" title="Sound" aria-label="Sound">🔊</button>
+      </div>
+
+      <!-- turn banner -->
+      <div class="turn-banner" id="turnBanner">YOUR TURN</div>
+
+      <!-- aim reticle -->
+      <div class="reticle" id="reticle"><span class="r-h"></span><span class="r-v"></span><span class="r-dot"></span></div>
+
+      <!-- score popup -->
+      <div class="score-popup" id="scorePopup"></div>
+
+      <!-- Scoreboard (bottom-left) -->
+      <div class="scoreboard">
+        <div class="sb-row sb-head"><span>ARROW</span><span>YOU</span><span>RIVAL</span></div>
+        <div class="sb-row" data-arrow="0"><span>1</span><b class="p-score">–</b><b class="a-score">–</b></div>
+        <div class="sb-row" data-arrow="1"><span>2</span><b class="p-score">–</b><b class="a-score">–</b></div>
+        <div class="sb-row" data-arrow="2"><span>3</span><b class="p-score">–</b><b class="a-score">–</b></div>
+        <div class="sb-row sb-total"><span>TOTAL</span><b id="pTotal">0</b><b id="aTotal">0</b></div>
+      </div>
+
+      <!-- Bottom-right: power meter + breath -->
+      <div class="hud-row hud-bottom">
+        <div class="breath-box" id="breathBox">
+          <span class="lbl">HOLD BREATH</span>
+          <span class="hint-sm">Shift / Right-click</span>
+        </div>
+        <div class="power-box">
+          <span class="lbl">DRAW POWER</span>
+          <div class="bar-track"><div class="bar-fill power" id="powerFill"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="countdown hidden" id="countdown"><span id="countNum">3</span></div>
+
+    <!-- ===================== MENU ===================== -->
+    <div class="overlay" id="menuScreen">
+      <div class="panel">
+        <h1 class="title">🏹 ARCHERY&nbsp;DUEL</h1>
+        <p class="tagline">Draw • Aim • Outlast the Storm</p>
+        <div class="menu-btns">
+          <button class="btn primary" id="playBtn">▶ START DUEL</button>
+          <button class="btn ghost" id="scoresBtn">🏆 MATCH RECORDS</button>
+          <button class="btn ghost" id="helpBtn">❔ HOW TO PLAY</button>
+        </div>
+        <div class="diff-row">
+          <span class="lbl">RIVAL DIFFICULTY</span>
+          <div class="seg" id="diffSeg">
+            <button data-d="easy">EASY</button>
+            <button data-d="medium" class="on">MEDIUM</button>
+            <button data-d="hard">HARD</button>
+          </div>
+        </div>
+        <p class="hint">Desktop: <b>Drag</b> to draw &amp; aim the bow · <b>Shift / Right-click</b> hold breath<br>Mobile: <b>Touch &amp; drag</b> to draw, release to fire · tap HOLD BREATH</p>
+      </div>
+    </div>
+
+    <!-- How to play -->
+    <div class="overlay hidden" id="helpScreen">
+      <div class="panel">
+        <h2 class="title small">❔ HOW TO PLAY</h2>
+        <ul class="help-list">
+          <li>🏹 Press and drag on the screen to draw your bow. The drag <b>direction</b> aims the shot and the drag <b>distance</b> sets power.</li>
+          <li>🌬️ Watch the wind compass — crosswinds push your arrow sideways, headwinds slow it, tailwinds help it fly.</li>
+          <li>🫁 Hold <b>Shift</b> or <b>Right-click</b> (or the mobile button) to hold your breath and steady the reticle's natural drift.</li>
+          <li>🎯 Each round you and your rival shoot 3 arrows at a target 30–100m away. Closer to the gold center scores more (10 down to 1).</li>
+          <li>⛈️ Weather changes every round: clear sunset, thunderstorm, blizzard, or sandstorm — each bends your arrow differently.</li>
+          <li>🏆 Highest total score after all rounds wins the duel!</li>
+        </ul>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Match records -->
+    <div class="overlay hidden" id="scoresScreen">
+      <div class="panel">
+        <h2 class="title small">🏆 MATCH RECORDS</h2>
+        <div class="scores-list" id="scoresList"></div>
+        <button class="btn primary" data-back>← BACK</button>
+      </div>
+    </div>
+
+    <!-- Pause -->
+    <div class="overlay hidden" id="pauseScreen">
+      <div class="panel">
+        <h2 class="title small">DUEL PAUSED</h2>
+        <button class="btn primary" id="resumeBtn">▶ RESUME</button>
+        <button class="btn" id="restartBtn2">↻ RESTART DUEL</button>
+        <button class="btn ghost" id="menuBtn2">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Round announcement -->
+    <div class="overlay hidden" id="roundScreen">
+      <div class="panel">
+        <h2 class="title small" id="roundTitle">ROUND 1</h2>
+        <p class="tagline" id="roundSub">Clear Sunset • 30m</p>
+        <button class="btn primary" id="roundContinueBtn">▶ CONTINUE</button>
+      </div>
+    </div>
+
+    <!-- Match over -->
+    <div class="overlay hidden" id="overScreen">
+      <div class="panel">
+        <h2 class="title small" id="overTitle">DUEL COMPLETE</h2>
+        <p class="new-high hidden" id="newHigh">★ NEW BEST SCORE ★</p>
+        <div class="result">
+          <div><span>YOUR SCORE</span><b id="finalPlayer">0</b></div>
+          <div><span>RIVAL SCORE</span><b id="finalAI">0</b></div>
+          <div><span>BULLSEYES</span><b id="finalBulls">0</b></div>
+          <div><span>BEST SCORE</span><b id="finalBest">0</b></div>
+        </div>
+        <button class="btn primary" id="againBtn">↻ REMATCH</button>
+        <button class="btn ghost" id="menuBtn">☰ MAIN MENU</button>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="overlay" id="loadScreen">
+      <div class="panel"><h2 class="title small">STRINGING BOWS…</h2><p class="tagline" id="loadMsg">Setting up the range</p></div>
+    </div>
+
+    <!-- Mobile breath button -->
+    <div class="touch hidden" id="touch" aria-hidden="true">
+      <button class="tbtn breath" id="breathTouchBtn">HOLD<br />BREATH</button>
+    </div>
+
+    <a class="back-home" href="../index.html" title="Back to games">← Games</a>
+  </div>
+
+  <!-- Three.js (UMD global build, r128 — reliable on static hosting) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Modular game source (plain scripts sharing the AD3D namespace — no build step) -->
+  <script src="js/physics.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/archery.js"></script>
+  <script src="js/ai_rival.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

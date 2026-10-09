@@ -6,7 +6,8 @@
       "en.wikipedia.org",
       "www.githubstatus.com",
       "hits.sh",
-      "api.counterapi.dev"
+      "api.counterapi.dev",
+      "cdnjs.cloudflare.com"
     ]
   }
 }
